@@ -1,0 +1,9 @@
+export const renderMessage = (sender, message, isUser) => {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = isUser ? 'chat-message user-message' : 'chat-message assistant-message';
+  messageDiv.innerHTML = `<strong>${sender}</strong> ${message}`;
+  chatContainer.appendChild(messageDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+};
+
+exports.renderMessage = renderMessage;

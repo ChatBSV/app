@@ -1,0 +1,8 @@
+.chatBody {
+    flex-direction: column;
+    flex: 1;
+    justify-content: flex-end;
+    padding: 5vw;
+    display: flex;
+    overflow: auto;
+}

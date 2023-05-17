@@ -1,0 +1,44 @@
+.chatInput {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.inputForm {
+    background-color: #f2efef;
+    border-radius: 25px;
+    display: flex;
+    width: 100%;
+    box-shadow: inset -1px -1px 5px rgba(255, 255, 255, .5), inset 1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.inputField {
+    height: 50px;
+    box-shadow: none;
+    color: #555;
+    background-color: #fcfcfc;
+    border: 1px solid #4772f6;
+    border-radius: 30px;
+    margin-bottom: 0;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.inputField:active,
+.inputField:focus {
+    border-style: solid;
+    border-color: #4772f6;
+}
+
+.inputField:focus-visible {
+    border-color: #4772f6;
+}
+
+.inputField::-ms-input-placeholder {
+    color: #555;
+}
+
+.inputField::placeholder {
+    color: #555;
+}
