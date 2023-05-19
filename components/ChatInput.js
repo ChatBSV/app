@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import styles from './ChatInput.module.css';
 
 const ChatInput = () => {
   const [input, setInput] = useState('');
@@ -32,15 +33,15 @@ const ChatInput = () => {
   const handleInputChange = (event) => setInput(event.target.value);
 
   return (
-    <form onSubmit={handleSubmit} className="input-form">
+    <form onSubmit={handleSubmit} className={styles.inputForm}>
       <input
         type="text"
         value={input}
         onChange={handleInputChange}
-        className="input-field"
+        className={styles.inputField}
         placeholder="Enter your prompt here"
       />
-      <button type="submit" className="submit-button">
+      <button type="submit" className={styles.submitButton}>
         Submit
       </button>
     </form>

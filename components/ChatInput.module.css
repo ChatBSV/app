@@ -42,3 +42,15 @@
 .inputField::placeholder {
     color: #555;
 }
+.submit {
+    padding: 0 20px;
+    height: 50px;
+    border-radius: 25px;
+    margin-left: 20px;
+    background-color: #fcfcfc;
+    border-color: #4772f6;
+    border-width: 1px;
+    font-size: 16px;
+    display: none;
+  }
+  

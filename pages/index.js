@@ -10,7 +10,7 @@ export default function Home() {
   const [chat, setChat] = useState([]);
 
   const fetchAIResponse = async (prompt) => {
-    const response = await fetch('/api/prompt', {
+    const response = await fetch('/.netlify/functions/getChatReply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt }),
