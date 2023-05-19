@@ -1,7 +1,7 @@
 // pages/index.js
 
-import fetch from 'isomorphic-unfetch';
 import { useState } from 'react';
+import fetch from 'isomorphic-unfetch';
 import ChatInput from '../components/ChatInput';
 import ChatBody from '../components/ChatBody';
 import Header from '../components/Header';
@@ -29,7 +29,6 @@ export default function Home() {
     addChatMessage(response, false);
   };
 
-  // Update the chat body with new messages
   const updateChatBody = (message, isUser) => {
     const updatedChat = [...chat, { message, isUser }];
     setChat(updatedChat);
