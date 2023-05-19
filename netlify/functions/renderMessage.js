@@ -1,3 +1,5 @@
+// netlify/functions/renderMessage.js
+
 export const renderMessage = (sender, message, isUser) => {
   const messageDiv = document.createElement('div');
   messageDiv.className = isUser ? 'chat-message user-message' : 'chat-message assistant-message';
