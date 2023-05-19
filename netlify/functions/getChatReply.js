@@ -2,8 +2,7 @@
 
 
 const axios = require('axios');
-const { renderMessage } = require('../components/ChatBody');
-
+const { renderMessage } = require('../../components/ChatBody');
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
@@ -37,8 +36,6 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    
-    const { renderMessage } = require('../components/ChatBody');
     renderMessage('', output, false);
 
     return {
