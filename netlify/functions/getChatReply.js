@@ -2,7 +2,9 @@
 
 
 const axios = require('axios');
-const { renderMessage } = require('../../components/ChatBody');
+const ChatBody = require('../../components/ChatBody');
+const renderMessage = ChatBody.renderMessage;
+
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
