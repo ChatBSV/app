@@ -16,7 +16,7 @@ export default function Home() {
       body: JSON.stringify({ prompt }),
     });
     const data = await response.json();
-    return data.response;
+    return data.message; 
   };
 
   const addChatMessage = (message, isUser) => {
@@ -29,16 +29,11 @@ export default function Home() {
     addChatMessage(response, false);
   };
 
-  const updateChatBody = (message, isUser) => {
-    const updatedChat = [...chat, { message, isUser }];
-    setChat(updatedChat);
-  };
-
   return (
     <div>
       <Header />
       <ChatBody chat={chat} />
-      <ChatInput handleSubmit={handleSubmit} updateChatBody={updateChatBody} />
+      <ChatInput handleSubmit={handleSubmit} renderMessage={ChatBody.renderMessage} />
     </div>
   );
 }

@@ -6,5 +6,3 @@ export const renderMessage = (sender, message, isUser) => {
   chatContainer.appendChild(messageDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
-exports.renderMessage = renderMessage;

@@ -1,3 +1,6 @@
+// components/ChatMessage.js
+
+
 import styles from './ChatMessage.module.css';
 
 function ChatMessage({ message, user }) {

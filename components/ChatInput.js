@@ -1,31 +1,17 @@
+// components/ChatInput.js
+
 import { useState } from 'react';
-import axios from 'axios';
 import styles from './ChatInput.module.css';
 
-const ChatInput = () => {
+const ChatInput = ({ handleSubmit }) => {
   const [input, setInput] = useState('');
 
-  const renderMessage = (sender, message, isUser) => {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = isUser ? 'chat-message user-message' : 'chat-message assistant-message';
-    messageDiv.innerHTML = `<strong>${sender}</strong> ${message}`;
-    chatContainer.appendChild(messageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  };
-
-  const handleSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     const prompt = input.trim();
 
     if (prompt !== '') {
-      renderMessage('', prompt, true);
-      try {
-        const response = await axios.post('/.netlify/functions/getChatReply', { prompt });
-        const output = response.data.message;
-        renderMessage('', output, false);
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      handleSubmit(prompt);
       setInput('');
     }
   };
@@ -33,7 +19,7 @@ const ChatInput = () => {
   const handleInputChange = (event) => setInput(event.target.value);
 
   return (
-    <form onSubmit={handleSubmit} className={styles.inputForm}>
+    <form onSubmit={handleFormSubmit} className={styles.inputForm}>
       <input
         type="text"
         value={input}
