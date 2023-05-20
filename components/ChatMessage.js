@@ -5,7 +5,7 @@ import styles from './ChatMessage.module.css';
 function ChatMessage({ message, user, sender }) {
   return (
     <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
-      <p>{message}</p>
+      <p className='paragraph'>{message}</p>
       {sender && <span className={styles.sender}>{sender}</span>}
     </div>
   );
