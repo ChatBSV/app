@@ -33,9 +33,9 @@
 }
 
 .chatMessage.assistantMessage.loading {
-    font color: #ddd;
+    color: #ddd;
 }
 
 .chatMessage.assistantMessage.error {
-    font color: #f00;
+    color: #f00;
 }
