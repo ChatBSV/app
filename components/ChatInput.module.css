@@ -4,11 +4,9 @@
 }
 
 .inputForm {
-    background-color: #f2efef;
     border-radius: 25px;
     display: flex;
     width: 100%;
-    box-shadow: inset -1px -1px 5px rgba(255, 255, 255, .5), inset 1px 1px 3px rgba(0, 0, 0, .1);
 }
 
 .inputField {
@@ -45,11 +43,13 @@
     color: #555;
 }
 .submit {
+    color: #ffffff;
     padding: 0 20px;
     height: 50px;
+    font-weight: 600;
     border-radius: 25px;
     margin-left: 20px;
-    background-color: #fcfcfc;
+    background-color: #4772f6;
     border-color: #4772f6;
     border-width: 1px;
     font-size: 16px;
