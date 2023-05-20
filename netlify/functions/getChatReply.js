@@ -40,6 +40,9 @@ exports.handler = async function(event, context) {
     };
   } catch (error) {
     console.error('Error:', error);
+    if (error.response && error.response.data && error.response.data.error) {
+      console.log('API Error:', error.response.data.error.message);
+    }
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'An error occurred during processing.' }),
