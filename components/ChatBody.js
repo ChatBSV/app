@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
-function ChatBody({ chat }) {
+function ChatBody({ chat, fakeAssistantMessage }) {
   useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -20,8 +20,16 @@ function ChatBody({ chat }) {
           sender={message.sender}
         />
       ))}
+      {chat.length === 0 && (
+        <ChatMessage
+          message={fakeAssistantMessage}
+          user={false}
+          sender="Assistant"
+        />
+      )}
     </div>
   );
 }
 
 export default ChatBody;
+
