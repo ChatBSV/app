@@ -1,20 +1,28 @@
 // components/ChatBody.js
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat, isLoading, isError }) {
+  const [hasInitialMessage, setHasInitialMessage] = useState(false);
+
   useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
     chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    if (chat.length > 0) {
+      setHasInitialMessage(true);
+    }
   }, [chat]);
 
   return (
     <div id="chat-container" className={styles.chatBody}>
-      <div className={styles.chatMessage + ' ' + styles.assistantMessage}>
-        <p>Hi there! I am Lillo.</p>
-      </div>
+      {!hasInitialMessage && (
+        <div className={`${styles.chatMessage} ${styles.assistantMessage}`}>
+          <p>Hi there! I am Lillo.</p>
+        </div>
+      )}
 
       {chat.map((message, index) => (
         <ChatMessage
