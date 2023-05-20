@@ -1,5 +1,7 @@
 .chatMessage {
     max-width: 70%;
+    font-weight: 600;
+    font-size: 16pt;
     background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 10px;
@@ -22,8 +24,14 @@
     margin-right: auto;
 }
 
+.paragraph {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 600;
+    font-size: 16pt;
+  }
 
-p {
+.p {
     font-weight: 600;
     font-size: 16pt;
     margin-top: 0;
