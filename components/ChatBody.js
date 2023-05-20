@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import styles from './ChatBody.module.css';
+import styles from './ChatMessage.module.css';
 import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat, isLoading, isError }) {
