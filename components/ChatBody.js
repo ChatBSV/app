@@ -11,37 +11,32 @@ function ChatBody({ chat, isLoading, isError }) {
   }, [chat]);
 
   return (
-    <div id="chat-container" className={styles.chatBody}>
-      
-        {chat.map((message, index) => (
-          <ChatMessage
-            key={index}
-            message={message.message}
-            user={message.isUser}
-          />
-        ))}
-      
-  
+    <div id="chat-container" className={styles.chatContainer}>
+      {chat.map((message, index) => (
+        <ChatMessage
+          key={index}
+          message={message.message}
+          user={message.isUser}
+        />
+      ))}
+
       {isLoading && (
         <ChatMessage
           message="Loading.. Please wait..."
           user={false}
-          className={`${styles.chatMessage} ${styles.assistantMessage}`}
+          className={styles.loadingMessage}
         />
       )}
-  
+
       {isError && (
         <ChatMessage
           message="Ooops. Something went wrong. Please try again or come back later."
           user={false}
-          className={`${styles.chatMessage} ${styles.assistantMessage}`}
+          className={styles.errorMessage}
         />
       )}
     </div>
   );
-  
-  
-  
 }
 
 export default ChatBody;
