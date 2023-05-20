@@ -39,3 +39,11 @@
 .chatMessage.assistantMessage.error {
     color: #f00;
 }
+
+p {
+    font-weight: 600;
+    font-size: 16pt;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
