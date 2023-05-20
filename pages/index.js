@@ -44,6 +44,7 @@ const IndexPage = () => {
     message: 'Loading.. Please wait...',
     isUser: false,
     isFake: false,
+    sender: 'Assistant',
   };
 
   const fakeAssistantMessage = {
@@ -57,12 +58,15 @@ const IndexPage = () => {
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Header />
       <ChatBody chat={chat} fakeAssistantMessage={fakeAssistantMessage} />
+
       {isLoading && (
-        <ChatBody chat={[loadingAssistantMessage]} />
+        <ChatBody chat={[loadingAssistantMessage]} fakeAssistantMessage={fakeAssistantMessage} />
       )}
+
       {isError && (
-        <ChatBody chat={[{ message: 'Ooops. Something went wrong. Please try again or come back later.', isUser: false, isFake: false, sender: 'Assistant' }]} />
+        <ChatBody chat={[{ message: 'Ooops. Something went wrong. Please try again or come back later.', isUser: false, isFake: false }]} fakeAssistantMessage={fakeAssistantMessage} />
       )}
+
       <div className="chat-footer">
         <ChatInput handleSubmit={handleSubmit} />
       </div>
@@ -71,4 +75,3 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
-
