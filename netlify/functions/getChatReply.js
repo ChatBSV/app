@@ -23,6 +23,7 @@ exports.handler = async function(event, context) {
       {
         model: 'gpt-3.5-turbo',
         messages: fullPrompt,
+        max_tokens: 500,
       },
       {
         headers: {
