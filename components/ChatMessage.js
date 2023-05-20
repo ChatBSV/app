@@ -2,12 +2,13 @@
 
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ message, user }) {
-    return (
-        <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
-            <p>{message}</p>
-        </div>
-    );
+function ChatMessage({ message, user, sender }) {
+  return (
+    <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
+      <p>{message}</p>
+      {sender && <span className={styles.sender}>{sender}</span>}
+    </div>
+  );
 }
 
 export default ChatMessage;

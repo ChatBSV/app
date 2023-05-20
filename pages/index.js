@@ -43,14 +43,12 @@ const IndexPage = () => {
   const loadingAssistantMessage = {
     message: 'Loading.. Please wait...',
     isUser: false,
-    isFake: false,
     sender: 'Assistant',
   };
 
   const fakeAssistantMessage = {
     message: FAKE_ASSISTANT_MESSAGE,
     isUser: false,
-    isFake: true,
     sender: 'Assistant',
   };
 
@@ -60,11 +58,11 @@ const IndexPage = () => {
       <ChatBody chat={chat} fakeAssistantMessage={fakeAssistantMessage} isLoading={isLoading} isError={isError} />
 
       {isLoading && (
-        <ChatBody chat={[loadingAssistantMessage]} fakeAssistantMessage={fakeAssistantMessage} isLoading={isLoading} isError={isError} />
+        <ChatBody chat={[loadingAssistantMessage]} isLoading={isLoading} isError={isError} />
       )}
 
       {isError && (
-        <ChatBody chat={[{ message: 'Ooops. Something went wrong. Please try again or come back later.', isUser: false, isFake: false }]} fakeAssistantMessage={fakeAssistantMessage} isLoading={isLoading} isError={isError} />
+        <ChatBody chat={[{ message: 'Ooops. Something went wrong. Please try again or come back later.', isUser: false, sender: 'Assistant' }]} isLoading={isLoading} isError={isError} />
       )}
 
       <div className="chat-footer">
