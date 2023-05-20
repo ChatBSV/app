@@ -13,7 +13,7 @@ function ChatBody({ chat, isLoading, isError }) {
   return (
     <div id="chat-container" className={styles.chatBody}>
       <ChatMessage
-        message="Hi there, I'm Alfred. Ask me anything!"
+        message="Welcome back Master Bruce. How can I help you today, sir?"
         user={false}
         className={styles.introMessage}
       />
