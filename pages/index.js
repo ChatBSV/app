@@ -1,7 +1,8 @@
 // index.js
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// index.js
+
+import React, { useState } from 'react';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
@@ -9,54 +10,13 @@ import './global.css';
 
 const IndexPage = () => {
   const [chat, setChat] = useState([]);
-  const { FAKE_ASSISTANT_MESSAGE } = process.env;
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const handleSubmit = async (prompt) => {
+  const handleSubmit = (prompt) => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
-    setIsLoading(true);
-    setIsError(false);
-
-    const response = await getChatReply(prompt);
-
-    setIsLoading(false);
-
-    if (response) {
-      const output = response.data.message;
-      setChat((prevChat) => [...prevChat, { message: output, isUser: false }]);
-    } else {
-      setIsError(true);
-    }
+    // Add your logic for processing the user's input here
   };
-
-  const getChatReply = async (prompt) => {
-    try {
-      const response = await axios.post('/.netlify/functions/getChatReply', { prompt });
-      return response;
-    } catch (error) {
-      console.error('Error:', error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    const fetchFakeAssistantMessage = async () => {
-      try {
-        const response = await axios.get('/.netlify/functions/getFakeAssistantMessage');
-        const fakeMessage = response.data.message;
-        console.log("FAKE_ASSISTANT_MESSAGE:", FAKE_ASSISTANT_MESSAGE); // Add this line
-        setChat((prevChat) => [...prevChat, { message: fakeMessage, isUser: false }]);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error:', error);
-        setIsLoading(false);
-        setIsError(true);
-      }
-    };
-
-    fetchFakeAssistantMessage();
-  }, []);
 
   const loadingAssistantMessage = {
     message: 'Loading.. Please wait...',
