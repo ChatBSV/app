@@ -11,8 +11,8 @@ function ChatBody({ chat, isLoading, isError }) {
   }, [chat]);
 
   return (
-    <div id="chat-container" className={styles.chatContainer}>
-      <div className={`${styles.chatBody}`}>
+    <div id="chat-container" className={`${styles.chatBody}`}>
+      <div>
         {chat.map((message, index) => (
           <ChatMessage
             key={index}
@@ -21,7 +21,7 @@ function ChatBody({ chat, isLoading, isError }) {
           />
         ))}
       </div>
-
+  
       {isLoading && (
         <ChatMessage
           message="Loading.. Please wait..."
@@ -36,6 +36,7 @@ function ChatBody({ chat, isLoading, isError }) {
       )}
     </div>
   );
+  
 }
 
 export default ChatBody;
