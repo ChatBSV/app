@@ -20,7 +20,7 @@ function ChatBody({ chat, fakeAssistantMessage }) {
           sender={message.sender}
         />
       ))}
-      {chat.length === 0 && (
+      {chat.length === 0 && fakeAssistantMessage && (
         <ChatMessage
           message={fakeAssistantMessage}
           user={false}
@@ -32,4 +32,3 @@ function ChatBody({ chat, fakeAssistantMessage }) {
 }
 
 export default ChatBody;
-
