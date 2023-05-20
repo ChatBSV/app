@@ -12,7 +12,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
   return (
     <div id="chat-container" className={styles.chatBody}>
-      <div className={`${styles.chatMessage} ${styles.assistantMessage}`}>
+      <div className={styles.chatMessage + ' ' + styles.assistantMessage}>
         <p>Hi there! I am Lillo.</p>
       </div>
 
