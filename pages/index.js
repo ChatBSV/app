@@ -43,8 +43,8 @@ const IndexPage = () => {
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Header />
       <ChatBody chat={chat} className={isError ? 'error' : ''} />
-      {isLoading && <div className="loading">Loading.. Please wait...</div>}
-      {isError && <div className="error">Ooops. Something went wrong. Please try again or come back later.</div>}
+      {isLoading && <div className="chatMessage userMessage loading">Loading.. Please wait...</div>}
+      {isError && <div className="chatMessage userMessage error">Ooops. Something went wrong. Please try again or come back later.</div>}
       <div className="chat-footer">
         <ChatInput handleSubmit={handleSubmit} />
       </div>
