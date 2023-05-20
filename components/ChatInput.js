@@ -27,7 +27,7 @@ const ChatInput = ({ handleSubmit }) => {
         className={styles.inputField}
         placeholder="Enter your prompt here"
       />
-      <button type="submit" className={styles.submitButton}>
+      <button type="submit" className={styles.submit}>
         Submit
       </button>
     </form>
