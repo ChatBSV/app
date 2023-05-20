@@ -1,0 +1,296 @@
+Product Specs
+
+Alfred Chat App - Docs
+
+The Alfred Chat App is a web application built with Next.js and deployed on Netlify using serverless functions. It provides a chat interface where users can interact with an AI-powered chatbot. The app utilizes the OpenAI API to generate responses based on user prompts.
+
+File Structure
+
+The project follows the following file structure:
+
+├── components/
+│   ├── ChatBody.js
+│   ├── ChatBody.module.css
+│   ├── ChatInput.js
+│   ├── ChatInput.module.css
+│   ├── ChatMessage.js
+│   ├── ChatMessage.module.css
+│   ├── Header.js
+│   ├── Header.module.css
+│   └── ...
+├── netlify/functions/
+│   ├── getChatReply.js
+│   └── ...
+├── pages/
+│   └── index.js
+├── .env
+├── package.json
+├── .toml
+├── .postccconfig.js
+└── ...
+
+    ChatBody.js: Renders the chat messages exchanged between the user and the chatbot.
+
+    ChatInput.js: Represents the input field where users can enter their messages.
+
+    ChatMessage.js: Renders an individual chat message.
+
+    Header.js: Displays the header of the application.
+
+    ...
+
+    getChatReply.js: Handles the processing of user messages and retrieval of AI-generated responses.
+
+    index.js: The main page that displays the chat interface.
+
+    .env for storing environment variables, CORE_PROMPT and OPENAI_API_KEY
+
+
+
+
+
+
+    SCRIPTS:
+
+    // pages/index.js
+
+import { useState } from 'react';
+import fetch from 'isomorphic-unfetch';
+import ChatInput from '../components/ChatInput';
+import ChatBody from '../components/ChatBody';
+import Header from '../components/Header';
+
+export default function Home() {
+  const [chat, setChat] = useState([]);
+
+  const fetchAIResponse = async (prompt) => {
+    const response = await fetch('/.netlify/functions/getChatReply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await response.json();
+    return data.message; 
+  };
+
+  const addChatMessage = (message, isUser) => {
+    setChat([...chat, { message, isUser }]);
+  };
+
+  const handleSubmit = async (prompt) => {
+    addChatMessage(prompt, true);
+    const response = await fetchAIResponse(prompt);
+    addChatMessage(response, false);
+  };
+
+  return (
+    <div>
+      <Header />
+      <ChatBody chat={chat} />
+      <ChatInput handleSubmit={handleSubmit} renderMessage={ChatBody.renderMessage} />
+    </div>
+  );
+}
+
+
+// components/ChatInput.js
+
+import { useState } from 'react';
+import styles from './ChatInput.module.css';
+
+const ChatInput = ({ handleSubmit }) => {
+  const [input, setInput] = useState('');
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const prompt = input.trim();
+
+    if (prompt !== '') {
+      handleSubmit(prompt);
+      setInput('');
+    }
+  };
+
+  const handleInputChange = (event) => setInput(event.target.value);
+
+  return (
+    <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+      <input
+        type="text"
+        value={input}
+        onChange={handleInputChange}
+        className={styles.inputField}
+        placeholder="Enter your prompt here"
+      />
+      <button type="submit" className={styles.submitButton}>
+        Submit
+      </button>
+    </form>
+  );
+};
+
+export default ChatInput;
+
+
+
+// netlify/functions/getChatReply.js
+
+
+const axios = require('axios');
+const ChatBody = require('../../components/ChatBody');
+const renderMessage = ChatBody.renderMessage;
+
+
+exports.handler = async function(event, context) {
+  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  const prompt = event.body;
+
+  const fullPrompt = [
+    {
+      role: 'system',
+      content: CORE_PROMPT,
+    },
+    {
+      role: 'user',
+      content: prompt,
+    },
+  ];
+
+  try {
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-3.5-turbo',
+        messages: fullPrompt,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const output = response.data.choices[0].message.content;
+
+    renderMessage('', output, false);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: output }),
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'An error occurred during processing.' }),
+    };
+  }
+};
+
+
+// components/ChatBody.js
+
+import styles from './ChatBody.module.css';
+
+function ChatBody({ chat }) {
+  const renderMessage = (sender, message, isUser) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = isUser ? 'chat-message user-message' : 'chat-message assistant-message';
+    messageDiv.innerHTML = `<strong>${sender}</strong> ${message}`;
+    const chatContainer = document.getElementById('chat-container');
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  };
+
+  return (
+    <div id="chat-container" className={styles.chatBody}>
+      {chat.map((message, index) => (
+        <div key={index} className={`chat-message ${message.isUser ? 'user-message' : 'assistant-message'}`}>
+          <strong>{message.sender}</strong> {message.message}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default ChatBody;
+
+
+// components/ChatMessage.js
+
+
+import styles from './ChatMessage.module.css';
+
+function ChatMessage({ message, user }) {
+    return (
+        <div className={user ? styles.userMessage : styles.assistantMessage}>
+            <p>{message}</p>
+        </div>
+    );
+}
+
+export default ChatMessage;
+
+
+// components/Header.js
+
+
+import styles from './Header.module.css';
+
+function Header() {
+    return (
+        <div className={styles.chatHeader}>
+            <h1 className={styles.heading}>Aifred</h1>
+        </div>
+    );
+}
+
+export default Header;
+
+
+// netlify.toml
+[build]
+  command = "npm run build"
+  publish = "out"
+  functions = "netlify/functions"
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+
+// package.json
+
+{
+  "name": "alfred",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "babel . -d dist --copy-files",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "20.1.7",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.2",
+    "isomorphic-unfetch": "^4.0.2",
+    "next": "^13.4.2",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@netlify/plugin-nextjs": "^4.37.1"
+  }
+}

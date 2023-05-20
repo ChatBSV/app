@@ -1,23 +1,24 @@
-// /components/ChatBody.js
+// components/ChatBody.js
 
+import React, { useEffect } from 'react';
 import styles from './ChatBody.module.css';
+import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat }) {
-  const renderMessage = (sender, message, isUser) => {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = isUser ? 'chat-message user-message' : 'chat-message assistant-message';
-    messageDiv.innerHTML = `<strong>${sender}</strong> ${message}`;
+  useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
-    chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  };
+  }, [chat]);
 
   return (
     <div id="chat-container" className={styles.chatBody}>
       {chat.map((message, index) => (
-        <div key={index} className={`chat-message ${message.isUser ? 'user-message' : 'assistant-message'}`}>
-          <strong>{message.sender}</strong> {message.message}
-        </div>
+        <ChatMessage
+          key={index}
+          message={message.message}
+          user={message.isUser}
+          sender={message.sender}
+        />
       ))}
     </div>
   );

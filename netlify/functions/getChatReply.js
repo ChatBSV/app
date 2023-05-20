@@ -1,10 +1,7 @@
 // netlify/functions/getChatReply.js
 
-
 const axios = require('axios');
 const ChatBody = require('../../components/ChatBody');
-const renderMessage = ChatBody.renderMessage;
-
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
@@ -38,7 +35,7 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    renderMessage('', output, false);
+    ChatBody.renderMessage('', output, false);
 
     return {
       statusCode: 200,
