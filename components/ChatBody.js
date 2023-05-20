@@ -22,23 +22,23 @@ function ChatBody({ chat, fakeAssistantMessage, isLoading, isError }) {
       ))}
       {chat.length === 0 && fakeAssistantMessage && (
         <ChatMessage
-          message={fakeAssistantMessage}
+          message={fakeAssistantMessage.message}
           user={false}
-          sender="Assistant"
+          sender={fakeAssistantMessage.sender}
         />
       )}
       {isLoading && (
         <ChatMessage
           message="Loading.. Please wait..."
           user={false}
-          sender="Assistant"
+          sender={loadingAssistantMessage.sender}
         />
       )}
       {isError && (
         <ChatMessage
           message="Ooops. Something went wrong. Please try again or come back later."
           user={false}
-          sender="Assistant"
+          sender={loadingAssistantMessage.sender}
         />
       )}
     </div>
@@ -46,3 +46,4 @@ function ChatBody({ chat, fakeAssistantMessage, isLoading, isError }) {
 }
 
 export default ChatBody;
+
