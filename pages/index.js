@@ -54,11 +54,9 @@ const IndexPage = () => {
         setIsError(true);
       }
     };
-  
+
     fetchFakeAssistantMessage();
   }, []);
-  
-  
 
   const loadingAssistantMessage = {
     message: 'Loading.. Please wait...',

@@ -4,7 +4,9 @@ import React, { useEffect } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
-function ChatBody({ chat, fakeAssistantMessage, isLoading, isError }) {
+function ChatBody({ chat, isLoading, isError }) {
+  const { FAKE_ASSISTANT_MESSAGE } = process.env;
+
   useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -17,28 +19,21 @@ function ChatBody({ chat, fakeAssistantMessage, isLoading, isError }) {
           key={index}
           message={message.message}
           user={message.isUser}
-          sender={message.sender}
         />
       ))}
-      {fakeAssistantMessage && (
-        <ChatMessage
-          message={fakeAssistantMessage.message}
-          user={false}
-          sender={fakeAssistantMessage.sender}
-        />
+      {FAKE_ASSISTANT_MESSAGE && (
+        <ChatMessage message={FAKE_ASSISTANT_MESSAGE} user={false} />
       )}
       {isLoading && (
         <ChatMessage
           message="Loading.. Please wait..."
           user={false}
-          sender="Assistant"
         />
       )}
       {isError && (
         <ChatMessage
           message="Ooops. Something went wrong. Please try again or come back later."
           user={false}
-          sender="Assistant"
         />
       )}
     </div>
@@ -46,4 +41,3 @@ function ChatBody({ chat, fakeAssistantMessage, isLoading, isError }) {
 }
 
 export default ChatBody;
-
