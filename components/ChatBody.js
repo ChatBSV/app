@@ -12,7 +12,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
   return (
     <div id="chat-container" className={styles.chatBody}>
-      <div className={styles.chatMessages}>
+      
         {chat.map((message, index) => (
           <ChatMessage
             key={index}
@@ -20,7 +20,7 @@ function ChatBody({ chat, isLoading, isError }) {
             user={message.isUser}
           />
         ))}
-      </div>
+      
   
       {isLoading && (
         <ChatMessage
