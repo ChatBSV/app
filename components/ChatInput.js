@@ -35,3 +35,4 @@ const ChatInput = ({ handleSubmit }) => {
 };
 
 export default ChatInput;
+
