@@ -8,3 +8,34 @@
     box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
   }
   
+  .chatMessage {
+    max-width: 70%;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, .5), 1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.chatMessage.userMessage {
+    color: #fcfcfc;
+    background-color: #4772f6;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-left: auto;
+}
+
+.chatMessage.assistantMessage {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-right: auto;
+}
+
+.chatMessage.assistantMessage.loading {
+    font color: #ddd;
+}
+
+.chatMessage.assistantMessage.error {
+    font color: #f00;
+}
