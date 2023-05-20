@@ -12,6 +12,12 @@ function ChatBody({ chat, isLoading, isError }) {
 
   return (
     <div id="chat-container" className={styles.chatBody}>
+      <ChatMessage
+        message="Hi there, I'm Lillo. Ask me anything!"
+        user={false}
+        className={styles.introMessage}
+      />
+
       {chat.map((message, index) => (
         <ChatMessage
           key={index}
