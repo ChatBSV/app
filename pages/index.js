@@ -1,8 +1,7 @@
 // index.js
 
-// index.js
-
 import React, { useState } from 'react';
+import axios from 'axios';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
@@ -13,9 +12,31 @@ const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const handleSubmit = (prompt) => {
+  const handleSubmit = async (prompt) => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
-    // Add your logic for processing the user's input here
+    setIsLoading(true);
+    setIsError(false);
+
+    const response = await getChatReply(prompt);
+
+    setIsLoading(false);
+
+    if (response) {
+      const output = response.data.message;
+      setChat((prevChat) => [...prevChat, { message: output, isUser: false }]);
+    } else {
+      setIsError(true);
+    }
+  };
+
+  const getChatReply = async (prompt) => {
+    try {
+      const response = await axios.post('/.netlify/functions/getChatReply', { prompt });
+      return response;
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
   };
 
   const loadingAssistantMessage = {
@@ -44,3 +65,4 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
+
