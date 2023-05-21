@@ -18,9 +18,9 @@ const IndexPage = () => {
     setIsLoading(true);
     setIsError(false);
 
-    const corePrompt = process.env.CORE_PROMPT; // Access CORE_PROMPT from environment variable
+    const corePrompt = process.env.CORE_PROMPT;
 
-    const response = await getChatReply(corePrompt, prompt); // Pass corePrompt and user prompt to getChatReply
+    const response = await getChatReply(corePrompt, prompt);
 
     setIsLoading(false);
 

@@ -5,7 +5,7 @@ const NodeCache = require('node-cache');
 
 const conversationCache = new NodeCache();
 
-exports.handler = async function(event, context) {
+exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const prompt = event.body;
 
