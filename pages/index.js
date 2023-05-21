@@ -42,11 +42,9 @@ const IndexPage = () => {
       return null;
     }
   };
-  
+
   useEffect(() => {
-    if (process.env.CORE_PROMPT) {
-      handleSubmit(process.env.CORE_PROMPT);
-    }
+  
   }, []);
   
 
