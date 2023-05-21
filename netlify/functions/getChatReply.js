@@ -22,8 +22,7 @@ exports.handler = async function (event, context) {
     fullPrompt.push({ role: 'system', content: CORE_PROMPT });
   } else {
     // If there is conversation history, include the history slice -1 with USER INPUT
-    const previousMessages = conversationHistory.slice(0, -1);
-    fullPrompt.push(...previousMessages);
+    fullPrompt = conversationHistory.slice(0, -1); // Exclude the last message
     fullPrompt.push({ role: 'user', content: prompt });
   }
 
@@ -47,7 +46,7 @@ exports.handler = async function (event, context) {
     const output = response.data.choices[0].message.content;
 
     // Save the latest AI response to the conversation history
-    conversationHistory = [{ role: 'AI', content: output }];
+    conversationHistory = [{ role: 'user', content: prompt }, { role: 'AI', content: output }];
     conversationCache.set('history', conversationHistory);
 
     // Return the AI response
