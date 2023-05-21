@@ -58,6 +58,7 @@
     background-size: 20px;
     border-width: 1px;
     font-size: 16px;
+    flex: none;
     cursor: pointer;
   }
   
