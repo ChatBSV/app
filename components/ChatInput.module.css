@@ -60,7 +60,7 @@
   @media screen and (max-width: 479px) {
 
     .inputField {
-        height: 46px;
+        height: 42px;
         box-shadow: none;
         color: #555;
         font-weight: 600;
