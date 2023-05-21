@@ -4,7 +4,7 @@
 }
 
 .inputForm {
-    border-radius: 25px;
+    border-radius: 8px;
     display: flex;
     width: 100%;
 }
@@ -56,3 +56,42 @@
     cursor: pointer;
   }
   
+
+  @media screen and (max-width: 479px) {
+
+    .inputField {
+        height: 46px;
+        box-shadow: none;
+        color: #555;
+        font-weight: 600;
+        font-size: 16pt;
+        background-color: #fcfcfc;
+        border: 2px solid #4772f6;
+        border-radius: 30px;
+        margin-bottom: 0;
+        padding-left: 30px;
+        padding-right: 30px;
+        font-size: 16px;
+        width: 100%;
+    }
+    
+    .inputField:active,
+    .inputField:focus {
+        border-style: solid;
+        border-color: #4772f6;
+    }
+    
+    .inputField:focus-visible {
+        border-color: #4772f6;
+    }
+    
+    .inputField::-ms-input-placeholder {
+        color: #555;
+    }
+    
+    .inputField::placeholder {
+        color: #555;
+    }
+
+
+  }
