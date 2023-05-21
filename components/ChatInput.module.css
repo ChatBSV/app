@@ -70,11 +70,12 @@
   @media screen and (max-width: 479px) {
 
     .inputField {
-        height: 40px;
+        height: 36px;
         box-shadow: none;
         color: #555;
         font-weight: 600;
         font-size: 16pt;
+        margin-top: 2;
         background-color: #fcfcfc;
         border: 2px solid #4772f6;
         border-radius: 8px;

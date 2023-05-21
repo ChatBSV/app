@@ -1,6 +1,6 @@
 // index.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
@@ -39,11 +39,39 @@ const IndexPage = () => {
     }
   };
 
-  const loadingAssistantMessage = {
-    message: 'Loading.. Please wait...',
-    isUser: false,
-    sender: 'Assistant',
-  };
+  useEffect(() => {
+    // Add meta tags programmatically
+    const metaTags = [
+      { name: 'description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
+      { property: 'og:title', content: 'Hi there, I am AIfred.' },
+      { property: 'og:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
+      { property: 'og:image', content: '../images/AL-og.png' },
+      { property: 'twitter:title', content: 'Hi there, I am AIfred.' },
+      { property: 'twitter:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
+      { property: 'twitter:image', content: '../images/AL-og.png' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' }
+    ];
+
+    metaTags.forEach(meta => {
+      const metaElement = document.createElement('meta');
+      Object.entries(meta).forEach(([key, value]) => {
+        metaElement.setAttribute(key, value);
+      });
+      document.head.appendChild(metaElement);
+    });
+
+    // Set the favicon and webclip
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.href = '../images/AL-favicon.png';
+    document.head.appendChild(favicon);
+
+    const webclip = document.createElement('link');
+    webclip.rel = 'apple-touch-icon';
+    webclip.href = '../images/AL-webclip,png';
+    document.head.appendChild(webclip);
+  }, []);
 
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 600, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
@@ -54,8 +82,6 @@ const IndexPage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default IndexPage;
-
