@@ -6,11 +6,21 @@ exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
   const { prompt, chatHistory, lastMessage } = JSON.parse(event.body);
 
-  const messages = [
-    ...(chatHistory ? chatHistory.map((message) => ({ role: 'user', content: message })) : []),
-    { role: 'system', content: process.env.CORE_PROMPT },
-    { role: 'user', content: prompt }
-  ];
+  let messages;
+
+  if (!chatHistory || chatHistory.length === 0) {
+    // First message, include the core prompt as the system message
+    messages = [
+      { role: 'system', content: process.env.CORE_PROMPT },
+      { role: 'user', content: prompt }
+    ];
+  } else {
+    // Subsequent messages, include chatHistory + user input
+    messages = [
+      ...(chatHistory.slice(0, -1).map((message) => ({ role: 'user', content: message }))),
+      { role: 'user', content: prompt }
+    ];
+  }
 
   const inputTokens = countTokens(JSON.stringify(messages));
 
