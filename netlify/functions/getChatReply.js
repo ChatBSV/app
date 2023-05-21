@@ -6,11 +6,15 @@ exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const prompt = event.body;
 
+  const storedHistory = localStorage.getItem('conversationHistory');
+  const conversationHistory = storedHistory ? JSON.parse(storedHistory) : [];
+
   const fullPrompt = [
     {
       role: 'system',
       content: CORE_PROMPT,
     },
+    ...conversationHistory.slice(-3), 
     {
       role: 'user',
       content: prompt,
@@ -34,6 +38,12 @@ exports.handler = async function(event, context) {
     );
 
     const output = response.data.choices[0].message.content;
+
+ 
+    conversationHistory.push({ message: output, isUser: false });
+
+ 
+    localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 
     return {
       statusCode: 200,
