@@ -1,3 +1,14 @@
+.chatFooter {
+    min-height: 10vh;
+    justify-content: center;
+    align-items: center;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    display: flex;
+    box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
+  }
+
+
 .chatInput {
     flex: 1;
     margin-bottom: 0;
