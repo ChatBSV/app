@@ -1,6 +1,5 @@
 // index.js
 
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ChatBody from '../components/ChatBody';
@@ -13,6 +12,8 @@ const IndexPage = () => {
   const [chat, setChat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [systemPromptSent, setSystemPromptSent] = useState(false);
 
   const handleSubmit = async (prompt) => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
@@ -35,7 +36,11 @@ const IndexPage = () => {
   const getChatReply = async (prompt) => {
     const lastMessage = chat[chat.length - 1]?.message || '';
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', { prompt, lastMessage, corePrompt: process.env.CORE_PROMPT });
+      const response = await axios.post('/.netlify/functions/getChatReply', {
+        prompt,
+        chatHistory: systemPromptSent ? chatHistory : [],
+        lastMessage
+      });
       return response;
     } catch (error) {
       console.error('Error:', error);
@@ -44,14 +49,16 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-  
+    if (!systemPromptSent && process.env.CORE_PROMPT) {
+      handleSubmit(process.env.CORE_PROMPT);
+      setSystemPromptSent(true);
+    }
   }, []);
-  
 
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
-        <title>Hi there, I am AIfred.</title>
+      <title>Hi there, I am AIfred.</title>
         <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
         <meta property="og:title" content="Hi there, I am AIfred." />
         <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />

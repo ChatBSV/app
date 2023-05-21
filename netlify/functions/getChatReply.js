@@ -4,12 +4,12 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
-  const { prompt, lastThreeMessages, corePrompt } = JSON.parse(event.body);
+  const { prompt, chatHistory, lastMessage } = JSON.parse(event.body);
 
   const messages = [
-    ...(lastThreeMessages ? lastThreeMessages.map(message => ({ role: 'user', content: message })) : []),
-    { role: 'user', content: prompt },
-    { role: 'system', content: corePrompt }
+    ...(chatHistory ? chatHistory.map((message) => ({ role: 'user', content: message })) : []),
+    { role: 'system', content: process.env.CORE_PROMPT },
+    { role: 'user', content: prompt }
   ];
 
   try {
@@ -24,8 +24,8 @@ exports.handler = async function (event, context) {
       {
         headers: {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json'
+        }
       }
     );
 
@@ -39,7 +39,7 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens }),
+      body: JSON.stringify({ message: assistantResponse, totalTokens })
     };
   } catch (error) {
     console.error('Error:', error);
@@ -48,7 +48,7 @@ exports.handler = async function (event, context) {
     }
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'An error occurred during processing.' }),
+      body: JSON.stringify({ error: 'An error occurred during processing.' })
     };
   }
 };
