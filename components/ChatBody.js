@@ -1,13 +1,13 @@
 // components/ChatBody.js
 
-import React, { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     scrollToBottom();
   }, [chat]);
 
