@@ -22,14 +22,12 @@ exports.handler = async function(event, context) {
 
   let conversationHistory = [];
 
-  // Retrieve conversation history from cache
   const cachedHistory = conversationCache.get('history');
   if (cachedHistory) {
     conversationHistory = cachedHistory;
   }
 
   if (conversationHistory.length > 0) {
-    // Include the last message from the conversation history
     fullPrompt = [
       {
         role: 'system',
@@ -61,14 +59,10 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    // Save the assistant message to the conversation history
     conversationHistory.push({ message: output, isUser: false });
 
-    // Clear the previous conversation history from cache
     conversationCache.del('history');
-
-    // Save updated conversation history to cache as the most recent conversation
-    conversationCache.set('history', conversationHistory);
+    conversationCache.set('history', conversationHistory.slice(-1));
 
     return {
       statusCode: 200,
