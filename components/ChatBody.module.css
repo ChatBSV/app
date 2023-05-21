@@ -15,4 +15,5 @@
 .spacer {
     height: 50px;
     flex: none;
+    justify-content: flex-end;
 }
