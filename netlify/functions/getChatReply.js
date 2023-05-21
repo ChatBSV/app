@@ -9,37 +9,23 @@ exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const prompt = event.body;
 
-  let fullPrompt = [
-    {
+  let fullPrompt = [];
+
+  let conversationHistory = conversationCache.get('history') || [];
+
+  if (conversationHistory.length === 0) {
+    fullPrompt.push({
       role: 'system',
       content: CORE_PROMPT,
-    },
-    {
-      role: 'user',
-      content: prompt,
-    },
-  ];
-
-  let conversationHistory = [];
-
-  const cachedHistory = conversationCache.get('history');
-  if (cachedHistory) {
-    conversationHistory = cachedHistory;
+    });
+  } else {
+    fullPrompt.push(conversationHistory[conversationHistory.length - 1]);
   }
 
-  if (conversationHistory.length > 0) {
-    fullPrompt = [
-      {
-        role: 'system',
-        content: CORE_PROMPT,
-      },
-      ...conversationHistory.slice(-1),
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ];
-  }
+  fullPrompt.push({
+    role: 'user',
+    content: prompt,
+  });
 
   try {
     const response = await axios.post(
@@ -47,7 +33,7 @@ exports.handler = async function(event, context) {
       {
         model: 'gpt-3.5-turbo',
         messages: fullPrompt,
-        max_tokens: 4000,
+        max_tokens: 2000,
       },
       {
         headers: {
@@ -59,9 +45,8 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    conversationHistory.push({ message: output, isUser: false });
+    conversationHistory.push({ role: 'assistant', content: output });
 
-    conversationCache.del('history');
     conversationCache.set('history', conversationHistory.slice(-1));
 
     return {
