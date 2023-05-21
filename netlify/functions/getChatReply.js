@@ -1,6 +1,10 @@
 // netlify/functions/getChatReply.js
 
 const axios = require('axios');
+const NodeCache = require('node-cache');
+
+// Create a new instance of the cache
+const cache = new NodeCache();
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
@@ -17,13 +21,8 @@ exports.handler = async function(event, context) {
     },
   ];
 
-  let conversationHistory = [];
-
-  // Retrieve conversation history from localStorage
-  const storedHistory = localStorage.getItem('conversationHistory');
-  if (storedHistory) {
-    conversationHistory = JSON.parse(storedHistory);
-  }
+  // Retrieve conversation history from cache
+  let conversationHistory = cache.get('conversationHistory') || [];
 
   if (conversationHistory.length > 0) {
     // Include the last message from the conversation history
@@ -61,8 +60,8 @@ exports.handler = async function(event, context) {
     // Save the assistant message to the conversation history
     conversationHistory.push({ message: output, isUser: false });
 
-    // Store updated conversation history in localStorage
-    localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
+    // Store updated conversation history in cache
+    cache.set('conversationHistory', conversationHistory);
 
     return {
       statusCode: 200,
@@ -79,3 +78,4 @@ exports.handler = async function(event, context) {
     };
   }
 };
+
