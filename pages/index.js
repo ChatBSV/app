@@ -12,6 +12,7 @@ const IndexPage = () => {
   const [chat, setChat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [corePrompt, setCorePrompt] = useState(process.env.CORE_PROMPT || '');
 
   const handleSubmit = async (prompt) => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
@@ -32,7 +33,7 @@ const IndexPage = () => {
 
   const getChatReply = async (prompt) => {
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', { prompt });
+      const response = await axios.post('/.netlify/functions/getChatReply', { corePrompt, prompt });
       return response;
     } catch (error) {
       console.error('Error:', error);

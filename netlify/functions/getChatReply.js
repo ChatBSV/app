@@ -7,9 +7,20 @@ const conversationCache = new NodeCache();
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
-  const prompt = event.body;
+  const { corePrompt, prompt } = JSON.parse(event.body);
 
-  let fullPrompt = conversationCache.get('history') || [];
+  let fullPrompt = [];
+
+  const conversationHistory = conversationCache.get('history') || [];
+
+  if (conversationHistory.length === 0) {
+    fullPrompt.push({
+      role: 'system',
+      content: corePrompt,
+    });
+  } else {
+    fullPrompt.push(conversationHistory[conversationHistory.length - 1]);
+  }
 
   fullPrompt.push({
     role: 'user',
@@ -34,9 +45,7 @@ exports.handler = async function (event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    fullPrompt.push({ role: 'assistant', content: output });
-
-    conversationCache.set('history', fullPrompt);
+    conversationCache.set('history', conversationHistory.slice(-1));
 
     return {
       statusCode: 200,
