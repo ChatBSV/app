@@ -11,7 +11,8 @@ function ChatBody({ chat, isLoading, isError }) {
   }, [chat]);
 
   return (
-    <div id="chat-container" className={styles.chatBody}>
+    <div className={styles.chatBody}>
+      <div id="chat-container">
       <ChatMessage
         message="Welcome back Master Bruce. How can I help you today, sir?"
         user={false}
@@ -41,7 +42,7 @@ function ChatBody({ chat, isLoading, isError }) {
           className={styles.errorMessage}
         />
       )}
-    </div>
+    </div></div>
   );
 }
 
