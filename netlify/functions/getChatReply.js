@@ -7,11 +7,11 @@ const conversationCache = new NodeCache();
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
-  const { corePrompt, prompt } = JSON.parse(event.body);
+  const { sessionId, corePrompt, prompt } = JSON.parse(event.body);
 
   let fullPrompt = [];
 
-  const conversationHistory = conversationCache.get('history') || [];
+  const conversationHistory = conversationCache.get(sessionId) || [];
 
   if (conversationHistory.length > 0) {
     // Include the previous message from history
@@ -44,8 +44,8 @@ exports.handler = async function (event, context) {
     const assistantResponse = response.data.choices[0].message.content;
     const totalTokens = response.data.usage.total_tokens;
 
-    // Clear conversation history and save the received message
-    conversationCache.set('history', [{ content: assistantResponse }]);
+    // Clear conversation history for this session and save the received message
+    conversationCache.set(sessionId, [{ content: assistantResponse }]);
 
     return {
       statusCode: 200,

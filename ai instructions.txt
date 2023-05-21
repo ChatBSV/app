@@ -47,6 +47,31 @@ The project follows the following file structure:
 
 
 
+--
+
+Here's a summary of diagnostics and changes for the code:
+
+    Sending the CORE_PROMPT as the system message with the first user message: In your getChatReply.js function, you have logic to check the conversation history length. If it's greater than 0, you include the previous message, otherwise, you include the corePrompt. The logic seems fine, but remember to store the corePrompt only in the first user's message and ensure that it's not repeated in subsequent messages.
+
+    Optimizing to send and receive a minimum amount of characters: Since you only need content and total tokens, streamline the body of the POST request in getChatReply.js to include only necessary data. Trim unnecessary metadata from the request/response objects. Also, structure your fullPrompt array to contain only the data required (system message, user input, and previous assistant response).
+
+    History Logic: The logic for saving the assistant message seems correct. You clear the history and save the received message after getting a response from OpenAI. Just remember to clear the history before saving a new message to maintain only the last message.
+
+    Optimizing async functions to avoid 10s timeouts: There are a few best practices that could be implemented to prevent timeouts:
+
+        Reduce third-party API reliance: If the OpenAI API response time is slow, it could cause your function to timeout. Always try to reduce the dependence on third-party APIs, or ensure you have adequate error handling and retry logic in place.
+
+        Use Promise.all() to run promises concurrently, when possible: If you have several independent async operations, using Promise.all() can potentially speed up overall execution time.
+
+        Optimize your code: Avoid blocking operations, look for ways to make your code more efficient, and reduce unnecessary operations.
+
+        Check your timeout settings: Make sure you have set a timeout that gives your function enough time to execute. If you're making a lot of data requests, you might need to increase your timeout. However, be careful not to set it too high, as that could result in longer delays if a function gets stuck.
+
+        Handle Errors Properly: Make sure to properly handle errors and reject a promise when an error occurs. Unhandled promise rejections can also lead to timeouts.
+
+
+--
+
 
 
 
