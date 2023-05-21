@@ -12,18 +12,13 @@ const IndexPage = () => {
   const [chat, setChat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [sessionId, setSessionId] = useState('');
-
-  useEffect(() => {
-    setSessionId(Date.now().toString());  // Creates a unique session ID based on the current timestamp
-  }, []);
 
   const handleSubmit = async (prompt) => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
     setIsLoading(true);
     setIsError(false);
 
-    const response = await getChatReply(prompt, sessionId);
+    const response = await getChatReply(prompt);
 
     setIsLoading(false);
 
@@ -35,9 +30,10 @@ const IndexPage = () => {
     }
   };
 
-  const getChatReply = async (prompt, sessionId) => {
+  const getChatReply = async (prompt) => {
+    const lastThreeMessages = chat.slice(Math.max(chat.length - 3, 0)).map(item => item.message);
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', { prompt, sessionId });
+      const response = await axios.post('/.netlify/functions/getChatReply', { prompt, lastThreeMessages });
       return response;
     } catch (error) {
       console.error('Error:', error);
