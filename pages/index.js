@@ -20,7 +20,7 @@ const IndexPage = () => {
     setIsLoading(true);
     setIsError(false);
   
-    const response = await getChatReply(prompt, chat);
+    const response = await getChatReply(prompt, chatHistory);
   
     setIsLoading(false);
   
@@ -34,18 +34,17 @@ const IndexPage = () => {
   };
   
   const getChatReply = async (prompt, chatHistory) => {
-    const lastMessage = chat[chat.length - 1]?.message || '';
+    const lastMessage = chatHistory[chatHistory.length - 1]?.content || '';
   
-    // Convert chatHistory messages to string
-    const messages = chatHistory.map((message) => ({
-      role: 'user',
-      content: String(message),
-    }));
+    const messages = [
+      ...chatHistory.map((message) => ({ role: 'user', content: message.content })),
+      { role: 'user', content: prompt }
+    ];
   
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        chatHistory: messages, // Pass the updated messages array
+        chatHistory: messages,
         lastMessage,
       });
       return response;
@@ -54,7 +53,6 @@ const IndexPage = () => {
       return null;
     }
   };
-  
   
   useEffect(() => {
     if (!systemPromptSent && process.env.CORE_PROMPT) {
@@ -66,7 +64,7 @@ const IndexPage = () => {
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
-      <title>Hi there, I am AIfred.</title>
+        <title>Hi there, I am AIfred.</title>
         <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
         <meta property="og:title" content="Hi there, I am AIfred." />
         <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
