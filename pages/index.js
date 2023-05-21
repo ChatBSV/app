@@ -18,9 +18,7 @@ const IndexPage = () => {
     setIsLoading(true);
     setIsError(false);
 
-    const corePrompt = process.env.CORE_PROMPT;
-
-    const response = await getChatReply(corePrompt, prompt);
+    const response = await getChatReply(prompt);
 
     setIsLoading(false);
 
@@ -32,9 +30,9 @@ const IndexPage = () => {
     }
   };
 
-  const getChatReply = async (corePrompt, prompt) => {
+  const getChatReply = async (prompt) => {
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', { corePrompt, prompt });
+      const response = await axios.post('/.netlify/functions/getChatReply', { prompt });
       return response;
     } catch (error) {
       console.error('Error:', error);
