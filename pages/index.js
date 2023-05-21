@@ -44,8 +44,11 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-    handleSubmit(process.env.CORE_PROMPT || '');
+    if (process.env.CORE_PROMPT) {
+      handleSubmit(process.env.CORE_PROMPT);
+    }
   }, []);
+  
 
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
