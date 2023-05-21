@@ -3,35 +3,39 @@
 const axios = require('axios');
 const NodeCache = require('node-cache');
 
-// Create an instance of NodeCache
-const cache = new NodeCache();
+const conversationCache = new NodeCache();
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const prompt = event.body;
 
-  // Get the conversation history from the cache
-  let conversationHistory = cache.get('conversationHistory') || [];
+  let fullPrompt = [
+    {
+      role: 'system',
+      content: CORE_PROMPT,
+    },
+    {
+      role: 'user',
+      content: prompt,
+    },
+  ];
 
-  let fullPrompt = [];
+  let conversationHistory = [];
 
-  if (conversationHistory.length === 0) {
-    // Send core prompt when memory is empty
+  // Retrieve conversation history from cache
+  const cachedHistory = conversationCache.get('history');
+  if (cachedHistory) {
+    conversationHistory = cachedHistory;
+  }
+
+  if (conversationHistory.length > 0) {
+    // Include the last message from the conversation history
     fullPrompt = [
       {
         role: 'system',
         content: CORE_PROMPT,
       },
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ];
-  } else {
-    // Send previous OpenAI response and user input when memory is not empty
-    const lastOpenAIResponse = conversationHistory[conversationHistory.length - 1];
-    fullPrompt = [
-      lastOpenAIResponse,
+      ...conversationHistory.slice(-1),
       {
         role: 'user',
         content: prompt,
@@ -45,7 +49,7 @@ exports.handler = async function(event, context) {
       {
         model: 'gpt-3.5-turbo',
         messages: fullPrompt,
-        max_tokens: 2500,
+        max_tokens: 4000,
       },
       {
         headers: {
@@ -57,11 +61,14 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    // Save the OpenAI response to the conversation history
-    conversationHistory.push({ role: 'assistant', content: output });
+    // Save the assistant message to the conversation history
+    conversationHistory.push({ message: output, isUser: false });
 
-    // Store the updated conversation history in the cache
-    cache.set('conversationHistory', conversationHistory);
+    // Clear the previous conversation history from cache
+    conversationCache.del('history');
+
+    // Save updated conversation history to cache as the most recent conversation
+    conversationCache.set('history', conversationHistory);
 
     return {
       statusCode: 200,
