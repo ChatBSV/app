@@ -47,14 +47,14 @@ const IndexPage = () => {
         <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
         <meta property="og:title" content="Hi there, I am AIfred." />
         <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:image" content="./images/AL-og.png" />
+        <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
         <meta property="twitter:title" content="Hi there, I am AIfred." />
         <meta property="twitter:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="twitter:image" content="./images/AL-og.png" />
+        <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="./images/AL-favicon.png" />
-        <link rel="apple-touch-icon" href="/images/AL-webclip.png" />
+        <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad07_AL-favicon.png" />
+        <link rel="apple-touch-icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d33188cfb0d03f9067f7_AL-webclip.png" />
       </Head>
       <Header />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
