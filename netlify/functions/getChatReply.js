@@ -18,6 +18,8 @@ exports.handler = async function (event, context) {
   }
 
   fullPrompt.push({ role: 'system', content: corePrompt });
+  fullPrompt.push({ role: 'system', content: '' });
+  fullPrompt.push({ role: 'system', content: '' });
   fullPrompt.push({ role: 'user', content: prompt });
 
   try {
@@ -26,9 +28,9 @@ exports.handler = async function (event, context) {
       {
         model: 'gpt-3.5-turbo',
         messages: fullPrompt.map((message) => {
-          // Ensure each message object has the 'role' property
-          if (!message.role) {
-            return { role: 'system', content: message.content };
+          // Ensure each message object has the 'role' and 'content' properties
+          if (!message.role || !message.content) {
+            return { role: 'system', content: message.content || '' };
           }
           return message;
         }),
