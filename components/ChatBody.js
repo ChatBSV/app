@@ -12,12 +12,14 @@ function ChatBody({ chat, isLoading, isError }) {
   }, [chat]);
 
   const scrollToBottom = () => {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   return (
-    <div className={styles.chatBody}>
-      <div className={styles.chatContainer} id="chat-container" ref={chatContainerRef}>
+    <div className={styles.chatBody} ref={chatContainerRef}>
+      <div className={styles.chatContainer}>
         <ChatMessage
           message="Welcome back Master Bruce. How can I help you today, sir?"
           user={false}
