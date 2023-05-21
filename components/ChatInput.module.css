@@ -84,14 +84,9 @@
     .submit {
         color: #ffffff;
         padding: 0 16px;
-        height: 50px;
-        width: 50px;
         font-weight: 600;
         border-radius: 25px;
         margin-left: 10px;
-        background-color: #4772f6;
-        border-color: #4772f6;
-        border-width: 1px;
         font-size: 16px;
         cursor: pointer;
       }
