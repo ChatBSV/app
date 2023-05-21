@@ -16,7 +16,7 @@ exports.handler = async function (event, context) {
   if (conversationHistory.length > 0) {
     // Include the previous message from history
     const previousMessage = conversationHistory[0];
-    fullPrompt.push({ role: 'assistant(history)', content: previousMessage.content });
+    fullPrompt.push({ role: 'user', content: previousMessage.content });
   } else {
     // Include the core prompt as the system message for the first prompt
     fullPrompt.push({ role: 'system', content: CORE_PROMPT });
