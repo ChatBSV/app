@@ -22,17 +22,19 @@
     padding-left: 30px;
     padding-right: 30px;
     font-size: 16px;
-    width: 100%;
+    flex: 1;
 }
 
 .inputField:active,
 .inputField:focus {
     border-style: solid;
     border-color: #4772f6;
+    box-shadow: none;
 }
 
 .inputField:focus-visible {
     border-color: #4772f6;
+    box-shadow: none;
 }
 
 .inputField::-ms-input-placeholder {
@@ -45,6 +47,8 @@
 .submit {
     color: #ffffff;
     padding: 0 20px;
+    min-width: 50px;
+    min-height: 50px;
     height: 50px;
     height: 50px;
     font-weight: 600;
@@ -66,7 +70,7 @@
   @media screen and (max-width: 479px) {
 
     .inputField {
-        height: 36px;
+        height: 40px;
         box-shadow: none;
         color: #555;
         font-weight: 600;
@@ -95,10 +99,12 @@
     .inputField:focus {
         border-style: solid;
         border-color: #4772f6;
+        box-shadow: none;
     }
     
     .inputField:focus-visible {
         border-color: #4772f6;
+        box-shadow: none;
     }
     
     .inputField::-ms-input-placeholder {
