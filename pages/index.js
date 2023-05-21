@@ -41,37 +41,32 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-    
-    const metaTags = [
-      { name: 'description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
-      { property: 'og:title', content: 'Hi there, I am AIfred.' },
-      { property: 'og:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
-      { property: 'og:image', content: '/images/AL-og.png' },
-      { property: 'twitter:title', content: 'Hi there, I am AIfred.' },
-      { property: 'twitter:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
-      { property: 'twitter:image', content: '/images/AL-og.png' },
-      { property: 'og:type', content: 'website' },
-      { name: 'twitter:card', content: 'summary_large_image' }
-    ];
-
-    metaTags.forEach(meta => {
+    const addMetaTag = (name, content) => {
       const metaElement = document.createElement('meta');
-      Object.entries(meta).forEach(([key, value]) => {
-        metaElement.setAttribute(key, value.replace("'", "&apos;"));
-      });
+      metaElement.name = name;
+      metaElement.content = content;
       document.head.appendChild(metaElement);
-    });
+    };
 
+    const addLinkTag = (rel, href) => {
+      const linkElement = document.createElement('link');
+      linkElement.rel = rel;
+      linkElement.href = href;
+      document.head.appendChild(linkElement);
+    };
 
-    const favicon = document.createElement('link');
-    favicon.rel = 'icon';
-    favicon.href = '/images/AL-favicon.png';
-    document.head.appendChild(favicon);
+    addMetaTag('description', 'Your local friendly interface to OpenAI. Ask me anything!');
+    addMetaTag('og:title', 'Hi there, I am AIfred.');
+    addMetaTag('og:description', 'Your local friendly interface to OpenAI. Ask me anything!');
+    addMetaTag('og:image', '/images/AL-og.png');
+    addMetaTag('twitter:title', 'Hi there, I am AIfred.');
+    addMetaTag('twitter:description', 'Your local friendly interface to OpenAI. Ask me anything!');
+    addMetaTag('twitter:image', '/images/AL-og.png');
+    addMetaTag('og:type', 'website');
+    addMetaTag('twitter:card', 'summary_large_image');
 
-    const webclip = document.createElement('link');
-    webclip.rel = 'apple-touch-icon';
-    webclip.href = '/images/AL-webclip.png';
-    document.head.appendChild(webclip);
+    addLinkTag('icon', '/images/AL-favicon.png');
+    addLinkTag('apple-touch-icon', '/images/AL-webclip.png');
   }, []);
 
   return (
