@@ -12,7 +12,6 @@ exports.handler = async function (event, context) {
     { role: 'user', content: prompt }
   ];
 
-
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
