@@ -17,7 +17,7 @@ exports.handler = async function (event, context) {
   } else {
     // Subsequent messages, include chatHistory + user input
     messages = [
-      ...(chatHistory.slice(0, -1).map((message) => ({ role: 'user', content: message }))),
+      ...(chatHistory.map((message) => ({ role: 'user', content: message }))),
       { role: 'user', content: prompt }
     ];
   }

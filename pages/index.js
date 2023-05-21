@@ -19,11 +19,11 @@ const IndexPage = () => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
     setIsLoading(true);
     setIsError(false);
-
-    const response = await getChatReply(prompt);
-
+  
+    const response = await getChatReply(prompt, chat);
+  
     setIsLoading(false);
-
+  
     if (response) {
       const output = response.data.message;
       const totalTokens = response.data.totalTokens;
@@ -32,13 +32,13 @@ const IndexPage = () => {
       setIsError(true);
     }
   };
-
-  const getChatReply = async (prompt) => {
+  
+  const getChatReply = async (prompt, chatHistory) => {
     const lastMessage = chat[chat.length - 1]?.message || '';
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        chatHistory: systemPromptSent ? chatHistory : [],
+        chatHistory,
         lastMessage
       });
       return response;
@@ -47,7 +47,7 @@ const IndexPage = () => {
       return null;
     }
   };
-
+  
   useEffect(() => {
     if (!systemPromptSent && process.env.CORE_PROMPT) {
       handleSubmit(process.env.CORE_PROMPT);
