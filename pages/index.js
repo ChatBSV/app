@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NextHead } from 'next/head';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
+import Head from 'next/head';
 import './global.css';
 
 const IndexPage = () => {
@@ -41,6 +41,27 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
+    // Add meta tags programmatically
+    const metaTags = [
+      { name: 'description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
+      { property: 'og:title', content: 'Hi there, I am AIfred.' },
+      { property: 'og:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
+      { property: 'og:image', content: '../images/AL-og.png' },
+      { property: 'twitter:title', content: 'Hi there, I am AIfred.' },
+      { property: 'twitter:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
+      { property: 'twitter:image', content: '../images/AL-og.png' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' }
+    ];
+
+    metaTags.forEach(meta => {
+      const metaElement = document.createElement('meta');
+      Object.entries(meta).forEach(([key, value]) => {
+        metaElement.setAttribute(key, value.replace("'", "&apos;")); // Update this line to replace "'" with "&apos;"
+      });
+      document.head.appendChild(metaElement);
+    });
+
     // Set the favicon and webclip
     const favicon = document.createElement('link');
     favicon.rel = 'icon';
@@ -54,20 +75,10 @@ const IndexPage = () => {
   }, []);
 
   return (
-    <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 600, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
-      <NextHead>
-        <title>Hi there, I'm Lillo.</title>
-        <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:title" content="Hi there, I'm Lillo." />
-        <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:image" content="../images/AL-og.png" />
-        <meta property="twitter:title" content="Hi there, I'm Lillo." />
-        <meta property="twitter:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="twitter:image" content="../images/AL-og.png" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </NextHead>
-      {/* eslint-disable react/no-unescaped-entities */}
+    <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
+      <Head>
+        <title>Hi there, I am AIfred.</title>
+      </Head>
       <Header />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
       <div className="chat-footer">
@@ -78,4 +89,3 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
-
