@@ -60,17 +60,17 @@
   @media screen and (max-width: 479px) {
 
     .inputField {
-        height: 42px;
+        height: 40px;
         box-shadow: none;
         color: #555;
         font-weight: 600;
         font-size: 16pt;
         background-color: #fcfcfc;
         border: 2px solid #4772f6;
-        border-radius: 30px;
+        border-radius: 8px;
         margin-bottom: 0;
-        padding-left: 30px;
-        padding-right: 30px;
+        padding-left: 16px;
+        padding-right: 16px;
         font-size: 16px;
         width: 100%;
     }
