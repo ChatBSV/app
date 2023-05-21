@@ -19,7 +19,7 @@ exports.handler = async function (event, context) {
   if (conversationHistory.length === 0) {
     // If there is no conversation history, send USER INPUT + CORE_PROMPT
     fullPrompt.push({ role: 'user', content: prompt });
-    fullPrompt.push({ role: 'system', content: CORE_PROMPT });
+    fullPrompt.push({ role: 'assistant', content: CORE_PROMPT });
   } else {
     // If there is conversation history, include the history slice -1 with USER INPUT
     fullPrompt = conversationHistory.slice(0, -1); // Exclude the last message
@@ -31,7 +31,13 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: fullPrompt,
+        messages: fullPrompt.map((message) => {
+          // Ensure each message object has the 'role' and 'content' properties
+          return {
+            role: message.role === 'user' ? 'user' : 'assistant',
+            content: message.content,
+          };
+        }),
         max_tokens: 2000,
       },
       {
@@ -46,7 +52,7 @@ exports.handler = async function (event, context) {
     const output = response.data.choices[0].message.content;
 
     // Save the latest AI response to the conversation history
-    conversationHistory = [{ role: 'user', content: prompt }, { role: 'AI', content: output }];
+    conversationHistory = [...fullPrompt, { role: 'assistant', content: output }];
     conversationCache.set('history', conversationHistory);
 
     // Return the AI response
