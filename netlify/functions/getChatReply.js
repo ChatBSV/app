@@ -7,7 +7,7 @@ const conversationCache = new NodeCache();
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
-  const { corePrompt, prompt } = JSON.parse(event.body);
+  const { corePrompt, prompt, memory, envs } = JSON.parse(event.body);
 
   let fullPrompt = [];
 
@@ -19,7 +19,7 @@ exports.handler = async function (event, context) {
       content: corePrompt,
     });
   } else {
-    fullPrompt.push(conversationHistory[conversationHistory.length - 1]);
+    fullPrompt.push(...conversationHistory.slice(0, -1));
   }
 
   fullPrompt.push({
@@ -40,12 +40,15 @@ exports.handler = async function (event, context) {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
+        envs,
       }
     );
 
     const output = response.data.choices[0].message.content;
 
-    conversationCache.set('history', conversationHistory.slice(-1));
+    conversationHistory.push({ role: 'assistant', content: output });
+
+    conversationCache.set('history', conversationHistory);
 
     return {
       statusCode: 200,
