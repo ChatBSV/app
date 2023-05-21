@@ -2,8 +2,6 @@
 
 const axios = require('axios');
 
-const axios = require('axios');
-
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
   const { prompt, lastThreeMessages } = JSON.parse(event.body);
