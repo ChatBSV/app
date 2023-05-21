@@ -36,17 +36,15 @@ const IndexPage = () => {
       let fullPrompt = [];
 
       if (chatHistory.length > 1) {
-        fullPrompt.push(chatHistory[chatHistory.length - 2]); // Add the second-to-last user message
+        // Add the second-to-last user message
+        fullPrompt.push({ role: 'user', content: chatHistory[chatHistory.length - 1].message });
       }
 
       fullPrompt.push({ role: 'system', content: corePrompt });
       fullPrompt.push({ role: 'user', content: prompt });
 
       const response = await axios.post('/.netlify/functions/getChatReply', {
-        corePrompt,
         prompt,
-        memory: fullPrompt,
-        envs: process.env,
       });
 
       return response;
