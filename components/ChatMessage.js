@@ -6,7 +6,7 @@ function ChatMessage({ message, user, totalTokens }) {
   return (
     <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
       <span style={{ fontSize: '16px' }}>{message}</span>
-      {totalTokens && !user && <span style={{ fontSize: '14px', color: 'gray' }}>Tokens used: {totalTokens}</span>}
+      {totalTokens && !user && <span style={{ width: '100%', fontSize: '14px', color: 'gray' }}>{totalTokens}</span>}
     </div>
   );
 }
