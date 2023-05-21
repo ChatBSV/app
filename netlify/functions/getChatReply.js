@@ -10,20 +10,16 @@ exports.handler = async function (event, context) {
   const { prompt, memory, envs } = JSON.parse(event.body);
 
   let fullPrompt = [];
+  let conversationHistory = memory || [];
 
-  const conversationHistory = memory || [];
-
-  if (conversationHistory.length > 0) {
+  if (conversationHistory.length === 0) {
+    // If there is no conversation history, send CORE_PROMPT + USER INPUT
     fullPrompt.push({ role: 'system', content: CORE_PROMPT });
-    fullPrompt.push(...conversationHistory.slice(0, -1));
-  }
-
-  fullPrompt.push({ role: 'user', content: prompt });
-
-  // Remove unexpected properties from the second message
-  if (fullPrompt.length > 1) {
-    delete fullPrompt[1].isUser;
-    delete fullPrompt[1].message;
+    fullPrompt.push({ role: 'user', content: prompt });
+  } else {
+    // If there is conversation history, send CHATHISTORY[-1] + USER INPUT
+    fullPrompt.push(...conversationHistory.slice(-1)); // Include the last message from the conversation history
+    fullPrompt.push({ role: 'user', content: prompt });
   }
 
   try {
@@ -31,12 +27,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: fullPrompt.map((message) => {
-          if (!message.role || !message.content) {
-            return { role: 'system', content: message.content || '' };
-          }
-          return message;
-        }),
+        messages: fullPrompt,
         max_tokens: 2000,
       },
       {
@@ -50,8 +41,11 @@ exports.handler = async function (event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    conversationCache.set('history', conversationHistory.slice(-1));
+    // Save the AI response to the conversation history
+    conversationHistory.push({ role: 'AI', content: output });
+    conversationCache.set('history', conversationHistory);
 
+    // Return the AI response
     return {
       statusCode: 200,
       body: JSON.stringify({ message: output }),
