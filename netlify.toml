@@ -7,6 +7,5 @@
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
 
-  [functions.timeout]
-  idle_seconds = 30
-  max_duration_seconds = 60
+  [functions]
+  timeout = { idle_seconds = 30, max_duration_seconds = 60 }
