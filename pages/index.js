@@ -41,15 +41,15 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-    // Add meta tags programmatically
+    
     const metaTags = [
       { name: 'description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
       { property: 'og:title', content: 'Hi there, I am AIfred.' },
       { property: 'og:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
-      { property: 'og:image', content: './images/AL-og.png' },
+      { property: 'og:image', content: '/images/AL-og.png' },
       { property: 'twitter:title', content: 'Hi there, I am AIfred.' },
       { property: 'twitter:description', content: 'Your local friendly interface to OpenAI. Ask me anything!' },
-      { property: 'twitter:image', content: './images/AL-og.png' },
+      { property: 'twitter:image', content: '/images/AL-og.png' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' }
     ];
@@ -57,20 +57,20 @@ const IndexPage = () => {
     metaTags.forEach(meta => {
       const metaElement = document.createElement('meta');
       Object.entries(meta).forEach(([key, value]) => {
-        metaElement.setAttribute(key, value.replace("'", "&apos;")); // Update this line to replace "'" with "&apos;"
+        metaElement.setAttribute(key, value.replace("'", "&apos;"));
       });
       document.head.appendChild(metaElement);
     });
 
-    // Set the favicon and webclip
+
     const favicon = document.createElement('link');
     favicon.rel = 'icon';
-    favicon.href = './images/AL-favicon.png';
+    favicon.href = '/images/AL-favicon.png';
     document.head.appendChild(favicon);
 
     const webclip = document.createElement('link');
     webclip.rel = 'apple-touch-icon';
-    webclip.href = './images/AL-webclip.png';
+    webclip.href = '/images/AL-webclip.png';
     document.head.appendChild(webclip);
   }, []);
 
