@@ -7,37 +7,30 @@ const conversationCache = new NodeCache();
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, memory, envs } = JSON.parse(event.body);
+  const { prompt } = JSON.parse(event.body);
 
   let fullPrompt = [];
-  let conversationHistory = [];
 
-  if (memory) {
-    conversationHistory = memory.slice(); // Create a copy of the conversation history
-  }
+  const conversationHistory = conversationCache.get('history') || [];
 
-  if (conversationHistory.length === 0) {
-    // If there is no conversation history, send USER INPUT + CORE_PROMPT
-    fullPrompt.push({ role: 'user', content: prompt });
-    fullPrompt.push({ role: 'assistant', content: CORE_PROMPT });
+  if (conversationHistory.length > 0) {
+    // Include the previous message from history
+    const previousMessage = conversationHistory[0];
+    fullPrompt.push({ role: 'assistant(history)', content: previousMessage.content });
   } else {
-    // If there is conversation history, include the history slice -1 with USER INPUT
-    fullPrompt = conversationHistory.slice(0, -1); // Exclude the last message
-    fullPrompt.push({ role: 'user', content: prompt });
+    // Include the core prompt as the system message for the first prompt
+    fullPrompt.push({ role: 'system', content: CORE_PROMPT });
   }
+
+  // Include the user input message
+  fullPrompt.push({ role: 'user', content: prompt });
 
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: fullPrompt.map((message) => {
-          // Ensure each message object has the 'role' and 'content' properties
-          return {
-            role: message.role === 'user' ? 'user' : 'assistant',
-            content: message.content,
-          };
-        }),
+        messages: fullPrompt,
         max_tokens: 2000,
       },
       {
@@ -45,20 +38,18 @@ exports.handler = async function (event, context) {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
-        envs,
       }
     );
 
-    const output = response.data.choices[0].message.content;
+    const assistantResponse = response.data.choices[0].message.content;
+    const totalTokens = response.data.usage.total_tokens;
 
-    // Save the latest AI response to the conversation history
-    conversationHistory = [...fullPrompt, { role: 'assistant', content: output }];
-    conversationCache.set('history', conversationHistory);
+    // Clear conversation history and save the received message
+    conversationCache.set('history', [{ content: assistantResponse }]);
 
-    // Return the AI response
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: output }),
+      body: JSON.stringify({ message: assistantResponse, totalTokens }),
     };
   } catch (error) {
     console.error('Error:', error);
