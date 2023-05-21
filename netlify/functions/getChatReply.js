@@ -10,15 +10,20 @@ exports.handler = async function (event, context) {
   const { prompt, memory, envs } = JSON.parse(event.body);
 
   let fullPrompt = [];
-  let conversationHistory = memory || [];
+  let conversationHistory = [];
+
+  if (memory) {
+    conversationHistory = memory.slice(); // Create a copy of the conversation history
+  }
 
   if (conversationHistory.length === 0) {
-    // If there is no conversation history, send CORE_PROMPT + USER INPUT
-    fullPrompt.push({ role: 'system', content: CORE_PROMPT });
+    // If there is no conversation history, send USER INPUT + CORE_PROMPT
     fullPrompt.push({ role: 'user', content: prompt });
+    fullPrompt.push({ role: 'system', content: CORE_PROMPT });
   } else {
-    // If there is conversation history, send CHATHISTORY[-1] + USER INPUT
-    fullPrompt.push(...conversationHistory.slice(-1)); // Include the last message from the conversation history
+    // If there is conversation history, include the history slice -1 with USER INPUT
+    const previousMessages = conversationHistory.slice(0, -1);
+    fullPrompt.push(...previousMessages);
     fullPrompt.push({ role: 'user', content: prompt });
   }
 
@@ -41,8 +46,8 @@ exports.handler = async function (event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    // Save the AI response to the conversation history
-    conversationHistory.push({ role: 'AI', content: output });
+    // Save the latest AI response to the conversation history
+    conversationHistory = [{ role: 'AI', content: output }];
     conversationCache.set('history', conversationHistory);
 
     // Return the AI response
