@@ -4,13 +4,14 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
-  const { prompt, lastThreeMessages } = JSON.parse(event.body);
+  const { prompt, lastThreeMessages, corePrompt } = JSON.parse(event.body);
 
   const messages = [
     ...(lastThreeMessages ? lastThreeMessages.map(message => ({ role: 'user', content: message })) : []),
-    { role: 'system', content: CORE_PROMPT },
+    { role: 'system', content: corePrompt },
     { role: 'user', content: prompt }
   ];
+
 
   try {
     const response = await axios.post(

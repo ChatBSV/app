@@ -35,14 +35,14 @@ const IndexPage = () => {
   const getChatReply = async (prompt) => {
     const lastMessage = chat[chat.length - 1]?.message || '';
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', { prompt, lastMessage });
+      const response = await axios.post('/.netlify/functions/getChatReply', { prompt, lastMessage, corePrompt: process.env.CORE_PROMPT });
       return response;
     } catch (error) {
       console.error('Error:', error);
       return null;
     }
   };
-
+  
   useEffect(() => {
     if (process.env.CORE_PROMPT) {
       handleSubmit(process.env.CORE_PROMPT);
