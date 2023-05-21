@@ -29,16 +29,17 @@ const IndexPage = () => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
     setIsLoading(true);
     setIsError(false);
-
+  
     try {
+      const corePrompt = chat[chat.length - 1].message; // Access corePrompt from the chat state
       const response = await axios.post('/.netlify/functions/getChatReply', {
         sessionId: sessionId,
-        corePrompt: prevChat[prevChat.length - 1].message,
+        corePrompt: corePrompt,
         prompt
       });
-
+  
       setIsLoading(false);
-
+  
       if (response.status === 200) {
         const output = response.data.message;
         setChat((prevChat) => [...prevChat, { message: output, isUser: false }]);
@@ -51,11 +52,11 @@ const IndexPage = () => {
       setIsError(true);
     }
   };
+  
 
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
-        {/* Add your meta tags here */}
         <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
         <meta property="og:title" content="Hi there, I am AIfred." />
         <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
