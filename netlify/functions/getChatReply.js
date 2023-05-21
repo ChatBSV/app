@@ -4,7 +4,6 @@ const axios = require('axios');
 const NodeCache = require('node-cache');
 
 const conversationCache = new NodeCache();
-const MAX_TOKENS = 4096;
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
@@ -12,25 +11,19 @@ exports.handler = async function (event, context) {
 
   let fullPrompt = [];
 
-  let conversationHistory = conversationCache.get('history') || [];
-
-  // Include the user input message in the history
-  conversationHistory.unshift({ role: 'user', content: prompt });
-  conversationCache.set('history', conversationHistory);
-
-  // Limit the conversation history if it exceeds the maximum tokens
-  let tokensUsed = 0;
-  conversationHistory = conversationHistory.filter((message) => {
-    tokensUsed += message.content.length;
-    return tokensUsed <= MAX_TOKENS;
-  });
+  const conversationHistory = conversationCache.get('history') || [];
 
   if (conversationHistory.length > 0) {
-    fullPrompt = [...conversationHistory];
+    // Include the previous message from history
+    const previousMessage = conversationHistory[0];
+    fullPrompt.push({ role: 'user', content: previousMessage.content });
   } else {
     // Include the core prompt as the system message for the first prompt
     fullPrompt.push({ role: 'system', content: corePrompt });
   }
+
+  // Include the user input message
+  fullPrompt.push({ role: 'user', content: prompt });
 
   try {
     const response = await axios.post(
@@ -51,10 +44,8 @@ exports.handler = async function (event, context) {
     const assistantResponse = response.data.choices[0].message.content;
     const totalTokens = response.data.usage.total_tokens;
 
-    // Add the assistant message to the history
-    conversationHistory = conversationCache.get('history') || [];
-    conversationHistory.unshift({ role: 'assistant', content: assistantResponse });
-    conversationCache.set('history', conversationHistory);
+    // Clear conversation history and save the received message
+    conversationCache.set('history', [{ content: assistantResponse }]);
 
     return {
       statusCode: 200,
