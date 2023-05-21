@@ -1,12 +1,13 @@
 // netlify/functions/getChatReply.js
 
 const axios = require('axios');
+const fs = require('fs');
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const prompt = event.body;
 
-  const fullPrompt = [
+  let fullPrompt = [
     {
       role: 'system',
       content: CORE_PROMPT,
@@ -16,6 +17,33 @@ exports.handler = async function(event, context) {
       content: prompt,
     },
   ];
+
+  let conversationHistory = [];
+
+  // Check if the conversation history file exists
+  if (fs.existsSync('conversationHistory.json')) {
+    try {
+      const data = fs.readFileSync('conversationHistory.json', 'utf8');
+      conversationHistory = JSON.parse(data);
+    } catch (error) {
+      console.error('Error reading conversation history:', error);
+    }
+  }
+
+  if (conversationHistory.length > 0) {
+    // Include the last message from the conversation history
+    fullPrompt = [
+      {
+        role: 'system',
+        content: CORE_PROMPT,
+      },
+      ...conversationHistory.slice(-1),
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ];
+  }
 
   try {
     const response = await axios.post(
@@ -35,6 +63,12 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
+    // Save the assistant message to the conversation history
+    conversationHistory.push({ message: output, isUser: false });
+
+    // Save updated conversation history to the file
+    fs.writeFileSync('conversationHistory.json', JSON.stringify(conversationHistory), 'utf8');
+
     return {
       statusCode: 200,
       body: JSON.stringify({ message: output }),
@@ -50,3 +84,4 @@ exports.handler = async function(event, context) {
     };
   }
 };
+
