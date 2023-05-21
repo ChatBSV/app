@@ -20,7 +20,7 @@ const IndexPage = () => {
     setIsLoading(true);
     setIsError(false);
   
-    const response = await getChatReply(prompt, chatHistory);
+    const response = await getChatReply(prompt);
   
     setIsLoading(false);
   
@@ -33,18 +33,12 @@ const IndexPage = () => {
     }
   };
   
-  const getChatReply = async (prompt, chatHistory) => {
-    const lastMessage = chatHistory[chatHistory.length - 1]?.content || '';
-  
-    const messages = [
-      ...chatHistory.map((message) => ({ role: 'user', content: message.content })),
-      { role: 'user', content: prompt }
-    ];
+  const getChatReply = async (prompt) => {
+    const lastMessage = chat[chat.length - 1]?.message || '';
   
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        chatHistory: messages,
         lastMessage,
       });
       return response;
