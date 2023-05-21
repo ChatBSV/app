@@ -3,7 +3,6 @@
 const axios = require('axios');
 const NodeCache = require('node-cache');
 
-// Create a new instance of the cache
 const cache = new NodeCache();
 
 exports.handler = async function(event, context) {
@@ -21,17 +20,21 @@ exports.handler = async function(event, context) {
     },
   ];
 
-  // Retrieve conversation history from cache
   let conversationHistory = cache.get('conversationHistory') || [];
 
   if (conversationHistory.length > 0) {
+    const transformedHistory = conversationHistory.map(({ message }) => ({
+      role: 'assistant',
+      content: message,
+    }));
+
     // Include the last message from the conversation history
     fullPrompt = [
       {
         role: 'system',
         content: CORE_PROMPT,
       },
-      ...conversationHistory.slice(-1),
+      ...transformedHistory.slice(-1),
       {
         role: 'user',
         content: prompt,
@@ -58,7 +61,7 @@ exports.handler = async function(event, context) {
     const output = response.data.choices[0].message.content;
 
     // Save the assistant message to the conversation history
-    conversationHistory.push({ message: output, isUser: false });
+    conversationHistory.push({ message: output });
 
     // Store updated conversation history in cache
     cache.set('conversationHistory', conversationHistory);
@@ -78,4 +81,3 @@ exports.handler = async function(event, context) {
     };
   }
 };
-
