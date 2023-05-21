@@ -25,7 +25,10 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: fullPrompt,
+        messages: fullPrompt.map((message) => ({
+          role: message.role,
+          content: message.content,
+        })),
         max_tokens: 2000,
       },
       {
