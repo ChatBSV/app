@@ -7,9 +7,11 @@ exports.handler = async function (event, context) {
   const { prompt, lastThreeMessages } = JSON.parse(event.body);
 
   const messages = [
-    ...lastThreeMessages.map(message => ({ role: 'user', content: message })),
+    ...(lastThreeMessages ? lastThreeMessages.map(message => ({ role: 'user', content: message })) : []),
+    { role: 'system', content: CORE_PROMPT },
     { role: 'user', content: prompt }
-  ];
+];
+
 
   try {
     const response = await axios.post(
