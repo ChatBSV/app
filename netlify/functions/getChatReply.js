@@ -8,9 +8,9 @@ exports.handler = async function (event, context) {
 
   const messages = [
     ...(lastThreeMessages ? lastThreeMessages.map(message => ({ role: 'user', content: message })) : []),
-    { role: 'system', content: CORE_PROMPT },
+    { role: 'system', content: process.env.CORE_PROMPT },
     { role: 'user', content: prompt }
-];
+  ];
 
 
   try {
