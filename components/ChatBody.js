@@ -25,6 +25,7 @@ function ChatBody({ chat, isLoading, isError }) {
             key={index}
             message={message.message}
             user={message.isUser}
+            totalTokens={message.totalTokens}
           />
         ))}
 
