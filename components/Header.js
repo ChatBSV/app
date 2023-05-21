@@ -6,7 +6,8 @@ import styles from './Header.module.css';
 function Header() {
     return (
         <div className={styles.chatHeader}>
-            <h1 className={styles.heading}>AIfred</h1>
+            <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d4c7f49bf4234c6a5a7e_AIfred.svg" alt="AIfred" style={{ height: '40px' }} />
+
         </div>
     );
 }
