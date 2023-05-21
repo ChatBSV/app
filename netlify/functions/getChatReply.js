@@ -11,7 +11,7 @@ exports.handler = async function (event, context) {
 
   let fullPrompt = [];
 
-  const conversationHistory = conversationCache.get(sessionId) || [];
+  const conversationHistory = conversationCache.get(sessionId.toString()) || [];
 
   if (conversationHistory.length > 0) {
     // Include the previous message from history
