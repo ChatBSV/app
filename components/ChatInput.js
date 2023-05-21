@@ -19,18 +19,18 @@ const ChatInput = ({ handleSubmit }) => {
   const handleInputChange = (event) => setInput(event.target.value);
 
   return (
-    <div className={styles.chatFooter} >
-    <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-      <input
-        type="text"
-        value={input}
-        onChange={handleInputChange}
-        className={styles.inputField}
-        placeholder="Enter your prompt here"
-      />
-      <button type="submit" className={styles.submit}>
-      </button>
-    </form></div>
+    <div className={styles.chatFooter}>
+      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          className={styles.inputField}
+          placeholder="Enter your prompt here"
+        />
+        <button type="submit" className={styles.submit}></button>
+      </form>
+    </div>
   );
 };
 
