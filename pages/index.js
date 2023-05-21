@@ -47,13 +47,13 @@ const IndexPage = () => {
         <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
         <meta property="og:title" content="Hi there, I am AIfred." />
         <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:image" content="/images/AL-og.png" />
+        <meta property="og:image" content="./images/AL-og.png" />
         <meta property="twitter:title" content="Hi there, I am AIfred." />
         <meta property="twitter:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="twitter:image" content="/images/AL-og.png" />
+        <meta property="twitter:image" content="./images/AL-og.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="/images/AL-favicon.png" />
+        <link rel="icon" href="./images/AL-favicon.png" />
         <link rel="apple-touch-icon" href="/images/AL-webclip.png" />
       </Head>
       <Header />
