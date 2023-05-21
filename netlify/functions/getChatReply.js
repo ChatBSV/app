@@ -3,38 +3,35 @@
 const axios = require('axios');
 const NodeCache = require('node-cache');
 
+// Create an instance of NodeCache
 const cache = new NodeCache();
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const prompt = event.body;
 
-  let fullPrompt = [
-    {
-      role: 'system',
-      content: CORE_PROMPT,
-    },
-    {
-      role: 'user',
-      content: prompt,
-    },
-  ];
-
+  // Get the conversation history from the cache
   let conversationHistory = cache.get('conversationHistory') || [];
 
-  if (conversationHistory.length > 0) {
-    const transformedHistory = conversationHistory.map(({ message }) => ({
-      role: 'assistant',
-      content: message,
-    }));
+  let fullPrompt = [];
 
-    // Include the last message from the conversation history
+  if (conversationHistory.length === 0) {
+    // Send core prompt when memory is empty
     fullPrompt = [
       {
         role: 'system',
         content: CORE_PROMPT,
       },
-      ...transformedHistory.slice(-1),
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ];
+  } else {
+    // Send previous OpenAI response and user input when memory is not empty
+    const lastOpenAIResponse = conversationHistory[conversationHistory.length - 1];
+    fullPrompt = [
+      lastOpenAIResponse,
       {
         role: 'user',
         content: prompt,
@@ -48,7 +45,7 @@ exports.handler = async function(event, context) {
       {
         model: 'gpt-3.5-turbo',
         messages: fullPrompt,
-        max_tokens: 4000,
+        max_tokens: 2500,
       },
       {
         headers: {
@@ -60,10 +57,10 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    // Save the assistant message to the conversation history
-    conversationHistory.push({ message: output });
+    // Save the OpenAI response to the conversation history
+    conversationHistory.push({ role: 'assistant', content: output });
 
-    // Store updated conversation history in cache
+    // Store the updated conversation history in the cache
     cache.set('conversationHistory', conversationHistory);
 
     return {
