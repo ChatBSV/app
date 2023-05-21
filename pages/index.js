@@ -12,14 +12,14 @@ const IndexPage = () => {
   const [chat, setChat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [corePrompt, setCorePrompt] = useState(process.env.CORE_PROMPT || '');
+  const corePrompt = process.env.CORE_PROMPT || '';
 
   const handleSubmit = async (prompt) => {
     setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
     setIsLoading(true);
     setIsError(false);
 
-    const response = await getChatReply(corePrompt, prompt);
+    const response = await getChatReply(corePrompt, prompt, chat);
 
     setIsLoading(false);
 
@@ -31,14 +31,24 @@ const IndexPage = () => {
     }
   };
 
-  const getChatReply = async (corePrompt, prompt) => {
+  const getChatReply = async (corePrompt, prompt, chatHistory) => {
     try {
+      let fullPrompt = [];
+
+      if (chatHistory.length > 1) {
+        fullPrompt.push(chatHistory[chatHistory.length - 2]); // Add the second-to-last user message
+      }
+
+      fullPrompt.push({ role: 'system', content: corePrompt });
+      fullPrompt.push({ role: 'user', content: prompt });
+
       const response = await axios.post('/.netlify/functions/getChatReply', {
         corePrompt,
         prompt,
-        memory: chat.slice(-1), // Only pass the last message to mimic memory behavior
-        envs: process.env, // Pass all environment variables to access in the serverless function
+        memory: fullPrompt,
+        envs: process.env,
       });
+
       return response;
     } catch (error) {
       console.error('Error:', error);

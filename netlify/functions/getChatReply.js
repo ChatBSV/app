@@ -11,21 +11,14 @@ exports.handler = async function (event, context) {
 
   let fullPrompt = [];
 
-  const conversationHistory = conversationCache.get('history') || [];
+  const conversationHistory = memory || [];
 
-  if (conversationHistory.length === 0) {
-    fullPrompt.push({
-      role: 'system',
-      content: corePrompt,
-    });
-  } else {
-    fullPrompt.push(...conversationHistory.slice(0, -1));
+  if (conversationHistory.length > 1) {
+    fullPrompt.push(...conversationHistory.slice(0, -1)); // Exclude the last user message from the history
   }
 
-  fullPrompt.push({
-    role: 'user',
-    content: prompt,
-  });
+  fullPrompt.push({ role: 'system', content: corePrompt });
+  fullPrompt.push({ role: 'user', content: prompt });
 
   try {
     const response = await axios.post(
@@ -46,9 +39,7 @@ exports.handler = async function (event, context) {
 
     const output = response.data.choices[0].message.content;
 
-    conversationHistory.push({ role: 'assistant', content: output });
-
-    conversationCache.set('history', conversationHistory);
+    conversationCache.set('history', conversationHistory.slice(-1)); // Save the last message in the conversation history
 
     return {
       statusCode: 200,
