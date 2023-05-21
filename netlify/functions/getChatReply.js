@@ -9,17 +9,30 @@ exports.handler = async function(event, context) {
   const storedHistory = localStorage.getItem('conversationHistory');
   const conversationHistory = storedHistory ? JSON.parse(storedHistory) : [];
 
-  const fullPrompt = [
+  let fullPrompt = [
     {
       role: 'system',
       content: CORE_PROMPT,
     },
-    ...conversationHistory.slice(-3), 
     {
       role: 'user',
       content: prompt,
     },
   ];
+
+  if (conversationHistory.length > 0) {
+    fullPrompt = [
+      {
+        role: 'system',
+        content: CORE_PROMPT,
+      },
+      ...conversationHistory.slice(-2),
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ];
+  }
 
   try {
     const response = await axios.post(
@@ -39,10 +52,8 @@ exports.handler = async function(event, context) {
 
     const output = response.data.choices[0].message.content;
 
- 
     conversationHistory.push({ message: output, isUser: false });
 
- 
     localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 
     return {
