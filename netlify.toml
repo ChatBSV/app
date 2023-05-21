@@ -5,3 +5,7 @@
 
 [build.environment]
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+
+  [functions]
+  timeout = 30 # Set the timeout value in seconds

@@ -42,6 +42,7 @@ function ChatBody({ chat, isLoading, isError }) {
           className={styles.errorMessage}
         />
       )}
+    <div>className={styles.spacer}</div>
     </div></div>
   );
 }
