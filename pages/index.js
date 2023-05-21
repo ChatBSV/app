@@ -6,7 +6,7 @@ import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
 import Head from 'next/head';
-import '../styles/global.css';
+import './global.css';
 
 const IndexPage = () => {
   const [chat, setChat] = useState([]);
@@ -65,5 +65,6 @@ const IndexPage = () => {
   );
 };
 
-export default
+export default IndexPage;
+
 
