@@ -35,11 +35,18 @@ const IndexPage = () => {
   
   const getChatReply = async (prompt, chatHistory) => {
     const lastMessage = chat[chat.length - 1]?.message || '';
+  
+    // Convert chatHistory messages to string
+    const messages = chatHistory.map((message) => ({
+      role: 'user',
+      content: String(message),
+    }));
+  
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        chatHistory,
-        lastMessage
+        chatHistory: messages, // Pass the updated messages array
+        lastMessage,
       });
       return response;
     } catch (error) {
@@ -47,6 +54,7 @@ const IndexPage = () => {
       return null;
     }
   };
+  
   
   useEffect(() => {
     if (!systemPromptSent && process.env.CORE_PROMPT) {
