@@ -6,8 +6,8 @@ const NodeCache = require('node-cache');
 const conversationCache = new NodeCache();
 
 exports.handler = async function(event, context) {
-  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const prompt = event.body;
+  const { OPENAI_API_KEY } = process.env;
+  const { corePrompt, prompt } = event.body;
 
   let fullPrompt = [];
 
@@ -16,7 +16,7 @@ exports.handler = async function(event, context) {
   if (conversationHistory.length === 0) {
     fullPrompt.push({
       role: 'system',
-      content: CORE_PROMPT,
+      content: corePrompt,
     });
   } else {
     fullPrompt.push(conversationHistory[conversationHistory.length - 1]);
