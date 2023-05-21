@@ -1,7 +1,6 @@
 // netlify/functions/getChatReply.js
 
 const axios = require('axios');
-const fs = require('fs');
 
 exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
@@ -20,14 +19,10 @@ exports.handler = async function(event, context) {
 
   let conversationHistory = [];
 
-  // Check if the conversation history file exists
-  if (fs.existsSync('conversationHistory.json')) {
-    try {
-      const data = fs.readFileSync('conversationHistory.json', 'utf8');
-      conversationHistory = JSON.parse(data);
-    } catch (error) {
-      console.error('Error reading conversation history:', error);
-    }
+  // Retrieve conversation history from localStorage
+  const storedHistory = localStorage.getItem('conversationHistory');
+  if (storedHistory) {
+    conversationHistory = JSON.parse(storedHistory);
   }
 
   if (conversationHistory.length > 0) {
@@ -66,8 +61,8 @@ exports.handler = async function(event, context) {
     // Save the assistant message to the conversation history
     conversationHistory.push({ message: output, isUser: false });
 
-    // Save updated conversation history to the file
-    fs.writeFileSync('conversationHistory.json', JSON.stringify(conversationHistory), 'utf8');
+    // Store updated conversation history in localStorage
+    localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 
     return {
       statusCode: 200,
@@ -84,4 +79,3 @@ exports.handler = async function(event, context) {
     };
   }
 };
-
