@@ -30,7 +30,10 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-    const totalTokens = response.data.usage.total_tokens;
+    const inputTokens = lastThreeMessages ? lastThreeMessages.reduce((count, message) => count + message.split(' ').length, 0) : 0;
+    const outputTokens = assistantResponse.split(' ').length;
+    const totalTokens = inputTokens + outputTokens;
+
 
     return {
       statusCode: 200,
