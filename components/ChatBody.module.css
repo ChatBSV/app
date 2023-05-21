@@ -5,4 +5,5 @@
     padding: 5vw;
     display: flex;
     overflow: auto;
+    max-height: 100%;
 }
