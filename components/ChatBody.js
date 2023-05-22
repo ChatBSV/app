@@ -25,6 +25,7 @@ function ChatBody({ chat, isLoading, isError }) {
             user={false}
             className={styles.introMessage}
           />
+          
         {chat.map((message, index) => (
           <ChatMessage
             key={index}
@@ -36,7 +37,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {isLoading && (
           <ChatMessage
-            message="Peraí, caralho"
+            message="Peraí, to pensando"
             user={false}
             className={styles.loadingMessage}
           />

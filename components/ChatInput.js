@@ -26,7 +26,7 @@ const ChatInput = ({ handleSubmit }) => {
           value={input}
           onChange={handleInputChange}
           className={styles.inputField}
-          placeholder="Fala mano"
+          placeholder="Fala alguma merda"
         />
         <button type="submit" className={styles.submit}></button>
       </form>
