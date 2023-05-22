@@ -31,7 +31,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {isLoading && (
           <ChatMessage
-            message="Loading.. Please wait..."
+            message="Peraí, caralho"
             user={false}
             className={styles.loadingMessage}
           />
@@ -39,7 +39,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {isError && (
           <ChatMessage
-            message="Ooops. Something went wrong. Please try again or come back later."
+            message="Deu ruim, tenta de novo."
             user={false}
             className={styles.errorMessage}
           />
