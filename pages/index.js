@@ -94,6 +94,7 @@ function IndexPage() {
       <Header resetChat={resetChat} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
       <ChatInput handleSubmit={handleSubmit} />
+      <script src="https://www.moneybutton.com/moneybutton.js" async />
     </div>
   );
 };
