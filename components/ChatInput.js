@@ -20,23 +20,34 @@ const ChatInput = ({ handleSubmit }) => {
     };
   }, []);
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const prompt = input.trim();
-
-    if (prompt !== '') {
-      handleSubmit(prompt);
-      setInput('');
-    }
-  };
-
   const handleInputChange = (event) => setInput(event.target.value);
 
-  const handleMoneyButtonPayment = (payment) => {
+  const handlePaymentAndSubmit = async (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    handleFormSubmit({ target: { prompt: input } }); // Pass prompt as argument
-    // Fetch additional data or perform any necessary actions
+  
+    const prompt = input.trim(); // Get the user input from the state
+    if (prompt !== '') {
+      try {
+        const response = await fetch('/.netlify/functions/getChatReply', {
+          method: 'POST',
+          body: JSON.stringify({ prompt, lastUserMessage: null }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          const assistantResponse = data.message;
+          console.log('Assistant Response:', assistantResponse);
+          handleSubmit(prompt); // Call the original handleSubmit function
+        } else {
+          console.error('Error:', response.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    } else {
+      console.log('Prompt is empty. No request sent.');
+    }
   };
 
   useEffect(() => {
@@ -45,7 +56,7 @@ const ChatInput = ({ handleSubmit }) => {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        onPayment: handleMoneyButtonPayment
+        onPayment: handlePaymentAndSubmit
       });
     }
   }, [moneyButtonLoaded]);
@@ -58,7 +69,7 @@ const ChatInput = ({ handleSubmit }) => {
 
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+      <form onSubmit={handlePaymentAndSubmit} className={styles.inputForm}>
         <input
           type="text"
           value={input}
