@@ -1,12 +1,9 @@
 // components/ChatMessage.js
 
-import React from 'react';
-import styles from './ChatMessage.module.css';
-
-function ChatMessage({ user, tokens, children }) {
+function ChatMessage({ user, tokens, message }) {
   return (
     <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
-      <span style={{ fontSize: '16px' }}>{children}</span>
+      <span style={{ fontSize: '16px' }}>{message}</span>
       {tokens && !user && (
         <div>
           <span style={{ width: '100%', fontSize: '14px', color: 'gray' }}>
@@ -18,4 +15,3 @@ function ChatMessage({ user, tokens, children }) {
   );
 }
 
-export default ChatMessage;

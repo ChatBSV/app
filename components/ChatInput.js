@@ -5,9 +5,14 @@ import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
   const [input, setInput] = useState('');
+  const [moneyButtonInput, setMoneyButtonInput] = useState('');
   const inputRef = useRef(null);
 
-  const handleInputChange = (event) => setInput(event.target.value);
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setInput(value);
+    setMoneyButtonInput(value);
+  };
 
   const handlePayment = (payment) => {
     const prompt = input.trim();
@@ -57,11 +62,11 @@ const ChatInput = ({ handleSubmit }) => {
       </form>
       {typeof moneyButton !== 'undefined' && (
         <div
-          className="moneyButton"
+          className="moneyButton mb"
           data-to="3332"
           data-amount="0.0099"
           data-currency="USD"
-          data-button-data={input}
+          data-button-data={moneyButtonInput}
           data-type="tip"
           onPayment={handlePayment}
         ></div>
