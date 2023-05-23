@@ -22,10 +22,8 @@ const ChatInput = ({ handleSubmit }) => {
 
   const handleInputChange = (event) => setInput(event.target.value);
 
-  const handlePaymentAndSubmit = async (payment) => {
-    const { txid } = payment;
-    console.log('Transaction ID:', txid);
-  
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
     const prompt = input.trim(); // Get the user input from the state
     if (prompt !== '') {
       try {
@@ -33,7 +31,7 @@ const ChatInput = ({ handleSubmit }) => {
           method: 'POST',
           body: JSON.stringify({ prompt, lastUserMessage: null }),
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
@@ -56,7 +54,7 @@ const ChatInput = ({ handleSubmit }) => {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        onPayment: handlePaymentAndSubmit
+        onPayment: handleFormSubmit, // Call handleFormSubmit on payment
       });
     }
   }, [moneyButtonLoaded]);
@@ -69,7 +67,7 @@ const ChatInput = ({ handleSubmit }) => {
 
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={handlePaymentAndSubmit} className={styles.inputForm}>
+      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
         <input
           type="text"
           value={input}
