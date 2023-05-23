@@ -14,12 +14,12 @@ const ChatInput = ({ handleSubmit }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const prompt = input.trim();
-
-    if (prompt !== '') {
-      handleSubmit(prompt);
-      setInput('');
+    // Prevent form submission if the input is empty
+    if (input.trim() === '') {
+      return;
     }
+    handleSubmit(input.trim());
+    setInput('');
   };
 
   useEffect(() => {
@@ -27,6 +27,33 @@ const ChatInput = ({ handleSubmit }) => {
       inputRef.current.value = input;
     }
   }, [input]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.moneybutton.com/moneybutton.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof moneyButton !== 'undefined' && inputRef.current) {
+      moneyButton.render(inputRef.current, {
+        to: '3332',
+        amount: '0.0099',
+        currency: 'USD',
+        onPayment: (payment) => {
+          handleSubmit(input.trim());
+          setInput('');
+        },
+        buttonData: input.trim(),
+        type: 'tip',
+      });
+    }
+  }, [input, handleSubmit]);
 
   return (
     <div className={styles.chatFooter}>
