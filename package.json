@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@moneybutton/react-money-button": "^0.38.8",
     "@types/node": "20.1.7",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -22,7 +21,7 @@
     "next": "^13.4.3",
     "node-cache": "^5.1.2",
     "postcss": "8.4.23",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-dom": "^17.0.2",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
