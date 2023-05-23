@@ -33,9 +33,6 @@ exports.handler = async function (event, context) {
           content: message.content,
         })),
         max_tokens: 2000,
-        temperature: 0.6, // Adjust the temperature as per your needs
-        n: 1, // Set the value of n as per your needs
-        stop: ['\n'], // Set the stop conditions as per your needs
       },
       {
         headers: {
