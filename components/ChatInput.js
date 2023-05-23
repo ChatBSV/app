@@ -28,16 +28,20 @@ const ChatInput = ({ handleSubmit }) => {
     moneyButtonScript.async = true;
     document.body.appendChild(moneyButtonScript);
 
-    window.moneyButtonRender = async () => {
+    window.displayHiddenContent = async (payment) => {
       const prompt = input.trim();
       if (prompt !== '') {
         setInput('');
-        handleSubmit(prompt);
+        handleSubmit(prompt, payment.txid);
       }
     };
 
-    return () => {
-      document.getElementById('button-container').innerHTML = '';
+    window.myCustomCallback = (error) => {
+      console.log(`An error has occurred: ${error}`);
+    };
+
+    window.myCustomLoadCallback = () => {
+      console.log(`The button has loaded.`);
     };
   }, [handleSubmit, input]);
 
@@ -52,12 +56,12 @@ const ChatInput = ({ handleSubmit }) => {
 
     const moneyButtonOptions = {
       to: '3332',
-      amount: '0.0099',
+      amount: '0.01',
       currency: 'USD',
-      onPayment: function (arg) {
-        setInput('');
-        handleSubmit(event.target.value, txid);
-      }
+      buttonData: JSON.stringify({ prompt: input.trim() }),
+      onPayment: 'displayHiddenContent',
+      onError: 'myCustomCallback',
+      onLoad: 'myCustomLoadCallback'
     };
 
     window.moneyButton.render(div, moneyButtonOptions);
