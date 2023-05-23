@@ -15,31 +15,32 @@ const IndexPage = () => {
   const [systemPromptSent, setSystemPromptSent] = useState(false);
 
   const handleSubmit = async (prompt) => {
-    const userMessage = { role: 'user', content: prompt };
-    setChat((prevChat) => [...prevChat, userMessage]);
-
     setIsLoading(true);
     setIsError(false);
 
-    const lastAssistantMessage = chat[chat.length - 1]?.message || '';
-    const response = await getChatReply(prompt, lastAssistantMessage);
+    const lastMessage = chat[chat.length - 1]?.message || '';
+    const response = await getChatReply(prompt, lastMessage);
 
     setIsLoading(false);
 
     if (response) {
-      const assistantMessage = { role: 'assistant', content: response.data.message };
-      setChat((prevChat) => [...prevChat, assistantMessage]);
-      localStorage.setItem('chatHistory', JSON.stringify(prevChat));
+      const output = response.data.message;
+      const totalTokens = response.data.totalTokens;
+      setChat((prevChat) => [
+        ...prevChat,
+        { message: prompt, isUser: true },
+        { message: output, totalTokens, isUser: false },
+      ]);
     } else {
       setIsError(true);
     }
   };
 
-  const getChatReply = async (prompt, lastAssistantMessage) => {
+  const getChatReply = async (prompt, lastMessage) => {
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        lastAssistantMessage,
+        lastMessage,
       });
       return response;
     } catch (error) {
@@ -49,14 +50,8 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-    const storedChatHistory = localStorage.getItem('chatHistory');
-    if (storedChatHistory) {
-      setChat(JSON.parse(storedChatHistory));
-    }
-
     if (!systemPromptSent && process.env.CORE_PROMPT) {
-      const corePrompt = { role: 'assistant', content: process.env.CORE_PROMPT };
-      setChat((prevChat) => [...prevChat, corePrompt]);
+      handleSubmit(process.env.CORE_PROMPT);
       setSystemPromptSent(true);
     }
   }, []);
