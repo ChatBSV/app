@@ -96,6 +96,6 @@ function IndexPage() {
       <ChatInput handleSubmit={handleSubmit} />
     </div>
   );
-};
+}
 
 export default IndexPage;
