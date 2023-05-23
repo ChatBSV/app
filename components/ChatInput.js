@@ -1,4 +1,5 @@
 // components/ChatInput.js
+
 import React, { useState, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import axios from 'axios';
@@ -28,54 +29,42 @@ const ChatInput = ({ handleSubmit }) => {
     moneyButtonScript.async = true;
     document.body.appendChild(moneyButtonScript);
 
-    window.displayHiddenContent = async (payment) => {
+    window.moneyButtonRender = async () => {
       const prompt = input.trim();
       if (prompt !== '') {
         setInput('');
-        handleSubmit(prompt, payment.txid);
+        handleSubmit(prompt);
       }
     };
 
-    window.myCustomCallback = (error) => {
-      console.log(`An error has occurred: ${error}`);
+    window.moneyButtonOnPayment = async (payment) => {
+      const txid = await fetchTxid();
+      setInput(payment.buttonData);
+      handleSubmit(payment.buttonData, txid);
     };
 
-    window.myCustomLoadCallback = () => {
-      console.log(`The button has loaded.`);
-    };
-  }, [handleSubmit, input]);
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const txid = await fetchTxid();
-
+    // Render MoneyButton on load
     const div = document.createElement('div');
     div.id = 'money-button';
     document.getElementById('button-container').appendChild(div);
 
     const moneyButtonOptions = {
       to: '3332',
-      amount: '0.01',
+      amount: '0.0099',
       currency: 'USD',
-      buttonData: JSON.stringify({ prompt: input.trim() }),
-      onPayment: 'displayHiddenContent',
-      onError: 'myCustomCallback',
-      onLoad: 'myCustomLoadCallback'
+      onPayment: 'moneyButtonOnPayment', // Call the onPayment callback function
     };
 
     window.moneyButton.render(div, moneyButtonOptions);
-  };
-
-  const handleInputChange = (event) => setInput(event.target.value);
+  }, [handleSubmit, input]);
 
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+      <form className={styles.inputForm}>
         <input
           type="text"
           value={input}
-          onChange={handleInputChange}
+          readOnly
           className={styles.inputField}
           placeholder="Enter your prompt"
         />
