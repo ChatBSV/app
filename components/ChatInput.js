@@ -1,5 +1,3 @@
-// components/ChatInput.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
 
@@ -35,7 +33,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    handleFormSubmit(event); // Call handleFormSubmit
+    handleFormSubmit(new Event('submit')); // Call handleFormSubmit with a fake event
     // Fetch additional data or perform any necessary actions
   };
 
@@ -63,7 +61,7 @@ const ChatInput = ({ handleSubmit }) => {
           type="text"
           value={input}
           onChange={handleInputChange}
-          onKeyDown={handleKeyDown} // Prevent form submission on Enter key
+          onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt..."
         />

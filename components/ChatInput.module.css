@@ -83,6 +83,7 @@
     width: 180;
     margin-left: 20px;
     flex: none;
+    overflow: hidden;
   }
   
 
@@ -99,7 +100,10 @@
         border-radius: 8px;
         display: flex;
         flex-direction: column;
-        width: 100%;
+        max-width: 90vw;
+        min-width: 80%;
+        justify-content: center;
+        align-items: center;
     }
 
     .inputField {
@@ -116,7 +120,8 @@
         padding-left: 16px;
         padding-right: 16px;
         font-size: 16px;
-        width: 100%;
+        max-width: 100%;
+        min-width: 80%;
     }
 
     .submit {
