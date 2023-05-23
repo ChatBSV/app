@@ -2,99 +2,49 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { nanoid } from 'nanoid';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
 import Head from 'next/head';
 import './global.css';
 
-const IndexPage = () => {
-  const [chat, setChat] = useState([]);
+function IndexPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [chatHistory, setChatHistory] = useState([]);
-  const [systemPromptSent, setSystemPromptSent] = useState(false);
+  const [chat, setChat] = useState([]);
 
-  const handleSubmit = async (prompt) => {
+  const handleSubmit = async (userMessage) => {
     setIsLoading(true);
     setIsError(false);
 
-    const lastAssistantMessage = chat[chat.length - 1]?.message || '';
-    const response = await getChatReply(prompt, lastAssistantMessage);
-
-    setIsLoading(false);
-
-    if (response) {
-      const output = response.data.message;
-      const totalTokens = response.data.totalTokens;
-      setChat((prevChat) => [
-        ...prevChat,
-        { message: prompt, isUser: true },
-        { message: output, totalTokens, isUser: false }
-      ]);
-      setChatHistory((prevHistory) => [...prevHistory, output]);
-      localStorage.setItem('chatHistory', JSON.stringify([...prevHistory, output]));
-    } else {
-      setIsError(true);
-    }
-  };
-
-  const getChatReply = async (prompt, lastMessage) => {
-    const messages = [
-      { role: 'system', content: process.env.CORE_PROMPT },
-      { role: 'user', content: lastMessage },
-      { role: 'user', content: prompt }
-    ];
-
-    const inputTokens = countTokens(JSON.stringify(messages));
-
     try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: messages,
-          max_tokens: 2000
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const response = await axios.post('/api/getChatReply', {
+        prompt: userMessage,
+        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null
+      });
 
-      const assistantResponse = response.data.choices[0].message.content;
-      const outputTokens = countTokens(assistantResponse);
-      const totalTokens = inputTokens + outputTokens;
+      const assistantMessage = response.data.message;
+      const totalTokens = response.data.totalTokens;
 
-      return {
-        statusCode: 200,
-        data: { message: assistantResponse, totalTokens }
-      };
+      setChat([...chat, 
+        { id: nanoid(), role: 'user', message: userMessage, tokens: userMessage.split(' ').length }, 
+        { id: nanoid(), role: 'assistant', message: assistantMessage, tokens: totalTokens }
+      ]);
+
+      localStorage.setItem('chat', JSON.stringify(chat));
+      setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
-      if (error.response && error.response.data && error.response.data.error) {
-        console.log('API Error:', error.response.data.error.message);
-      }
-      return null;
+      setIsError(true);
+      setIsLoading(false);
     }
-  };
-
-  const countTokens = (text) => {
-    // Counting tokens by characters (assuming 4 characters per token)
-    return Math.ceil(text.length / 4);
   };
 
   useEffect(() => {
-    const storedChatHistory = JSON.parse(localStorage.getItem('chatHistory'));
-    if (storedChatHistory) {
-      setChatHistory(storedChatHistory);
-    }
-
-    if (!systemPromptSent && process.env.CORE_PROMPT) {
-      handleSubmit(process.env.CORE_PROMPT);
-      setSystemPromptSent(true);
+    const storedChat = localStorage.getItem('chat');
+    if (storedChat) {
+      setChat(JSON.parse(storedChat));
     }
   }, []);
 
