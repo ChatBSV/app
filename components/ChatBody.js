@@ -20,13 +20,11 @@ function ChatBody({ chat, isLoading, isError }) {
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-        {chat.length === 0 && (
-          <ChatMessage
-            message="Falaí jão!"
-            user={false}
-            className={styles.introMessage}
-          />
-        )}
+        <ChatMessage
+          message="Falaí jão!"
+          user={false}
+          className={styles.introMessage}
+        />
 
         {chat.map((message, index) => (
           <ChatMessage
@@ -34,7 +32,6 @@ function ChatBody({ chat, isLoading, isError }) {
             message={message.message}
             user={message.isUser}
             totalTokens={message.totalTokens}
-            className={message.isUser ? styles.userMessage : styles.assistantMessage}
           />
         ))}
 

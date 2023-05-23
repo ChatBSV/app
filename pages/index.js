@@ -12,14 +12,15 @@ const IndexPage = () => {
   const [chat, setChat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
   const [systemPromptSent, setSystemPromptSent] = useState(false);
 
   const handleSubmit = async (prompt) => {
     setIsLoading(true);
     setIsError(false);
 
-    const lastMessage = chat[chat.length - 1]?.message || '';
-    const response = await getChatReply(prompt, lastMessage);
+    const lastAssistantMessage = chat[chat.length - 1]?.message || '';
+    const response = await getChatReply(prompt, lastAssistantMessage);
 
     setIsLoading(false);
 
@@ -29,48 +30,68 @@ const IndexPage = () => {
       setChat((prevChat) => [
         ...prevChat,
         { message: prompt, isUser: true },
-        { message: output, totalTokens, isUser: false },
+        { message: output, totalTokens, isUser: false }
       ]);
+      setChatHistory((prevHistory) => [...prevHistory, output]);
+      localStorage.setItem('chatHistory', JSON.stringify([...prevHistory, output]));
     } else {
       setIsError(true);
     }
   };
 
-  const getChatReply = async (prompt) => {
-    const lastUserMessage = chat[chat.length - 1]?.message || '';
-  
+  const getChatReply = async (prompt, lastMessage) => {
+    const messages = [
+      { role: 'system', content: process.env.CORE_PROMPT },
+      { role: 'user', content: lastMessage },
+      { role: 'user', content: prompt }
+    ];
+
+    const inputTokens = countTokens(JSON.stringify(messages));
+
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt,
-        lastUserMessage,
-      });
-  
-      if (response) {
-        const assistantResponse = response.data.message;
-        const totalTokens = response.data.totalTokens;
-  
-        setChat((prevChat) => [
-          ...prevChat,
-          { message: assistantResponse, totalTokens, isUser: false },
-        ]);
-  
-        const updatedChatHistory = [
-          ...chatHistory,
-          { content: lastUserMessage },
-        ];
-        setChatHistory(updatedChatHistory);
-        localStorage.setItem('chatHistory', JSON.stringify(updatedChatHistory));
-      } else {
-        setIsError(true);
-      }
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: messages,
+          max_tokens: 2000
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      const assistantResponse = response.data.choices[0].message.content;
+      const outputTokens = countTokens(assistantResponse);
+      const totalTokens = inputTokens + outputTokens;
+
+      return {
+        statusCode: 200,
+        data: { message: assistantResponse, totalTokens }
+      };
     } catch (error) {
       console.error('Error:', error);
-      setIsError(true);
+      if (error.response && error.response.data && error.response.data.error) {
+        console.log('API Error:', error.response.data.error.message);
+      }
+      return null;
     }
   };
-  
+
+  const countTokens = (text) => {
+    // Counting tokens by characters (assuming 4 characters per token)
+    return Math.ceil(text.length / 4);
+  };
 
   useEffect(() => {
+    const storedChatHistory = JSON.parse(localStorage.getItem('chatHistory'));
+    if (storedChatHistory) {
+      setChatHistory(storedChatHistory);
+    }
+
     if (!systemPromptSent && process.env.CORE_PROMPT) {
       handleSubmit(process.env.CORE_PROMPT);
       setSystemPromptSent(true);
