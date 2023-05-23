@@ -69,6 +69,12 @@ function IndexPage() {
     }
   }, []);
 
+
+  const resetChat = () => {
+    setChat([]);
+    localStorage.removeItem('chat');
+  };
+
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
@@ -85,7 +91,7 @@ function IndexPage() {
         <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad07_AL-favicon.png" />
         <link rel="apple-touch-icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d33188cfb0d03f9067f7_AL-webclip.png" />
       </Head>
-      <Header />
+      <Header resetChat={resetChat} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
       <ChatInput handleSubmit={handleSubmit} />
     </div>

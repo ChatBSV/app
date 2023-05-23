@@ -16,3 +16,19 @@
     color: #555;
   }
   
+
+  .resetButton {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #4772f6;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
+    background-size: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 5vh;
+    right: 5vw;
+    margin-top: -20px;
+  }
+  

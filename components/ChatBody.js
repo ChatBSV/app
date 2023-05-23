@@ -9,7 +9,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
   useEffect(() => {
     scrollToBottom();
-  }, [chat]);
+  }, [chat, isLoading, isError]);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
