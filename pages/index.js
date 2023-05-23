@@ -15,7 +15,7 @@ function IndexPage() {
   const [chat, setChat] = useState([]);
 
   const handleSubmit = async (userMessage) => {
-    // Append user's message to chat immediately
+
     const newUserMessage = { 
       id: nanoid(), 
       role: 'user', 
@@ -47,7 +47,7 @@ function IndexPage() {
         tokens: totalTokens 
       };
   
-      // Append assistant's message to chat after response
+     
       setChat(prevChat => {
         localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
