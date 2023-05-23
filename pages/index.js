@@ -78,18 +78,18 @@ function IndexPage() {
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
-        <title>Hi there, I am AIfred.</title>
-        <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:title" content="Hi there, I am AIfred." />
-        <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
-        <meta property="twitter:title" content="Hi there, I am AIfred." />
-        <meta property="twitter:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
+        <title>ChatBSV - OpenAI on Bitcoin</title>
+        <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
+        <meta property="og:title" content="ChatBSV - OpenAI on Bitcoin" />
+        <meta property="og:description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
+        <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png" />
+        <meta property="twitter:title" content="ChatBSV - OpenAI on Bitcoin" />
+        <meta property="twitter:description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
+        <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad07_AL-favicon.png" />
-        <link rel="apple-touch-icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d33188cfb0d03f9067f7_AL-webclip.png" />
+        <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9af32cc531d70618d3_ChatBSV_favicon.png" />
+        <link rel="apple-touch-icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png" />
       </Head>
       <Header resetChat={resetChat} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
