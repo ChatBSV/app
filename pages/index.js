@@ -78,13 +78,13 @@ function IndexPage() {
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
-        <title>Hi there, I am AIfred.</title>
-        <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:title" content="Hi there, I am AIfred." />
-        <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
+        <title>ChatBSV - OpenAI on Bitcoin</title>
+        <meta name="description" content="Ask me Anything. Micro transactions at their best. Pay per use for ChatGPT Tokens." />
+        <meta property="og:title" content="ChatBSV - OpenAI on Bitcoin" />
+        <meta property="og:description" content="Ask me Anything. Micro transactions at their best. Pay per use for ChatGPT Tokens." />
         <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
-        <meta property="twitter:title" content="Hi there, I am AIfred." />
-        <meta property="twitter:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
+        <meta property="twitter:title" content="ChatBSV - OpenAI on Bitcoin" />
+        <meta property="twitter:description" content="Ask me Anything. Micro transactions at their best. Pay per use for ChatGPT Tokens." />
         <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />

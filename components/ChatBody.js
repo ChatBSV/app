@@ -21,7 +21,7 @@ function ChatBody({ chat, isLoading, isError }) {
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
         <ChatMessage
-          message="Falaí jão!"
+          message="Hi there, welcome to ChatBSV! Create a MoneyButton account if you don't have one yet."
           user={false}
           className={styles.introMessage}
         />
@@ -38,7 +38,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {isLoading && (
           <ChatMessage
-            message="Peraí, to pensando"
+            message="Please wait, I'm counting satoshis on a BitCoin..."
             user={false}
             className={styles.loadingMessage}
           />
@@ -46,7 +46,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {isError && (
           <ChatMessage
-            message="Deu ruim, tenta de novo."
+            message="OpenAI returned an error. Please try again or come back later."
             user={false}
             className={styles.errorMessage}
           />
