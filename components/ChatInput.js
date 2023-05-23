@@ -1,6 +1,6 @@
 // components/ChatInput.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
@@ -16,11 +16,7 @@ const ChatInput = ({ handleSubmit }) => {
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
+  const chatButtonRef = useRef(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -28,10 +24,26 @@ const ChatInput = ({ handleSubmit }) => {
     script.async = true;
     document.body.appendChild(script);
 
+    script.onload = () => {
+      const moneyButtonOptions = {
+        to: '3332',
+        amount: '0.0099',
+        currency: 'USD',
+        buttonData: input,
+        type: 'tip',
+        onPayment: handlePayment
+      };
+      
+      // Check if the moneyButton global object is available
+      if (typeof moneyButton !== 'undefined') {
+        moneyButton.render(chatButtonRef.current, moneyButtonOptions);
+      }
+    };
+
     return () => {
       document.body.removeChild(script);
     };
-  }, []);
+  }, [input]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -50,20 +62,11 @@ const ChatInput = ({ handleSubmit }) => {
           type="text"
           value={input}
           onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt"
         />
       </form>
-      <div
-        className="moneyButton"
-        data-to="3332"
-        data-amount="0.0099"
-        data-currency="USD"
-        data-button-data={input}
-        data-type="tip"
-        onPayment={handlePayment}
-      ></div>
+      <div ref={chatButtonRef} className="moneyButton"></div>
     </div>
   );
 };
