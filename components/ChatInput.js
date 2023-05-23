@@ -35,7 +35,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-
+    handleFormSubmit(event); // Call handleFormSubmit
     // Fetch additional data or perform any necessary actions
   };
 
@@ -50,6 +50,12 @@ const ChatInput = ({ handleSubmit }) => {
     }
   }, [moneyButtonLoaded]);
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
@@ -57,6 +63,7 @@ const ChatInput = ({ handleSubmit }) => {
           type="text"
           value={input}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown} // Prevent form submission on Enter key
           className={styles.inputField}
           placeholder="Enter your prompt..."
         />
