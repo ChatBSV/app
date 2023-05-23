@@ -22,16 +22,6 @@ const ChatInput = ({ handleSubmit }) => {
     }
   };
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const prompt = input.trim();
-
-    if (prompt !== '') {
-      handleSubmit(prompt);
-      setInput('');
-    }
-  };
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://www.moneybutton.com/moneybutton.js';
@@ -42,6 +32,16 @@ const ChatInput = ({ handleSubmit }) => {
       document.body.removeChild(script);
     };
   }, []);
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const prompt = input.trim();
+
+    if (prompt !== '') {
+      handleSubmit(prompt);
+      setInput('');
+    }
+  };
 
   return (
     <div className={`${styles.chatFooter}`}>
