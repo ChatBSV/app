@@ -15,12 +15,13 @@ const ChatInput = ({ handleSubmit }) => {
   const handleFormSubmit = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-    // Prevent form submission if the input is empty
-    if (input.trim() === '') {
-      return;
+      // Prevent form submission if the input is empty
+      if (input.trim() === '') {
+        return;
+      }
+      handleSubmit(input.trim());
+      setInput('');
     }
-    handleSubmit(input.trim());
-    setInput('');
   };
 
   useEffect(() => {
