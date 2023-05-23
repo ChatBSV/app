@@ -14,4 +14,3 @@ function ChatMessage({ user, tokens, message }) {
     </div>
   );
 }
-
