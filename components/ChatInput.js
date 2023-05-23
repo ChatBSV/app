@@ -53,7 +53,6 @@ const ChatInput = ({ handleSubmit }) => {
         data-type="tip"
         onPayment={handlePayment}
       ></div>
-      <script src="https://www.moneybutton.com/moneybutton.js"></script>
     </div>
   );
 };

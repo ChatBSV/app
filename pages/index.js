@@ -78,6 +78,7 @@ function IndexPage() {
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
       <Head>
+      <script src="https://www.moneybutton.com/moneybutton.js" />
         <title>ChatBSV - OpenAI on Bitcoin</title>
         <meta name="description" content="Ask me Anything. Micro transactions at their best. Pay per use for ChatGPT Tokens." />
         <meta property="og:title" content="ChatBSV - OpenAI on Bitcoin" />
