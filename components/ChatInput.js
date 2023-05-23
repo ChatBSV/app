@@ -2,17 +2,9 @@
 
 import React, { useState } from 'react';
 import styles from './ChatInput.module.css';
-import MoneyButton from '@moneybutton/react-money-button';
-import '@moneybutton/react-money-button/dist/moneybutton.css';
-
 
 const ChatInput = ({ handleSubmit }) => {
   const [input, setInput] = useState('');
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    // Submission now managed by MoneyButton onPayment
-  };
 
   const handleInputChange = (event) => setInput(event.target.value);
 
@@ -24,25 +16,44 @@ const ChatInput = ({ handleSubmit }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const prompt = input.trim();
+
+    if (prompt !== '') {
+      handleSubmit(prompt);
+      setInput('');
+    }
+  };
+
   return (
-    <div className={styles.chatFooter}>
-      <div className="moneyButton">
-        <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-          <input
-            type="text"
-            value={input}
-            onChange={handleInputChange}
-            className={styles.inputField}
-            placeholder="Enter your prompt"
-          />
-          <MoneyButton
-            to="3332"
-            amount="0.0099"
-            currency="USD"
-            onPayment={handlePayment}
-          />
-        </form>
-      </div>
+    <div className={`${styles.chatFooter}`}>
+      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          className={styles.inputField}
+          placeholder="Enter your prompt"
+        />
+      </form>
+      <div
+        className="moneyButton"
+        data-to="3332"
+        data-amount="0.0099"
+        data-currency="USD"
+        data-button-data={input}
+        data-type="tip"
+        onPayment={handlePayment}
+      ></div>
+      <script src="https://www.moneybutton.com/moneybutton.js"></script>
     </div>
   );
 };
