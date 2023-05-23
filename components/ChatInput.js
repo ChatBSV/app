@@ -32,32 +32,11 @@ const ChatInput = ({ handleSubmit }) => {
 
   const handleInputChange = (event) => setInput(event.target.value);
 
-  const handleMoneyButtonPayment = async (payment) => {
+  const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-
-    const prompt = input.trim(); // Get the user input from the state
-    if (prompt !== '') {
-      try {
-        const response = await fetch('/.netlify/functions/getChatReply', {
-          method: 'POST',
-          body: JSON.stringify({ prompt, lastUserMessage: null }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const assistantResponse = data.message;
-          console.log('Assistant Response:', assistantResponse);
-          // Handle the assistant response as needed
-        } else {
-          console.error('Error:', response.status);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    } else {
-      console.log('Prompt is empty. No request sent.');
-    }
+    handleFormSubmit({ target: { prompt: input } }); // Pass prompt as argument
+    // Fetch additional data or perform any necessary actions
   };
 
   useEffect(() => {
@@ -66,7 +45,7 @@ const ChatInput = ({ handleSubmit }) => {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        onPayment: handleMoneyButtonPayment,
+        onPayment: handleMoneyButtonPayment
       });
     }
   }, [moneyButtonLoaded]);
