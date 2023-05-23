@@ -35,6 +35,10 @@ const ChatInput = ({ handleSubmit }) => {
         handleSubmit(prompt);
       }
     };
+
+    return () => {
+      document.getElementById('button-container').innerHTML = '';
+    };
   }, [handleSubmit, input]);
 
   const handleFormSubmit = async (event) => {
@@ -52,7 +56,7 @@ const ChatInput = ({ handleSubmit }) => {
       currency: 'USD',
       onPayment: function (arg) {
         setInput('');
-        handleSubmit(input, txid);
+        handleSubmit(event.target.value, txid);
       }
     };
 
