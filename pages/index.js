@@ -16,11 +16,11 @@ const IndexPage = () => {
   const [systemPromptSent, setSystemPromptSent] = useState(false);
 
   const handleSubmit = async (prompt) => {
-    setChat((prevChat) => [...prevChat, { message: prompt, isUser: true }]);
     setIsLoading(true);
     setIsError(false);
   
-    const response = await getChatReply(prompt);
+    const lastMessage = chat[chat.length - 1]?.message || '';
+    const response = await getChatReply(prompt, lastMessage);
   
     setIsLoading(false);
   
@@ -28,10 +28,14 @@ const IndexPage = () => {
       const output = response.data.message;
       const totalTokens = response.data.totalTokens;
       setChat((prevChat) => [...prevChat, { message: output, totalTokens, isUser: false }]);
+      const updatedChatHistory = [...chatHistory, { content: prompt }];
+      setChatHistory(updatedChatHistory);
+      localStorage.setItem('chatHistory', JSON.stringify(updatedChatHistory));
     } else {
       setIsError(true);
     }
   };
+  
   
   const getChatReply = async (prompt) => {
     const lastMessage = chat[chat.length - 1]?.message || '';
