@@ -1,5 +1,7 @@
 // components/ChatMessage.js
 
+import styles from './ChatMessage.module.css';
+
 function ChatMessage({ user, tokens, message }) {
   return (
     <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
@@ -14,3 +16,5 @@ function ChatMessage({ user, tokens, message }) {
     </div>
   );
 }
+
+export default ChatMessage;
