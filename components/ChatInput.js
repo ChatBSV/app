@@ -1,3 +1,5 @@
+// components/ChatInput.js
+
 import React, { useState } from 'react';
 import styles from './ChatInput.module.css';
 
@@ -16,14 +18,6 @@ const ChatInput = ({ handleSubmit }) => {
 
   const handleInputChange = (event) => setInput(event.target.value);
 
-  const handlePayment = async (payment) => {
-    const prompt = input.trim();
-    if (prompt !== '') {
-      handleSubmit(prompt);
-      setInput('');
-    }
-  };
-
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
@@ -32,30 +26,10 @@ const ChatInput = ({ handleSubmit }) => {
           value={input}
           onChange={handleInputChange}
           className={styles.inputField}
-          placeholder="Enter your prompt"
+          placeholder="Fala alguma merda"
         />
-        <div id="money-button-container"></div>
         <button type="submit" className={styles.submit}></button>
       </form>
-
-      <script
-        src="https://www.moneybutton.com/moneybutton.js"
-        async
-        onLoad={() => {
-          const moneyButtonContainer = document.getElementById('money-button-container');
-          window.moneyButton.render(moneyButtonContainer, {
-            to: '3332',
-            amount: '0.01',
-            currency: 'USD',
-            label: '',
-            clientIdentifier: 'ac20c624759297bcdd5b0db272d839d9',
-            buttonId: '1684033604257',
-            buttonData: '{}',
-            type: 'tip',
-            onPayment: handlePayment
-          });
-        }}
-      ></script>
     </div>
   );
 };

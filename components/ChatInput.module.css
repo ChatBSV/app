@@ -76,12 +76,6 @@
     flex: none;
     cursor: pointer;
   }
-  .moneyButton {
-    width: 240px;
-    overflow: hidden;
-    height: 50px;
-    margin-left: 10px;
-  }
   
 
   @media screen and (max-width: 479px) {
@@ -132,6 +126,6 @@
     .inputField::placeholder {
         color: #555;
     }
-   
+
 
   }

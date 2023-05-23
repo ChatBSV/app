@@ -1,8 +1,8 @@
 Product Specs
 
-ChatBSV - Docs
+Alfred Chat App - Docs
 
-The ChatBSV App is a web application built with Next.js and deployed on Netlify using serverless functions. It provides a chat interface where users can interact with an AI-powered chatbot. The app utilizes the OpenAI API to generate responses based on user prompts, MoneyButton and WhatsonChain to interact with the blockchain.
+The Alfred Chat App is a web application built with Next.js and deployed on Netlify using serverless functions. It provides a chat interface where users can interact with an AI-powered chatbot. The app utilizes the OpenAI API to generate responses based on user prompts.
 
 File Structure
 
@@ -43,189 +43,114 @@ The project follows the following file structure:
 
     index.js: The main page that displays the chat interface.
 
-    .env for storing environment variables, CORE_PROMPT, TAAL_KEY and OPENAI_API_KEY
+    .env for storing environment variables, CORE_PROMPT and OPENAI_API_KEY
 
 
 
-We are starting from two distinct starting points.
+--
 
-Starting point 1: Alfred
+Here's a summary of diagnostics and changes for the code:
 
-Alfred is built on next and serverless and is a perfectly working tool for its functions which is to create a basic interface with chatgpt.
+    Sending the CORE_PROMPT as the system message with the first user message: In your getChatReply.js function, you have logic to check the conversation history length. If it's greater than 0, you include the previous message, otherwise, you include the corePrompt. The logic seems fine, but remember to store the corePrompt only in the first user's message and ensure that it's not repeated in subsequent messages.
 
-Starting Point 2: An early interation of ChatBSV that has additional functionality such as moneybutton and whatsonchain and links on assistantmessages but that was built on html, js and no serverless functions.
+    Optimizing to send and receive a minimum amount of characters: Since you only need content and total tokens, streamline the body of the POST request in getChatReply.js to include only necessary data. Trim unnecessary metadata from the request/response objects. Also, structure your fullPrompt array to contain only the data required (system message, user input, and previous assistant response).
 
-Our job is to merge the functionality of both products into the new ChatBSV.
+    History Logic: The logic for saving the assistant message seems correct. You clear the history and save the received message after getting a response from OpenAI. Just remember to clear the history before saving a new message to maintain only the last message.
 
-Codebase for Alfred (structure and class names to follow)
+    Optimizing async functions to avoid 10s timeouts: There are a few best practices that could be implemented to prevent timeouts:
+
+        Reduce third-party API reliance: If the OpenAI API response time is slow, it could cause your function to timeout. Always try to reduce the dependence on third-party APIs, or ensure you have adequate error handling and retry logic in place.
+
+        Use Promise.all() to run promises concurrently, when possible: If you have several independent async operations, using Promise.all() can potentially speed up overall execution time.
+
+        Optimize your code: Avoid blocking operations, look for ways to make your code more efficient, and reduce unnecessary operations.
+
+        Check your timeout settings: Make sure you have set a timeout that gives your function enough time to execute. If you're making a lot of data requests, you might need to increase your timeout. However, be careful not to set it too high, as that could result in longer delays if a function gets stuck.
+
+        Handle Errors Properly: Make sure to properly handle errors and reject a promise when an error occurs. Unhandled promise rejections can also lead to timeouts.
+
+
+--
 
 
 
+
+    SCRIPTS:
+
+    // pages/index.js
 
 // index.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { nanoid } from 'nanoid';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
-import Head from 'next/head';
 import './global.css';
 
-function IndexPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+
+const IndexPage = () => {
   const [chat, setChat] = useState([]);
 
-  const handleSubmit = async (userMessage) => {
-    // Append user's message to chat immediately
-    const newUserMessage = { 
-      id: nanoid(), 
-      role: 'user', 
-      message: userMessage, 
-      tokens: userMessage.split(' ').length 
-    };
-    
-    setChat(prevChat => {
-      localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
-      return [...prevChat, newUserMessage];
-    });
-    
-    setIsLoading(true);
-    setIsError(false);
-    
+  const handleSubmit = async (prompt) => {
+    const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  
+    const fullPrompt = [
+      {
+        role: 'system',
+        content: CORE_PROMPT,
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ];
+  
+      setChat([...chat, { message: prompt, isUser: true }]);
+  
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt: userMessage,
-        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null
-      });
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: fullPrompt,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
   
-      const assistantMessage = response.data.message;
-      const totalTokens = response.data.totalTokens;
+      const output = response.data.choices[0].message.content;
   
-      const newAssistantMessage = { 
-        id: nanoid(), 
-        role: 'assistant', 
-        message: assistantMessage, 
-        tokens: totalTokens 
-      };
-  
-      // Append assistant's message to chat after response
-      setChat(prevChat => {
-        localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
-        return [...prevChat, newAssistantMessage];
-      });
-  
-      setIsLoading(false);
+     
+      setChat([...chat, { message: output, isUser: false }]);
     } catch (error) {
       console.error('Error:', error);
-      setIsError(true);
-      setIsLoading(false);
     }
   };
-  
 
-  useEffect(() => {
-    const storedChat = localStorage.getItem('chat');
-    if (storedChat) {
-      setChat(JSON.parse(storedChat));
-    }
-  }, []);
-
-
-  const resetChat = () => {
-    setChat([]);
-    localStorage.removeItem('chat');
-  };
 
   return (
     <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
-      <Head>
-        <title>Hi there, I am AIfred.</title>
-        <meta name="description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:title" content="Hi there, I am AIfred." />
-        <meta property="og:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
-        <meta property="twitter:title" content="Hi there, I am AIfred." />
-        <meta property="twitter:description" content="Your local friendly interface to OpenAI. Ask me anything!" />
-        <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad1a_AL-og.png" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d331b39363e2e343ad07_AL-favicon.png" />
-        <link rel="apple-touch-icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d33188cfb0d03f9067f7_AL-webclip.png" />
-      </Head>
-      <Header resetChat={resetChat} />
-      <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
+      <Header />
+      <ChatBody chat={chat} />
+      <div className="chat-footer">
       <ChatInput handleSubmit={handleSubmit} />
+    </div>
     </div>
   );
 };
 
 export default IndexPage;
 
-// netlify/functions/getChatReply.js
-
-const axios = require('axios');
-
-exports.handler = async function (event, context) {
-  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, lastUserMessage } = JSON.parse(event.body);
-
-  let messages;
-
-  if (lastUserMessage) {
-    messages = [
-      { role: 'system', content: CORE_PROMPT },
-      { role: 'user', content: lastUserMessage },
-      { role: 'user', content: prompt },
-    ];
-  } else {
-    messages = [
-      { role: 'system', content: CORE_PROMPT },
-      { role: 'user', content: prompt },
-    ];
-  }
-
-  try {
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: messages,
-        max_tokens: 2000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    const assistantResponse = response.data.choices[0].message.content;
-    const totalTokens = response.data.choices[0].message.total_tokens;
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens }),
-    };
-  } catch (error) {
-    console.error('Error:', error);
-    if (error.response && error.response.data && error.response.data.error) {
-      console.error('API Error:', error.response.data.error.message);
-    }
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'An error occurred during processing.' }),
-    };
-  }
-};
 
 
 // components/ChatInput.js
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
@@ -244,175 +169,49 @@ const ChatInput = ({ handleSubmit }) => {
   const handleInputChange = (event) => setInput(event.target.value);
 
   return (
-    <div className={styles.chatFooter}>
-      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          className={styles.inputField}
-          placeholder="Fala alguma merda"
-        />
-        <button type="submit" className={styles.submit}></button>
-      </form>
-    </div>
+    <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+      <input
+        type="text"
+        value={input}
+        onChange={handleInputChange}
+        className={styles.inputField}
+        placeholder="Enter your prompt here"
+      />
+      <button type="submit" className={styles.submitButton}>
+        Submit
+      </button>
+    </form>
   );
 };
 
 export default ChatInput;
 
 
-// components/ChatBody.js
 
-import React, { useEffect, useRef } from 'react';
-import styles from './ChatBody.module.css';
-import ChatMessage from './ChatMessage';
-
-function ChatBody({ chat, isLoading, isError }) {
-  const chatContainerRef = useRef(null);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [chat, isLoading, isError]);
-
-  const scrollToBottom = () => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  };
-
-  return (
-    <div className={styles.chatBody} ref={chatContainerRef}>
-      <div className={styles.chatContainer}>
-        <ChatMessage
-          message="Falaí jão!"
-          user={false}
-          className={styles.introMessage}
-        />
-
-{chat.map((message, index) => (
-  <ChatMessage
-    key={index}
-    message={message.message}
-    user={message.role === 'user'}
-    totalTokens={message.totalTokens}
-  />
-))}
+// netlify/functions/getChatReply.js
 
 
-        {isLoading && (
-          <ChatMessage
-            message="Peraí, to pensando"
-            user={false}
-            className={styles.loadingMessage}
-          />
-        )}
-
-        {isError && (
-          <ChatMessage
-            message="Deu ruim, tenta de novo."
-            user={false}
-            className={styles.errorMessage}
-          />
-        )}
-
-        <div className={styles.spacer}></div>
-      </div>
-    </div>
-  );
-}
-
-export default ChatBody;
-
-
-
-
-// components/ChatMessage.js
-
-import React from 'react';
-import styles from './ChatMessage.module.css';
-
-function ChatMessage({ message, user, tokens }) {
-  return (
-    <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
-      <span style={{ fontSize: '16px' }}>{message}</span>
-      {tokens && !user && (
-        <div>
-          <span style={{ width: '100%', fontSize: '14px', color: 'gray' }}>
-            {tokens} Tokens
-          </span>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default ChatMessage;
-
-// components/Header.js
-
-import React from 'react';
-import styles from './Header.module.css';
-
-function Header({ resetChat }) {
-  return (
-    <div className={styles.chatHeader}>
-      <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6469d4c7f49bf4234c6a5a7e_AIfred.svg" alt="AIfred" style={{ height: '44px', marginTop: '5px'  }} />
-      <button className={styles.resetButton} onClick={resetChat}></button>
-    </div>
-  );
-}
-
-export default Header;
-
-
--------
-
-
-OLD ChatBSV (blockchain functionality to incorporate but make serverless)
-
-
-const express = require('express');
-const path = require('path');
 const axios = require('axios');
-const fs = require('fs');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
+const ChatBody = require('../../components/ChatBody');
+const renderMessage = ChatBody.renderMessage;
 
-const app = express();
-const openAiApiKey = process.env.OPENAI_API_KEY;
-const port = 3000;
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+exports.handler = async function(event, context) {
+  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  const prompt = event.body;
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/payload.js', (req, res) => {
-  res.set('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, 'public', 'payload.js'));
-});
-
-app.post('/prompt', async (req, res) => {
-  const prompt = req.body.prompt;
+  const fullPrompt = [
+    {
+      role: 'system',
+      content: CORE_PROMPT,
+    },
+    {
+      role: 'user',
+      content: prompt,
+    },
+  ];
 
   try {
-    const corePrompt = fs.readFileSync('./core-prompt.txt', 'utf8');
-    const fullPrompt = [
-      {
-        role: 'system',
-        content: corePrompt,
-      },
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ];
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
@@ -421,222 +220,132 @@ app.post('/prompt', async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${openAiApiKey}`,
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
       }
     );
 
     const output = response.data.choices[0].message.content;
-    res.json({ response: output });
+
+    renderMessage('', output, false);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: output }),
+    };
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'An error occurred during processing.' });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'An error occurred during processing.' }),
+    };
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+};
 
 
-document.addEventListener("DOMContentLoaded", function() {
-  let chatForm = document.querySelector('#chat-form');
-  let chatContainer = document.querySelector('#chat-container');
-  let loading = document.querySelector('#loading');
-  let promptInput = document.querySelector('#prompt');
-  let moneyButtonContainer = document.querySelector('#money-button-container');
+// components/ChatBody.js
 
-  chatForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-  });
+import styles from './ChatBody.module.css';
 
-  async function fetchTx(txid) {
-    let url = `https://api.whatsonchain.com/v1/bsv/main/tx/hash/${txid}`;
-    let response = await fetch(url);
-    let data = await response.json();
-
-    return data;
-  }
-
-  async function fetchAIResponse(prompt) {
-    let response = await fetch('/prompt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt: prompt }),
-    });
-
-    let data = await response.json();
-    return data;
-  }
-
-  window.renderMessage = async function (prompt, isUser, txid) {
-    let messageContainer = document.createElement("div");
-
-    messageContainer.classList.add("chat-message", isUser ? "user-message" : "assistant-message");
-
-    if (isUser) {
-      messageContainer.innerHTML = `
-      <div class="chat-bubble">
-        <p>${prompt}</p>
-      </div>
-      `;
-    } else {
-      let chatLink = document.createElement("a");
-      chatLink.classList.add("chat-link");
-      chatLink.href = `https://whatsonchain.com/tx/${txid}`;
-
-      chatLink.innerHTML = `
-      <img src="images/share.svg" loading="lazy" alt="" class="txid-icon">
-      <div class="tx-label">TXID</div>
-      <div class="txid-txt">${txid}</div>
-      <div class="ellipsis">...</div>
-      <div class="txid-txt ending">${txid}</div>
-      `;
-
-      let messageBubble = document.createElement("div");
-      messageBubble.classList.add("chat-bubble");
-      messageBubble.innerHTML = `<p>${prompt}</p>`;
-
-      messageContainer.appendChild(messageBubble);
-      messageContainer.appendChild(chatLink);
-    }
-
-    chatContainer.appendChild(messageContainer);
+function ChatBody({ chat }) {
+  const renderMessage = (sender, message, isUser) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = isUser ? 'chat-message user-message' : 'chat-message assistant-message';
+    messageDiv.innerHTML = `<strong>${sender}</strong> ${message}`;
+    const chatContainer = document.getElementById('chat-container');
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   };
 
-  moneyButton.render(moneyButtonContainer, {
-    to: '3332',
-    amount: '0.01',
-    currency: 'USD',
-    label: '',
-    clientIdentifier: 'ac20c624759297bcdd5b0db272d839d9',
-    buttonId: '1684033604257',
-    buttonData: '{}',
-    type: 'tip',
-    onPayment: async function (payment) {
-      const prompt = promptInput.value;
-      renderMessage(prompt, true);
-      
-      loading.style.display = 'block';
-      let aiResponse = await fetchAIResponse(prompt);
-      let txid = await fetchTx(payment.txid);
-
-      loading.style.display = 'none';
-
-      if(aiResponse.error) {
-        renderMessage('Sorry, I encountered an error processing that.', false, txid);
-      } else {
-        renderMessage(aiResponse.response, false, txid);
-      }
-
-      promptInput.value = '';
-    }
-  });
-});
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ChatGPT on BSV</title>
-    <link href="chatbsv.css" rel="stylesheet" type="text/css">
-    <script src="client.js"></script>
-    <script src="https://www.moneybutton.com/moneybutton.js"></script>
-</head>
-<body>
-     <section class="viewport">
-      <div class="chat-header">
-        <h1 class="heading">Chat BSV</h1>
-      </div>
-      <div id="chat-container" class="chat-body">
-      </div>
-      <div id="loading" class="loading">
-        <p>...</p>
-      </div>
-      <div class="chat-footer">
-        <div class="chat-input w-form">
-          <form id="chat-form" name="chat-form" data-name="chat-form" method="get" class="input-form">
-            <input type="text" id="prompt" class="input-field" maxlength="256" name="prompt" data-name="prompt" placeholder="Enter your prompt here">
-          </form>
+  return (
+    <div id="chat-container" className={styles.chatBody}>
+      {chat.map((message, index) => (
+        <div key={index} className={`chat-message ${message.isUser ? 'user-message' : 'assistant-message'}`}>
+          <strong>{message.sender}</strong> {message.message}
         </div>
-        <div class="money-button-container">
-          <div id="money-button-container"></div>
-        </div>
-      </div>
-    </section>
-    <script src="payload.js"></script>
-</body>
-</html>
-
-
-const bsv = require('bsv');
-const axios = require('axios');
-const TAAL_API_KEY = 'mainnet_0da930a29d04d69c77d56f7783b67d65';
-
-async function submitTransaction(data) {
-  try {
-    const privateKey = bsv.PrivateKey.fromWIF(data.payment.privateKey);
-    const publicKey = privateKey.publicKey;
-
-    // Construct the transaction
-    const transaction = new bsv.Transaction()
-      .from(data.payment.tx)
-      .addOutput(
-        new bsv.Transaction.Output({
-          script: bsv.Script.buildPublicKeyHashOut(publicKey),
-          satoshis: 1000, // Set the desired amount in satoshis
-        })
-      );
-
-    // Sign the transaction
-    transaction.sign(privateKey);
-
-    // Convert the transaction to hex
-    const rawTransaction = transaction.serialize();
-
-    // Submit the transaction to the blockchain
-    const response = await axios.post(
-      'https://api.whatsonchain.com/v1/bsv/main/tx/raw',
-      { txhex: rawTransaction },
-      {
-        headers: {
-          'Authorization': `Bearer ${TAAL_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    const txid = response.data;
-
-    return txid;
-  } catch (error) {
-    console.error('Error:', error);
-    throw new Error('An error occurred during transaction submission.');
-  }
+      ))}
+    </div>
+  );
 }
 
-module.exports = submitTransaction;
+export default ChatBody;
 
 
------
+// components/ChatMessage.js
 
 
-Our objectives at this point are:
+import styles from './ChatMessage.module.css';
 
-- Maintain all functionality from Alfred. The Chat logic, the chat history, the chat core prompt, the css classes, that entire project gets copied over with that exact structure. But the additional functionality and additional layout elements get copied over from chat bsv.
+function ChatMessage({ message, user }) {
+    return (
+        <div className={user ? styles.userMessage : styles.assistantMessage}>
+            <p>{message}</p>
+        </div>
+    );
+}
 
-Remember, this is next.js on serverless functions.
-
-You need to use MB in JS or iframe.
-
-
-
-
-
-
+export default ChatMessage;
 
 
+// components/Header.js
 
 
+import styles from './Header.module.css';
+
+function Header() {
+    return (
+        <div className={styles.chatHeader}>
+            <h1 className={styles.heading}>Aifred</h1>
+        </div>
+    );
+}
+
+export default Header;
+
+
+// netlify.toml
+[build]
+  command = "npm run build"
+  publish = "out"
+  functions = "netlify/functions"
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+
+// package.json
+
+{
+  "name": "alfred",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "babel . -d dist --copy-files",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "20.1.7",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.2",
+    "isomorphic-unfetch": "^4.0.2",
+    "next": "^13.4.2",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@netlify/plugin-nextjs": "^4.37.1"
+  }
+}
