@@ -1,6 +1,6 @@
 // components/ChatInput.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
@@ -31,6 +31,17 @@ const ChatInput = ({ handleSubmit }) => {
       setInput('');
     }
   };
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.moneybutton.com/moneybutton.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <div className={`${styles.chatFooter}`}>
