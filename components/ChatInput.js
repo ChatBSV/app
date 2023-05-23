@@ -1,3 +1,5 @@
+// /Components/ChatInput.js
+
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
 
@@ -33,7 +35,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = async (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-  
+
     const prompt = input.trim(); // Get the user input from the state
     if (prompt !== '') {
       try {
@@ -41,7 +43,7 @@ const ChatInput = ({ handleSubmit }) => {
           method: 'POST',
           body: JSON.stringify({ prompt, lastUserMessage: null }),
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
@@ -57,7 +59,6 @@ const ChatInput = ({ handleSubmit }) => {
       console.log('Prompt is empty. No request sent.');
     }
   };
-  
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonRef.current) {
@@ -65,7 +66,7 @@ const ChatInput = ({ handleSubmit }) => {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        onPayment: handleMoneyButtonPayment
+        onPayment: handleMoneyButtonPayment,
       });
     }
   }, [moneyButtonLoaded]);
