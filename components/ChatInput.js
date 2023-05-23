@@ -5,20 +5,11 @@ import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
   const [input, setInput] = useState('');
-  const [moneyButtonAvailable, setMoneyButtonAvailable] = useState(false);
   const inputRef = useRef(null);
 
   const handleInputChange = (event) => {
     const value = event.target.value;
     setInput(value);
-  };
-
-  const handlePayment = (payment) => {
-    const prompt = input.trim();
-    if (prompt !== '') {
-      handleSubmit(prompt);
-      setInput('');
-    }
   };
 
   const handleFormSubmit = (event) => {
@@ -30,20 +21,6 @@ const ChatInput = ({ handleSubmit }) => {
       setInput('');
     }
   };
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.moneybutton.com/moneybutton.js';
-    script.async = true;
-    script.onload = () => {
-      setMoneyButtonAvailable(true);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -61,21 +38,7 @@ const ChatInput = ({ handleSubmit }) => {
           className={styles.inputField}
           placeholder="Enter your prompt"
         />
-        <button type="submit" className={styles.submitButton}>
-          Submit
-        </button>
       </form>
-      {moneyButtonAvailable && (
-        <div
-          className="moneyButton mb"
-          data-to="3332"
-          data-amount="0.0099"
-          data-currency="USD"
-          data-button-data={input}
-          data-type="tip"
-          onPayment={handlePayment}
-        ></div>
-      )}
     </div>
   );
 };
