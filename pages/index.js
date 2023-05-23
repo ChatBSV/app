@@ -20,7 +20,7 @@ const IndexPage = () => {
     setIsError(false);
   
     const lastMessage = chat[chat.length - 1]?.message || '';
-    const response = await getChatReply(prompt, lastMessage);
+    const response = await getChatReply(prompt, chatHistory);
   
     setIsLoading(false);
   
@@ -35,6 +35,7 @@ const IndexPage = () => {
       setIsError(true);
     }
   };
+  
   
   
   const getChatReply = async (prompt) => {
