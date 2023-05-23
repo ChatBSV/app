@@ -19,7 +19,7 @@ function IndexPage() {
     setIsError(false);
 
     try {
-      const response = await axios.post('/api/getChatReply', {
+      const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null
       });
