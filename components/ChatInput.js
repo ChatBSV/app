@@ -1,6 +1,6 @@
 // components/ChatInput.js
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {

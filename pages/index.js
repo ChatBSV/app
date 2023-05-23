@@ -15,36 +15,45 @@ const IndexPage = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [systemPromptSent, setSystemPromptSent] = useState(false);
 
+  useEffect(() => {
+    const savedChatHistory = JSON.parse(localStorage.getItem('chatHistory'));
+    if (savedChatHistory) {
+      setChatHistory(savedChatHistory);
+      setChat((prevChat) => [...prevChat, ...savedChatHistory]);
+    }
+  }, []);
+
   const handleSubmit = async (prompt) => {
     setIsLoading(true);
     setIsError(false);
-  
-    const lastMessage = chat[chat.length - 1]?.message || '';
-    const response = await getChatReply(prompt, chatHistory);
-  
+
+    const lastUserMessage = chatHistory[chatHistory.length - 1]?.message || '';
+    const response = await getChatReply(prompt, lastUserMessage);
+
     setIsLoading(false);
-  
+
     if (response) {
       const output = response.data.message;
       const totalTokens = response.data.totalTokens;
-      setChat((prevChat) => [...prevChat, { message: output, totalTokens, isUser: false }]);
-      const updatedChatHistory = [...chatHistory, { content: prompt }];
+      setChat((prevChat) => [
+        ...prevChat,
+        { message: prompt, isUser: true },
+        { message: output, totalTokens, isUser: false },
+      ]);
+
+      const updatedChatHistory = [...chatHistory, { message: prompt, isUser: true }];
       setChatHistory(updatedChatHistory);
       localStorage.setItem('chatHistory', JSON.stringify(updatedChatHistory));
     } else {
       setIsError(true);
     }
   };
-  
-  
-  
-  const getChatReply = async (prompt) => {
-    const lastMessage = chat[chat.length - 1]?.message || '';
-  
+
+  const getChatReply = async (prompt, lastUserMessage) => {
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        lastMessage,
+        lastUserMessage,
       });
       return response;
     } catch (error) {
@@ -52,7 +61,7 @@ const IndexPage = () => {
       return null;
     }
   };
-  
+
   useEffect(() => {
     if (!systemPromptSent && process.env.CORE_PROMPT) {
       handleSubmit(process.env.CORE_PROMPT);

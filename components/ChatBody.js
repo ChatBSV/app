@@ -1,13 +1,13 @@
 // components/ChatBody.js
 
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     scrollToBottom();
   }, [chat]);
 
@@ -20,12 +20,12 @@ function ChatBody({ chat, isLoading, isError }) {
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-      <ChatMessage
-            message="Falaí jão!"
-            user={false}
-            className={styles.introMessage}
-          />
-          
+        <ChatMessage
+          message="Falaí jão!"
+          user={false}
+          className={styles.introMessage}
+        />
+
         {chat.map((message, index) => (
           <ChatMessage
             key={index}
@@ -50,6 +50,7 @@ function ChatBody({ chat, isLoading, isError }) {
             className={styles.errorMessage}
           />
         )}
+
         <div className={styles.spacer}></div>
       </div>
     </div>
