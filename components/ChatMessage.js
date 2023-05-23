@@ -3,14 +3,14 @@
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ message, user, totalTokens }) {
+function ChatMessage({ message, user, tokens }) {
   return (
     <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
       <span style={{ fontSize: '16px' }}>{message}</span>
-      {totalTokens && !user && (
+      {tokens && !user && (
         <div>
           <span style={{ width: '100%', fontSize: '14px', color: 'gray' }}>
-            {totalTokens} Tokens
+            {tokens} Tokens
           </span>
         </div>
       )}
