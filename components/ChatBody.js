@@ -1,5 +1,4 @@
 // components/ChatBody.js
-
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
@@ -26,15 +25,15 @@ function ChatBody({ chat, isLoading, isError }) {
           className={styles.introMessage}
         />
 
-{chat.map((message, index) => (
-  <ChatMessage
-    key={index}
-    message={message.message}
-    user={message.role === 'user'}
-    totalTokens={message.totalTokens}
-  />
-))}
-
+        {chat.map((message, index) => (
+          <ChatMessage
+            key={index}
+            message={message.message}
+            user={message.role === 'user'}
+            totalTokens={message.totalTokens}
+            txid={message.txid}
+          />
+        ))}
 
         {isLoading && (
           <ChatMessage

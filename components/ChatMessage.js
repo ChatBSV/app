@@ -1,18 +1,19 @@
 // components/ChatMessage.js
-
+import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ user, tokens, message }) {
+function ChatMessage({ message }) {
   return (
-    <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
-      <span style={{ fontSize: '16px' }}>{message}</span>
-      {tokens && !user && (
-        <div>
-          <span style={{ width: '100%', fontSize: '14px', color: 'gray' }}>
-            {tokens} Tokens
-          </span>
-        </div>
-      )}
+    <div className={`${styles.messageContainer} ${message.role === 'user' ? styles.userMessage : styles.assistantMessage}`}>
+      <div className={styles.messageContent}>
+        {message.txid && (
+          <a href={`https://whatsonchain.com/tx/${message.txid}`} target="_blank" rel="noopener noreferrer">
+            <span className={styles.txid}>TxID: {message.txid}</span>
+          </a>
+        )}
+        <div>{message.message}</div>
+        <div className={styles.messageTokens}>{message.tokens} tokens</div>
+      </div>
     </div>
   );
 }

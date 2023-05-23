@@ -1,5 +1,4 @@
 // index.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
@@ -15,7 +14,6 @@ function IndexPage() {
   const [chat, setChat] = useState([]);
 
   const handleSubmit = async (userMessage) => {
-
     const newUserMessage = { 
       id: nanoid(), 
       role: 'user', 
@@ -39,15 +37,16 @@ function IndexPage() {
   
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
+      const txid = response.data.txid;
   
       const newAssistantMessage = { 
         id: nanoid(), 
         role: 'assistant', 
         message: assistantMessage, 
-        tokens: totalTokens 
+        tokens: totalTokens,
+        txid
       };
   
-     
       setChat(prevChat => {
         localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
@@ -61,14 +60,13 @@ function IndexPage() {
     }
   };
   
-
+  
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
       setChat(JSON.parse(storedChat));
     }
   }, []);
-
 
   const resetChat = () => {
     setChat([]);

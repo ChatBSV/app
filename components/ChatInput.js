@@ -1,75 +1,42 @@
 // components/ChatInput.js
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import styles from './ChatInput.module.css';
 
-const ChatInput = ({ handleSubmit }) => {
-  const [input, setInput] = useState('');
-  const inputRef = useRef(null);
+function ChatInput({ handleSubmit }) {
+  const [userMessage, setUserMessage] = useState('');
 
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setInput(value);
+  const handleChange = (event) => {
+    setUserMessage(event.target.value);
   };
 
-  const handleFormSubmit = (event) => {
+  const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      // Prevent form submission if the input is empty
-      if (input.trim() === '') {
-        return;
-      }
-      handleSubmit(input.trim());
-      setInput('');
+      handleSendMessage();
     }
   };
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = input;
+  const handleSendMessage = () => {
+    if (userMessage.trim() !== '') {
+      handleSubmit(userMessage);
+      setUserMessage('');
     }
-  }, [input]);
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.moneybutton.com/moneybutton.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (typeof moneyButton !== 'undefined' && inputRef.current) {
-      moneyButton.render(inputRef.current, {
-        to: '3332',
-        amount: '0.0099',
-        currency: 'USD',
-        onPayment: (payment) => {
-          handleSubmit(input.trim());
-          setInput('');
-        },
-        buttonData: input.trim(),
-        type: 'tip',
-      });
-    }
-  }, [input, handleSubmit]);
+  };
 
   return (
-    <div className={styles.chatFooter}>
-      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-        <input
-          ref={inputRef}
-          type="text"
-          onChange={handleInputChange}
-          className={styles.inputField}
-          placeholder="Enter your prompt"
-        />
-      </form>
+    <div className={styles.inputContainer}>
+      <textarea
+        className={styles.textarea}
+        value={userMessage}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Type your message..."
+      />
+      <button className={styles.sendButton} onClick={handleSendMessage}>
+        Send
+      </button>
     </div>
   );
-};
+}
 
 export default ChatInput;

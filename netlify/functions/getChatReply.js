@@ -1,9 +1,24 @@
 // netlify/functions/getChatReply.js
-
 const axios = require('axios');
+const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+
+const fetchTxid = async () => {
+  try {
+    const response = await axios.get('https://api.moneybutton.com/v2/auth/bsvalias/resolve', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data.txid;
+  } catch (error) {
+    console.error('Error fetching txid:', error);
+    return null;
+  }
+};
 
 exports.handler = async function (event, context) {
-  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const { prompt, lastUserMessage } = JSON.parse(event.body);
 
   let messages;
@@ -22,27 +37,34 @@ exports.handler = async function (event, context) {
   }
 
   try {
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: messages,
-        max_tokens: 2000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
+    const [response, txid] = await Promise.all([
+      axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: messages,
+          max_tokens: 2000,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      ),
+      fetchTxid(),
+    ]);
 
     const assistantResponse = response.data.choices[0].message.content;
     const totalTokens = response.data.choices[0].message.total_tokens;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens }),
+      body: JSON.stringify({ 
+        message: assistantResponse, 
+        totalTokens,
+        txid
+      }),
     };
   } catch (error) {
     console.error('Error:', error);
