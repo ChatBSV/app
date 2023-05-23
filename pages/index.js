@@ -12,48 +12,34 @@ const IndexPage = () => {
   const [chat, setChat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [chatHistory, setChatHistory] = useState([]);
   const [systemPromptSent, setSystemPromptSent] = useState(false);
 
-  useEffect(() => {
-    const savedChatHistory = JSON.parse(localStorage.getItem('chatHistory'));
-    if (savedChatHistory) {
-      setChatHistory(savedChatHistory);
-      setChat((prevChat) => [...prevChat, ...savedChatHistory]);
-    }
-  }, []);
-
   const handleSubmit = async (prompt) => {
+    const userMessage = { role: 'user', content: prompt };
+    setChat((prevChat) => [...prevChat, userMessage]);
+
     setIsLoading(true);
     setIsError(false);
 
-    const lastUserMessage = chatHistory[chatHistory.length - 1]?.message || '';
-    const response = await getChatReply(prompt, lastUserMessage);
+    const lastAssistantMessage = chat[chat.length - 1]?.message || '';
+    const response = await getChatReply(prompt, lastAssistantMessage);
 
     setIsLoading(false);
 
     if (response) {
-      const output = response.data.message;
-      const totalTokens = response.data.totalTokens;
-      setChat((prevChat) => [
-        ...prevChat,
-        { message: prompt, isUser: true },
-        { message: output, totalTokens, isUser: false },
-      ]);
-
-      const updatedChatHistory = [...chatHistory, { message: prompt, isUser: true }];
-      setChatHistory(updatedChatHistory);
-      localStorage.setItem('chatHistory', JSON.stringify(updatedChatHistory));
+      const assistantMessage = { role: 'assistant', content: response.data.message };
+      setChat((prevChat) => [...prevChat, assistantMessage]);
+      localStorage.setItem('chatHistory', JSON.stringify(prevChat));
     } else {
       setIsError(true);
     }
   };
 
-  const getChatReply = async (prompt, lastUserMessage) => {
+  const getChatReply = async (prompt, lastAssistantMessage) => {
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        lastUserMessage,
+        lastAssistantMessage,
       });
       return response;
     } catch (error) {
@@ -63,8 +49,14 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
+    const storedChatHistory = localStorage.getItem('chatHistory');
+    if (storedChatHistory) {
+      setChat(JSON.parse(storedChatHistory));
+    }
+
     if (!systemPromptSent && process.env.CORE_PROMPT) {
-      handleSubmit(process.env.CORE_PROMPT);
+      const corePrompt = { role: 'assistant', content: process.env.CORE_PROMPT };
+      setChat((prevChat) => [...prevChat, corePrompt]);
       setSystemPromptSent(true);
     }
   }, []);
