@@ -4,14 +4,14 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY } = process.env;
-  const { prompt, lastMessage } = JSON.parse(event.body);
+  const { prompt, lastUserMessage } = JSON.parse(event.body);
 
   let messages;
 
-  if (lastMessage) {
+  if (lastUserMessage) {
     messages = [
       { role: 'system', content: process.env.CORE_PROMPT },
-      { role: 'user', content: lastMessage },
+      { role: 'user', content: lastUserMessage },
       { role: 'user', content: prompt },
     ];
   } else {
@@ -28,8 +28,14 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages,
+        messages: messages.map((message) => ({
+          role: message.role,
+          content: message.content,
+        })),
         max_tokens: 2000,
+        temperature: 0.6, // Adjust the temperature as per your needs
+        n: 1, // Set the value of n as per your needs
+        stop: ['\n'], // Set the stop conditions as per your needs
       },
       {
         headers: {

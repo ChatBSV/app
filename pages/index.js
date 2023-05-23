@@ -36,18 +36,39 @@ const IndexPage = () => {
     }
   };
 
-  const getChatReply = async (prompt, lastMessage) => {
+  const getChatReply = async (prompt) => {
+    const lastUserMessage = chat[chat.length - 1]?.message || '';
+  
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        lastMessage,
+        lastUserMessage,
       });
-      return response;
+  
+      if (response) {
+        const assistantResponse = response.data.message;
+        const totalTokens = response.data.totalTokens;
+  
+        setChat((prevChat) => [
+          ...prevChat,
+          { message: assistantResponse, totalTokens, isUser: false },
+        ]);
+  
+        const updatedChatHistory = [
+          ...chatHistory,
+          { content: lastUserMessage },
+        ];
+        setChatHistory(updatedChatHistory);
+        localStorage.setItem('chatHistory', JSON.stringify(updatedChatHistory));
+      } else {
+        setIsError(true);
+      }
     } catch (error) {
       console.error('Error:', error);
-      return null;
+      setIsError(true);
     }
   };
+  
 
   useEffect(() => {
     if (!systemPromptSent && process.env.CORE_PROMPT) {
