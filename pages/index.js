@@ -13,53 +13,53 @@ function IndexPage() {
   const [isError, setIsError] = useState(false);
   const [chat, setChat] = useState([]);
 
-  const handleSubmit = async (userMessage) => {
-    const newUserMessage = { 
-      id: nanoid(), 
-      role: 'user', 
-      message: userMessage, 
-      tokens: userMessage.split(' ').length 
-    };
-    
-    setChat(prevChat => {
-      localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
-      return [...prevChat, newUserMessage];
-    });
-    
-    setIsLoading(true);
-    setIsError(false);
-    
-    try {
-      const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt: userMessage,
-        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null
-      });
-  
-      const assistantMessage = response.data.message;
-      const totalTokens = response.data.totalTokens;
-      const txid = response.data.txid;
-  
-      const newAssistantMessage = { 
-        id: nanoid(), 
-        role: 'assistant', 
-        message: assistantMessage, 
-        tokens: totalTokens,
-        txid
-      };
-  
-      setChat(prevChat => {
-        localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
-        return [...prevChat, newAssistantMessage];
-      });
-  
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error:', error);
-      setIsError(true);
-      setIsLoading(false);
-    }
+ const handleSubmit = async (userMessage) => {
+  const newUserMessage = { 
+    id: nanoid(), 
+    role: 'user', 
+    message: userMessage, 
+    tokens: userMessage.split(' ').length 
   };
   
+  setChat(prevChat => {
+    localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
+    return [...prevChat, newUserMessage];
+  });
+  
+  setIsLoading(true);
+  setIsError(false);
+  
+  try {
+    const response = await axios.post('/.netlify/functions/getChatReply', {
+      prompt: userMessage,
+      lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null
+    });
+
+    const assistantMessage = response.data.message;
+    const totalTokens = response.data.totalTokens;
+    const txid = response.data.txid;
+
+    const newAssistantMessage = { 
+      id: nanoid(), 
+      role: 'assistant', 
+      message: assistantMessage, 
+      tokens: totalTokens,
+      txid
+    };
+
+    setChat(prevChat => {
+      localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
+      return [...prevChat, newAssistantMessage];
+    });
+
+    setIsLoading(false);
+  } catch (error) {
+    console.error('Error:', error);
+    setIsError(true);
+    setIsLoading(false);
+  }
+};
+
   
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
