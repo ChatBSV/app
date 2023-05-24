@@ -9,10 +9,10 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
   const messageStyle = {
-    fontSize: '16pt',
+    fontSize: '16pt !important',
   };
   const linkStyle = {
-    fontSize: '14pt',
+    fontSize: '14pt !important',
   };
 
   return (
@@ -23,7 +23,7 @@ function ChatMessage({ message, role, tokens, txid }) {
         isLoadingMessage ? styles.loadingMessage : ''
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
-      <span className={styles.message} style={isAssistantMessage ? messageStyle : null}>
+        <span className={styles.message} style={isAssistantMessage ? messageStyle : null}>
         {message}
       </span>
       {isAssistantMessage && (

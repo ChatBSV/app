@@ -16,43 +16,43 @@ function IndexPage() {
 
   const handleSubmit = async (userMessage) => {
     // Append user's message to chat immediately
-    const newUserMessage = { 
-      id: nanoid(), 
-      role: 'user', 
-      message: userMessage, 
-      tokens: userMessage.split(' ').length 
+    const newUserMessage = {
+      id: nanoid(),
+      role: 'user',
+      message: userMessage,
+      tokens: userMessage.split(' ').length,
     };
-    
-    setChat(prevChat => {
+
+    setChat((prevChat) => {
       localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
       return [...prevChat, newUserMessage];
     });
-    
+
     setIsLoading(true);
     setIsError(false);
-    
+
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
-        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null
+        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
       });
-  
+
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
-  
-      const newAssistantMessage = { 
-        id: nanoid(), 
-        role: 'assistant', 
-        message: assistantMessage, 
-        tokens: totalTokens 
+
+      const newAssistantMessage = {
+        id: nanoid(),
+        role: 'assistant',
+        message: assistantMessage,
+        tokens: totalTokens,
       };
-  
+
       // Append assistant's message to chat after response
-      setChat(prevChat => {
+      setChat((prevChat) => {
         localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
       });
-  
+
       setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -60,7 +60,6 @@ function IndexPage() {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
@@ -69,14 +68,13 @@ function IndexPage() {
     }
   }, []);
 
-
   const resetChat = () => {
     setChat([]);
     localStorage.removeItem('chat');
   };
 
   return (
-    <div style={{ color: '#555', backgroundColor: '#f1f1f1', flexDirection: 'column', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: '16px', fontWeight: 400, lineHeight: '22px', display: 'flex', position: 'fixed', top: 0, bottom: 0, left: 0, right: 0 }}>
+    <div class="viewport">
       <Head>
         <title>ChatBSV - OpenAI on Bitcoin</title>
         <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
