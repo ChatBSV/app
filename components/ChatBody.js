@@ -1,9 +1,5 @@
 // components/ChatBody.js
 
-import React, { useEffect, useRef } from 'react';
-import styles from './ChatBody.module.css';
-import ChatMessage from './ChatMessage';
-
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
 
@@ -22,7 +18,7 @@ function ChatBody({ chat, isLoading, isError }) {
       <div className={styles.chatContainer}>
         <ChatMessage
           message="Welcome to ChatBSV. Create a MoneyButton account if you don't have one yet."
-          user={false}
+          role="assistant"
           className={styles.introMessage}
         />
 
@@ -30,16 +26,16 @@ function ChatBody({ chat, isLoading, isError }) {
           <ChatMessage
             key={index}
             message={message.message}
-            user={message.role === 'user'}
+            role={message.role}
             totalTokens={message.totalTokens}
-            txid={message.txid} // Pass txid as a prop
+            txid={message.txid}
           />
         ))}
 
         {isLoading && (
           <ChatMessage
             message="Counting satoshis, please hold..."
-            user={false}
+            role="assistant"
             className={styles.loadingMessage}
           />
         )}
@@ -47,7 +43,7 @@ function ChatBody({ chat, isLoading, isError }) {
         {isError && (
           <ChatMessage
             message="OpenAI error. Please try again or come back later."
-            user={false}
+            role="assistant"
             className={styles.errorMessage}
           />
         )}
@@ -57,5 +53,3 @@ function ChatBody({ chat, isLoading, isError }) {
     </div>
   );
 }
-
-export default ChatBody;
