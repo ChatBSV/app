@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
-  const [input, setInput] = useState('');
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
   const moneyButtonContainerRef = useRef(null);
@@ -21,10 +20,8 @@ const ChatInput = ({ handleSubmit }) => {
     };
   }, []);
 
-  const handleInputChange = (event) => setInput(event.target.value);
-
   const handleFormSubmit = async () => {
-    const prompt = input.trim(); // Get the user input from the state
+    const prompt = document.getElementById('input').value.trim(); // Get the user input from the input element
     if (prompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
@@ -65,11 +62,11 @@ const ChatInput = ({ handleSubmit }) => {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        data: { input: input }, // Include prompt in the BSV transaction data
+        data: { input: document.getElementById('input').value }, // Include prompt in the BSV transaction data
         onPayment: handleMoneyButtonPayment,
       });
     }
-  }, [moneyButtonLoaded, input]);
+  }, [moneyButtonLoaded]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -82,8 +79,6 @@ const ChatInput = ({ handleSubmit }) => {
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
         <input
           type="text"
-          value={input}
-          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt..."
@@ -96,3 +91,4 @@ const ChatInput = ({ handleSubmit }) => {
 };
 
 export default ChatInput;
+
