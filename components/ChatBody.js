@@ -20,31 +20,38 @@ function ChatBody({ chat, isLoading, isError }) {
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-        {!isLoading && chat.map((message) => (
+        <ChatMessage
+          message="Welcome to ChatBSV. Create a MoneyButton account if you don't have one yet."
+          user={false}
+          className={styles.introMessage}
+        />
+
+        {chat.map((message, index) => (
           <ChatMessage
-            key={message.id}
+            key={index}
             message={message.message}
             user={message.role === 'user'}
-            tokens={message.tokens}
-            txid={message.txid}
+            totalTokens={message.totalTokens}
+            txid={message.txid} // Pass txid as a prop
           />
         ))}
+
         {isLoading && (
           <ChatMessage
             message="Counting satoshis, please hold..."
             user={false}
-            tokens={null}
-            txid={null}
+            className={styles.loadingMessage}
           />
         )}
+
         {isError && (
           <ChatMessage
             message="OpenAI error. Please try again or come back later."
             user={false}
-            tokens={null}
-            txid={null}
+            className={styles.errorMessage}
           />
         )}
+
         <div className={styles.spacer}></div>
       </div>
     </div>
