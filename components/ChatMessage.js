@@ -38,7 +38,7 @@ function ChatMessage({ message, role, tokens, txid }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
+            <img width={24}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
               alt="Transaction Link"
             />
