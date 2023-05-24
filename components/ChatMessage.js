@@ -8,6 +8,12 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
+  const messageStyle = {
+    fontSize: '16pt',
+  };
+  const linkStyle = {
+    fontSize: '14pt',
+  };
 
   return (
     <div
@@ -17,6 +23,9 @@ function ChatMessage({ message, role, tokens, txid }) {
         isLoadingMessage ? styles.loadingMessage : ''
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
+      <span className={styles.message} style={isAssistantMessage ? messageStyle : null}>
+        {message}
+      </span>
       {isAssistantMessage && (
         <div className={styles.link}>
           <a
@@ -24,6 +33,7 @@ function ChatMessage({ message, role, tokens, txid }) {
             target="_blank"
             rel="noopener noreferrer"
             className={styles.linkIcon}
+            style={linkStyle}
           >
             <img src="/link-icon.png" alt="Link Icon" />
           </a>
@@ -31,10 +41,8 @@ function ChatMessage({ message, role, tokens, txid }) {
           <span className={styles.tokens}>{tokens} Tokens</span>
         </div>
       )}
-      <div className={styles.message}>{message}</div>
     </div>
   );
 }
 
 export default ChatMessage;
-
