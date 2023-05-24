@@ -69,9 +69,10 @@ function IndexPage() {
   }, []);
 
   const resetChat = () => {
-    setChat([]);
     localStorage.removeItem('chat');
+    window.location.reload();
   };
+  
 
   return (
     <div class="viewport">

@@ -53,7 +53,7 @@ const ChatInput = ({ handleSubmit }) => {
   }, [handleFormSubmit]);
 
   useEffect(() => {
-    let moneyButton; // Declare the moneyButton variable outside the if statement
+    let moneyButton;
   
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
@@ -68,13 +68,14 @@ const ChatInput = ({ handleSubmit }) => {
       });
     }
   
-    // Return a cleanup function
     return () => {
       if (moneyButton) {
         moneyButtonContainerRef.current.innerHTML = '';
       }
     };
-  }, [moneyButtonLoaded, handleMoneyButtonPayment]);
+  }, [moneyButtonLoaded, handleMoneyButtonPayment, resetChat]);
+  
+  
   
 
   const handleKeyDown = (event) => {
