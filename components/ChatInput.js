@@ -21,19 +21,19 @@ const ChatInput = ({ handleSubmit }) => {
   }, []);
 
   const handleFormSubmit = useCallback(async () => {
-    const prompt = document.getElementById('input').value.trim(); // Get the user input from the input element
+    const prompt = document.getElementById('input').value.trim();
     if (prompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt, lastUserMessage: null, txid }), // Include txid in the request body
+          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
         });
 
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
           console.log('Assistant Response:', assistantResponse);
-          handleSubmit(prompt); // Call the original handleSubmit function
+          handleSubmit(prompt);
         } else {
           console.error('Error:', response.status);
         }
@@ -48,26 +48,29 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = useCallback((payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    setTxid(txid); // Update the txid state
-    handleFormSubmit(); // Call handleFormSubmit without the event object
-    // Fetch additional data or perform any necessary actions
+    setTxid(txid);
+    handleFormSubmit();
   }, [handleFormSubmit]);
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
       moneyButtonContainer.innerHTML = '';
-  
+
       const moneyButton = window.moneyButton.render(moneyButtonContainer, {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        data: { input: document.getElementById('input').value }, // Include prompt in the BSV transaction data
+        data: { input: document.getElementById('input').value },
         onPayment: handleMoneyButtonPayment,
       });
+
+      return () => {
+        moneyButtonContainer.innerHTML = '';
+        moneyButton.destroy();
+      };
     }
   }, [moneyButtonLoaded, handleMoneyButtonPayment]);
-  
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -91,5 +94,6 @@ const ChatInput = ({ handleSubmit }) => {
       </form>
     </div>
   );
+};
 
 export default ChatInput;
