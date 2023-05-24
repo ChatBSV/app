@@ -31,7 +31,7 @@ function ChatMessage({ message, role, tokens, txid }) {
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
-      {isAssistantMessage && (
+      {isAssistantMessage && txid && ( // Check if txid exists
         <div>
           <a
             href={`https://whatsonchain.com/tx/${txid}`}
@@ -44,7 +44,9 @@ function ChatMessage({ message, role, tokens, txid }) {
             />
           </a>
           <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>
-          <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>
+          {tokens !== undefined && ( // Check if tokens is defined
+            <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>
+          )}
         </div>
       )}
     </div>
