@@ -9,6 +9,14 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
 
+  const messageStyle = {
+    fontSize: '16pt',
+  };
+
+  const linkStyle = {
+    fontSize: '14pt',
+  };
+
   return (
     <div className={`${styles.chatMessage} ${isAssistantMessage ? styles.assistantMessage : ''} ${isUserMessage ? styles.userMessage : ''} ${isLoadingMessage ? styles.loadingMessage : ''} ${isIntroMessage ? styles.introMessage : ''}`}>
       <span className={styles.message}>{message}</span>
