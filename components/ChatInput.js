@@ -7,7 +7,7 @@ const ChatInput = ({ handleSubmit }) => {
   const [input, setInput] = useState('');
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
-  const moneyButtonRef = useRef(null);
+  const moneyButtonContainerRef = useRef(null);
 
   useEffect(() => {
     const moneyButtonScript = document.createElement('script');
@@ -57,27 +57,19 @@ const ChatInput = ({ handleSubmit }) => {
   };
 
   useEffect(() => {
-    if (moneyButtonLoaded && moneyButtonRef.current) {
-      const moneyButtonIframe = document.createElement('iframe');
-      moneyButtonIframe.src = 'https://www.moneybutton.com/moneybutton.js';
-      moneyButtonIframe.style.width = '180px';
-      moneyButtonIframe.style.height = '50px';
-      moneyButtonIframe.style.border = 'none';
-      moneyButtonIframe.style.overflow = 'hidden';
-      moneyButtonIframe.style.display = 'inline-block';
-      moneyButtonIframe.frameBorder = '0';
+    if (moneyButtonLoaded && moneyButtonContainerRef.current) {
+      const moneyButtonContainer = moneyButtonContainerRef.current;
+      moneyButtonContainer.innerHTML = '';
 
-      const moneyButtonContainer = moneyButtonRef.current;
-      moneyButtonContainer.appendChild(moneyButtonIframe);
-
-      // Receive payment response from the MoneyButton iframe
-      window.addEventListener('message', (event) => {
-        if (event.data.type === 'moneyButtonPayment') {
-          handleMoneyButtonPayment(event.data.payment);
-        }
+      const moneyButton = window.moneyButton.render(moneyButtonContainer, {
+        to: '3332',
+        amount: '0.0099',
+        currency: 'USD',
+        data: { input: input }, // Include prompt in the BSV transaction data
+        onPayment: handleMoneyButtonPayment,
       });
     }
-  }, [moneyButtonLoaded]);
+  }, [moneyButtonLoaded, input]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -97,7 +89,7 @@ const ChatInput = ({ handleSubmit }) => {
           placeholder="Enter your prompt..."
           id="input" // Assign a unique ID to the input field
         />
-        <div ref={moneyButtonRef} className={styles.moneyButton}></div>
+        <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
       </form>
     </div>
   );
