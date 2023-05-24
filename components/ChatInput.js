@@ -1,6 +1,6 @@
 // /Components/ChatInput.js
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
@@ -20,7 +20,7 @@ const ChatInput = ({ handleSubmit }) => {
     };
   }, []);
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = useCallback(async () => {
     const prompt = document.getElementById('input').value.trim(); // Get the user input from the input element
     if (prompt !== '') {
       try {
@@ -43,15 +43,15 @@ const ChatInput = ({ handleSubmit }) => {
     } else {
       console.log('Prompt is empty. No request sent.');
     }
-  };
+  }, [handleSubmit, txid]);
 
-  const handleMoneyButtonPayment = (payment) => {
+  const handleMoneyButtonPayment = useCallback((payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
     setTxid(txid); // Update the txid state
     handleFormSubmit(); // Call handleFormSubmit without the event object
     // Fetch additional data or perform any necessary actions
-  };
+  }, [handleFormSubmit]);
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
@@ -92,4 +92,3 @@ const ChatInput = ({ handleSubmit }) => {
 };
 
 export default ChatInput;
-
