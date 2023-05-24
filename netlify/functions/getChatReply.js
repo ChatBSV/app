@@ -4,7 +4,7 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, lastUserMessage, txid } = JSON.parse(event.body); // Add txid destructuring
+  const { prompt, lastUserMessage } = JSON.parse(event.body);
 
   let messages;
 
@@ -42,7 +42,7 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens, txid }), // Include txid in the response body
+      body: JSON.stringify({ message: assistantResponse, totalTokens, txid: null }),
     };
   } catch (error) {
     console.error('Error:', error);
@@ -55,4 +55,5 @@ exports.handler = async function (event, context) {
     };
   }
 };
+
 

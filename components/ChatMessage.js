@@ -31,27 +31,22 @@ function ChatMessage({ message, role, tokens, txid }) {
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
-      {isAssistantMessage && ( // Check if it's an assistant message
-        <div className={styles.linkContainer}>
-          <a
-            href={`https://whatsonchain.com/tx/${txid}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
-              alt="Transaction Link"
-              className={styles.linkIcon}
-            />
-            <div className={styles.linkInfo}>
-              <span className={styles.txid} style={linkStyle}>
-                {txid}
-              </span>
-              {tokens !== undefined && ( // Check if tokens is defined
-                <span className={styles.tokens}>{tokens} Tokens</span>
-              )}
-            </div>
-          </a>
+      {isAssistantMessage && (
+        <div>
+          {txid && (
+            <a
+              href={`https://whatsonchain.com/tx/${txid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+                alt="Transaction Link"
+              />
+            </a>
+          )}
+          {txid && <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>}
+          {tokens && <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>}
         </div>
       )}
     </div>
@@ -59,3 +54,4 @@ function ChatMessage({ message, role, tokens, txid }) {
 }
 
 export default ChatMessage;
+

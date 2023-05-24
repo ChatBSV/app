@@ -6,7 +6,7 @@ import styles from './ChatInput.module.css';
 const ChatInput = ({ handleSubmit }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
-  const [prompt, setPrompt] = useState('');
+  const [totalTokens, setTotalTokens] = useState('');
   const moneyButtonContainerRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -23,20 +23,22 @@ const ChatInput = ({ handleSubmit }) => {
   }, []);
 
   const handleFormSubmit = async () => {
-    const userPrompt = prompt.trim();
-    if (userPrompt !== '') {
+    const prompt = inputRef.current.value.trim();
+    if (prompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt: userPrompt, lastUserMessage: null, txid }),
+          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
         });
 
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          const totalTokens = data.totalTokens;
-
-          handleSubmit(userPrompt, assistantResponse, totalTokens, txid);
+          const { txid, totalTokens } = data;
+          setTxid(txid);
+          setTotalTokens(totalTokens);
+          console.log('Assistant Response:', assistantResponse);
+          handleSubmit(prompt);
         } else {
           console.error('Error:', response.status);
         }
@@ -73,7 +75,6 @@ const ChatInput = ({ handleSubmit }) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      setPrompt(inputRef.current.value); // Store the prompt when Enter key is pressed
     }
   };
 
@@ -89,8 +90,25 @@ const ChatInput = ({ handleSubmit }) => {
         />
         <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
       </form>
+      {txid && (
+        <div>
+          <a
+            href={`https://whatsonchain.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+              alt="Transaction Link"
+            />
+          </a>
+          <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>
+          {totalTokens && <span style={{ fontSize: '14px', color: 'gray' }}>{totalTokens} Tokens</span>}
+        </div>
+      )}
     </div>
   );
 };
 
 export default ChatInput;
+
