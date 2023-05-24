@@ -22,7 +22,7 @@ function ChatBody({ chat, isLoading, isError }) {
       <div className={styles.chatContainer}>
         <ChatMessage
           message="Welcome to ChatBSV. Create a MoneyButton account if you don't have one yet."
-          user={false}
+          role="intro"
           className={styles.introMessage}
         />
 
@@ -30,8 +30,8 @@ function ChatBody({ chat, isLoading, isError }) {
           <ChatMessage
             key={index}
             message={message.message}
-            user={message.role === 'user'}
-            tokens={message.totalTokens} // Corrected prop name
+            role={message.role}
+            tokens={message.tokens} // Corrected prop name
             txid={message.txid} // Pass txid as a prop
           />
         ))}
@@ -39,7 +39,7 @@ function ChatBody({ chat, isLoading, isError }) {
         {isLoading && (
           <ChatMessage
             message="Counting satoshis, please hold..."
-            user={false}
+            role="loading"
             className={styles.loadingMessage}
           />
         )}
@@ -47,7 +47,7 @@ function ChatBody({ chat, isLoading, isError }) {
         {isError && (
           <ChatMessage
             message="OpenAI error. Please try again or come back later."
-            user={false}
+            role="error"
             className={styles.errorMessage}
           />
         )}
