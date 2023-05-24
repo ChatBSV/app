@@ -53,24 +53,29 @@ const ChatInput = ({ handleSubmit }) => {
   }, [handleFormSubmit]);
 
   useEffect(() => {
+    let moneyButton; // Declare the moneyButton variable outside the if statement
+  
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
       moneyButtonContainer.innerHTML = '';
-
-      const moneyButton = window.moneyButton.render(moneyButtonContainer, {
+  
+      moneyButton = window.moneyButton.render(moneyButtonContainer, {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
         data: { input: document.getElementById('input').value },
         onPayment: handleMoneyButtonPayment,
       });
-
-      return () => {
-        moneyButtonContainer.innerHTML = '';
-        moneyButton.destroy();
-      };
     }
+  
+    // Return a cleanup function
+    return () => {
+      if (moneyButton) {
+        moneyButtonContainerRef.current.innerHTML = '';
+      }
+    };
   }, [moneyButtonLoaded, handleMoneyButtonPayment]);
+  
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
