@@ -10,9 +10,9 @@ function ChatMessage({ message, user, tokens, txid }) {
     <div className={`${styles.chatMessage} ${user ? styles.userMessage : styles.assistantMessage}`}>
       {isAssistantMessage ? (
         <div>
-          <span className={styles.message}>{message}</span>
+          <span className={styles.message} style={{ fontSize: '16pt' }}>{message}</span>
           <div className={styles.link}>
-            <a href={`https://whatsonchain.com/tx/${txid}`} target="_blank" rel="noopener noreferrer" className={styles.linkIcon}>
+            <a href={`https://whatsonchain.com/tx/${txid}`} style={{ fontSize: '14pt' }} target="_blank" rel="noopener noreferrer" className={styles.linkIcon}>
               <img src="/link-icon.png" alt="Link Icon" />
             </a>
             <span className={styles.txid}>{txid}</span>
@@ -20,10 +20,11 @@ function ChatMessage({ message, user, tokens, txid }) {
           </div>
         </div>
       ) : (
-        <span className={styles.message}>{message}</span>
+        <span className={styles.message} style={{ fontSize: '16pt' }}>{message}</span>
       )}
     </div>
   );
 }
+
 
 export default ChatMessage;
