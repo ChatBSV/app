@@ -23,27 +23,22 @@ function ChatMessage({ message, role, tokens, txid }) {
         isLoadingMessage ? styles.loadingMessage : ''
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
-       <div>
-  <span className={styles.message} style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}>
-    {message}
-  </span>
-</div>
+      <div>
+        <span className={styles.message} style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}>
+          <span style={{ fontSize: '16px' }}>{message}</span>
+        </span>
+      </div>
       {isAssistantMessage && (
-        <div className={styles.link}>
-          <div style={{ fontSize: '16pt' }}>
-  <a
-    href={`https://whatsonchain.com/tx/${txid}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    className={styles.linkIcon}
-    style={linkStyle}
-  >
-    <img src="/link-icon.png" alt="Link Icon" />
-  </a>
-  <span className={styles.txid}>{txid}</span>
-  <span className={styles.tokens}>{tokens} Tokens</span>
-</div>
-
+        <div>
+          <a
+            href={`https://whatsonchain.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="/link-icon.png" alt="Link Icon" />
+          </a>
+          <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>
+          <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>
         </div>
       )}
     </div>
