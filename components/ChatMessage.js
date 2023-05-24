@@ -31,7 +31,7 @@ function ChatMessage({ message, role, tokens, txid }) {
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
-      {isAssistantMessage && txid && ( // Check if txid exists
+      {isAssistantMessage && ( // Check if it's an assistant message
         <div className={styles.linkContainer}>
           <a
             href={`https://whatsonchain.com/tx/${txid}`}
@@ -59,4 +59,3 @@ function ChatMessage({ message, role, tokens, txid }) {
 }
 
 export default ChatMessage;
-
