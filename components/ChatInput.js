@@ -57,7 +57,7 @@ const ChatInput = ({ handleSubmit }) => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
       moneyButtonContainer.innerHTML = '';
-
+  
       const moneyButton = window.moneyButton.render(moneyButtonContainer, {
         to: '3332',
         amount: '0.0099',
@@ -66,7 +66,8 @@ const ChatInput = ({ handleSubmit }) => {
         onPayment: handleMoneyButtonPayment,
       });
     }
-  }, [moneyButtonLoaded]);
+  }, [moneyButtonLoaded, handleMoneyButtonPayment]);
+  
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

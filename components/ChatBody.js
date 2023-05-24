@@ -1,5 +1,8 @@
 // components/ChatBody.js
 
+import ChatMessage from './ChatMessage';
+
+
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
 
