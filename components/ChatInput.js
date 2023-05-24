@@ -6,6 +6,7 @@ import styles from './ChatInput.module.css';
 const ChatInput = ({ handleSubmit }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
+  const [prompt, setPrompt] = useState('');
   const moneyButtonContainerRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -22,19 +23,20 @@ const ChatInput = ({ handleSubmit }) => {
   }, []);
 
   const handleFormSubmit = async () => {
-    const prompt = inputRef.current.value.trim();
-    if (prompt !== '') {
+    const userPrompt = prompt.trim();
+    if (userPrompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
+          body: JSON.stringify({ prompt: userPrompt, lastUserMessage: null, txid }),
         });
 
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          console.log('Assistant Response:', assistantResponse);
-          handleSubmit(prompt);
+          const totalTokens = data.totalTokens;
+
+          handleSubmit(userPrompt, assistantResponse, totalTokens, txid);
         } else {
           console.error('Error:', response.status);
         }
@@ -71,6 +73,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
+      setPrompt(inputRef.current.value); // Store the prompt when Enter key is pressed
     }
   };
 

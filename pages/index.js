@@ -13,54 +13,45 @@ function IndexPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [chat, setChat] = useState([]);
+  const [txid, setTxid] = useState('');
+  const [totalTokens, setTotalTokens] = useState(0);
 
-  const handleSubmit = async (userMessage) => {
+  const handleSubmit = async (userMessage, assistantMessage, tokens, txid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       message: userMessage,
-      tokens: userMessage.split(' ').length,
+      tokens,
     };
 
     setChat((prevChat) => {
-      localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
-      return [...prevChat, newUserMessage];
+      const updatedChat = [...prevChat, newUserMessage];
+      localStorage.setItem('chat', JSON.stringify(updatedChat));
+      return updatedChat;
     });
 
     setIsLoading(true);
     setIsError(false);
 
-    try {
-      const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt: userMessage,
-        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
-        txid: '', // Set initial value of txid as an empty string
-      });
+    const newAssistantMessage = {
+      id: nanoid(),
+      role: 'assistant',
+      message: assistantMessage,
+      tokens,
+      txid,
+    };
 
-      const assistantMessage = response.data.message;
-      const totalTokens = response.data.totalTokens;
-      const txid = response.data.txid; // Extract the txid from the response
+    setChat((prevChat) => {
+      const updatedChat = [...prevChat, newAssistantMessage];
+      localStorage.setItem('chat', JSON.stringify(updatedChat));
+      return updatedChat;
+    });
 
-      const newAssistantMessage = {
-        id: nanoid(),
-        role: 'assistant',
-        message: assistantMessage,
-        tokens: totalTokens,
-        txid: txid, // Assign the extracted txid
-      };
+    setTxid(txid);
+    setTotalTokens(tokens);
 
-      setChat((prevChat) => {
-        localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
-        return [...prevChat, newAssistantMessage];
-      });
-
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error:', error);
-      setIsError(true);
-      setIsLoading(false);
-    }
-  }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
