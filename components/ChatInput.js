@@ -7,6 +7,7 @@ const ChatInput = ({ handleSubmit }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
   const moneyButtonContainerRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const moneyButtonScript = document.createElement('script');
@@ -20,20 +21,20 @@ const ChatInput = ({ handleSubmit }) => {
     };
   }, []);
 
-  const handleFormSubmit = async (txid) => {
-    const prompt = document.getElementById('input').value.trim();
+  const handleFormSubmit = async () => {
+    const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt, lastUserMessage: null, txid }), // Include txid in the request body
+          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
         });
 
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
           console.log('Assistant Response:', assistantResponse);
-          handleSubmit(prompt); // Call the original handleSubmit function
+          handleSubmit(prompt);
         } else {
           console.error('Error:', response.status);
         }
@@ -48,8 +49,8 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    setTxid(txid); // Update the txid state
-    handleFormSubmit(txid); // Pass txid to handleFormSubmit
+    setTxid(txid);
+    handleFormSubmit();
   };
 
   useEffect(() => {
@@ -61,7 +62,7 @@ const ChatInput = ({ handleSubmit }) => {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        data: { input: document.getElementById('input').value }, // Include prompt in the BSV transaction data
+        data: { input: inputRef.current.value },
         onPayment: handleMoneyButtonPayment,
       });
     }
@@ -81,7 +82,7 @@ const ChatInput = ({ handleSubmit }) => {
           onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt..."
-          id="input" // Assign a unique ID to the input field
+          ref={inputRef}
         />
         <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
       </form>

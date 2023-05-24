@@ -26,13 +26,13 @@ function ChatBody({ chat, isLoading, isError }) {
           className={styles.introMessage}
         />
 
-        {chat.map((message, index) => (
+        {chat.map((message) => (
           <ChatMessage
-            key={index}
+            key={message.id}
             message={message.message}
             role={message.role}
-            tokens={message.tokens} // Pass the tokens prop
-            txid={message.txid} // Pass the txid prop
+            tokens={message.tokens}
+            txid={message.txid}
           />
         ))}
 
