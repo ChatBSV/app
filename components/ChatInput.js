@@ -7,7 +7,7 @@ const ChatInput = ({ handleSubmit }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
   const moneyButtonContainerRef = useRef(null);
-  const inputReAf = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const moneyButtonScript = document.createElement('script');
