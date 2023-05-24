@@ -1,7 +1,8 @@
 // components/ChatBody.js
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
+import styles from './ChatBody.module.css';
 
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
@@ -56,6 +57,5 @@ function ChatBody({ chat, isLoading, isError }) {
     </div>
   );
 }
-
 
 export default ChatBody;
