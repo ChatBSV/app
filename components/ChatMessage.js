@@ -5,9 +5,10 @@ import styles from './ChatMessage.module.css';
 
 function ChatMessage({ message, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
+  const messageClassName = isAssistantMessage ? styles.assistantMessage : styles.userMessage;
 
   return (
-    <div className={`${styles.chatMessage} ${isAssistantMessage ? styles.assistantMessage : styles.userMessage}`}>
+    <div className={`${styles.chatMessage} ${messageClassName}`}>
       <p className={styles.message} style={{ fontSize: '16pt', margin: '0' }}>{message}</p>
       {isAssistantMessage && (
         <div className={styles.chatLink}>
