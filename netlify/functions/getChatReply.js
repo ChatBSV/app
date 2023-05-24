@@ -39,10 +39,11 @@ exports.handler = async function (event, context) {
 
     const assistantResponse = response.data.choices[0].message.content;
     const totalTokens = response.data.choices[0].message.total_tokens;
+    const txid = response.headers['x-txid'];
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens }),
+      body: JSON.stringify({ message: assistantResponse, totalTokens, txid }),
     };
   } catch (error) {
     console.error('Error:', error);

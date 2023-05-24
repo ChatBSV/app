@@ -38,13 +38,14 @@ function IndexPage() {
 
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
+      const txid = response.data.txid;
 
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
         tokens: totalTokens,
-        txid: response.data.txid,
+        txid: txid,
       };
 
       setChat((prevChat) => {
@@ -71,7 +72,6 @@ function IndexPage() {
     localStorage.removeItem('chat');
     window.location.reload();
   };
-  
 
   return (
     <div class="viewport">
