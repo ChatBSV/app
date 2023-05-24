@@ -11,9 +11,6 @@ function ChatMessage({ message, role, tokens, txid }) {
   const messageStyle = {
     fontSize: '16pt',
   };
-  const linkStyle = {
-    fontSize: '14pt',
-  };
 
   return (
     <div
@@ -31,21 +28,19 @@ function ChatMessage({ message, role, tokens, txid }) {
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
-      {isAssistantMessage && (
+      {isAssistantMessage && txid && (
         <div>
-          {txid && (
-            <a
-              href={`https://whatsonchain.com/tx/${txid}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
-                alt="Transaction Link"
-              />
-            </a>
-          )}
-          {txid && <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>}
+          <a
+            href={`https://whatsonchain.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+              alt="Transaction Link"
+            />
+          </a>
+          <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>
           {tokens && <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>}
         </div>
       )}
@@ -54,4 +49,3 @@ function ChatMessage({ message, role, tokens, txid }) {
 }
 
 export default ChatMessage;
-

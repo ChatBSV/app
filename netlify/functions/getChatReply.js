@@ -39,10 +39,11 @@ exports.handler = async function (event, context) {
 
     const assistantResponse = response.data.choices[0].message.content;
     const totalTokens = response.data.choices[0].message.total_tokens;
+    const txid = response.data.txid;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens, txid: null }),
+      body: JSON.stringify({ message: assistantResponse, totalTokens, txid }),
     };
   } catch (error) {
     console.error('Error:', error);
@@ -55,5 +56,3 @@ exports.handler = async function (event, context) {
     };
   }
 };
-
-
