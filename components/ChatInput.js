@@ -83,12 +83,13 @@ const ChatInput = ({ handleSubmit }) => {
           onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt..."
-          id="input" // Assign a unique ID to the input field
+          id="input"
         />
-        <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
+        {moneyButtonLoaded && (
+          <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
+        )}
       </form>
     </div>
   );
-};
 
 export default ChatInput;
