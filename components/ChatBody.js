@@ -56,3 +56,6 @@ function ChatBody({ chat, isLoading, isError }) {
     </div>
   );
 }
+
+
+export default ChatBody;
