@@ -8,17 +8,31 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
+  const textClassName = `${styles.message} ${styles.paragraph}`;
 
   return (
-    <div className={`${styles.chatMessage} ${isAssistantMessage ? styles.assistantMessage : ''} ${isUserMessage ? styles.userMessage : ''} ${isLoadingMessage ? styles.loadingMessage : ''} ${isIntroMessage ? styles.introMessage : ''}`}>
-      <span className={styles.message} style={{ fontSize: '16pt' }}>{message}</span>
+    <div
+      className={`${styles.chatMessage} ${
+        isAssistantMessage ? styles.assistantMessage : ''
+      } ${isUserMessage ? styles.userMessage : ''} ${
+        isLoadingMessage ? styles.loadingMessage : ''
+      } ${isIntroMessage ? styles.introMessage : ''}`}
+    >
+      <span className={paragraph} style={{ fontSize: '14pt' }}>
+        {message}</span>
       {isAssistantMessage && (
         <div className={styles.link}>
-          <a href={`https://whatsonchain.com/tx/${txid}`} target="_blank" rel="noopener noreferrer" className={styles.linkIcon}>
+          <a
+            href={`https://whatsonchain.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.linkIcon}
+            style={{ fontSize: '14pt' }}
+          >
             <img src="/link-icon.png" alt="Link Icon" />
           </a>
-          <span className={styles.txid} style={{ fontSize: '14pt' }}>{txid}</span>
-          <span className={styles.tokens} style={{ fontSize: '14pt' }}>{tokens} Tokens</span>
+          <span className={styles.txid}>{txid}</span>
+          <span className={styles.tokens}>{tokens} Tokens</span>
         </div>
       )}
     </div>
