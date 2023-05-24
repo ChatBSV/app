@@ -20,8 +20,8 @@ const ChatInput = ({ handleSubmit }) => {
     };
   }, []);
 
-  const handleFormSubmit = async () => {
-    const prompt = document.getElementById('input').value.trim(); // Get the user input from the input element
+  const handleFormSubmit = async (txid) => {
+    const prompt = document.getElementById('input').value.trim();
     if (prompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
@@ -49,9 +49,9 @@ const ChatInput = ({ handleSubmit }) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
     setTxid(txid); // Update the txid state
-    handleFormSubmit(); // Call handleFormSubmit without the event object
-    // Fetch additional data or perform any necessary actions
+    handleFormSubmit(txid); // Pass txid to handleFormSubmit
   };
+  
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
