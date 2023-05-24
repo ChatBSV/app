@@ -34,18 +34,19 @@ function IndexPage() {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
+        txid: '', // Set initial value of txid as an empty string
       });
 
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
-      const txid = response.data.txid;
+      const txid = response.data.txid; // Extract the txid from the response
 
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
         tokens: totalTokens,
-        txid: txid,
+        txid: txid, // Assign the extracted txid
       };
 
       setChat((prevChat) => {
@@ -59,7 +60,7 @@ function IndexPage() {
       setIsError(true);
       setIsLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
