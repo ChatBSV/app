@@ -23,12 +23,14 @@ function ChatMessage({ message, role, tokens, txid }) {
         isLoadingMessage ? styles.loadingMessage : ''
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
-        <span className={styles.message} style={isAssistantMessage ? messageStyle : null}>
+        <div><span className={styles.message} style={isAssistantMessage ? messageStyle : null}>
         {message}
-      </span>
+      </span></div>
       {isAssistantMessage && (
         <div className={styles.link}>
-          <a
+          <div>
+          <a 
+          
             href={`https://whatsonchain.com/tx/${txid}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -39,6 +41,7 @@ function ChatMessage({ message, role, tokens, txid }) {
           </a>
           <span className={styles.txid}>{txid}</span>
           <span className={styles.tokens}>{tokens} Tokens</span>
+          </div>
         </div>
       )}
     </div>
