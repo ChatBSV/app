@@ -51,7 +51,6 @@ const ChatInput = ({ handleSubmit }) => {
     setTxid(txid); // Update the txid state
     handleFormSubmit(txid); // Pass txid to handleFormSubmit
   };
-  
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {

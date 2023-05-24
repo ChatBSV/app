@@ -31,8 +31,8 @@ function ChatBody({ chat, isLoading, isError }) {
             key={index}
             message={message.message}
             role={message.role}
-            tokens={message.tokens} // Corrected prop name
-            txid={message.txid} // Pass txid as a prop
+            tokens={message.tokens} // Pass the tokens prop
+            txid={message.txid} // Pass the txid prop
           />
         ))}
 

@@ -24,24 +24,24 @@ function ChatMessage({ message, role, tokens, txid }) {
         } ${isIntroMessage ? styles.introMessage : ''}`}
       >
         <div>
-          <span className={styles.message} style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}>
-            <span style={{ fontSize: '16px' }}>{message}</span>
-          </span>
-        </div>
-        {isAssistantMessage && (
-          <div>
-            <a
-              href={`https://whatsonchain.com/tx/${txid}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg" />
-            </a>
-            <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>
-            <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>
-          </div>
-        )}
+        <span className={styles.message} style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}>
+          <span style={{ fontSize: '16px' }}>{message}</span>
+        </span>
       </div>
+      {isAssistantMessage && (
+        <div>
+          <a
+            href={`https://whatsonchain.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg" />
+          </a>
+          <span style={{ fontSize: '14px', color: 'gray' }}>{txid}</span>
+          <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>
+        </div>
+      )}
+    </div>
   );
 }
 
