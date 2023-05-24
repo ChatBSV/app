@@ -1,12 +1,12 @@
 // /Components/ChatInput.js
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
+  const [input, setInput] = useState('');
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
-  const moneyButtonContainerRef = useRef(null);
   const moneyButtonRef = useRef(null);
 
   useEffect(() => {
@@ -21,20 +21,23 @@ const ChatInput = ({ handleSubmit }) => {
     };
   }, []);
 
-  const handleFormSubmit = useCallback(async () => {
-    const prompt = document.getElementById('input').value.trim();
+  const handleInputChange = (event) => setInput(event.target.value);
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const prompt = input.trim(); // Get the user input from the state
     if (prompt !== '') {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
+          body: JSON.stringify({ prompt, lastUserMessage: null, txid }), // Include txid in the request body
         });
 
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
           console.log('Assistant Response:', assistantResponse);
-          handleSubmit(prompt);
+          handleSubmit(prompt); // Call the original handleSubmit function
         } else {
           console.error('Error:', response.status);
         }
@@ -44,35 +47,27 @@ const ChatInput = ({ handleSubmit }) => {
     } else {
       console.log('Prompt is empty. No request sent.');
     }
-  }, [handleSubmit, txid]);
+  };
 
-  const handleMoneyButtonPayment = useCallback((payment) => {
+  const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    setTxid(txid);
-    handleFormSubmit();
-  }, [handleFormSubmit]);
+    setTxid(txid); // Update the txid state
+    handleFormSubmit(); // Call handleFormSubmit without the event object
+    // Fetch additional data or perform any necessary actions
+  };
 
   useEffect(() => {
-    if (moneyButtonLoaded && moneyButtonContainerRef.current) {
-      const moneyButtonContainer = moneyButtonContainerRef.current;
-      moneyButtonContainer.innerHTML = '';
-
-      if (!moneyButtonRef.current) {
-        moneyButtonRef.current = window.moneyButton.render(moneyButtonContainer, {
-          to: '3332',
-          amount: '0.0099',
-          currency: 'USD',
-          data: { input: document.getElementById('input').value },
-          onPayment: handleMoneyButtonPayment,
-        });
-      } else {
-        moneyButtonRef.current.update({
-          data: { input: document.getElementById('input').value },
-        });
-      }
+    if (moneyButtonLoaded && moneyButtonRef.current) {
+      const moneyButton = window.moneyButton.render(moneyButtonRef.current, {
+        to: '3332',
+        amount: '0.0099',
+        currency: 'USD',
+        data: { input: input }, // Include prompt in the BSV transaction data
+        onPayment: handleMoneyButtonPayment,
+      });
     }
-  }, [moneyButtonLoaded, handleMoneyButtonPayment]);
+  }, [moneyButtonLoaded]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -85,18 +80,19 @@ const ChatInput = ({ handleSubmit }) => {
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
         <input
           type="text"
+          value={input}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt..."
-          id="input"
+          id="input" // Assign a unique ID to the input field
         />
-        {moneyButtonLoaded && (
-          <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
-        )}
+        <div ref={moneyButtonRef} className={styles.moneyButton}></div>
       </form>
     </div>
   );
 };
 
 export default ChatInput;
+
 
