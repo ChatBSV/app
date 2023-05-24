@@ -7,6 +7,7 @@ const ChatInput = ({ handleSubmit }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
   const [txid, setTxid] = useState('');
   const moneyButtonContainerRef = useRef(null);
+  const moneyButtonRef = useRef(null);
 
   useEffect(() => {
     const moneyButtonScript = document.createElement('script');
@@ -53,30 +54,25 @@ const ChatInput = ({ handleSubmit }) => {
   }, [handleFormSubmit]);
 
   useEffect(() => {
-    let moneyButton;
-  
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
       moneyButtonContainer.innerHTML = '';
-  
-      moneyButton = window.moneyButton.render(moneyButtonContainer, {
-        to: '3332',
-        amount: '0.0099',
-        currency: 'USD',
-        data: { input: document.getElementById('input').value },
-        onPayment: handleMoneyButtonPayment,
-      });
-    }
-  
-    return () => {
-      if (moneyButton) {
-        moneyButtonContainerRef.current.innerHTML = '';
+
+      if (!moneyButtonRef.current) {
+        moneyButtonRef.current = window.moneyButton.render(moneyButtonContainer, {
+          to: '3332',
+          amount: '0.0099',
+          currency: 'USD',
+          data: { input: document.getElementById('input').value },
+          onPayment: handleMoneyButtonPayment,
+        });
+      } else {
+        moneyButtonRef.current.update({
+          data: { input: document.getElementById('input').value },
+        });
       }
-    };
-  }, [moneyButtonLoaded, handleMoneyButtonPayment, resetChat]);
-  
-  
-  
+    }
+  }, [moneyButtonLoaded, handleMoneyButtonPayment]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -103,3 +99,4 @@ const ChatInput = ({ handleSubmit }) => {
 };
 
 export default ChatInput;
+
