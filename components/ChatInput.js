@@ -23,8 +23,7 @@ const ChatInput = ({ handleSubmit }) => {
 
   const handleInputChange = (event) => setInput(event.target.value);
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
+  const handleFormSubmit = async () => {
     const prompt = input.trim(); // Get the user input from the state
     if (prompt !== '') {
       try {
@@ -59,12 +58,23 @@ const ChatInput = ({ handleSubmit }) => {
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonRef.current) {
-      const moneyButton = window.moneyButton.render(moneyButtonRef.current, {
-        to: '3332',
-        amount: '0.0099',
-        currency: 'USD',
-        data: { input: input }, // Include prompt in the BSV transaction data
-        onPayment: handleMoneyButtonPayment,
+      const moneyButtonIframe = document.createElement('iframe');
+      moneyButtonIframe.src = 'https://www.moneybutton.com/moneybutton.js';
+      moneyButtonIframe.style.width = '180px';
+      moneyButtonIframe.style.height = '50px';
+      moneyButtonIframe.style.border = 'none';
+      moneyButtonIframe.style.overflow = 'hidden';
+      moneyButtonIframe.style.display = 'inline-block';
+      moneyButtonIframe.frameBorder = '0';
+
+      const moneyButtonContainer = moneyButtonRef.current;
+      moneyButtonContainer.appendChild(moneyButtonIframe);
+
+      // Receive payment response from the MoneyButton iframe
+      window.addEventListener('message', (event) => {
+        if (event.data.type === 'moneyButtonPayment') {
+          handleMoneyButtonPayment(event.data.payment);
+        }
       });
     }
   }, [moneyButtonLoaded]);
