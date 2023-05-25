@@ -32,23 +32,23 @@ function ChatMessage({ message, role, tokens, txid }) {
         </span>
       </div>
       {isAssistantMessage && (
-        <div>
-          <a
-            href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              width={20}
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
-              alt="Transaction Link"
-            />
-          </a>
-          <span style={{ fontSize: '14px', color: 'gray' }}>
-            {tokens} Tokens
-          </span>
-        </div>
-      )}
+  <div>
+    <a
+      href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        width={20}
+        src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+        alt="Transaction Link"
+      />
+    </a>
+    <span style={{ fontSize: '14px', color: 'gray' }}>
+      {tokens} Tokens
+    </span>
+  </div>
+)}
     </div>
   );
 }
