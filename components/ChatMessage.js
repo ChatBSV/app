@@ -3,11 +3,17 @@
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ message, role, totalTokens, txid }) {
+function ChatMessage({ message, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
+  const messageStyle = {
+    fontSize: '16pt',
+  };
+  const linkStyle = {
+    fontSize: '14pt',
+  };
 
   return (
     <div
@@ -19,15 +25,16 @@ function ChatMessage({ message, role, totalTokens, txid }) {
     >
       <div>
         <span
-          style={isAssistantMessage ? { fontSize: '16pt' } : { fontSize: '16pt' }}
+          className={styles.message}
+          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
         >
-          {message}
+          <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
       {isAssistantMessage && (
         <div>
           <a
-            href={`https://whatsonchain.com/tx/${txid}`}
+            href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -37,7 +44,9 @@ function ChatMessage({ message, role, totalTokens, txid }) {
               alt="Transaction Link"
             />
           </a>
-          <span style={{ fontSize: '14pt', color: 'gray' }}>{totalTokens} Tokens</span>
+          <span style={{ fontSize: '14px', color: 'gray' }}>
+            {tokens} Tokens
+          </span>
         </div>
       )}
     </div>
@@ -45,4 +54,3 @@ function ChatMessage({ message, role, totalTokens, txid }) {
 }
 
 export default ChatMessage;
-
