@@ -13,6 +13,7 @@ function IndexPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [chat, setChat] = useState([]);
+  const [txid, setTxid] = useState('');
 
   const handleSubmit = async (userMessage) => {
     const newUserMessage = {
@@ -34,21 +35,17 @@ function IndexPage() {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
-        txid: localStorage.getItem('txid') || '', // Retrieve the stored txid or use an empty string
       });
 
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
-      const txid = response.data.txid; // Extract the txid from the response
-
-      localStorage.setItem('txid', txid); // Store the txid in localStorage
 
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
         tokens: totalTokens,
-        txid: txid, // Assign the extracted txid
+        txid: txid, // Use the current txid
       };
 
       setChat((prevChat) => {
@@ -62,7 +59,7 @@ function IndexPage() {
       setIsError(true);
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
@@ -72,14 +69,14 @@ function IndexPage() {
 
       const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
       if (lastAssistantMessage) {
-        localStorage.setItem('txid', lastAssistantMessage.txid); // Retrieve and store the last known txid
+        setTxid(lastAssistantMessage.txid); // Set the txid from the last known assistant message
       }
     }
   }, []);
 
   const resetChat = () => {
     localStorage.removeItem('chat');
-    localStorage.removeItem('txid'); // Remove the stored txid
+    localStorage.removeItem('txid');
     window.location.reload();
   };
 

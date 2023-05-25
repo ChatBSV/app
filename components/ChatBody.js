@@ -1,5 +1,3 @@
-// components/ChatBody.js
-
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
@@ -20,12 +18,6 @@ function ChatBody({ chat, isLoading, isError }) {
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-        <ChatMessage
-          message="Welcome to ChatBSV. Create a MoneyButton account if you don't have one yet."
-          role="intro"
-          className={styles.introMessage}
-        />
-
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
