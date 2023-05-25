@@ -14,7 +14,7 @@ function IndexPage() {
   const [isError, setIsError] = useState(false);
   const [chat, setChat] = useState([]);
 
-  const handleSubmit = async (userMessage, totalTokens, txid) => {
+  const handleSubmit = async (userMessage) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -34,12 +34,14 @@ function IndexPage() {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
-        txid: '', // Set initial value of txid as an empty string
+        txid: localStorage.getItem('txid') || '', // Retrieve the stored txid or use an empty string
       });
 
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
       const txid = response.data.txid; // Extract the txid from the response
+
+      localStorage.setItem('txid', txid); // Store the txid in localStorage
 
       const newAssistantMessage = {
         id: nanoid(),
@@ -65,17 +67,24 @@ function IndexPage() {
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
-      setChat(JSON.parse(storedChat));
+      const parsedChat = JSON.parse(storedChat);
+      setChat(parsedChat);
+
+      const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
+      if (lastAssistantMessage) {
+        localStorage.setItem('txid', lastAssistantMessage.txid); // Retrieve and store the last known txid
+      }
     }
   }, []);
 
   const resetChat = () => {
     localStorage.removeItem('chat');
+    localStorage.removeItem('txid'); // Remove the stored txid
     window.location.reload();
   };
 
   return (
-    <div class="viewport">
+    <div className="viewport">
       <Head>
         <title>ChatBSV - OpenAI on Bitcoin</title>
         <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
