@@ -15,6 +15,9 @@ function IndexPage() {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
+
+  
+  
   const handleSubmit = async (userMessage, userTokens, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
@@ -22,24 +25,24 @@ function IndexPage() {
       message: userMessage,
       tokens: userTokens,
     };
-
+  
     setChat((prevChat) => {
       localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
       return [...prevChat, newUserMessage];
     });
-
+  
     setIsLoading(true);
     setIsError(false);
-
+  
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
       });
-
+  
       const assistantMessage = response.data.message;
       const totalTokens = response.data.totalTokens;
-
+  
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
@@ -47,12 +50,12 @@ function IndexPage() {
         tokens: totalTokens,
         txid: userTxid,
       };
-
+  
       setChat((prevChat) => {
         localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
       });
-
+  
       setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -60,6 +63,7 @@ function IndexPage() {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
