@@ -33,8 +33,7 @@ const ChatInput = ({ handleSubmit }) => {
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          const { totalTokens, txid } = data; // Extract totalTokens and txid from the response
-          handleSubmit(prompt, totalTokens, txid); // Pass totalTokens and txid to the handleSubmit function
+          handleSubmit(prompt, data.totalTokens, data.txid);
         } else {
           console.error('Error:', response.status);
         }

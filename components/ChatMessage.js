@@ -8,12 +8,6 @@ function ChatMessage({ message, role, totalTokens, txid }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
-  const messageStyle = {
-    fontSize: '16pt',
-  };
-  const linkStyle = {
-    fontSize: '14pt',
-  };
 
   return (
     <div
@@ -25,16 +19,15 @@ function ChatMessage({ message, role, totalTokens, txid }) {
     >
       <div>
         <span
-          className={styles.message}
-          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
+          style={isAssistantMessage ? { fontSize: '16pt' } : { fontSize: '16pt' }}
         >
-          <span style={{ fontSize: '16px' }}>{message}</span>
+          {message}
         </span>
       </div>
       {isAssistantMessage && (
         <div>
           <a
-            href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
+            href={`https://whatsonchain.com/tx/${txid}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -44,9 +37,7 @@ function ChatMessage({ message, role, totalTokens, txid }) {
               alt="Transaction Link"
             />
           </a>
-          <span style={{ fontSize: '14px', color: 'gray' }}>
-            {totalTokens} Tokens
-          </span>
+          <span style={{ fontSize: '14pt', color: 'gray' }}>{totalTokens} Tokens</span>
         </div>
       )}
     </div>

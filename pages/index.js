@@ -15,12 +15,12 @@ function IndexPage() {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const handleSubmit = async (userMessage) => {
+  const handleSubmit = async (userMessage, totalTokens, txid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       message: userMessage,
-      totalTokens: userMessage.split(' ').length,
+      totalTokens,
     };
 
     setChat((prevChat) => {
@@ -38,14 +38,12 @@ function IndexPage() {
       });
 
       const assistantMessage = response.data.message;
-      const totalTokens = response.data.totalTokens;
-
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
-        totalTokens: totalTokens,
-        txid: txid, // Use the current txid
+        totalTokens: response.data.totalTokens,
+        txid: txid,
       };
 
       setChat((prevChat) => {
@@ -69,7 +67,7 @@ function IndexPage() {
 
       const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
       if (lastAssistantMessage) {
-        setTxid(lastAssistantMessage.txid); // Set the txid from the last known assistant message
+        setTxid(lastAssistantMessage.txid);
       }
     }
   }, []);
@@ -84,17 +82,38 @@ function IndexPage() {
     <div className="viewport">
       <Head>
         <title>ChatBSV - OpenAI on Bitcoin</title>
-        <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
+        <meta
+          name="description"
+          content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens."
+        />
         <meta property="og:title" content="ChatBSV - OpenAI on Bitcoin" />
-        <meta property="og:description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
-        <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png" />
+        <meta
+          property="og:description"
+          content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens."
+        />
+        <meta
+          property="og:image"
+          content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png"
+        />
         <meta property="twitter:title" content="ChatBSV - OpenAI on Bitcoin" />
-        <meta property="twitter:description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
-        <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png" />
+        <meta
+          property="twitter:description"
+          content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens."
+        />
+        <meta
+          property="twitter:image"
+          content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png"
+        />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9af32cc531d70618d3_ChatBSV_favicon.png" />
-        <link rel="apple-touch-icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png" />
+        <link
+          rel="icon"
+          href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9af32cc531d70618d3_ChatBSV_favicon.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png"
+        />
       </Head>
       <Header resetChat={resetChat} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
