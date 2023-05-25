@@ -45,7 +45,7 @@ function ChatMessage({ message, role, tokens, txid }) {
             />
           </a>
           <span style={{ fontSize: '14px', color: 'gray' }}>
-            {tokens} Tokens
+            {totalTokens} Tokens
           </span>
         </div>
       )}
