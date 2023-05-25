@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ message, role, tokens, txid }) {
+function ChatMessage({ message, role, totalTokens, txid }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';

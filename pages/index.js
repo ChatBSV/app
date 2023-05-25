@@ -20,7 +20,7 @@ function IndexPage() {
       id: nanoid(),
       role: 'user',
       message: userMessage,
-      tokens: userMessage.split(' ').length,
+      totalTokens: userMessage.split(' ').length,
     };
 
     setChat((prevChat) => {
@@ -44,7 +44,7 @@ function IndexPage() {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
-        tokens: totalTokens,
+        totalTokens: totalTokens,
         txid: txid, // Use the current txid
       };
 

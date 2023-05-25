@@ -25,7 +25,7 @@ function ChatBody({ chat, isLoading, isError }) {
             key={message.id}
             message={message.message}
             role={message.role}
-            tokens={message.tokens}
+            totalTokens={message.totalTokens}
             txid={message.txid}
           />
         ))}
