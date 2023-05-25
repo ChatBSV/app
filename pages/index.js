@@ -1,7 +1,5 @@
 // index.js
 
-// index.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { nanoid } from 'nanoid';
@@ -17,12 +15,12 @@ function IndexPage() {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const handleSubmit = async (userMessage) => {
+  const handleSubmit = async (userMessage, userTokens, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       message: userMessage,
-      tokens: userMessage.split(' ').length, // Add the tokens property
+      tokens: userTokens,
     };
 
     setChat((prevChat) => {
@@ -46,8 +44,8 @@ function IndexPage() {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
-        tokens: totalTokens, // Pass the totalTokens as tokens
-        txid: txid, // Use the current txid
+        tokens: totalTokens,
+        txid: userTxid,
       };
 
       setChat((prevChat) => {
@@ -71,7 +69,7 @@ function IndexPage() {
 
       const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
       if (lastAssistantMessage) {
-        setTxid(lastAssistantMessage.txid); // Set the txid from the last known assistant message
+        setTxid(lastAssistantMessage.txid);
       }
     }
   }, []);

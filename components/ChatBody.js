@@ -20,6 +20,12 @@ function ChatBody({ chat, isLoading, isError }) {
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
+      <ChatMessage
+            message="Welcome to ChatBSV. Ask me anything."
+            role="intro"
+            className={styles.introMessage}
+          />
+
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
