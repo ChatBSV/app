@@ -1,4 +1,4 @@
-// /Components/ChatInput.js
+// components/ChatInput.js
 
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
@@ -33,8 +33,8 @@ const ChatInput = ({ handleSubmit }) => {
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          console.log('Assistant Response:', assistantResponse);
-          handleSubmit(prompt);
+          const { totalTokens, txid } = data; // Extract totalTokens and txid from the response
+          handleSubmit(prompt, totalTokens, txid); // Pass totalTokens and txid to the handleSubmit function
         } else {
           console.error('Error:', response.status);
         }

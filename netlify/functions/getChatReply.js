@@ -39,10 +39,11 @@ exports.handler = async function (event, context) {
 
     const assistantResponse = response.data.choices[0].message.content;
     const totalTokens = response.data.choices[0].message.total_tokens;
+    const updatedTxid = txid; // Assign txid to a new variable to ensure its availability in the response
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, totalTokens, txid }), // Include txid in the response body
+      body: JSON.stringify({ message: assistantResponse, totalTokens, txid: updatedTxid }), // Include updated txid in the response body
     };
   } catch (error) {
     console.error('Error:', error);
@@ -55,4 +56,3 @@ exports.handler = async function (event, context) {
     };
   }
 };
-
