@@ -1,3 +1,5 @@
+// components/ChatMessage.js
+
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
@@ -6,7 +8,6 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
-
   const messageStyle = {
     fontSize: '16pt',
   };
@@ -20,7 +21,10 @@ function ChatMessage({ message, role, tokens, txid }) {
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
       <div>
-        <span className={styles.message} style={isAssistantMessage ? messageStyle : {}}>
+        <span
+          className={styles.message}
+          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
+        >
           {message}
         </span>
       </div>
@@ -28,7 +32,7 @@ function ChatMessage({ message, role, tokens, txid }) {
         <div>
           {txid && (
             <a
-              href={`https://whatsonchain.com/tx/${txid}`}
+              href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -49,3 +53,4 @@ function ChatMessage({ message, role, tokens, txid }) {
 }
 
 export default ChatMessage;
+
