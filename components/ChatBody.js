@@ -22,7 +22,6 @@ function ChatBody({ chat, isLoading, isError }) {
       <div className={styles.chatContainer}>
       <ChatMessage
             message="Welcome to ChatBSV. Ask me anything."
-            role="intro"
             className={styles.introMessage}
           />
 
