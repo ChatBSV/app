@@ -14,7 +14,7 @@ function IndexPage() {
   const [isError, setIsError] = useState(false);
   const [chat, setChat] = useState([]);
 
-  const handleSubmit = async (userMessage) => {
+  const handleSubmit = async (userMessage, totalTokens, txid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
