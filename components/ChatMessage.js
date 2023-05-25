@@ -11,6 +11,9 @@ function ChatMessage({ message, role, tokens, txid }) {
   const messageStyle = {
     fontSize: '16pt',
   };
+  const linkStyle = {
+    fontSize: '14pt',
+  };
 
   return (
     <div
@@ -25,7 +28,7 @@ function ChatMessage({ message, role, tokens, txid }) {
           className={styles.message}
           style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
         >
-          {message}
+          <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
       {isAssistantMessage && (
