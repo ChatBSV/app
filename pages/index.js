@@ -12,6 +12,7 @@ import './global.css';
 function IndexPage({ tokens }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
@@ -22,6 +23,9 @@ function IndexPage({ tokens }) {
       message: userMessage,
       tokens: userTokens,
     };
+
+    // add the user's message to the chat immediately
+    setChat((prevChat) => [...prevChat, newUserMessage]);
 
     setIsError(false); // Set error state to false before making the API request
     setIsLoading(true);
@@ -34,7 +38,6 @@ function IndexPage({ tokens }) {
 
       const assistantMessage = response.data.message;
       const responseTokens = response.data.tokens;
-      console.log('Tokens:', responseTokens); // Log the tokens value
 
       const newAssistantMessage = {
         id: nanoid(),
@@ -44,16 +47,16 @@ function IndexPage({ tokens }) {
         txid: userTxid,
       };
 
-      setChat((prevChat) => {
-        return [...prevChat, newUserMessage, newAssistantMessage];
-      });
-        localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage, newAssistantMessage]));
-        
+      // update the chat with the assistant's message
+      setChat((prevChat) => [...prevChat, newAssistantMessage]);
+
+      localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage, newAssistantMessage]));
 
       setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
+      setErrorMessage(error.message || 'An error occurred');
       setIsLoading(false); // Set loading state to false if there is an error
     }
   };
@@ -113,9 +116,9 @@ function IndexPage({ tokens }) {
           rel="apple-touch-icon"
           href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png"
         />
-      </Head>
+        </Head>
       <Header resetChat={resetChat} />
-      <ChatBody chat={chat} isLoading={isLoading} isError={isError} />
+      <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
       <ChatInput handleSubmit={handleSubmit} />
     </div>
   );

@@ -39,22 +39,25 @@ exports.handler = async function (event, context) {
 
     const assistantResponse = response.data.choices[0].message.content;
     const total_tokens = response.data.usage.prompt_tokens + response.data.usage.completion_tokens;
-    
-    console.log('Tokens:', total_tokens); // Log the tokens value
-    
+
     return {
-       statusCode: 200,
-       body: JSON.stringify({ message: assistantResponse, tokens: total_tokens, txid }),
+      statusCode: 200,
+      body: JSON.stringify({ message: assistantResponse, tokens: total_tokens, txid }),
     };
-    
   } catch (error) {
     console.error('Error:', error);
     if (error.response && error.response.data && error.response.data.error) {
       console.error('API Error:', error.response.data.error.message);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: error.response.data.error.message }),
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'An error occurred during processing.' }),
+      };
     }
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'An error occurred during processing.' }),
-    };
   }
 };
+
