@@ -1,3 +1,8 @@
+// netlify/functions/getChatReply.js
+
+const axios = require('axios');
+
+
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const { content: prompt, history } = JSON.parse(event.body);
