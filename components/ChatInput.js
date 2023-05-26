@@ -80,17 +80,20 @@ const ChatInput = ({ handleSubmit }) => {
 
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-        <input
-          type="text"
-          onKeyDown={handleKeyDown}
-          className={styles.inputField}
-          placeholder="Enter your prompt..."
-          ref={inputRef}
-        /><div className='mbWrapper'>
-        <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
-        </div></form>
+  <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+    <input
+      type="text"
+      onKeyDown={handleKeyDown}
+      className={styles.inputField}
+      placeholder="Enter your prompt..."
+      ref={inputRef}
+    />
+    <div className={styles.mbWrapper}>
+      <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
     </div>
+  </form>
+</div>
+
   );
 };
 

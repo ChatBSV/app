@@ -11,6 +11,7 @@
   .mbWrapper {
     overflow: hidden;
     width: 180px;
+    max-width: 180px;
   }
 
 .chatInput {
@@ -22,6 +23,7 @@
     border-radius: 8px;
     display: flex;
     width: 100%;
+    flex: 1;
 }
 
 .inputField {
@@ -108,6 +110,7 @@
         min-width: 100%;
         justify-content: center;
         align-items: center;
+        flex: none;
     }
 
     .inputField {
@@ -126,6 +129,7 @@
         font-size: 16px;
         max-width: 100%;
         min-width: 100%;
+        flex: none;
     }
 
     .submit {
