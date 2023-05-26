@@ -16,7 +16,7 @@ exports.handler = async function (event, context) {
     ];
   } else {
     messages = [
-      { role: 'system', content: CORE_PROMPT },
+      { role: 'system', content: process.env.CORE_PROMPT },
       { role: 'user', content: prompt },
     ];
   }
