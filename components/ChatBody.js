@@ -6,6 +6,7 @@ import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
+  const [userSubmitted, setUserSubmitted] = useState(false);
 
   useEffect(() => {
     scrollToBottom();
@@ -17,13 +18,20 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
+  const handleUserSubmit = () => {
+    setUserSubmitted(true);
+    // Handle user submission logic
+  };
+
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-      <ChatMessage
+        {userSubmitted && (
+          <ChatMessage
             message="Welcome to ChatBSV. Ask me anything."
             className={styles.introMessage}
           />
+        )}
 
         {chat.map((message) => (
           <ChatMessage
@@ -35,7 +43,7 @@ function ChatBody({ chat, isLoading, isError }) {
           />
         ))}
 
-        {isLoading && (
+        {isLoading && !userSubmitted && (
           <ChatMessage
             message="Counting satoshis, please hold..."
             role="loading"
@@ -56,5 +64,6 @@ function ChatBody({ chat, isLoading, isError }) {
     </div>
   );
 }
+
 
 export default ChatBody;
