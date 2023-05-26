@@ -22,6 +22,7 @@ function IndexPage({ tokens }) {
       role: 'user',
       message: userMessage,
       tokens: userTokens,
+      txid: userTxid,
     };
   
     // Update chat state immediately with the user message
@@ -54,6 +55,10 @@ function IndexPage({ tokens }) {
       // Update chat state with the assistant message
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
       localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage, newAssistantMessage]));
+      
+      // Save the txid in local storage
+      setTxid(userTxid);
+      localStorage.setItem('txid', userTxid);
   
       setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
@@ -66,14 +71,13 @@ function IndexPage({ tokens }) {
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
+    const storedTxid = localStorage.getItem('txid');
     if (storedChat) {
       const parsedChat = JSON.parse(storedChat);
       setChat(parsedChat);
-
-      const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
-      if (lastAssistantMessage) {
-        setTxid(lastAssistantMessage.txid);
-      }
+    }
+    if (storedTxid) {
+      setTxid(storedTxid);
     }
   }, []);
 
