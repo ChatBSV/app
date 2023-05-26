@@ -64,8 +64,12 @@ const ChatInput = ({ handleSubmit }) => {
         data: { input: inputRef.current.value },
         onPayment: handleMoneyButtonPayment,
       });
+
+      return () => {
+        moneyButton.unmount();
+      };
     }
-  }, [moneyButtonLoaded, handleFormSubmit]);
+  }, [moneyButtonLoaded]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
