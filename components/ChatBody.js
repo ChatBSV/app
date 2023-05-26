@@ -22,6 +22,7 @@ function ChatBody({ chat, isLoading, isError }) {
       <div className={styles.chatContainer}>
         <ChatMessage
           message="Welcome to ChatBSV. Ask me anything."
+          role="intro"
           className={styles.introMessage}
         />
 
@@ -35,21 +36,21 @@ function ChatBody({ chat, isLoading, isError }) {
           />
         ))}
 
-        {isLoading ? (
+        {isLoading && (
           <ChatMessage
             message="Counting satoshis, please hold..."
             role="loading"
             className={styles.loadingMessage}
           />
-        ) : null}
+        )}
 
-        {isError ? (
+        {isError && (
           <ChatMessage
             message="OpenAI error. Please try again or come back later."
             role="error"
             className={styles.errorMessage}
           />
-        ) : null}
+        )}
 
         <div className={styles.spacer}></div>
       </div>

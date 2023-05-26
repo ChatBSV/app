@@ -28,8 +28,8 @@ function IndexPage({ tokens }) {
       return [...prevChat, newUserMessage];
     });
   
+    setIsError(false); // Set error state to false before making the API request
     setIsLoading(true);
-    setIsError(false);
   
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
@@ -46,21 +46,22 @@ function IndexPage({ tokens }) {
         role: 'assistant',
         message: assistantMessage,
         tokens: responseTokens,
-        txid: txid,
+        txid: userTxid,
       };
   
       setChat((prevChat) => {
-        localStorage.setItem('chat', JSON.stringify([...prevChat, txid, newAssistantMessage]));
+        localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
       });
   
-      setIsLoading(false);
+      setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
-      setIsLoading(false);
+      setIsLoading(false); // Set loading state to false if there is an error
     }
   };
+  
   
 
   useEffect(() => {
