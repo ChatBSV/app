@@ -2,35 +2,40 @@
 
 const axios = require('axios');
 
-const apiClient = axios.create({
-  baseURL: 'https://api.openai.com/v1',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, lastUserMessage, txid } = JSON.parse(event.body);
+  const { prompt, lastUserMessage, txid, history } = JSON.parse(event.body);
 
-  const messages = [
-    { role: 'system', content: CORE_PROMPT },
-    ...(lastUserMessage !== prompt
-      ? [{ role: 'user', content: lastUserMessage }]
-      : []),
-    { role: 'user', content: prompt },
-  ];
+  let messages;
+
+  if (history && history.length > 0) {
+    messages = [
+      ...history.slice(-1), // Include only the most recent AI response as context
+      { role: 'user', content: lastUserMessage },
+      { role: 'user', content: prompt },
+    ];
+  } else {
+    messages = [
+      { role: 'system', content: CORE_PROMPT },
+      { role: 'user', content: prompt },
+    ];
+  }
 
   try {
-    const response = await apiClient.post('/chat/completions', {
-      model: 'gpt-3.5-turbo',
-      messages,
-      max_tokens: 2000,
-    }, {
-      headers: {
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-3.5-turbo',
+        messages: messages,
+        max_tokens: 2000,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     const assistantResponse = response.data.choices[0].message.content;
     const tokens = response.data.choices[0].message.total_tokens;
@@ -50,4 +55,3 @@ exports.handler = async function (event, context) {
     };
   }
 };
-
