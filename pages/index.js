@@ -38,14 +38,14 @@ function IndexPage({ tokens }) {
       });
   
       const assistantMessage = response.data.message;
-      const tokens = response.data.tokens;
-      console.log('Tokens:', tokens); // Log the tokens value
+      const responseTokens = response.data.tokens;
+      console.log('Tokens:', responseTokens); // Log the tokens value
   
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
-        tokens: tokens,
+        tokens: responseTokens,
         txid: userTxid,
       };
   
