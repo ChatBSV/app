@@ -18,11 +18,8 @@ function IndexPage({ tokens }) {
 
   const handleSubmit = async (userMessage, userTokens, userTxid) => {
     const newUserMessage = {
-      id: nanoid(),
       role: 'user',
-      message: userMessage,
-      tokens: userTokens,
-      txid: userTxid,
+      content: userMessage,
     };
 
     // Update chat state immediately with the user message

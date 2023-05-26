@@ -1,17 +1,12 @@
-// netlify/functions/getChatReply.js
-
-const axios = require('axios');
-
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, lastUserMessage, history } = JSON.parse(event.body);
+  const { content: prompt, history } = JSON.parse(event.body);
 
   let messages;
 
   if (history && history.length > 0) {
     messages = [
-      ...history.slice(-1), // Include only the most recent AI response as context
-      { role: 'user', content: lastUserMessage },
+      ...history.slice(-1),
       { role: 'user', content: prompt },
     ];
   } else {
@@ -26,7 +21,10 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages,
+        messages: messages.map((message) => ({
+          role: message.role,
+          content: message.content,
+        })),
         max_tokens: 2000,
       },
       {
