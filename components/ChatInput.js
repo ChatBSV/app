@@ -24,8 +24,23 @@ const ChatInput = ({ handleSubmit }) => {
   const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
-      handleSubmit(prompt, txid);
-      inputRef.current.value = '';
+      try {
+        const response = await fetch('/.netlify/functions/getChatReply', {
+          method: 'POST',
+          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const assistantResponse = data.message;
+          handleSubmit(prompt, data.tokens, data.txid);
+          inputRef.current.value = '';
+        } else {
+          console.error('Error:', response.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     } else {
       console.log('Prompt is empty. No request sent.');
     }
@@ -35,6 +50,7 @@ const ChatInput = ({ handleSubmit }) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
     setTxid(txid);
+    handleFormSubmit();
   };
 
   useEffect(() => {
@@ -59,25 +75,25 @@ const ChatInput = ({ handleSubmit }) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleFormSubmit();
     }
   };
 
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-        <input
-          type="text"
-          onKeyDown={handleKeyDown}
-          className={styles.inputField}
-          placeholder="Enter your prompt..."
-          ref={inputRef}
-        />
-        <div className={styles.mbWrapper}>
-          <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
-        </div>
-      </form>
+  <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+    <input
+      type="text"
+      onKeyDown={handleKeyDown}
+      className={styles.inputField}
+      placeholder="Enter your prompt..."
+      ref={inputRef}
+    />
+    <div className={styles.mbWrapper}>
+      <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
     </div>
+  </form>
+</div>
+
   );
 };
 
