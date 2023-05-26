@@ -9,8 +9,6 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
 
-  console.log('Tokens:', tokens);
-  console.log('Txid:', txid);
 
   return (
     <div
