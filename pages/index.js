@@ -24,26 +24,25 @@ function IndexPage({ tokens }) {
       tokens: userTokens,
       txid: userTxid,
     };
-  
+
     // Update chat state immediately with the user message
     setChat((prevChat) => [...prevChat, newUserMessage]);
     localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
-  
+
     setIsError(false); // Reset error state before making the API request
     setIsLoading(true); // Set loading state to true before making the API request
-  
+
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
         history: chat, // include the chat history in the request body
       });
-      
-  
+
       const assistantMessage = response.data.message;
       const responseTokens = response.data.tokens;
       console.log('Tokens:', responseTokens); // Log the tokens value
-  
+
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
@@ -51,15 +50,15 @@ function IndexPage({ tokens }) {
         tokens: responseTokens,
         txid: userTxid,
       };
-  
+
       // Update chat state with the assistant message
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
       localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage, newAssistantMessage]));
-      
+
       // Save the txid in local storage
       setTxid(userTxid);
       localStorage.setItem('txid', userTxid);
-  
+
       setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
       console.error('Error:', error);
@@ -67,7 +66,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false); // Set loading state to false if there is an error
     }
   };
-  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
@@ -123,7 +121,7 @@ function IndexPage({ tokens }) {
           rel="apple-touch-icon"
           href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png"
         />
-        </Head>
+      </Head>
       <Header resetChat={resetChat} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
       <ChatInput handleSubmit={handleSubmit} />
