@@ -46,6 +46,7 @@ const ChatInput = ({ handleSubmit }) => {
     }
   };
   
+  
 
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
