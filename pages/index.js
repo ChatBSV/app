@@ -21,43 +21,39 @@ function IndexPage({ tokens }) {
       role: 'user',
       message: userMessage,
       tokens: userTokens,
-      txid: userTxid, // Include the txid in the user message
     };
-
+  
     setChat((prevChat) => {
       localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
       return [...prevChat, newUserMessage];
     });
-
+  
     setIsLoading(true);
     setIsError(false);
-
+  
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
-        txid: userTxid, // Pass the txid to the serverless function
       });
-
+  
       const assistantMessage = response.data.message;
       const tokens = response.data.tokens;
-      const newTxid = response.data.txid; // Extract the updated txid from the response
-
+      console.log('Tokens:', tokens); // Log the tokens value
+  
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
         tokens: tokens,
-        txid: newTxid, // Update the txid
+        txid: userTxid,
       };
-
+  
       setChat((prevChat) => {
         localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
       });
-
-      setTxid(newTxid); // Update the txid state
-
+  
       setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -65,6 +61,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
