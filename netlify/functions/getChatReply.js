@@ -8,9 +8,13 @@ exports.handler = async function (event, context) {
 
   let messages;
 
-  // If history is available
-  if (history && history.length > 0) {
-    messages = [...history, { role: 'user', content: prompt }];
+  // If history is available and there is a previous AI message
+  if (history && history.some(message => message.role === 'assistant')) {
+    const lastAiMessage = history.filter(message => message.role === 'assistant').slice(-1)[0];
+    messages = [
+      lastAiMessage,
+      { role: 'user', content: prompt },
+    ];
   } else {
     messages = [
       { role: 'system', content: CORE_PROMPT },
@@ -22,7 +26,7 @@ exports.handler = async function (event, context) {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'text-davinci-004', // use GPT-4 model
+        model: 'gpt-3.5-turbo',
         messages: messages,
         max_tokens: 2000,
       },
@@ -46,7 +50,7 @@ exports.handler = async function (event, context) {
     if (error.response && error.response.data && error.response.data.error) {
       console.error('API Error:', error.response.data.error.message);
       return {
-        statusCode: error.response.status, // Return the actual status code from the error response
+        statusCode: 500,
         body: JSON.stringify({ error: error.response.data.error.message }),
       };
     } else {
@@ -57,5 +61,5 @@ exports.handler = async function (event, context) {
       };
     }
   }
-
 };
+
