@@ -8,6 +8,9 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
+  const messageStyle = {
+    fontSize: isAssistantMessage ? '16pt' : '16px',
+  };
 
 
   return (
