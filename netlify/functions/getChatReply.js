@@ -54,10 +54,12 @@ exports.handler = async function (event, context) {
         body: JSON.stringify({ error: error.response.data.error.message }),
       };
     } else {
+      console.error('Detailed Error:', error.message, error.stack);
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'An error occurred during processing.' }),
       };
     }
   }
+
 };
