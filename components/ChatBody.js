@@ -6,7 +6,6 @@ import ChatMessage from './ChatMessage';
 
 function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
-  const [userSubmitted, setUserSubmitted] = useState(false);
 
   useEffect(() => {
     scrollToBottom();
@@ -18,20 +17,13 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
-  const handleUserSubmit = () => {
-    setUserSubmitted(true);
-    // Handle user submission logic
-  };
-
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-        {userSubmitted && (
-          <ChatMessage
-            message="Welcome to ChatBSV. Ask me anything."
-            className={styles.introMessage}
-          />
-        )}
+        <ChatMessage
+          message="Welcome to ChatBSV. Ask me anything."
+          className={styles.introMessage}
+        />
 
         {chat.map((message) => (
           <ChatMessage
@@ -43,27 +35,30 @@ function ChatBody({ chat, isLoading, isError }) {
           />
         ))}
 
-        {isLoading && !userSubmitted && (
+        {isLoading ? (
           <ChatMessage
             message="Counting satoshis, please hold..."
             role="loading"
             className={styles.loadingMessage}
+            tokens={null} // Remove tokens prop for loading message
+            txid={null} // Remove txid prop for loading message
           />
-        )}
+        ) : null}
 
-        {isError && (
+        {isError ? (
           <ChatMessage
             message="OpenAI error. Please try again or come back later."
             role="error"
             className={styles.errorMessage}
+            tokens={null} // Remove tokens prop for error message
+            txid={null} // Remove txid prop for error message
           />
-        )}
+        ) : null}
 
         <div className={styles.spacer}></div>
       </div>
     </div>
   );
 }
-
 
 export default ChatBody;
