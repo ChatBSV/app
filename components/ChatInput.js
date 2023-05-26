@@ -33,7 +33,7 @@ const ChatInput = ({ handleSubmit }) => {
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          handleSubmit(prompt, data.totalTokens, data.txid);
+          handleSubmit(prompt, data.tokens, data.txid);
           inputRef.current.value = '';
         } else {
           console.error('Error:', response.status);
