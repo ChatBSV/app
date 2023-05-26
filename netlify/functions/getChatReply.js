@@ -38,14 +38,15 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-    const tokens = response.data.choices[0].message.total_tokens;
-
-    console.log('Tokens:', tokens); // Log the tokens value
-
+    const total_tokens = response.data.usage.prompt_tokens + response.data.usage.completion_tokens;
+    
+    console.log('Tokens:', total_tokens); // Log the tokens value
+    
     return {
-      statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens, txid }),
+       statusCode: 200,
+       body: JSON.stringify({ message: assistantResponse, tokens: total_tokens, txid }),
     };
+    
   } catch (error) {
     console.error('Error:', error);
     if (error.response && error.response.data && error.response.data.error) {

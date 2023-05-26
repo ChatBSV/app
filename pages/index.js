@@ -45,9 +45,10 @@ function IndexPage({ tokens }) {
       };
 
       setChat((prevChat) => {
-        localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage, newAssistantMessage]));
         return [...prevChat, newUserMessage, newAssistantMessage];
       });
+        localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage, newAssistantMessage]));
+        
 
       setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
