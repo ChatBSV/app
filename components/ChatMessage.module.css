@@ -33,7 +33,5 @@
   }
 
   .chatLink {
-    border-top: #ddd;
-    border-top-width: 1px;
-    border-top-style: solid;
+    border-top: 1px solid #ddd;
   }
