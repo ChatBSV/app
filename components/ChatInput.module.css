@@ -26,8 +26,8 @@
     color: #555;
     font-weight: 600;
     font-size: 16pt;
-    background-color: #fcfcfc;
-    border: 2px solid #4772f6;
+    background-color: #F2EFEF;
+    border: 2px solid #DAD8D8;
     border-radius: 30px;
     margin-bottom: 0;
     padding-left: 30px;
@@ -39,12 +39,12 @@
 .inputField:active,
 .inputField:focus {
     border-style: solid;
-    border-color: #4772f6;
+    border-color: #DAD8D8;
     box-shadow: none;
 }
 
 .inputField:focus-visible {
-    border-color: #4772f6;
+    border-color: #DAD8D8;
     box-shadow: none;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .inputField::placeholder {
-    color: #555;
+    color: #979797;
 }
 .submit {
     color: #ffffff;
@@ -113,8 +113,8 @@
         font-weight: 600;
         font-size: 16pt;
         margin-top: 20px;
-        background-color: #fcfcfc;
-        border: 2px solid #4772f6;
+        background-color: #F2EFEF;
+        border: 2px solid #DAD8D8;
         border-radius: 8px;
         margin-bottom: 0;
         padding-left: 16px;
@@ -138,21 +138,21 @@
     .inputField:active,
     .inputField:focus {
         border-style: solid;
-        border-color: #4772f6;
+        border-color: #DAD8D8;
         box-shadow: none;
     }
     
     .inputField:focus-visible {
-        border-color: #4772f6;
+        border-color: #DAD8D8;
         box-shadow: none;
     }
     
     .inputField::-ms-input-placeholder {
-        color: #555;
+        color: #979797;
     }
     
     .inputField::placeholder {
-        color: #555;
+        color: #979797;
     }
 
 
