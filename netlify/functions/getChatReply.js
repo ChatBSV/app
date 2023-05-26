@@ -4,14 +4,15 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, lastUserMessage, txid, history } = JSON.parse(event.body);
+  const { prompt, history } = JSON.parse(event.body);
 
   let messages;
 
-  if (history && history.length > 0) {
+  // If history is available and there is a previous AI message
+  if (history && history.some(message => message.role === 'assistant')) {
+    const lastAiMessage = history.filter(message => message.role === 'assistant').slice(-1)[0];
     messages = [
-      ...history.slice(-1), // Include only the most recent AI response as context
-      { role: 'user', content: lastUserMessage },
+      lastAiMessage,
       { role: 'user', content: prompt },
     ];
   } else {
@@ -38,11 +39,11 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-    const total_tokens = response.data.usage.prompt_tokens + response.data.usage.completion_tokens;
+    const total_tokens = response.data.usage.total_tokens;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: total_tokens, txid }),
+      body: JSON.stringify({ message: assistantResponse, tokens: total_tokens }),
     };
   } catch (error) {
     console.error('Error:', error);
@@ -60,4 +61,3 @@ exports.handler = async function (event, context) {
     }
   }
 };
-

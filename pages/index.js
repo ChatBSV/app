@@ -23,22 +23,26 @@ function IndexPage({ tokens }) {
       message: userMessage,
       tokens: userTokens,
     };
-
-    // add the user's message to the chat immediately
+  
+    // Update chat state immediately with the user message
     setChat((prevChat) => [...prevChat, newUserMessage]);
-
-    setIsError(false); // Set error state to false before making the API request
-    setIsLoading(true);
-
+    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+  
+    setIsError(false); // Reset error state before making the API request
+    setIsLoading(true); // Set loading state to true before making the API request
+  
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
+        history: chat, // include the chat history in the request body
       });
-
+      
+  
       const assistantMessage = response.data.message;
       const responseTokens = response.data.tokens;
-
+      console.log('Tokens:', responseTokens); // Log the tokens value
+  
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
@@ -46,20 +50,19 @@ function IndexPage({ tokens }) {
         tokens: responseTokens,
         txid: userTxid,
       };
-
-      // update the chat with the assistant's message
+  
+      // Update chat state with the assistant message
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
-
-      localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage, newAssistantMessage]));
-
+      localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage, newAssistantMessage]));
+  
       setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
       console.error('Error:', error);
-      setIsError(true);
-      setErrorMessage(error.message || 'An error occurred');
+      setIsError(true); // Set error state to true if there is an error
       setIsLoading(false); // Set loading state to false if there is an error
     }
   };
+  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
