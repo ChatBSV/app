@@ -31,3 +31,8 @@
   .link {
     font-size: 14;
   }
+
+  .chatLink {
+    border-top: #ddd;
+    border-top-width: 1px;
+  }

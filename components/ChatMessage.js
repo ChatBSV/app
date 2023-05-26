@@ -32,7 +32,7 @@ function ChatMessage({ message, role, tokens, txid }) {
         </span>
       </div>
       {isAssistantMessage && (
-        <div>
+        <div className="chatLink">
           <a
             href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
             target="_blank"
