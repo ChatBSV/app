@@ -23,26 +23,26 @@ function IndexPage({ tokens }) {
       tokens: userTokens,
       txid: userTxid, // Include the txid in the user message
     };
-  
+
     setChat((prevChat) => {
       localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
       return [...prevChat, newUserMessage];
     });
-  
+
     setIsLoading(true);
     setIsError(false);
-  
+
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt: userMessage,
         lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
         txid: userTxid, // Pass the txid to the serverless function
       });
-  
+
       const assistantMessage = response.data.message;
       const tokens = response.data.tokens;
       const newTxid = response.data.txid; // Extract the updated txid from the response
-  
+
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
@@ -50,14 +50,14 @@ function IndexPage({ tokens }) {
         tokens: tokens,
         txid: newTxid, // Update the txid
       };
-  
+
       setChat((prevChat) => {
         localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
       });
-  
+
       setTxid(newTxid); // Update the txid state
-  
+
       setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -65,7 +65,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
@@ -89,7 +88,7 @@ function IndexPage({ tokens }) {
   return (
     <div className="viewport">
       <Head>
-      <title>ChatBSV - OpenAI on Bitcoin</title>
+        <title>ChatBSV - OpenAI on Bitcoin</title>
         <meta
           name="description"
           content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens."

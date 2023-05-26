@@ -40,8 +40,6 @@ function ChatBody({ chat, isLoading, isError }) {
             message="Counting satoshis, please hold..."
             role="loading"
             className={styles.loadingMessage}
-            tokens={null} // Remove tokens prop for loading message
-            txid={null} // Remove txid prop for loading message
           />
         ) : null}
 
@@ -50,8 +48,6 @@ function ChatBody({ chat, isLoading, isError }) {
             message="OpenAI error. Please try again or come back later."
             role="error"
             className={styles.errorMessage}
-            tokens={null} // Remove tokens prop for error message
-            txid={null} // Remove txid prop for error message
           />
         ) : null}
 
