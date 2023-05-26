@@ -49,7 +49,7 @@
 }
 
 .inputField::-ms-input-placeholder {
-    color: #555;
+    color: #979797;
 }
 
 .inputField::placeholder {
