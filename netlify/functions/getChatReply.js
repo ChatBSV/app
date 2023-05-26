@@ -1,18 +1,18 @@
+User
 // netlify/functions/getChatReply.js
 
 const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, history, txid } = JSON.parse(event.body);
+  const { prompt, lastUserMessage, txid, history } = JSON.parse(event.body);
 
   let messages;
 
-  // If history is available and there is a previous AI message
-  if (history && history.some(message => message.role === 'assistant')) {
-    const lastAiMessage = history.filter(message => message.role === 'assistant').slice(-1)[0];
+  if (history && history.length > 0) {
     messages = [
-      lastAiMessage,
+      ...history.slice(-1), // Include only the most recent AI response as context
+      { role: 'user', content: lastUserMessage },
       { role: 'user', content: prompt },
     ];
   } else {
@@ -27,10 +27,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages.map(message => ({
-          role: message.role,
-          content: message.content || '', // Add the content property with an empty string if it's missing
-        })),
+        messages: messages,
         max_tokens: 2000,
       },
       {
@@ -42,11 +39,11 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-    const totalTokens = response.data.usage.total_tokens;
+    const total_tokens = response.data.usage.prompt_tokens + response.data.usage.completion_tokens;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: totalTokens }),
+      body: JSON.stringify({ message: assistantResponse, tokens: total_tokens, txid }),
     };
   } catch (error) {
     console.error('Error:', error);
@@ -57,7 +54,6 @@ exports.handler = async function (event, context) {
         body: JSON.stringify({ error: error.response.data.error.message }),
       };
     } else {
-      console.error('Detailed Error:', error.message, error.stack);
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'An error occurred during processing.' }),
@@ -65,4 +61,3 @@ exports.handler = async function (event, context) {
     }
   }
 };
-
