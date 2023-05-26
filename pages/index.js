@@ -46,11 +46,11 @@ function IndexPage({ tokens }) {
         role: 'assistant',
         message: assistantMessage,
         tokens: responseTokens,
-        txid: userTxid,
+        txid: txid,
       };
   
       setChat((prevChat) => {
-        localStorage.setItem('chat', JSON.stringify([...prevChat, newAssistantMessage]));
+        localStorage.setItem('chat', JSON.stringify([...prevChat, txid, newAssistantMessage]));
         return [...prevChat, newAssistantMessage];
       });
   
