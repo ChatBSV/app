@@ -23,21 +23,21 @@ if (history && history.length > 0) {
 }
 
 
-  try {
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: messages,
-        max_tokens: 2000,
+try {
+  const response = await axios.post(
+    'https://api.openai.com/v1/chat/completions',
+    {
+      model: 'gpt-3.5-turbo',
+      messages: messages,
+      max_tokens: 2000,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
       },
-      {
-        headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    }
+  );
 
     const assistantResponse = response.data.choices[0].message.content;
     const total_tokens = response.data.usage.prompt_tokens + response.data.usage.completion_tokens;
