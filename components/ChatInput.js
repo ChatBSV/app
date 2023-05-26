@@ -34,6 +34,7 @@ const ChatInput = ({ handleSubmit }) => {
           const data = await response.json();
           const assistantResponse = data.message;
           handleSubmit(prompt, data.totalTokens, data.txid);
+          inputRef.current.value = '';
         } else {
           console.error('Error:', response.status);
         }
