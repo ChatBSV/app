@@ -3,9 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ChatInput.module.css';
 
-const ChatInput = ({ handleSubmit }) => {
+const ChatInput = ({ handleSubmit, tokens, txid }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
-  const [txid, setTxid] = useState('');
   const moneyButtonContainerRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -33,7 +32,7 @@ const ChatInput = ({ handleSubmit }) => {
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          handleSubmit(prompt, data.totalTokens, data.txid);
+          handleSubmit(prompt, data.tokens, data.txid);
         } else {
           console.error('Error:', response.status);
         }
@@ -48,7 +47,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    setTxid(txid);
+    handleSubmit(txid); // Pass the txid to the handleSubmit function
     handleFormSubmit();
   };
 
