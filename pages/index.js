@@ -38,13 +38,13 @@ function IndexPage({ tokens }) {
       });
 
       const assistantMessage = response.data.message;
-      const totalTokens = response.data.totalTokens;
+      const tokens = response.data.tokens;
 
       const newAssistantMessage = {
         id: nanoid(),
         role: 'assistant',
         message: assistantMessage,
-        tokens: totalTokens,
+        tokens: tokens,
         txid: userTxid,
       };
 

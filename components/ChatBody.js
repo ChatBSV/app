@@ -8,6 +8,8 @@ function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
+    console.log('Tokens:', tokens);
+    console.log('Txid:', txid);
     scrollToBottom();
   }, [chat, isLoading, isError]);
 

@@ -8,12 +8,9 @@ function ChatMessage({ message, role, tokens, txid }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
-  const messageStyle = {
-    fontSize: '16pt',
-  };
-  const linkStyle = {
-    fontSize: '14pt',
-  };
+
+  console.log('Tokens:', tokens);
+  console.log('Txid:', txid);
 
   return (
     <div
@@ -25,14 +22,13 @@ function ChatMessage({ message, role, tokens, txid }) {
     >
       <div>
         <span
-          className={styles.message}
           style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
         >
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
       {isAssistantMessage && (
-        <div className="chatLink">
+        <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px'  }}>
           <a
             href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
             target="_blank"
