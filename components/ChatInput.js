@@ -87,9 +87,9 @@ const ChatInput = ({ handleSubmit }) => {
           className={styles.inputField}
           placeholder="Enter your prompt..."
           ref={inputRef}
-        />
+        /><div className='mbWrapper'>
         <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div>
-      </form>
+        </div></form>
     </div>
   );
 };
