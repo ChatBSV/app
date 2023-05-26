@@ -38,7 +38,7 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-    const tokens = response.data.choices[0].message.total_tokens;
+    const tokens = response.data.choices[0].message.metadata?.usage?.total_tokens;
 
     return {
       statusCode: 200,
@@ -55,3 +55,4 @@ exports.handler = async function (event, context) {
     };
   }
 };
+
