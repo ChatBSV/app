@@ -27,7 +27,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages,
+        messages: messages.map(message => ({ role: message.role, content: message.content })),
         max_tokens: 2000,
       },
       {
@@ -39,13 +39,12 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-const totalTokens = response.data.usage.total_tokens;
+    const totalTokens = response.data.usage.total_tokens;
 
-return {
-  statusCode: 200,
-  body: JSON.stringify({ message: assistantResponse, tokens: totalTokens, txid: txid }),
-};
-
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: assistantResponse, tokens: totalTokens }),
+    };
   } catch (error) {
     console.error('Error:', error);
     if (error.response && error.response.data && error.response.data.error) {
