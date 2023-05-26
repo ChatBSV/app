@@ -9,17 +9,19 @@ exports.handler = async function (event, context) {
 
   let messages;
 
-  if (history && history.length > 0) {
-    messages = [
-      ...history.slice(-1),
-      { role: 'user', content: prompt },
-    ];
-  } else {
-    messages = [
-      { role: 'system', content: process.env.CORE_PROMPT },
-      { role: 'user', content: prompt },
-    ];
-  }
+if (history && history.length > 0) {
+  messages = [
+    ...history.slice(-1),
+    { role: 'user', content: prompt },
+  ];
+} else {
+  messages = [
+    { role: 'system', content: process.env.CORE_PROMPT },
+    { role: 'user' },
+    { role: 'user', content: prompt },
+  ];
+}
+
 
   try {
     const response = await axios.post(
