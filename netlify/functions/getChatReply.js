@@ -12,12 +12,12 @@ exports.handler = async function (event, context) {
   if (history && history.length > 0) {
     messages = [
       ...history.slice(-1),
-      { role: 'user', content: prompt || '' },
+      { role: 'user', content: prompt },
     ];
   } else {
     messages = [
       { role: 'system', content: process.env.CORE_PROMPT },
-      { role: 'user', content: prompt || '' },
+      { role: 'user', content: prompt },
     ];
   }
   
