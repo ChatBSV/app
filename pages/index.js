@@ -23,8 +23,12 @@ function IndexPage({ tokens }) {
     };
 
     // Update chat state immediately with the user message
-    setChat((prevChat) => [...prevChat, newUserMessage]);
-    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+    setChat((prevChat) => {
+      const updatedChat = [...prevChat, newUserMessage];
+      localStorage.setItem('chat', JSON.stringify(updatedChat));
+      return updatedChat;
+    });
+    
 
     setIsError(false);
     setIsLoading(true); 
