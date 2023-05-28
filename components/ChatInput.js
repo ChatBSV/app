@@ -55,30 +55,27 @@ const ChatInput = ({ handleSubmit }) => {
   };
 
   useEffect(() => {
-    if (txid) handleFormSubmit(inputRef.current.value);
-  }, [txid]);
-
-  useEffect(() => {
-    if (moneyButtonLoaded && moneyButtonContainerRef.current) {
+    if (moneyButtonLoaded && moneyButtonContainerRef.current && inputRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
       moneyButtonContainer.innerHTML = '';
-
+  
       const moneyButton = window.moneyButton.render(moneyButtonContainer, {
         to: '3332',
         amount: '0.0099',
         currency: 'USD',
-        data: { input: inputRef.current.value },
+        data: { input: inputRef.current?.value },
         onPayment: (payment) => {
           handleMoneyButtonPayment(payment);
-          handleFormSubmit(inputRef.current.value);
+          handleFormSubmit(inputRef.current?.value);
         },
       });
-
+  
       return () => {
         moneyButton.unmount();
       };
     }
-  }, [moneyButtonLoaded, inputRef.current.value]); 
+  }, [moneyButtonLoaded, inputRef.current?.value]); 
+  
 
 
   const handleKeyDown = (event) => {
