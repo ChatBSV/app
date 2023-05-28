@@ -24,23 +24,40 @@ const ChatInput = ({ handleSubmit }) => {
   const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
-      handleSubmit(prompt, txid);
-      inputRef.current.value = '';
+      try {
+        const response = await fetch('/.netlify/functions/getChatReply', {
+          method: 'POST',
+          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          const assistantResponse = data.message;
+          handleSubmit(prompt, data.tokens, data.txid);
+          inputRef.current.value = '';
+        } else {
+          console.error('Error:', response.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     } else {
       console.log('Prompt is empty. No request sent.');
     }
   };
   
+  
+
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
     setTxid(txid);
   };
-  
+
   useEffect(() => {
-    if (txid) handleFormSubmit();
+    if (txid) handleFormSubmit(inputRef.current.value);
   }, [txid]);
-  
+
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
       const moneyButtonContainer = moneyButtonContainerRef.current;
@@ -51,14 +68,18 @@ const ChatInput = ({ handleSubmit }) => {
         amount: '0.0099',
         currency: 'USD',
         data: { input: inputRef.current.value },
-        onPayment: handleMoneyButtonPayment,
+        onPayment: (payment) => {
+          handleMoneyButtonPayment(payment);
+          handleFormSubmit(inputRef.current.value);
+        },
       });
 
       return () => {
         moneyButton.unmount();
       };
     }
-  }, [moneyButtonLoaded, inputRef.current.value]);
+  }, [moneyButtonLoaded, inputRef.current.value]); 
+
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -68,7 +89,7 @@ const ChatInput = ({ handleSubmit }) => {
 
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }} className={styles.inputForm}>
+      <form onSubmit={handleFormSubmit} className={styles.inputForm}>
         <input
           type="text"
           onKeyDown={handleKeyDown}

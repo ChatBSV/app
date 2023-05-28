@@ -22,7 +22,7 @@ function IndexPage({ tokens }) {
       txid: userTxid,
     };
 
-    
+    // Update chat state immediately with the user message
     setChat((prevChat) => [...prevChat, newUserMessage]);
     localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
 
