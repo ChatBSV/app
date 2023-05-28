@@ -14,12 +14,12 @@ function IndexPage({ tokens }) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
-  const [txid, setTxid] = useState('');
 
-  const handleSubmit = async (userMessage, userTokens, userTxid) => {
+  const handleSubmit = async (userMessage, userTxid) => {
     const newUserMessage = {
       role: 'user',
       content: userMessage,
+      txid: userTxid,
     };
 
     // Update chat state immediately with the user message
@@ -52,10 +52,6 @@ function IndexPage({ tokens }) {
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
       localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage, newAssistantMessage]));
 
-      // Save the txid in local storage
-      setTxid(userTxid);
-      localStorage.setItem('txid', userTxid);
-
       setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
       console.error('Error:', error);
@@ -66,19 +62,14 @@ function IndexPage({ tokens }) {
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
-    const storedTxid = localStorage.getItem('txid');
     if (storedChat) {
       const parsedChat = JSON.parse(storedChat);
       setChat(parsedChat);
-    }
-    if (storedTxid) {
-      setTxid(storedTxid);
     }
   }, []);
 
   const resetChat = () => {
     localStorage.removeItem('chat');
-    localStorage.removeItem('txid');
     window.location.reload();
   };
 
