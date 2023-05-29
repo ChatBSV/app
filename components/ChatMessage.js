@@ -48,7 +48,7 @@ function ChatMessage({ content, role, tokens, txid }) {
   }}
 >
   <img
-    className={styles.linkIcon}
+    className={styles.copyIcon}
     src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a9bf4a0547694b83498c_linked.svg"
     alt="Transaction Link"
   />
