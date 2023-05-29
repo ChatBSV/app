@@ -14,34 +14,30 @@ function IndexPage({ tokens }) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
+  const [txid, setTxid] = useState('');
 
-  const handleSubmit = async (userMessage, userTxid) => {
+  const handleSubmit = async (userMessage, userTokens, userTxid) => {
     const newUserMessage = {
+      id: nanoid(),
       role: 'user',
-      content: userMessage,
-      txid: userTxid,
+      message: userMessage,
+      tokens: userTokens,
     };
 
-    // Update chat state immediately with the user message
-    setChat((prevChat) => {
-      const updatedChat = [...prevChat, newUserMessage];
-      localStorage.setItem('chat', JSON.stringify(updatedChat));
-      return updatedChat;
-    });
-    
+    // add the user's message to the chat immediately
+    setChat((prevChat) => [...prevChat, newUserMessage]);
 
-    setIsError(false);
-    setIsLoading(true); 
+    setIsError(false); // Set error state to false before making the API request
+    setIsLoading(true);
 
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt: userMessage, 
-        history: chat, 
+        prompt: userMessage,
+        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
       });
 
       const assistantMessage = response.data.message;
       const responseTokens = response.data.tokens;
-      console.log('Tokens:', responseTokens); 
 
       const newAssistantMessage = {
         id: nanoid(),
@@ -51,15 +47,17 @@ function IndexPage({ tokens }) {
         txid: userTxid,
       };
 
-    
+      // update the chat with the assistant's message
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
-      localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage, newAssistantMessage]));
 
-      setIsLoading(false); 
+      localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage, newAssistantMessage]));
+
+      setIsLoading(false); // Set loading state to false after receiving the assistant's response
     } catch (error) {
       console.error('Error:', error);
-      setIsError(true); 
-      setIsLoading(false);
+      setIsError(true);
+      setErrorMessage(error.message || 'An error occurred');
+      setIsLoading(false); // Set loading state to false if there is an error
     }
   };
 
@@ -68,11 +66,17 @@ function IndexPage({ tokens }) {
     if (storedChat) {
       const parsedChat = JSON.parse(storedChat);
       setChat(parsedChat);
+
+      const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
+      if (lastAssistantMessage) {
+        setTxid(lastAssistantMessage.txid);
+      }
     }
   }, []);
 
   const resetChat = () => {
     localStorage.removeItem('chat');
+    localStorage.removeItem('txid');
     window.location.reload();
   };
 

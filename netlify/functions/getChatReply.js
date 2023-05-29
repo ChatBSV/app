@@ -3,19 +3,20 @@
 const axios = require('axios');
 
 exports.handler = async function (event, context) {
-  const { OPENAI_API_KEY } = process.env;
-  const { content: prompt, history } = JSON.parse(event.body);
+  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  const { prompt, lastUserMessage, txid, history } = JSON.parse(event.body);
 
   let messages;
 
   if (history && history.length > 0) {
     messages = [
-      ...history.slice(-1),
+      ...history.slice(-1), // Include only the most recent AI response as context
+      { role: 'user', content: lastUserMessage },
       { role: 'user', content: prompt },
     ];
   } else {
     messages = [
-      { role: 'system', content: process.env.CORE_PROMPT },
+      { role: 'system', content: CORE_PROMPT },
       { role: 'user', content: prompt },
     ];
   }
@@ -25,10 +26,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages.map((message) => ({
-          role: message.role,
-          content: message.content,
-        })),
+        messages: messages,
         max_tokens: 2000,
       },
       {
@@ -44,7 +42,7 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: total_tokens }),
+      body: JSON.stringify({ message: assistantResponse, tokens: total_tokens, txid }),
     };
   } catch (error) {
     console.error('Error:', error);

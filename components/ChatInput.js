@@ -27,7 +27,7 @@ const ChatInput = ({ handleSubmit }) => {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt, txid }),
+          body: JSON.stringify({ prompt }),
         });
   
         if (response.ok) {
@@ -35,7 +35,7 @@ const ChatInput = ({ handleSubmit }) => {
           const assistantResponse = data.message;
   
           // Update the chat state after receiving the assistant response
-          handleSubmit(prompt, assistantResponse, data.tokens, data.txid);
+          handleSubmit(prompt, assistantResponse, data.tokens);
           inputRef.current.value = '';
         } else {
           console.error('Error:', response.status);
@@ -47,6 +47,8 @@ const ChatInput = ({ handleSubmit }) => {
       console.log('Prompt is empty. No request sent.');
     }
   };
+  
+  
   
 
   const handleMoneyButtonPayment = (payment) => {
