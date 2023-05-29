@@ -37,11 +37,6 @@ const ChatInput = ({ handleSubmit }) => {
     console.log('Transaction ID:', txid);
     localStorage.setItem('txid', txid);
     setTxid(txid);
-
-    const prompt = inputRef.current.value.trim();
-    if (prompt !== '') {
-      handleFormSubmit();
-    }
   };
 
   useEffect(() => {
@@ -64,6 +59,7 @@ const ChatInput = ({ handleSubmit }) => {
               console.log('Transaction ID:', txid);
               localStorage.setItem('txid', txid);
               setTxid(txid);
+              handleFormSubmit(); // Call handleFormSubmit after setting txid
             }
           }
         },
@@ -78,6 +74,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
+      handleFormSubmit(); // Call handleFormSubmit when Enter key is pressed
     }
   };
 
