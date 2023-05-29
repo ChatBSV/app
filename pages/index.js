@@ -25,14 +25,14 @@ function IndexPage({ tokens }) {
 
       if (response.ok) {
         const data = await response.json();
-        return { message: data.message, tokens: data.tokens };
+        return { content: data.message, tokens: data.tokens };
       } else {
         console.error('Error:', response.status);
-        return { message: 'An error occurred during processing.', tokens: 0 };
+        return { content: 'An error occurred during processing.', tokens: 0 };
       }
     } catch (error) {
       console.error('Error:', error);
-      return { message: 'An error occurred during processing.', tokens: 0 };
+      return { content: 'An error occurred during processing.', tokens: 0 };
     }
   };
 
@@ -40,7 +40,7 @@ function IndexPage({ tokens }) {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
-      message: userMessage,
+      content: userMessage,
       txid: userTxid,
     };
 
@@ -61,14 +61,14 @@ function IndexPage({ tokens }) {
       const lastAssistantMessage = parsedChat.find(
         (message) => message.role === 'assistant'
       );
-      const context = lastAssistantMessage ? lastAssistantMessage.message : null;
+      const context = lastAssistantMessage ? lastAssistantMessage.content : null;
 
       getAssistantReply(userMessage, context).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          message: assistantResponse.message,
-          tokens: assistantResponse.tokens,
+          content: assistantResponse.content,
+          tokens: assistantResponse.tokens || 0,
           txid: userTxid && !isLoading ? userTxid : null,
         };
 
@@ -76,13 +76,13 @@ function IndexPage({ tokens }) {
           ...parsedChat,
           {
             role: 'assistant',
-            content: assistantResponse.message,
-            tokens: assistantResponse.tokens,
+            content: assistantResponse.content,
+            tokens: assistantResponse.tokens || 0,
           },
         ];
 
         localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens);
+        localStorage.setItem('tokens', assistantResponse.tokens || 0);
 
         setChat((prevChat) => [...prevChat, newAssistantMessage]);
 
@@ -158,7 +158,6 @@ function IndexPage({ tokens }) {
     </div>
   );
 }
-
 
 export async function getStaticProps() {
   const tokens = 100;
