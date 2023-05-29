@@ -48,7 +48,7 @@ function ChatMessage({ content, role, tokens, txid }) {
               className={styles.linkIcon}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
               alt="Transaction Link"
-            /><span style={{ fontSize: '14px', color: 'gray' }}>
+            /><span style={{ fontSize: '14px', color: 'gray', width: '40px', overflow: 'hidden' }}>
             TXID: {txid} </span>
           </a>
           <button
