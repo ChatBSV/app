@@ -60,7 +60,7 @@ function ChatMessage({ content, role, tokens, txid }) {
                 textDecoration: 'none',
               }}
             >
-              TXID: {txid.slice(0, 5)}
+              TxID:{txid.slice(0, 5)}
             </span>
           </a>
           <img
@@ -69,7 +69,7 @@ function ChatMessage({ content, role, tokens, txid }) {
             alt="Token Count"
           />
           <span style={{ fontSize: '12px', color: 'gray', marginRight: '12px' }}>
-            Tokens: {tokens}
+            Tokens:{tokens}
           </span>
           <a
             className={`${styles.copyButton} copyButton`}
