@@ -4,7 +4,7 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, history } = JSON.parse(event.body);
+  const { prompt, lastUserMessage, txid, history } = JSON.parse(event.body);
 
   let messages;
 
@@ -12,9 +12,9 @@ exports.handler = async function (event, context) {
     const lastAssistantMessage = history.find(
       (message) => message.role === 'assistant'
     );
-  
+
     messages = [
-      { role: 'assistant', content: lastAssistantMessage.message },
+      { role: 'assistant', content: lastAssistantMessage.content },
       { role: 'user', content: prompt },
     ];
   } else {
@@ -23,7 +23,6 @@ exports.handler = async function (event, context) {
       { role: 'user', content: prompt },
     ];
   }
-  
 
   try {
     const response = await axios.post(
@@ -41,7 +40,7 @@ exports.handler = async function (event, context) {
       }
     );
 
-    const assistantResponse = response.data.choices[0].message.message;
+    const assistantResponse = response.data.choices[0].message.content;
     const tokens = response.data.usage.total_tokens;
 
     return {

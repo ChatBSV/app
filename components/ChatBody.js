@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
-function ChatBody({ chat, isLoading, isError, errorMessage }) {
+function ChatBody({ chat, isLoading, isError }) {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
         <ChatMessage
-          message="Welcome to ChatBSV. Ask me anything."
+          content="Welcome to ChatBSV. Ask me anything."
           role="intro"
           className={styles.introMessage}
         />
@@ -29,16 +29,16 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
-            message={message.message}
+            content={message.content}
             role={message.role}
-            tokens={message.tokens}
+            tokens={message.role === 'assistant' ? message.tokens : 0}
             txid={message.txid}
           />
         ))}
 
         {isLoading && (
           <ChatMessage
-            message="Counting satoshis, please hold..."
+            content="Counting satoshis, please hold..."
             role="loading"
             className={styles.loadingMessage}
           />
@@ -46,7 +46,7 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
 
         {isError && (
           <ChatMessage
-            message={errorMessage}
+            content="OpenAI error. Please try again or come back later."
             role="error"
             className={styles.errorMessage}
           />
