@@ -4,13 +4,17 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, context } = JSON.parse(event.body);
+  const { prompt, history } = JSON.parse(event.body);
 
   let messages;
 
-  if (context) {
+  if (history && history.length > 0) {
+    const lastAssistantMessage = history.find(
+      (message) => message.role === 'assistant'
+    );
+
     messages = [
-      { role: 'assistant', content: context },
+      { role: 'assistant', content: lastAssistantMessage.message },
       { role: 'user', content: prompt },
     ];
   } else {
@@ -37,11 +41,11 @@ exports.handler = async function (event, context) {
     );
 
     const assistantResponse = response.data.choices[0].message.content;
-    const tokens = response.data.usage.total_tokens;
+    const tokens = response.data.choices[0].message.total_tokens;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: tokens }),
+      body: JSON.stringify({ message: assistantResponse, tokens }),
     };
   } catch (error) {
     console.error('Error:', error);
@@ -59,4 +63,3 @@ exports.handler = async function (event, context) {
     }
   }
 };
-
