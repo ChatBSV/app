@@ -43,8 +43,9 @@
   }
 
   .linkIcon {
-    width: 16px;
-    margin-right: 6px;
+    width: 14px;
+    margin-top: 2px;
+    margin-right: 4px;
     text-decoration: none;
   }
 
@@ -60,7 +61,7 @@
   }
 
   .copyIcon {
-    margin-top: 2px;
+    margin-top: 0px;
     width: 14px;
     margin-right: 4px;
     opacity: 67%;
