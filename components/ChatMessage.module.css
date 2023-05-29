@@ -36,6 +36,9 @@
     display: flex;
     text-decoration: none;
     align-items: center;
+    font-family: 'Courier New';
+    font-weight: 600;
+    
     
   }
 
