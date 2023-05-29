@@ -49,7 +49,7 @@ function ChatMessage({ content, role, tokens, txid }) {
 >
   <img
     className={styles.linkIcon}
-    src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+    src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a868bcac627c01a0856f_link.svg"
     alt="Transaction Link"
   />
   <span
@@ -69,11 +69,16 @@ function ChatMessage({ content, role, tokens, txid }) {
           >
             <img
               className={styles.copyIcon}
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64749990f6f6166ad5087ad7_Copy-Icon-SVG-098567.svg"
+              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a7ac96040b5fe425c4f8_copy-two-paper-sheets-interface-symbol.svg"
               alt="Copy"
             />
             <span style={{ fontSize: '14px', color: 'gray' }}>{copyButtonText}</span>
           </a>
+          <img
+              className={styles.copyIcon}
+              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a81e31e9c343912ede78_coins.svg"
+              alt="Token Count"
+            />
           <span style={{ fontSize: '14px', color: 'gray' }}>
           Tokens: {tokens} 
           </span>
