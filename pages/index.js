@@ -36,6 +36,7 @@ function IndexPage({ tokens }) {
     }
   };
   
+  
 
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
@@ -51,12 +52,12 @@ function IndexPage({ tokens }) {
     setIsLoading(true);
   
     try {
-      getAssistantReply(userMessage).then((response) => {
+      getAssistantReply(userMessage).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          message: response.message,
-          tokens: response.tokens,
+          message: assistantResponse.message,
+          tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
   
@@ -71,6 +72,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
   
   
