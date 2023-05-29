@@ -67,7 +67,7 @@ function IndexPage({ tokens }) {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          message: assistantResponse.message,
+          content: assistantResponse.content, // Update the property name to 'content'
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
@@ -168,4 +168,3 @@ export async function getStaticProps() {
 }
 
 export default IndexPage;
-
