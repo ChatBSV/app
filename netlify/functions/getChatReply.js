@@ -14,13 +14,13 @@ exports.handler = async function(event, context) {
     );
 
     messages = [
-      { role: 'assistant', content: lastAssistantMessage.message },
-      { role: 'user', content: prompt },
+      { role: 'assistant', message: lastAssistantMessage.content },
+      { role: 'user', message: prompt },
     ];
   } else {
     messages = [
-      { role: 'system', content: CORE_PROMPT },
-      { role: 'user', content: prompt },
+      { role: 'system', message: CORE_PROMPT },
+      { role: 'user', message: prompt },
     ];
   }
 
