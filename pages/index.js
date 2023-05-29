@@ -58,7 +58,7 @@ function IndexPage({ tokens }) {
       const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
   
-      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
+      getAssistantReply(userMessage).then((assistantResponse) => {     
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -66,14 +66,15 @@ function IndexPage({ tokens }) {
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
-  
+        
         const updatedChat = [
           ...parsedChat,
-          { role: 'assistant', content: assistantResponse.message, tokens: assistantResponse.tokens },
+          newAssistantMessage,
         ];
-  
+        
         localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens);
+        setChat(updatedChat);
+        
   
         setChat((prevChat) => [...prevChat, newAssistantMessage]);
   
