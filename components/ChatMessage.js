@@ -43,6 +43,9 @@ function ChatMessage({ content, role, tokens, txid }) {
   href={`https://whatsonchain.com/tx/${txid}`}
   target="_blank"
   rel="noopener noreferrer"
+  style={{
+    textDecoration: 'none',
+  }}
 >
   <img
     className={styles.linkIcon}
