@@ -16,11 +16,11 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const getAssistantReply = async (prompt, history) => {
+  const getAssistantReply = async (messages) => {
     try {
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
-        body: JSON.stringify({ prompt, history }),
+        body: JSON.stringify({ messages }),
       });
   
       if (response.ok) {
@@ -35,6 +35,7 @@ function IndexPage({ tokens }) {
       return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
+  
   
 
   const handleSubmit = (userMessage, userTxid) => {
@@ -55,16 +56,13 @@ function IndexPage({ tokens }) {
       const storedChat = localStorage.getItem('chat');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
   
-      const lastAssistantMessage = parsedChat
-        .slice()
-        .reverse()
-        .find((message) => message.role === 'assistant');
+      const messages = [
+        { role: 'system', content: CORE_PROMPT },
+        ...parsedChat,
+        { role: 'user', content: userMessage },
+      ];
   
-      const history = lastAssistantMessage
-        ? parsedChat.slice(0, parsedChat.indexOf(lastAssistantMessage) + 1)
-        : parsedChat;
-  
-      getAssistantReply(userMessage, history).then((assistantResponse) => {
+      getAssistantReply(messages).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -88,6 +86,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
   
   
