@@ -56,7 +56,7 @@ function IndexPage({ tokens }) {
         id: nanoid(),
         role: 'assistant',
         message: 'Loading...',
-        tokens: 0,
+        tokens: responseTokens,
         txid: userTxid, // Pass the txid to the new assistant message
       };
   
