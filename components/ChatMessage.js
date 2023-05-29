@@ -40,6 +40,7 @@ function ChatMessage({ content, role, tokens, txid }) {
       {isAssistantMessage && !isLoadingMessage && (
         <div className={styles.chatLink}>
           <a
+           className={`${styles.copyButton} copyButton`}
             href={`https://whatsonchain.com/tx/${txid}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -48,15 +49,14 @@ function ChatMessage({ content, role, tokens, txid }) {
             }}
           >
             <img
-              className={styles.linkIcon}
+              className={styles.copyIcon}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474aebd43b893e54daf6663_link%20(1).svg"
               alt="Transaction Link"
             />
-            <span
+            <span 
               style={{
                 fontSize: '12px',
                 color: 'gray',
-                marginRight: '12px',
                 textDecoration: 'none',
               }}
             >

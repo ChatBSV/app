@@ -24,10 +24,7 @@
     margin-right: auto;
 }
 
-  .message {
-    font-size: 16pt;
-  }
-
+ 
   .link {
     font-size: 14;
   }
@@ -44,14 +41,14 @@
 
   .linkIcon {
     width: 14px;
-    margin-top: 2px;
+    margin-top: 0px;
     margin-right: 4px;
-    text-decoration: none;
+    opacity: 67%;
   }
 
   .copyButton {
     padding: 0px;
-    margin-right: 10px;
+    margin-right: 12px;
     background-color: transparent;
     border-width: 0px;
     display: flex;
