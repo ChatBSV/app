@@ -16,23 +16,23 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const getAssistantReply = async (prompt, context) => {
+  const getAssistantReply = async (prompt) => {
     try {
-      const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt,
-        context,
+      const response = await fetch('/.netlify/functions/getChatReply', {
+        method: 'POST',
+        body: JSON.stringify({ prompt }),
       });
 
-      if (response.status === 200) {
-        const data = response.data;
-        return { content: data.message, tokens: data.tokens };
+      if (response.ok) {
+        const data = await response.json();
+        return { message: data.message, tokens: data.tokens };
       } else {
         console.error('Error:', response.status);
-        return { content: 'An error occurred during processing.', tokens: 0 };
+        return { message: 'An error occurred during processing.', tokens: 0 };
       }
     } catch (error) {
       console.error('Error:', error);
-      return { content: 'An error occurred during processing.', tokens: 0 };
+      return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
 
@@ -40,15 +40,12 @@ function IndexPage({ tokens }) {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
-      content: userMessage,
+      message: userMessage,
       txid: userTxid,
     };
 
-    setChat((prevChat) => {
-      const updatedChat = [...prevChat, newUserMessage];
-      localStorage.setItem('chat', JSON.stringify(updatedChat));
-      return updatedChat;
-    });
+    setChat((prevChat) => [...prevChat, newUserMessage]);
+    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
 
     setIsError(false);
     setIsLoading(true);
@@ -58,26 +55,28 @@ function IndexPage({ tokens }) {
       const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
 
-      const lastAssistantMessage = parsedChat.find(
-        (message) => message.role === 'assistant'
-      );
-      const context = lastAssistantMessage ? lastAssistantMessage.content : null;
-
-      getAssistantReply(userMessage, context).then((assistantResponse) => {
+      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          content: assistantResponse.content,
+          message: assistantResponse.message,
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
 
-        const updatedChat = [...parsedChat, newAssistantMessage];
+        const updatedChat = [
+          ...parsedChat,
+          {
+            role: 'assistant',
+            content: assistantResponse.message,
+            tokens: assistantResponse.tokens,
+          },
+        ];
 
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
 
-        setChat(updatedChat);
+        setChat((prevChat) => [...prevChat, newAssistantMessage]);
 
         setIsLoading(false);
       });
@@ -141,12 +140,7 @@ function IndexPage({ tokens }) {
         />
       </Head>
       <Header resetChat={resetChat} />
-      <ChatBody
-        chat={chat}
-        isLoading={isLoading}
-        isError={isError}
-        errorMessage={errorMessage}
-      />
+      <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
       <ChatInput handleSubmit={handleSubmit} />
     </div>
   );

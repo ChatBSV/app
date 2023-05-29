@@ -24,8 +24,8 @@ const ChatInput = ({ handleSubmit }) => {
   const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
-      const storedTxid = localStorage.getItem('txid'); // Retrieve the txid from localStorage
-      handleSubmit(prompt, storedTxid); // Pass the prompt and txid to handleSubmit
+      const storedTxid = localStorage.getItem('txid');
+      handleSubmit(prompt, storedTxid);
       inputRef.current.value = '';
     } else {
       console.log('Prompt is empty. No request sent.');
@@ -64,7 +64,7 @@ const ChatInput = ({ handleSubmit }) => {
               console.log('Transaction ID:', txid);
               localStorage.setItem('txid', txid);
               setTxid(txid);
-              handleSubmit('', txid); // Pass the empty prompt and txid to handleSubmit
+              handleSubmit('', txid);
             }
           }
         },

@@ -2,7 +2,7 @@
 
 const axios = require('axios');
 
-exports.handler = async function(event, context) {
+exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const { prompt, history } = JSON.parse(event.body);
 
@@ -14,13 +14,13 @@ exports.handler = async function(event, context) {
     );
 
     messages = [
-      { role: 'assistant', content: lastAssistantMessage.content },
-      { role: 'user', content: prompt },
+      { role: 'assistant', message: lastAssistantMessage.message },
+      { role: 'user', message: prompt },
     ];
   } else {
     messages = [
-      { role: 'system', content: CORE_PROMPT },
-      { role: 'user', content: prompt },
+      { role: 'system', message: CORE_PROMPT },
+      { role: 'user', message: prompt },
     ];
   }
 
@@ -29,13 +29,8 @@ exports.handler = async function(event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages.map((message) => ({
-          role: message.role,
-          content: message.content,
-        })),
+        messages: messages,
         max_tokens: 2000,
-        return_prompt: true,
-        return_full_text: true,
       },
       {
         headers: {
@@ -44,39 +39,27 @@ exports.handler = async function(event, context) {
         },
       }
     );
-    
-    const assistantResponse = response.data.choices[0].message.content;
-    const tokens = response.data.choices[0].message.total_tokens; 
+
+    const assistantResponse = response.data.choices[0].message.message;
+    const tokens = response.data.usage.total_tokens;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens }),
+      body: JSON.stringify({ message: assistantResponse, tokens: tokens }),
     };
   } catch (error) {
     console.error('Error:', error);
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.error
-    ) {
-      console.error(
-        'API Error:',
-        error.response.data.error.message
-      );
+    if (error.response && error.response.data && error.response.data.error) {
+      console.error('API Error:', error.response.data.error.message);
       return {
         statusCode: 500,
-        body: JSON.stringify({
-          error: error.response.data.error.message,
-        }),
+        body: JSON.stringify({ error: error.response.data.error.message }),
       };
     } else {
       return {
         statusCode: 500,
-        body: JSON.stringify({
-          error: 'An error occurred during processing.',
-        }),
+        body: JSON.stringify({ error: 'An error occurred during processing.' }),
       };
     }
   }
 };
-

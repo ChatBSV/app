@@ -49,5 +49,4 @@ function ChatMessage({ message, role, tokens, txid }) {
   );
 }
 
-
 export default ChatMessage;

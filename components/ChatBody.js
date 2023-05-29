@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 
-function ChatBody({ chat, isLoading, isError }) {
+function ChatBody({ chat, isLoading, isError, errorMessage }) {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function ChatBody({ chat, isLoading, isError }) {
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
-            message={message.content}
+            message={message.message}
             role={message.role}
             tokens={message.tokens}
             txid={message.txid}
@@ -46,7 +46,7 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {isError && (
           <ChatMessage
-            message="OpenAI error. Please try again or come back later."
+            message={errorMessage}
             role="error"
             className={styles.errorMessage}
           />
