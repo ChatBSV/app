@@ -25,16 +25,17 @@ function IndexPage({ tokens }) {
   
       if (response.ok) {
         const data = await response.json();
-        return data.message;
+        return { message: data.message, tokens: data.tokens };
       } else {
         console.error('Error:', response.status);
-        return 'An error occurred during processing.';
+        return { message: 'An error occurred during processing.', tokens: 0 };
       }
     } catch (error) {
       console.error('Error:', error);
-      return 'An error occurred during processing.';
+      return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
+  
 
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
@@ -50,12 +51,12 @@ function IndexPage({ tokens }) {
     setIsLoading(true);
   
     try {
-      getAssistantReply(userMessage).then((assistantResponse) => {
+      getAssistantReply(userMessage).then((response) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          message: assistantResponse,
-          tokens: null, // No need to include tokens for the loading message
+          message: response.message,
+          tokens: response.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
   
@@ -70,6 +71,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
   
 
