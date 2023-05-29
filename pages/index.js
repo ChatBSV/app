@@ -57,7 +57,7 @@ function IndexPage({ tokens }) {
         role: 'assistant',
         message: 'Loading...',
         tokens: responseTokens,
-        txid: userTxid, // Pass the txid to the new assistant message
+        txid: userTxid && !isLoading ? userTxid : null,
       };
   
       // update the chat with the assistant's message
