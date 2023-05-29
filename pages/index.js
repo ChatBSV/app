@@ -159,6 +159,8 @@ function IndexPage({ tokens }) {
   );
 }
 
+console.log('Received History:', history);
+
 export async function getStaticProps() {
   const tokens = 100;
 
