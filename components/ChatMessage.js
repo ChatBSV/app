@@ -24,7 +24,7 @@ function ChatMessage({ message, role, tokens, txid }) {
         <span
           style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
         >
-          <span style={{ fontSize: '16px' }}>{message.content}</span>
+          <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
       {isAssistantMessage && !isLoadingMessage && (

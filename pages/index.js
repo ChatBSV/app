@@ -18,13 +18,13 @@ function IndexPage({ tokens }) {
 
   const getAssistantReply = async (prompt, context) => {
     try {
-      const response = await fetch('/.netlify/functions/getChatReply', {
-        method: 'POST',
-        body: JSON.stringify({ prompt, context }),
+      const response = await axios.post('/.netlify/functions/getChatReply', {
+        prompt,
+        context,
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.status === 200) {
+        const data = response.data;
         return { content: data.message, tokens: data.tokens };
       } else {
         console.error('Error:', response.status);
@@ -67,25 +67,20 @@ function IndexPage({ tokens }) {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          content: assistantResponse.content, // Update the property name to 'content'
+          content: assistantResponse.content,
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
-      
-        const updatedChat = [
-          ...parsedChat,
-          newAssistantMessage,
-        ];
-      
+
+        const updatedChat = [...parsedChat, newAssistantMessage];
+
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
-      
+
         setChat(updatedChat);
-      
+
         setIsLoading(false);
       });
-
-      
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);

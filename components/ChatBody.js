@@ -17,9 +17,6 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
-  console.log(chat);
-
-
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
@@ -36,7 +33,6 @@ function ChatBody({ chat, isLoading, isError }) {
             role={message.role}
             tokens={message.role === 'assistant' ? message.tokens : 0}
             txid={message.txid}
-
           />
         ))}
 
@@ -61,6 +57,5 @@ function ChatBody({ chat, isLoading, isError }) {
     </div>
   );
 }
-
 
 export default ChatBody;
