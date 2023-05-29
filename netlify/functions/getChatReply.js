@@ -1,3 +1,4 @@
+
 // netlify/functions/getChatReply.js
 
 const axios = require('axios');
@@ -29,7 +30,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages.map(({ role, content }) => ({ role, content })),
+        messages: messages,
         max_tokens: 2000,
       },
       {
@@ -40,12 +41,11 @@ exports.handler = async function (event, context) {
       }
     );
 
-    const assistantResponse = response.data.choices[0].message.content;
-    const tokens = response.data.usage.total_tokens;
+    const assistantResponse = response.data.choices[0].message;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: tokens }),
+      body: JSON.stringify({ message: assistantResponse, tokens: assistantResponse.tokens }),
     };
   } catch (error) {
     console.error('Error:', error);
