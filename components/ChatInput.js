@@ -47,11 +47,13 @@ const ChatInput = ({ handleSubmit }) => {
   };
 
   const handleMoneyButtonPayment = (payment) => {
-    const { payment: { txid } } = payment;
+    const { txid } = payment;
     console.log('Transaction ID:', txid);
     localStorage.setItem('txid', txid);
     setTxid(txid);
+    handleFormSubmit();
   };
+  
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
