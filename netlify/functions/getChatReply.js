@@ -10,7 +10,7 @@ exports.handler = async function (event, context) {
 
   if (history && history.length > 0) {
     messages = [
-      ...history.slice(-1), // Include only the most recent AI response as context
+      ...history.slice(-1), 
       { role: 'user', content: lastUserMessage },
       { role: 'user', content: prompt },
     ];
@@ -20,7 +20,7 @@ exports.handler = async function (event, context) {
       { role: 'user', content: prompt },
     ];
   }
-
+  
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
@@ -36,14 +36,17 @@ exports.handler = async function (event, context) {
         },
       }
     );
-
+  
     const assistantResponse = response.data.choices[0].message.content;
     const tokens = response.data.usage.total_tokens;
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: tokens }),
-    };
+  
+    const chatHistory = [
+      ...history,
+      { role: 'assistant', content: assistantResponse, tokens },
+    ];
+  
+    localStorage.setItem('chat', JSON.stringify(chatHistory));
+    localStorage.setItem('tokens', tokens);
   } catch (error) {
     console.error('Error:', error);
     if (error.response && error.response.data && error.response.data.error) {

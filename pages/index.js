@@ -52,7 +52,11 @@ function IndexPage({ tokens }) {
     setIsLoading(true);
   
     try {
-      getAssistantReply(userMessage).then((assistantResponse) => {
+      const storedChat = localStorage.getItem('chat');
+      const storedTokens = localStorage.getItem('tokens');
+      const parsedChat = storedChat ? JSON.parse(storedChat) : [];
+  
+      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -60,6 +64,14 @@ function IndexPage({ tokens }) {
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
+  
+        const updatedChat = [
+          ...parsedChat,
+          { role: 'assistant', content: assistantResponse.message, tokens: assistantResponse.tokens },
+        ];
+  
+        localStorage.setItem('chat', JSON.stringify(updatedChat));
+        localStorage.setItem('tokens', assistantResponse.tokens);
   
         setChat((prevChat) => [...prevChat, newAssistantMessage]);
   
@@ -73,10 +85,6 @@ function IndexPage({ tokens }) {
     }
   };
   
-  
-  
-  
-
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
