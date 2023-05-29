@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ content, role, tokens, txid }) {
+function ChatMessage({ message, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
@@ -18,10 +18,8 @@ function ChatMessage({ content, role, tokens, txid }) {
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
       <div>
-        <span
-          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
-        >
-          <span style={{ fontSize: '16px' }}>{content}</span>
+        <span style={{ fontSize: isAssistantMessage ? '16pt' : '16px' }}>
+          <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
       {isAssistantMessage && !isLoadingMessage && (
