@@ -40,44 +40,40 @@ function IndexPage({ tokens }) {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
-      message: userMessage,
+      content: userMessage, // Update key to 'content'
       txid: userTxid,
     };
-
+  
     setChat((prevChat) => [...prevChat, newUserMessage]);
     localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
-
+  
     setIsError(false);
     setIsLoading(true);
-
+  
     try {
       const storedChat = localStorage.getItem('chat');
       const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
-
+  
       getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          message: assistantResponse.message,
+          content: assistantResponse.message, // Update key to 'content'
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
-
+  
         const updatedChat = [
           ...parsedChat,
-          {
-            role: 'assistant',
-            content: assistantResponse.message,
-            tokens: assistantResponse.tokens,
-          },
+          newAssistantMessage, // Remove unnecessary object creation
         ];
-
+  
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
-
+  
         setChat((prevChat) => [...prevChat, newAssistantMessage]);
-
+  
         setIsLoading(false);
       });
     } catch (error) {
@@ -87,6 +83,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
