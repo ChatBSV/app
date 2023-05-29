@@ -60,6 +60,7 @@
   }
 
   .copyIcon {
+    margin-top: 2px;
     width: 16px;
     margin-right: 6px;
     opacity: 67%;
