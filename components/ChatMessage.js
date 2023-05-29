@@ -40,17 +40,26 @@ function ChatMessage({ content, role, tokens, txid }) {
       {isAssistantMessage && !isLoadingMessage && (
         <div className={styles.chatLink}>
           <a
-            href={`https://whatsonchain.com/tx/${txid}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              className={styles.linkIcon}
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
-              alt="Transaction Link"
-            /><span style={{ fontSize: '14px', color: 'gray', textDecoration: 'none', marginRight: '10px'}}>
-            TXID: {txid.slice(0,5)} </span>
-          </a>
+  href={`https://whatsonchain.com/tx/${txid}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img
+    className={styles.linkIcon}
+    src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+    alt="Transaction Link"
+  />
+  <span
+    style={{
+      fontSize: '14px',
+      color: 'gray',
+      marginRight: '10px',
+      textDecoration: 'none',
+    }}
+  >
+    TXID: {txid.slice(0, 5)}
+  </span>
+</a>
           <a
             className={`${styles.copyButton} copyButton`}
             onClick={() => handleCopy(content)}
