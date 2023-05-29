@@ -29,7 +29,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages,
+        messages: messages.map(({ role, content }) => ({ role, content })),
         max_tokens: 2000,
       },
       {
