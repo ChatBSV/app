@@ -40,36 +40,36 @@ function ChatMessage({ content, role, tokens, txid }) {
       {isAssistantMessage && !isLoadingMessage && (
         <div className={styles.chatLink}>
           <a
-  href={`https://whatsonchain.com/tx/${txid}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    textDecoration: 'none',
-  }}
->
-  <img
-    className={styles.copyIcon}
-    src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a9bf4a0547694b83498c_linked.svg"
-    alt="Transaction Link"
-  />
-  <span
-    style={{
-      fontSize: '12px',
-      color: 'gray',
-      marginRight: '10px',
-      textDecoration: 'none',
-    }}
-  >
-    TXID: {txid.slice(0, 5)}
-  </span>
-</a>
-<img
-              className={styles.copyIcon}
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a81e31e9c343912ede78_coins.svg"
-              alt="Token Count"
+            href={`https://whatsonchain.com/tx/${txid}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              textDecoration: 'none',
+            }}
+          >
+            <img
+              className={styles.linkIcon}
+              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a9bf4a0547694b83498c_linked.svg"
+              alt="Transaction Link"
             />
-          <span style={{ fontSize: '12px', color: 'gray' }}>
-          Tokens: {tokens} 
+            <span
+              style={{
+                fontSize: '12px',
+                color: 'gray',
+                marginRight: '12px',
+                textDecoration: 'none',
+              }}
+            >
+              TXID: {txid.slice(0, 5)}
+            </span>
+          </a>
+          <img
+            className={styles.copyIcon}
+            src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a81e31e9c343912ede78_coins.svg"
+            alt="Token Count"
+          />
+          <span style={{ fontSize: '12px', color: 'gray', marginRight: '12px' }}>
+            Tokens: {tokens}
           </span>
           <a
             className={`${styles.copyButton} copyButton`}
@@ -82,7 +82,6 @@ function ChatMessage({ content, role, tokens, txid }) {
             />
             <span style={{ fontSize: '12px', color: 'gray' }}>{copyButtonText}</span>
           </a>
-          
         </div>
       )}
     </div>
