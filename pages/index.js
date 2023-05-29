@@ -22,6 +22,7 @@ function IndexPage({ tokens }) {
       role: 'user',
       message: userMessage,
       tokens: userTokens,
+      txid: userTxid,
     };
 
     // add the user's message to the chat immediately
