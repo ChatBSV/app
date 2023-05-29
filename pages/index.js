@@ -69,6 +69,10 @@ function IndexPage({ tokens }) {
         const updatedChat = [
           ...parsedChat,
           {
+            role: 'user',
+            content: userMessage,
+          },
+          {
             role: 'assistant',
             content: assistantResponse.message,
             tokens: assistantResponse.tokens,
@@ -89,6 +93,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
   
   useEffect(() => {
