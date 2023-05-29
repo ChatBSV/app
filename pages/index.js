@@ -45,9 +45,17 @@ function IndexPage({ tokens }) {
       message: userMessage,
       txid: userTxid,
     };
+
+    const newAssistantMessage = (message) => {
+      return {
+        role: 'assistant',
+        content: message,
+      };
+    };
   
     setChat((prevChat) => [...prevChat, newUserMessage, newAssistantMessage]);
-localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage, newAssistantMessage]));
+    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+
 
   
     setIsError(false);
