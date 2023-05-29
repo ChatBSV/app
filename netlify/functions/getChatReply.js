@@ -10,11 +10,12 @@ exports.handler = async function (event, context) {
 
   if (history && history.length > 0) {
     messages = [
-      { role: 'assistant', content: history.slice(-1)[0].message },
+      ...history.map((message) => ({
+        role: message.role,
+        content: message.content,
+      })),
       { role: 'user', content: prompt },
-    ];  
-    
-    
+    ];
   } else {
     messages = [
       { role: 'system', content: CORE_PROMPT },
