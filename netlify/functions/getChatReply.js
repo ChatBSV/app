@@ -2,7 +2,7 @@
 
 const axios = require('axios');
 
-exports.handler = async function (event, context) {
+exports.handler = async function(event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const { prompt, history } = JSON.parse(event.body);
 
@@ -49,16 +49,27 @@ exports.handler = async function (event, context) {
     };
   } catch (error) {
     console.error('Error:', error);
-    if (error.response && error.response.data && error.response.data.error) {
-      console.error('API Error:', error.response.data.error.message);
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.error
+    ) {
+      console.error(
+        'API Error:',
+        error.response.data.error.message
+      );
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: error.response.data.error.message }),
+        body: JSON.stringify({
+          error: error.response.data.error.message,
+        }),
       };
     } else {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'An error occurred during processing.' }),
+        body: JSON.stringify({
+          error: 'An error occurred during processing.',
+        }),
       };
     }
   }
