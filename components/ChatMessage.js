@@ -54,7 +54,7 @@ function ChatMessage({ content, role, tokens, txid }) {
   />
   <span
     style={{
-      fontSize: '14px',
+      fontSize: '12px',
       color: 'gray',
       marginRight: '10px',
       textDecoration: 'none',
@@ -72,14 +72,14 @@ function ChatMessage({ content, role, tokens, txid }) {
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a7ac96040b5fe425c4f8_copy-two-paper-sheets-interface-symbol.svg"
               alt="Copy"
             />
-            <span style={{ fontSize: '14px', color: 'gray' }}>{copyButtonText}</span>
+            <span style={{ fontSize: '12px', color: 'gray' }}>{copyButtonText}</span>
           </a>
           <img
               className={styles.copyIcon}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a81e31e9c343912ede78_coins.svg"
               alt="Token Count"
             />
-          <span style={{ fontSize: '14px', color: 'gray' }}>
+          <span style={{ fontSize: '12px', color: 'gray' }}>
           Tokens: {tokens} 
           </span>
         </div>
