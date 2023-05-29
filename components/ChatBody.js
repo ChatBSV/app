@@ -31,7 +31,7 @@ function ChatBody({ chat, isLoading, isError }) {
             key={message.id}
             message={message.message}
             role={message.role}
-            tokens={message.tokens}
+            tokens={message.role === 'assistant' ? message.tokens : 0}
             txid={message.txid}
           />
         ))}
@@ -57,5 +57,6 @@ function ChatBody({ chat, isLoading, isError }) {
     </div>
   );
 }
+
 
 export default ChatBody;
