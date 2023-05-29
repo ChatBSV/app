@@ -48,10 +48,10 @@ function ChatMessage({ content, role, tokens, txid }) {
               className={styles.linkIcon}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
               alt="Transaction Link"
-            /><span style={{ fontSize: '14px', color: 'gray', width: '40px', overflow: 'hidden' }}>
+            /><span style={{ fontSize: '14px', color: 'gray', textDecoration: 'none', marginRight: '10px'}}>
             TXID: {txid.slice(0,5)} </span>
           </a>
-          <button
+          <a
             className={`${styles.copyButton} copyButton`}
             onClick={() => handleCopy(content)}
           >
@@ -61,7 +61,7 @@ function ChatMessage({ content, role, tokens, txid }) {
               alt="Copy"
             />
             <span style={{ fontSize: '14px', color: 'gray' }}>{copyButtonText}</span>
-          </button>
+          </a>
           <span style={{ fontSize: '14px', color: 'gray' }}>
           Tokens: {tokens} 
           </span>
