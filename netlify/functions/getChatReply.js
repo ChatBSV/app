@@ -14,7 +14,10 @@ exports.handler = async function (event, context) {
     );
 
     messages = [
-      { role: 'assistant', content: lastAssistantMessage.content },
+      ...history.map((message) => ({
+        role: message.role,
+        content: message.content,
+      })),
       { role: 'user', content: prompt },
     ];
   } else {
