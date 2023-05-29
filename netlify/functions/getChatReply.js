@@ -10,13 +10,11 @@ exports.handler = async function (event, context) {
   let messages;
 
   if (history && history.length > 0) {
-    const lastAssistantMessage = history.find(
-      (message) => message.role === 'assistant'
-    );
+    const lastAssistantMessage = history.find((message) => message.role === 'assistant');
 
     const lastAssistantContent = lastAssistantMessage ? lastAssistantMessage.content : '';
     messages = [
-      { role: 'assistant', content: lastAssistantContent },
+      ...history.map((message) => ({ role: message.role, content: message.content })),
       { role: 'user', content: prompt },
     ];
   } else {
@@ -64,5 +62,4 @@ exports.handler = async function (event, context) {
     }
   }
 };
-
 

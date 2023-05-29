@@ -45,7 +45,7 @@ function IndexPage({ tokens }) {
     };
 
     setChat((prevChat) => [...prevChat, newUserMessage]);
-    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+    localStorage.setItem('chat', JSON.stringify([...prevChat, newUserMessage]));
 
     setIsError(false);
     setIsLoading(true);
