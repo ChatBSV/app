@@ -16,11 +16,11 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const getAssistantReply = async (messages) => {
+  const getAssistantReply = async (messages, corePrompt) => {
     try {
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages, corePrompt }),
       });
   
       if (response.ok) {
@@ -36,9 +36,6 @@ function IndexPage({ tokens }) {
     }
   };
   
-  
-  
-
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
@@ -58,28 +55,30 @@ function IndexPage({ tokens }) {
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
   
       const messages = [
-        { role: 'system', content: CORE_PROMPT },
+        { role: 'system', content: process.env.CORE_PROMPT }, // Use process.env.CORE_PROMPT for the core prompt
         ...parsedChat,
         { role: 'user', content: userMessage },
       ];
   
-      getAssistantReply(messages).then((assistantResponse) => {
-        const newAssistantMessage = {
-          id: nanoid(),
-          role: 'assistant',
-          content: assistantResponse.message,
-          tokens: assistantResponse.tokens,
-          txid: userTxid && !isLoading ? userTxid : null,
-        };
+      getAssistantReply(messages, process.env.CORE_PROMPT).then(
+        (assistantResponse) => {
+          const newAssistantMessage = {
+            id: nanoid(),
+            role: 'assistant',
+            content: assistantResponse.message,
+            tokens: assistantResponse.tokens,
+            txid: userTxid && !isLoading ? userTxid : null,
+          };
   
-        const updatedChat = [...parsedChat, newAssistantMessage];
-        localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens);
+          const updatedChat = [...parsedChat, newAssistantMessage];
+          localStorage.setItem('chat', JSON.stringify(updatedChat));
+          localStorage.setItem('tokens', assistantResponse.tokens);
   
-        setChat((prevChat) => [...prevChat, newAssistantMessage]);
+          setChat((prevChat) => [...prevChat, newAssistantMessage]);
   
-        setIsLoading(false);
-      });
+          setIsLoading(false);
+        }
+      );
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
@@ -87,10 +86,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
-  
-  
-  
-  
   
 
   useEffect(() => {
