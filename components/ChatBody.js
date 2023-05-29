@@ -32,7 +32,7 @@ function ChatBody({ chat, isLoading, isError }) {
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
-            message={message.message}
+            message={message.content}
             role={message.role}
             tokens={message.role === 'assistant' ? message.tokens : 0}
             txid={message.txid}
