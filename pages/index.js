@@ -37,6 +37,7 @@ function IndexPage({ tokens }) {
   };
   
   
+  
 
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
@@ -86,6 +87,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
   
   
