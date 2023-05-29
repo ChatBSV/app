@@ -51,8 +51,10 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
+    localStorage.setItem('txid', txid);
     setTxid(txid);
-  };
+};
+
 
   useEffect(() => {
     if (txid) handleFormSubmit(inputRef.current.value);
