@@ -56,7 +56,7 @@ function IndexPage({ tokens }) {
         id: nanoid(),
         role: 'assistant',
         message: 'Loading...',
-        tokens: responseTokens,
+        tokens: totalTokens,
         txid: userTxid && !isLoading ? userTxid : null,
       };
   

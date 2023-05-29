@@ -27,7 +27,7 @@ function ChatMessage({ message, role, tokens, txid }) {
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
-      {isAssistantMessage && txid && !isLoadingMessage && (
+      {isAssistantMessage && !isLoadingMessage && (
         <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px' }}>
           <a
             href={`https://whatsonchain.com/tx/${txid}`}
