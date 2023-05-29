@@ -28,14 +28,14 @@ function ChatMessage({ content, role, tokens, txid }) {
         </span>
       </div>
       {isAssistantMessage && !isLoadingMessage && (
-        <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px' }}>
+        <div className={styles.chatLink}>
           <a
             href={`https://whatsonchain.com/tx/${txid}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             <img
-              width={20}
+            className={styles.linkIcon}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
               alt="Transaction Link"
             />
