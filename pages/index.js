@@ -40,7 +40,7 @@ function IndexPage({ tokens }) {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
-      content: userMessage, // Update key to 'content'
+      content: userMessage,
       txid: userTxid,
     };
   
@@ -52,30 +52,36 @@ function IndexPage({ tokens }) {
   
     try {
       const storedChat = localStorage.getItem('chat');
-      const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
   
-      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
-        const newAssistantMessage = {
-          id: nanoid(),
-          role: 'assistant',
-          content: assistantResponse.message, // Update key to 'content'
-          tokens: assistantResponse.tokens,
-          txid: userTxid && !isLoading ? userTxid : null,
-        };
+      const lastAssistantMessage = parsedChat
+        .slice()
+        .reverse()
+        .find((message) => message.role === 'assistant');
   
-        const updatedChat = [
-          ...parsedChat,
-          newAssistantMessage, // Remove unnecessary object creation
-        ];
+      const history = lastAssistantMessage
+        ? parsedChat.slice(0, parsedChat.indexOf(lastAssistantMessage) + 1)
+        : parsedChat;
   
-        localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens);
+      getAssistantReply(userMessage, userTxid, history).then(
+        (assistantResponse) => {
+          const newAssistantMessage = {
+            id: nanoid(),
+            role: 'assistant',
+            content: assistantResponse.message,
+            tokens: assistantResponse.tokens,
+            txid: userTxid && !isLoading ? userTxid : null,
+          };
   
-        setChat((prevChat) => [...prevChat, newAssistantMessage]);
+          const updatedChat = [...parsedChat, newAssistantMessage];
+          localStorage.setItem('chat', JSON.stringify(updatedChat));
+          localStorage.setItem('tokens', assistantResponse.tokens);
   
-        setIsLoading(false);
-      });
+          setChat((prevChat) => [...prevChat, newAssistantMessage]);
+  
+          setIsLoading(false);
+        }
+      );
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
@@ -83,6 +89,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
 
   useEffect(() => {
