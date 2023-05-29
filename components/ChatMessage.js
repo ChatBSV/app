@@ -13,6 +13,11 @@ function ChatMessage({ message, role, tokens, txid }) {
   };
 
 
+  let transactionLink = null;
+  if (txid) {
+    transactionLink = `https://whatsonchain.com/tx/${txid}`;
+  }
+
   return (
     <div
       className={`${styles.chatMessage} ${
@@ -22,28 +27,22 @@ function ChatMessage({ message, role, tokens, txid }) {
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
       <div>
-        <span
-          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
-        >
+        <span style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}>
           <span style={{ fontSize: '16px' }}>{message}</span>
         </span>
       </div>
-      {isAssistantMessage &&  (
-        <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px'  }}>
-          <a
-            href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              width={20}
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
-              alt="Transaction Link"
-            />
-          </a>
-          <span style={{ fontSize: '14px', color: 'gray' }}>
-            {tokens} Tokens
-          </span>
+      {isAssistantMessage && (
+        <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px' }}>
+          {transactionLink && (
+            <a href={transactionLink} target="_blank" rel="noopener noreferrer">
+              <img
+                width={20}
+                src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646073c8892d47d06848b9c2_share.svg"
+                alt="Transaction Link"
+              />
+            </a>
+          )}
+          <span style={{ fontSize: '14px', color: 'gray' }}>{tokens} Tokens</span>
         </div>
       )}
     </div>
