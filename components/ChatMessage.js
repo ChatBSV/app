@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ message, role, txid, tokens }) {
+function ChatMessage({ message, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
@@ -31,7 +31,7 @@ function ChatMessage({ message, role, txid, tokens }) {
       {isAssistantMessage &&  (
         <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px'  }}>
           <a
-            href={`https://whatsonchain.com/tx/${txid}`} 
+            href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
             target="_blank"
             rel="noopener noreferrer"
           >
