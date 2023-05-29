@@ -17,6 +17,9 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
+  console.log(chat);
+
+
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>

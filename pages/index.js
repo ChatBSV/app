@@ -67,27 +67,25 @@ function IndexPage({ tokens }) {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          content: assistantResponse.content,
-          tokens: assistantResponse.tokens || 0,
+          message: assistantResponse.message,
+          tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
-
+      
         const updatedChat = [
           ...parsedChat,
-          {
-            role: 'assistant',
-            content: assistantResponse.content,
-            tokens: assistantResponse.tokens || 0,
-          },
+          newAssistantMessage,
         ];
-
+      
         localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens || 0);
-
-        setChat((prevChat) => [...prevChat, newAssistantMessage]);
-
+        localStorage.setItem('tokens', assistantResponse.tokens);
+      
+        setChat(updatedChat);
+      
         setIsLoading(false);
       });
+
+      
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
