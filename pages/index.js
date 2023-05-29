@@ -36,55 +36,41 @@ function IndexPage({ tokens }) {
     }
   };
 
-  const handleSubmit = (userMessage, userTokens, userTxid) => {
+  const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       message: userMessage,
-      tokens: userTokens,
       txid: userTxid,
     };
   
-    // add the user's message to the chat immediately
     setChat((prevChat) => [...prevChat, newUserMessage]);
   
-    setIsError(false); // Set error state to false before making the API request
+    setIsError(false);
     setIsLoading(true);
   
     try {
-      const newAssistantMessage = {
-        id: nanoid(),
-        role: 'assistant',
-        message: 'Loading...',
-        tokens: totalTokens,
-        txid: userTxid && !isLoading ? userTxid : null,
-      };
-  
-      // update the chat with the assistant's message
-      setChat((prevChat) => [...prevChat, newAssistantMessage]);
-  
-      // Fetch the assistant reply from OpenAI without sending the txid
       getAssistantReply(userMessage).then((assistantResponse) => {
-        newAssistantMessage.message = assistantResponse;
+        const newAssistantMessage = {
+          id: nanoid(),
+          role: 'assistant',
+          message: assistantResponse,
+          tokens: null, // No need to include tokens for the loading message
+          txid: userTxid && !isLoading ? userTxid : null,
+        };
   
-        setChat((prevChat) => {
-          const updatedChat = [...prevChat];
-          const assistantIndex = updatedChat.findIndex((msg) => msg.id === newAssistantMessage.id);
-          if (assistantIndex !== -1) {
-            updatedChat.splice(assistantIndex, 1, newAssistantMessage);
-          }
-          return updatedChat;
-        });
+        setChat((prevChat) => [...prevChat, newAssistantMessage]);
   
-        setIsLoading(false); // Set loading state to false after receiving the assistant's response
+        setIsLoading(false);
       });
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
       setErrorMessage(error.message || 'An error occurred');
-      setIsLoading(false); // Set loading state to false if there is an error
+      setIsLoading(false);
     }
   };
+  
   
 
   useEffect(() => {
