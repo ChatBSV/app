@@ -12,7 +12,6 @@ function ChatMessage({ message, role, tokens, txid }) {
     fontSize: isAssistantMessage ? '16pt' : '16px',
   };
 
-
   let transactionLink = null;
   if (txid) {
     transactionLink = `https://whatsonchain.com/tx/${txid}`;
