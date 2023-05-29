@@ -29,11 +29,13 @@ const ChatInput = ({ handleSubmit }) => {
           method: 'POST',
           body: JSON.stringify({ prompt, txid }),
         });
-
+  
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
-          handleSubmit(prompt, data.tokens, data.txid);
+  
+          // Update the chat state after receiving the assistant response
+          handleSubmit(prompt, assistantResponse, data.tokens, data.txid);
           inputRef.current.value = '';
         } else {
           console.error('Error:', response.status);
@@ -45,6 +47,7 @@ const ChatInput = ({ handleSubmit }) => {
       console.log('Prompt is empty. No request sent.');
     }
   };
+  
 
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
