@@ -64,6 +64,7 @@ const ChatInput = ({ handleSubmit }) => {
               console.log('Transaction ID:', txid);
               localStorage.setItem('txid', txid);
               setTxid(txid);
+              handleSubmit('', txid); // Pass the empty prompt and txid to handleSubmit
             }
           }
         },
