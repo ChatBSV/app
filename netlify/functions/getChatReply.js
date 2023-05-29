@@ -14,8 +14,9 @@ exports.handler = async function (event, context) {
       (message) => message.role === 'assistant'
     );
 
+    const lastAssistantContent = lastAssistantMessage ? lastAssistantMessage.content : '';
     messages = [
-      { role: 'assistant', content: lastAssistantMessage.content },
+      { role: 'assistant', content: lastAssistantContent },
       { role: 'user', content: prompt },
     ];
   } else {
@@ -63,3 +64,4 @@ exports.handler = async function (event, context) {
     }
   }
 };
+
