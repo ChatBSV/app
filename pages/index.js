@@ -45,19 +45,11 @@ function IndexPage({ tokens }) {
       message: userMessage,
       txid: userTxid,
     };
-
-    const newAssistantMessage = (message) => {
-      return {
-        role: 'assistant',
-        content: message,
-      };
-    };
   
-    setChat((prevChat) => [...prevChat, newUserMessage, newAssistantMessage]);
+    setChat((prevChat) => [...prevChat, newUserMessage]);
     localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
-
-
   
+
     setIsError(false);
     setIsLoading(true);
   
@@ -100,13 +92,9 @@ function IndexPage({ tokens }) {
     if (storedChat) {
       const parsedChat = JSON.parse(storedChat);
       setChat(parsedChat);
-
-      const lastAssistantMessage = parsedChat.find((message) => message.role === 'assistant');
-      if (lastAssistantMessage) {
-        setTxid(lastAssistantMessage.txid);
-      }
     }
   }, []);
+  
 
   const resetChat = () => {
     localStorage.removeItem('chat');
