@@ -35,8 +35,7 @@ function IndexPage({ tokens }) {
 
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
-        prompt: userMessage,
-        lastUserMessage: chat.length > 0 ? chat[chat.length - 1].message : null,
+        prompt: userMessage, 
         history: chat, 
       });
 

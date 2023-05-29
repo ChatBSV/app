@@ -27,7 +27,7 @@ const ChatInput = ({ handleSubmit }) => {
       try {
         const response = await fetch('/.netlify/functions/getChatReply', {
           method: 'POST',
-          body: JSON.stringify({ prompt, lastUserMessage: null, txid }),
+          body: JSON.stringify({ prompt, txid }),
         });
   
         if (response.ok) {

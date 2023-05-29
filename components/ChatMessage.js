@@ -8,7 +8,6 @@ function ChatMessage({ message, role, txid, tokens }) {
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
-  const txid = localStorage.getItem('txid');
   const messageStyle = {
     fontSize: isAssistantMessage ? '16pt' : '16px',
   };
@@ -32,7 +31,7 @@ function ChatMessage({ message, role, txid, tokens }) {
       {isAssistantMessage &&  (
         <div className="chatLink" style={{ borderTop: '1px solid #ddd', paddingTop: '6px'  }}>
           <a
-            href={`https://whatsonchain.com/tx/${txid}`} // Update the link to include the txid
+            href={`https://whatsonchain.com/tx/${txid}`} 
             target="_blank"
             rel="noopener noreferrer"
           >
