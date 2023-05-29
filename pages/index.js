@@ -16,6 +16,26 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
+  const getAssistantReply = async (prompt) => {
+    try {
+      const response = await fetch('/.netlify/functions/getChatReply', {
+        method: 'POST',
+        body: JSON.stringify({ prompt }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        return data.message;
+      } else {
+        console.error('Error:', response.status);
+        return 'An error occurred during processing.';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      return 'An error occurred during processing.';
+    }
+  };
+
   const handleSubmit = (userMessage, userTokens, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
