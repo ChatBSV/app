@@ -75,6 +75,18 @@ const ChatInput = ({ handleSubmit }) => {
         currency: 'USD',
         data: { input: inputRef.current.value },
         onPayment: handleMoneyButtonPayment,
+        onCryptoOperations: async (event) => {
+          const { type, id, cryptoOperations } = event;
+          if (type === 'payment') {
+            const payment = cryptoOperations.find((op) => op.id === id);
+            if (payment) {
+              const { txid } = payment;
+              console.log('Transaction ID:', txid);
+              localStorage.setItem('txid', txid);
+              setTxid(txid);
+            }
+          }
+        },
       });
 
       return () => {
