@@ -20,7 +20,7 @@ function IndexPage({ tokens }) {
     try {
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages: messages.map((message) => ({ role: message.role, content: message.content })) }),
       });
   
       if (response.ok) {
@@ -35,6 +35,7 @@ function IndexPage({ tokens }) {
       return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
+  
   
   
   const handleSubmit = (userMessage, userTxid) => {
