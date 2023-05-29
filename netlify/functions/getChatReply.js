@@ -2,13 +2,12 @@
 
 const axios = require('axios');
 
-
 exports.handler = async function (event, context) {
-  const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  const { OPENAI_API_KEY } = process.env;
   const { content: prompt, history } = JSON.parse(event.body);
-  
+
   let messages;
-  
+
   if (history && history.length > 0) {
     messages = [
       ...history.slice(-1),
@@ -20,8 +19,6 @@ exports.handler = async function (event, context) {
       { role: 'user', content: prompt },
     ];
   }
-  
-
 
   try {
     const response = await axios.post(
