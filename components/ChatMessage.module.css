@@ -49,8 +49,11 @@
     margin-right: 10px;
     background-color: transparent;
     border-width: 0px;
+    display: flex;
+    cursor: pointer;
   }
 
   .copyIcon {
     width: 16px;
+    margin-right: 6px;
   }

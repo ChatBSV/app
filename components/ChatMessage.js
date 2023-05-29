@@ -59,7 +59,7 @@ function ChatMessage({ content, role, tokens, txid }) {
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64749990f6f6166ad5087ad7_Copy-Icon-SVG-098567.svg"
               alt="Copy"
             />
-            <span className={styles.link}>{copyButtonText}</span>
+            <span style={{ fontSize: '14px', color: 'gray' }}>{copyButtonText}</span>
           </button>
           <span style={{ fontSize: '14px', color: 'gray' }}>
             {tokens} Tokens
