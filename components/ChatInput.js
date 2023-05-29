@@ -29,7 +29,7 @@ const ChatInput = ({ handleSubmit }) => {
           method: 'POST',
           body: JSON.stringify({ prompt, txid }),
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           const assistantResponse = data.message;
@@ -45,20 +45,13 @@ const ChatInput = ({ handleSubmit }) => {
       console.log('Prompt is empty. No request sent.');
     }
   };
-  
-  
 
   const handleMoneyButtonPayment = (payment) => {
-    const { txid } = payment;
+    const { payment: { txid } } = payment;
     console.log('Transaction ID:', txid);
     localStorage.setItem('txid', txid);
     setTxid(txid);
-};
-
-
-  useEffect(() => {
-    if (txid) handleFormSubmit(inputRef.current.value);
-  }, [txid]);
+  };
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
