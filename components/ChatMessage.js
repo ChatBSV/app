@@ -1,6 +1,6 @@
 // components/ChatMessage.js
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ChatMessage.module.css';
 
 function ChatMessage({ content, role, tokens, txid }) {
@@ -12,8 +12,14 @@ function ChatMessage({ content, role, tokens, txid }) {
     fontSize: isAssistantMessage ? '16pt' : '16px',
   };
 
+  const [copyButtonText, setCopyButtonText] = useState('Copy');
+
   const handleCopy = (message) => {
     navigator.clipboard.writeText(message);
+    setCopyButtonText('Copied!');
+    setTimeout(() => {
+      setCopyButtonText('Copy');
+    }, 2000);
   };
 
   return (
@@ -48,9 +54,12 @@ function ChatMessage({ content, role, tokens, txid }) {
             className={`${styles.copyButton} copyButton`}
             onClick={() => handleCopy(content)}
           >
-            <img 
-            className={styles.copyIcon}
-            src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64749990f6f6166ad5087ad7_Copy-Icon-SVG-098567.svg" alt="Copy" />
+            <img
+              className={styles.copyIcon}
+              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64749990f6f6166ad5087ad7_Copy-Icon-SVG-098567.svg"
+              alt="Copy"
+            />
+            <span className={styles.link}>{copyButtonText}</span>
           </button>
           <span style={{ fontSize: '14px', color: 'gray' }}>
             {tokens} Tokens
