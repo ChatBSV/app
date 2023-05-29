@@ -10,10 +10,11 @@ exports.handler = async function (event, context) {
 
   if (history && history.length > 0) {
     messages = [
-      ...history.slice(-1), // Include only the most recent AI response as context
-      { role: 'user', content: lastUserMessage },
+      ...history.slice(-1), // Include only the most recent assistant response
       { role: 'user', content: prompt },
     ];
+    
+    
   } else {
     messages = [
       { role: 'system', content: CORE_PROMPT },
