@@ -51,7 +51,11 @@ const ChatInput = ({ handleSubmit }) => {
     console.log('Transaction ID:', txid);
     localStorage.setItem('txid', txid);
     setTxid(txid);
-    handleFormSubmit();
+  
+    const prompt = inputRef.current.value.trim();
+    if (prompt !== '') {
+      handleFormSubmit();
+    }
   };
   
 
