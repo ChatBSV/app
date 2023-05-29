@@ -24,45 +24,25 @@ const ChatInput = ({ handleSubmit }) => {
   const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
-      try {
-        const response = await fetch('/.netlify/functions/getChatReply', {
-          method: 'POST',
-          body: JSON.stringify({ prompt }),
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          const assistantResponse = data.message;
-  
-          // Update the chat state after receiving the assistant response
-          handleSubmit(prompt, assistantResponse, data.tokens);
-          inputRef.current.value = '';
-        } else {
-          console.error('Error:', response.status);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      const storedTxid = localStorage.getItem('txid'); // Retrieve the txid from localStorage
+      handleSubmit(prompt, storedTxid); // Pass the prompt and txid to handleSubmit
+      inputRef.current.value = '';
     } else {
       console.log('Prompt is empty. No request sent.');
     }
   };
-  
-  
-  
 
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
     localStorage.setItem('txid', txid);
     setTxid(txid);
-  
+
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
       handleFormSubmit();
     }
   };
-  
 
   useEffect(() => {
     if (moneyButtonLoaded && moneyButtonContainerRef.current) {
