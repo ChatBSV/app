@@ -12,17 +12,18 @@ exports.handler = async function (event, context) {
     const lastAssistantMessage = history.find(
       (message) => message.role === 'assistant'
     );
-
+  
     messages = [
-      { role: 'assistant', message: lastAssistantMessage.message },
-      { role: 'user', message: prompt },
+      { role: 'assistant', content: lastAssistantMessage.message },
+      { role: 'user', content: prompt },
     ];
   } else {
     messages = [
-      { role: 'system', message: CORE_PROMPT },
-      { role: 'user', message: prompt },
+      { role: 'system', content: CORE_PROMPT },
+      { role: 'user', content: prompt },
     ];
   }
+  
 
   try {
     const response = await axios.post(

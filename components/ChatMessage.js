@@ -3,14 +3,11 @@
 import React from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ message, role, tokens, txid }) {
+function ChatMessage({ content, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
-  const messageStyle = {
-    fontSize: isAssistantMessage ? '16pt' : '16px',
-  };
 
   return (
     <div
@@ -24,7 +21,7 @@ function ChatMessage({ message, role, tokens, txid }) {
         <span
           style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
         >
-          <span style={{ fontSize: '16px' }}>{message}</span>
+          <span style={{ fontSize: '16px' }}>{content}</span>
         </span>
       </div>
       {isAssistantMessage && !isLoadingMessage && (
@@ -48,5 +45,6 @@ function ChatMessage({ message, role, tokens, txid }) {
     </div>
   );
 }
+
 
 export default ChatMessage;
