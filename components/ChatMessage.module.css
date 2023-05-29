@@ -44,6 +44,7 @@
   }
 
   .copyButton {
+    padding: 0px;
     width: 16px;
     margin-right: 10px;
     background-color: transparent;
