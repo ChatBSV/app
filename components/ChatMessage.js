@@ -48,7 +48,9 @@ function ChatMessage({ content, role, tokens, txid }) {
             className={`${styles.copyButton} copyButton`}
             onClick={() => handleCopy(content)}
           >
-            <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64749990f6f6166ad5087ad7_Copy-Icon-SVG-098567.svg" alt="Copy" />
+            <img 
+            className={styles.copyIcon}
+            src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64749990f6f6166ad5087ad7_Copy-Icon-SVG-098567.svg" alt="Copy" />
           </button>
           <span style={{ fontSize: '14px', color: 'gray' }}>
             {tokens} Tokens

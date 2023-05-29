@@ -46,4 +46,10 @@
   .copyButton {
     width: 16px;
     margin-right: 10px;
+    background-color: transparent;
+    border-width: 0px;
+  }
+
+  .copyIcon {
+    width: 16px;
   }
