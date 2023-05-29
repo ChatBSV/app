@@ -34,6 +34,8 @@ exports.handler = async function(event, context) {
           content: message.content,
         })),
         max_tokens: 2000,
+        return_prompt: true,
+        return_full_text: true,
       },
       {
         headers: {
@@ -42,9 +44,9 @@ exports.handler = async function(event, context) {
         },
       }
     );
-
+    
     const assistantResponse = response.data.choices[0].message.content;
-    const tokens = response.data.choices[0].message.total_tokens;
+    const tokens = response.data.choices[0].message.total_tokens; 
 
     return {
       statusCode: 200,
