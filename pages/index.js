@@ -20,9 +20,9 @@ function IndexPage({ tokens }) {
     try {
       const response = await axios.post('/.netlify/functions/getChatReply', {
         prompt,
-        history,
+        history: history.map((message) => ({ role: message.role, content: message.content })),
       });
-
+  
       if (response.status === 200) {
         const data = response.data;
         return { message: data.message, tokens: data.tokens };
@@ -93,7 +93,7 @@ function IndexPage({ tokens }) {
     localStorage.removeItem('chat');
     localStorage.removeItem('txid');
     window.location.reload();
-  };
+  };  
 
   return (
     <div className="viewport">
