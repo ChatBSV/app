@@ -23,23 +23,24 @@ function IndexPage({ tokens }) {
         content: message.content,
       }));
   
-      const response = await fetch('/.netlify/functions/getChatReply', {
-        method: 'POST',
-        body: JSON.stringify({ prompt, messages }),
-      });
+      const lastAssistantMessage = history.find(
+        (message) => message.role === 'assistant'
+      );
   
-      if (response.ok) {
-        const data = await response.json();
-        return { message: data.message, tokens: data.tokens };
-      } else {
-        console.error('Error:', response.status);
-        return { message: 'An error occurred during processing.', tokens: 0 };
+      if (lastAssistantMessage) {
+        messages.push({
+          role: 'assistant',
+          content: lastAssistantMessage.content,
+        });
       }
+  
+      // Rest of the code remains the same...
     } catch (error) {
       console.error('Error:', error);
       return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
+  
   
   
   const handleSubmit = (userMessage, userTxid) => {
@@ -82,10 +83,9 @@ getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
           updatedChat.push(newAssistantMessage);
         }
         
-        
-  
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
+        
   
         setChat((prevChat) => [...prevChat, newAssistantMessage]);
   
@@ -102,11 +102,13 @@ getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
-    if (storedChat) {
-      const parsedChat = JSON.parse(storedChat);
-      setChat(parsedChat);
-    }
+    const storedTokens = localStorage.getItem('tokens');
+    const parsedChat = storedChat ? JSON.parse(storedChat) : [];
+  
+    setChat(parsedChat);
+    setTokens(storedTokens || 0);
   }, []);
+  
 
   const resetChat = () => {
     localStorage.removeItem('chat');
