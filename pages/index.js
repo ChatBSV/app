@@ -36,7 +36,7 @@ function IndexPage({ tokens }) {
     }
   };
 
-  const handleSubmit = async (userMessage, userTxid) => {
+  const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -55,7 +55,12 @@ function IndexPage({ tokens }) {
       const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
   
-      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
+      const history = parsedChat.map((message) => ({
+        role: message.role,
+        content: message.content,
+      }));
+  
+      getAssistantReply(userMessage, userTxid, history).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -64,11 +69,7 @@ function IndexPage({ tokens }) {
           txid: userTxid && !isLoading ? userTxid : null,
         };
   
-        const updatedChat = [
-          ...parsedChat,
-          newAssistantMessage,
-        ];
-  
+        const updatedChat = [...parsedChat, newAssistantMessage];
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
   
@@ -83,6 +84,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
   
 
