@@ -58,10 +58,12 @@ function IndexPage({ tokens }) {
   
     try {
       const storedChat = localStorage.getItem('chat');
-      const storedTokens = localStorage.getItem('tokens');
-      const parsedChat = storedChat ? JSON.parse(storedChat) : [];
-  
-      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
+const storedTokens = localStorage.getItem('tokens');
+const parsedChat = storedChat ? JSON.parse(storedChat) : [];
+
+setChat(parsedChat); // Update chat state with the stored chat
+
+getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -74,8 +76,13 @@ function IndexPage({ tokens }) {
           ...parsedChat.filter(
             (message) => message.role !== 'loading' && message.role !== 'error'
           ),
-          newAssistantMessage,
         ];
+        
+        if (assistantResponse.message !== 'An error occurred during processing.') {
+          updatedChat.push(newAssistantMessage);
+        }
+        
+        
   
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
