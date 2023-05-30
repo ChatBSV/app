@@ -22,7 +22,7 @@ function IndexPage({ tokens }) {
         method: 'POST',
         body: JSON.stringify({ prompt, history }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         return { message: data.message, tokens: data.tokens };
@@ -35,7 +35,7 @@ function IndexPage({ tokens }) {
       return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
-
+  
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
@@ -43,20 +43,18 @@ function IndexPage({ tokens }) {
       content: userMessage,
       txid: userTxid,
     };
-
+  
     setChat((prevChat) => [...prevChat, newUserMessage]);
     localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
-
+  
     setIsError(false);
     setIsLoading(true);
-
+  
     try {
       const storedChat = localStorage.getItem('chat');
+      const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
-      const lastAssistantMessage = parsedChat
-        .filter((message) => message.role === 'assistant')
-        .pop();
-
+  
       getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
@@ -65,12 +63,19 @@ function IndexPage({ tokens }) {
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
-
-        const updatedChat = [...parsedChat, newAssistantMessage];
+  
+        const updatedChat = [
+          ...parsedChat.filter(
+            (message) => message.role !== 'loading' && message.role !== 'error'
+          ),
+          newAssistantMessage,
+        ];
+  
         localStorage.setItem('chat', JSON.stringify(updatedChat));
-
+        localStorage.setItem('tokens', assistantResponse.tokens);
+  
         setChat((prevChat) => [...prevChat, newAssistantMessage]);
-
+  
         setIsLoading(false);
       });
     } catch (error) {
@@ -80,6 +85,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
