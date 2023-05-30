@@ -16,18 +16,13 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const getAssistantReply = async (prompt, txid) => {
+  const getAssistantReply = async (prompt, history) => {
     try {
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
-        body: JSON.stringify({
-          prompt: prompt,
-          lastUserMessage: chat[chat.length - 1],
-          txid: txid,
-          history: chat,
-        }),
+        body: JSON.stringify({ prompt, history }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         return { message: data.message, tokens: data.tokens };
@@ -40,8 +35,6 @@ function IndexPage({ tokens }) {
       return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
-  
-  
 
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
@@ -50,16 +43,21 @@ function IndexPage({ tokens }) {
       content: userMessage,
       txid: userTxid,
     };
-  
-    const updatedChat = [...chat, newUserMessage];
-    setChat(updatedChat);
-    localStorage.setItem('chat', JSON.stringify(updatedChat));
-  
+
+    setChat((prevChat) => [...prevChat, newUserMessage]);
+    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+
     setIsError(false);
     setIsLoading(true);
-  
+
     try {
-      getAssistantReply(userMessage, userTxid).then((assistantResponse) => {
+      const storedChat = localStorage.getItem('chat');
+      const parsedChat = storedChat ? JSON.parse(storedChat) : [];
+      const lastAssistantMessage = parsedChat
+        .filter((message) => message.role === 'assistant')
+        .pop();
+
+      getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -67,12 +65,12 @@ function IndexPage({ tokens }) {
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
-  
-        const updatedChat = [...chat, newAssistantMessage];
-        setChat(updatedChat);
+
+        const updatedChat = [...parsedChat, newAssistantMessage];
         localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens);
-  
+
+        setChat((prevChat) => [...prevChat, newAssistantMessage]);
+
         setIsLoading(false);
       });
     } catch (error) {
@@ -82,10 +80,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
-  
-  
-  
-  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');

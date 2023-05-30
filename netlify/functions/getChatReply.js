@@ -14,14 +14,9 @@ exports.handler = async function (event, context) {
     );
 
     messages = [
-      { role: 'system', content: CORE_PROMPT },
-      ...history,
+      { role: 'assistant', content: lastAssistantMessage.content },
       { role: 'user', content: prompt },
     ];
-
-    if (lastAssistantMessage) {
-      messages.push(lastAssistantMessage);
-    }
   } else {
     messages = [
       { role: 'system', content: CORE_PROMPT },
@@ -34,10 +29,7 @@ exports.handler = async function (event, context) {
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: messages.map((message) => ({
-          role: message.role,
-          content: message.content,
-        })),
+        messages: messages,
         max_tokens: 2000,
       },
       {

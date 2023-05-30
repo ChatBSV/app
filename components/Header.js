@@ -17,4 +17,3 @@ function Header({ resetChat }) {
 }
 
 export default Header;
-
