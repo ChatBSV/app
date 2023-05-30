@@ -36,11 +36,11 @@ function IndexPage({ tokens }) {
     }
   };
 
-  const handleSubmit = (userMessage, userTxid) => {
+  const handleSubmit = async (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
-      content: userMessage, // Update key to 'content'
+      content: userMessage,
       txid: userTxid,
     };
   
@@ -59,14 +59,14 @@ function IndexPage({ tokens }) {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          content: assistantResponse.message, // Update key to 'content'
+          content: assistantResponse.message,
           tokens: assistantResponse.tokens,
           txid: userTxid && !isLoading ? userTxid : null,
         };
   
         const updatedChat = [
           ...parsedChat,
-          newAssistantMessage, // Remove unnecessary object creation
+          newAssistantMessage,
         ];
   
         localStorage.setItem('chat', JSON.stringify(updatedChat));
@@ -83,6 +83,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
 
   useEffect(() => {
