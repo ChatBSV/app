@@ -1,4 +1,3 @@
-
 // netlify/functions/getChatReply.js
 
 const axios = require('axios');
@@ -10,11 +9,12 @@ exports.handler = async function (event, context) {
   let messages;
 
   if (history && history.length > 0) {
-    const lastAssistantMessage = history.find((message) => message.role === 'assistant');
+    const lastAssistantMessage = history.find(
+      (message) => message.role === 'assistant'
+    );
 
-    const lastAssistantContent = lastAssistantMessage ? lastAssistantMessage.content : '';
     messages = [
-      ...history.map((message) => ({ role: message.role, content: message.content })),
+      { role: 'assistant', content: lastAssistantMessage.content },
       { role: 'user', content: prompt },
     ];
   } else {
@@ -40,11 +40,12 @@ exports.handler = async function (event, context) {
       }
     );
 
-    const assistantResponse = response.data.choices[0].message;
+    const assistantResponse = response.data.choices[0].message.content;
+    const tokens = response.data.usage.total_tokens;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: assistantResponse, tokens: assistantResponse.tokens }),
+      body: JSON.stringify({ message: assistantResponse, tokens: tokens }),
     };
   } catch (error) {
     console.error('Error:', error);
@@ -62,4 +63,3 @@ exports.handler = async function (event, context) {
     }
   }
 };
-

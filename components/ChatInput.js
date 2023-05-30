@@ -74,7 +74,7 @@ const ChatInput = ({ handleSubmit }) => {
         moneyButton.unmount();
       };
     }
-  }, [moneyButtonLoaded, handleSubmit]);
+  }, [moneyButtonLoaded]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
