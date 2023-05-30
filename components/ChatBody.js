@@ -32,7 +32,6 @@ function ChatBody({ chat, isLoading, isError }) {
             content={message.content}
             role={message.role}
             tokens={message.role === 'assistant' ? message.tokens : 0}
-            txid={message.txid}
           />
         ))}
 

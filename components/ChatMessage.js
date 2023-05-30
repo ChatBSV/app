@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styles from './ChatMessage.module.css';
 
-function ChatMessage({ content, role, tokens, txid }) {
+function ChatMessage({ content, role, tokens }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isLoadingMessage = role === 'loading';
@@ -31,50 +31,21 @@ function ChatMessage({ content, role, tokens, txid }) {
       } ${isIntroMessage ? styles.introMessage : ''}`}
     >
       <div>
-        <span
-          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
-        >
+        <span style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}>
           <span style={{ fontSize: '16px' }}>{content}</span>
         </span>
       </div>
-      {isAssistantMessage && !isLoadingMessage && (
+      {isAssistantMessage && (
         <div className={styles.chatLink}>
-          <a
-            className={`${styles.copyButton} copyButton`}
-            href={`https://whatsonchain.com/tx/${txid}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              textDecoration: 'none',
-            }}
-          >
-            <img
-              className={styles.copyIcon}
-              src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a9bf4a0547694b83498c_linked.svg"
-              alt="Transaction Link"
-            />
-            <span
-              style={{
-                fontSize: '12px',
-                color: 'gray',
-                textDecoration: 'none',
-              }}
-            >
-              TxID:{txid.slice(0, 5)}
-            </span>
-          </a>
           <img
             className={styles.copyIcon}
             src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a81e31e9c343912ede78_coins.svg"
             alt="Token Count"
           />
           <span style={{ fontSize: '12px', color: 'gray', marginRight: '12px' }}>
-            Tokens:{tokens}
+            Tokens: {tokens}
           </span>
-          <a
-            className={`${styles.copyButton} copyButton`}
-            onClick={() => handleCopy(content)}
-          >
+          <a className={styles.copyButton} onClick={() => handleCopy(content)}>
             <img
               className={styles.copyIcon}
               src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a7ac96040b5fe425c4f8_copy-two-paper-sheets-interface-symbol.svg"
