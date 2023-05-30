@@ -18,9 +18,14 @@ function IndexPage({ tokens }) {
 
   const getAssistantReply = async (prompt, history) => {
     try {
+      const messages = history.map((message) => ({
+        role: message.role,
+        content: message.content,
+      }));
+  
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
-        body: JSON.stringify({ prompt, history }),
+        body: JSON.stringify({ prompt, messages }),
       });
   
       if (response.ok) {
@@ -35,6 +40,7 @@ function IndexPage({ tokens }) {
       return { message: 'An error occurred during processing.', tokens: 0 };
     }
   };
+  
   
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
