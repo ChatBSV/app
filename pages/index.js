@@ -16,11 +16,16 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const getAssistantReply = async (prompt, history) => {
+  const getAssistantReply = async (prompt, txid) => {
     try {
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
-        body: JSON.stringify({ prompt, history }),
+        body: JSON.stringify({
+          prompt: prompt,
+          lastUserMessage: chat[chat.length - 1],
+          txid: txid,
+          history: chat,
+        }),
       });
   
       if (response.ok) {
@@ -36,6 +41,7 @@ function IndexPage({ tokens }) {
     }
   };
   
+  
 
   const handleSubmit = (userMessage, userTxid) => {
     const newUserMessage = {
@@ -46,13 +52,14 @@ function IndexPage({ tokens }) {
     };
   
     const updatedChat = [...chat, newUserMessage];
+    setChat(updatedChat);
     localStorage.setItem('chat', JSON.stringify(updatedChat));
   
     setIsError(false);
     setIsLoading(true);
   
     try {
-      getAssistantReply(userMessage, updatedChat).then((assistantResponse) => {
+      getAssistantReply(userMessage, userTxid).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
@@ -61,11 +68,10 @@ function IndexPage({ tokens }) {
           txid: userTxid && !isLoading ? userTxid : null,
         };
   
-        const updatedChat = [...chat, newUserMessage, newAssistantMessage];
+        const updatedChat = [...chat, newAssistantMessage];
+        setChat(updatedChat);
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
-  
-        setChat(updatedChat);
   
         setIsLoading(false);
       });

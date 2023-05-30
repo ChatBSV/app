@@ -14,9 +14,14 @@ exports.handler = async function (event, context) {
     );
 
     messages = [
-      { role: 'assistant', content: lastAssistantMessage.content },
+      { role: 'system', content: CORE_PROMPT },
+      ...history,
       { role: 'user', content: prompt },
     ];
+
+    if (lastAssistantMessage) {
+      messages.push(lastAssistantMessage);
+    }
   } else {
     messages = [
       { role: 'system', content: CORE_PROMPT },
