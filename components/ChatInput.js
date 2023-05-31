@@ -5,7 +5,6 @@ import styles from './ChatInput.module.css';
 
 const ChatInput = ({ handleSubmit }) => {
   const [moneyButtonLoaded, setMoneyButtonLoaded] = useState(false);
-  const [txid, setTxid] = useState('');
   const moneyButtonContainerRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -24,8 +23,7 @@ const ChatInput = ({ handleSubmit }) => {
   const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
-      const storedTxid = localStorage.getItem('txid');
-      handleSubmit(prompt, storedTxid);
+      handleSubmit(prompt);
       inputRef.current.value = '';
     } else {
       console.log('Prompt is empty. No request sent.');
@@ -35,8 +33,6 @@ const ChatInput = ({ handleSubmit }) => {
   const handleMoneyButtonPayment = (payment) => {
     const { txid } = payment;
     console.log('Transaction ID:', txid);
-    localStorage.setItem('txid', txid);
-    setTxid(txid);
 
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
@@ -62,8 +58,6 @@ const ChatInput = ({ handleSubmit }) => {
             if (payment) {
               const { txid } = payment;
               console.log('Transaction ID:', txid);
-              localStorage.setItem('txid', txid);
-              setTxid(txid);
               handleSubmit('', txid);
             }
           }

@@ -16,15 +16,15 @@ function IndexPage({ tokens }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
-  const getAssistantReply = async (prompt) => {
+  const getAssistantReply = async (prompt, history) => {
     try {
-      const response = await fetch('/.netlify/functions/getChatReply', {
-        method: 'POST',
-        body: JSON.stringify({ prompt }),
+      const response = await axios.post('/.netlify/functions/getChatReply', {
+        prompt,
+        history,
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.status === 200) {
+        const data = response.data;
         return { message: data.message, tokens: data.tokens };
       } else {
         console.error('Error:', response.status);
@@ -40,40 +40,42 @@ function IndexPage({ tokens }) {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
-      content: userMessage, // Update key to 'content'
+      content: userMessage,
       txid: userTxid,
     };
-  
-    setChat((prevChat) => [...prevChat, newUserMessage]);
-    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
-  
+
+    const updatedChat = [...chat, newUserMessage];
+    localStorage.setItem('chat', JSON.stringify(updatedChat));
+
+    setChat(updatedChat);
+
     setIsError(false);
     setIsLoading(true);
-  
+
     try {
       const storedChat = localStorage.getItem('chat');
       const storedTokens = localStorage.getItem('tokens');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
-  
+
+      const lastAssistantMessage = parsedChat
+        .filter((message) => message.role === 'assistant')
+        .pop();
+
       getAssistantReply(userMessage, parsedChat).then((assistantResponse) => {
         const newAssistantMessage = {
           id: nanoid(),
           role: 'assistant',
-          content: assistantResponse.message, // Update key to 'content'
+          content: assistantResponse.message,
           tokens: assistantResponse.tokens,
-          txid: userTxid && !isLoading ? userTxid : null,
         };
-  
-        const updatedChat = [
-          ...parsedChat,
-          newAssistantMessage, // Remove unnecessary object creation
-        ];
-  
+
+        const updatedChat = [...parsedChat, newAssistantMessage];
+
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
-  
-        setChat((prevChat) => [...prevChat, newAssistantMessage]);
-  
+
+        setChat(updatedChat);
+
         setIsLoading(false);
       });
     } catch (error) {
@@ -83,7 +85,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
@@ -95,7 +96,7 @@ function IndexPage({ tokens }) {
 
   const resetChat = () => {
     localStorage.removeItem('chat');
-    localStorage.removeItem('txid');
+    localStorage.removeItem('tokens');
     window.location.reload();
   };
 
