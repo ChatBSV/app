@@ -25,16 +25,17 @@ function ChatBody({ chat, isLoading, isError }) {
           role="intro"
           className={styles.introMessage}
         />
-
+  
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
-            content={message.content}
+            content={message.content} // Update key to 'content'
             role={message.role}
             tokens={message.role === 'assistant' ? message.tokens : 0}
+            txid={message.txid}
           />
         ))}
-
+  
         {isLoading && (
           <ChatMessage
             content="Counting satoshis, please hold..."
@@ -42,7 +43,7 @@ function ChatBody({ chat, isLoading, isError }) {
             className={styles.loadingMessage}
           />
         )}
-
+  
         {isError && (
           <ChatMessage
             content="OpenAI error. Please try again or come back later."
@@ -50,7 +51,7 @@ function ChatBody({ chat, isLoading, isError }) {
             className={styles.errorMessage}
           />
         )}
-
+  
         <div className={styles.spacer}></div>
       </div>
     </div>
