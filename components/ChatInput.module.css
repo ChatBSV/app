@@ -122,13 +122,13 @@
         margin-top: 20px;
         background-color: #F2EFEF;
         border: 1px solid #DAD8D8;
-        border-radius: 25px;
+        border-radius: 30px;
         margin-bottom: 0;
         padding-left: 16px;
         padding-right: 16px;
         font-size: 16px;
         max-width: 100%;
-        min-width: 100%;
+        min-width: 90vw;
         flex: none;
     }
 
