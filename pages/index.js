@@ -35,6 +35,7 @@ function IndexPage({ tokens }) {
     }
   };
   
+  
   const handleSubmit = async (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
@@ -43,13 +44,10 @@ function IndexPage({ tokens }) {
       txid: userTxid,
     };
   
-    setChat((prevChat) => {
-      const updatedChat = [...prevChat, newUserMessage];
-      if (newUserMessage.role !== 'error' && newUserMessage.role !== 'loading') {
-        localStorage.setItem('chat', JSON.stringify(updatedChat));
-      }
-      return updatedChat;
-    });
+    setChat((prevChat) => [...prevChat, newUserMessage]);
+    if (newUserMessage.role !== 'error' && newUserMessage.role !== 'loading') {
+      localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+    }
   
     setIsError(false);
     setIsLoading(true);
@@ -68,14 +66,13 @@ function IndexPage({ tokens }) {
         txid: userTxid && !isLoading ? userTxid : null,
       };
   
-      setChat((prevChat) => {
-        const updatedChat = [...prevChat, newAssistantMessage];
-        if (newAssistantMessage.role !== 'error' && newAssistantMessage.role !== 'loading') {
-          localStorage.setItem('chat', JSON.stringify(updatedChat));
-          localStorage.setItem('tokens', assistantResponse.tokens);
-        }
-        return updatedChat;
-      });
+      const updatedChat = [...parsedChat, newAssistantMessage];
+  
+      setChat((prevChat) => [...prevChat, newAssistantMessage]);
+      if (newAssistantMessage.role !== 'error' && newAssistantMessage.role !== 'loading') {
+        localStorage.setItem('chat', JSON.stringify(updatedChat));
+        localStorage.setItem('tokens', assistantResponse.tokens);
+      }
   
       setIsLoading(false);
     } catch (error) {
@@ -85,9 +82,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
-  
-  
-  
   
 
   useEffect(() => {
