@@ -45,9 +45,7 @@ function IndexPage({ tokens }) {
     };
   
     setChat((prevChat) => [...prevChat, newUserMessage]);
-    if (newUserMessage.role !== 'error' && newUserMessage.role !== 'loading') {
-      localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
-    }
+    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
   
     setIsError(false);
     setIsLoading(true);
@@ -66,10 +64,11 @@ function IndexPage({ tokens }) {
         txid: userTxid && !isLoading ? userTxid : null,
       };
   
-      const updatedChat = [...parsedChat, newAssistantMessage];
-  
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
-      if (newAssistantMessage.role !== 'error' && newAssistantMessage.role !== 'loading') {
+  
+      // Only save the assistant message to localStorage if it's not an error
+      if (assistantResponse.tokens !== 0) {
+        const updatedChat = [...parsedChat, newAssistantMessage];
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
       }
@@ -82,6 +81,7 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
   
 
   useEffect(() => {
