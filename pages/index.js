@@ -35,7 +35,6 @@ function IndexPage({ tokens }) {
     }
   };
   
-  
   const handleSubmit = async (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
@@ -67,7 +66,7 @@ function IndexPage({ tokens }) {
       setChat((prevChat) => [...prevChat, newAssistantMessage]);
   
       // Only save the assistant message to localStorage if it's not an error
-      if (assistantResponse.tokens !== 0) {
+      if (assistantResponse.message !== 'An error occurred during processing.') {
         const updatedChat = [...parsedChat, newAssistantMessage];
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         localStorage.setItem('tokens', assistantResponse.tokens);
@@ -81,6 +80,9 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
+  
+  
+  
   
   
 
