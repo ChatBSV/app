@@ -19,18 +19,18 @@
   
 
   .resetButton {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 20px;
     background-color: #4772f6;
     background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
-    background-size: 28px;
+    background-size: 20px;
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
     top: 5vh;
     right: 5vw;
-    margin-top: -20px;
+    margin-top: -16px;
     border-width: 0;
     cursor: pointer;
   }
