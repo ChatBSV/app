@@ -14,7 +14,6 @@
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "axios": "^0.26.1",
-    "dotenv": "^16.0.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "isomorphic-unfetch": "^4.0.2",
@@ -26,5 +25,8 @@
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.1.3"
   }
 }

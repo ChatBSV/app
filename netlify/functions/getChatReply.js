@@ -4,25 +4,32 @@ const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, lastUserMessage, txid, history } = JSON.parse(event.body);
+  const { prompt, history } = JSON.parse(event.body);
 
   let messages;
 
   if (history && history.length > 0) {
-    const lastAssistantMessage = history.find(
+    const lastAssistantMessage = history.filter(
       (message) => message.role === 'assistant'
-    );
-
-    messages = [
-      { role: 'assistant', content: lastAssistantMessage.content },
-      { role: 'user', content: prompt },
-    ];
-  } else {
+    ).pop();
+  
+    if (lastAssistantMessage) {
+      messages = [
+        { role: 'assistant', content: lastAssistantMessage.content },
+        { role: 'user', content: prompt },
+      ];
+    }
+  }
+  
+  if (!messages) {
     messages = [
       { role: 'system', content: CORE_PROMPT },
       { role: 'user', content: prompt },
     ];
   }
+  
+  
+  
 
   try {
     const response = await axios.post(
