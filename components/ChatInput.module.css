@@ -127,7 +127,7 @@
         padding-left: 16px;
         padding-right: 16px;
         font-size: 16px;
-        max-width: 100%;
+        max-width: 90vw;
         min-width: 90vw;
         flex: none;
     }
