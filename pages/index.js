@@ -73,12 +73,11 @@ function IndexPage({ tokens }) {
         content: assistantResponse.message,
         tokens: assistantResponse.tokens,
         txid: userTxid && !isLoading ? userTxid : null,
-        isError: assistantResponse.message === 'An error occurred during processing.',
       };
   
       setChat((prevChat) => {
         const updatedChat = [...prevChat, newAssistantMessage];
-        if (!newAssistantMessage.isError) {
+        if (newAssistantMessage.content !== 'An error occurred during processing.') {
           localStorage.setItem('chat', JSON.stringify(updatedChat));
           localStorage.setItem('tokens', assistantResponse.tokens);
         }
