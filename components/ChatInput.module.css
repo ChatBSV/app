@@ -100,6 +100,7 @@
         width: 180;
         margin-top: 10px;
         margin-bottom: 30px;
+        flex: none;
     }
 
     .inputForm {
@@ -124,8 +125,8 @@
         border: 1px solid #DAD8D8;
         border-radius: 30px;
         margin-bottom: 0;
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 24px;
+        padding-right: 24px;
         font-size: 16px;
         max-width: 80vw;
         min-width: 80vw;
