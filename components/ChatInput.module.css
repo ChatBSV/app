@@ -106,8 +106,8 @@
         border-radius: 8px;
         display: flex;
         flex-direction: column;
-        max-width: 90vw;
-        min-width: 100%;
+        max-width: 80vw;
+        min-width: 80vw;
         justify-content: center;
         align-items: center;
         flex: none;
@@ -127,8 +127,8 @@
         padding-left: 16px;
         padding-right: 16px;
         font-size: 16px;
-        max-width: 90vw;
-        min-width: 90vw;
+        max-width: 80vw;
+        min-width: 80vw;
         flex: none;
     }
 
