@@ -19,7 +19,7 @@ function IndexPage({ tokens }) {
   const getAssistantReply = async (prompt, chatHistory) => {
     try {
       const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 10000);
+      const id = setTimeout(() => controller.abort(), 20000);
   
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
