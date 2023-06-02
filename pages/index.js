@@ -18,10 +18,16 @@ function IndexPage({ tokens }) {
 
   const getAssistantReply = async (prompt, chatHistory) => {
     try {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 10000);
+  
       const response = await fetch('/.netlify/functions/getChatReply', {
         method: 'POST',
         body: JSON.stringify({ prompt, history: chatHistory }),
+        signal: controller.signal,
       });
+  
+      clearTimeout(id);
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -35,6 +41,7 @@ function IndexPage({ tokens }) {
     }
   };
   
+  
   const handleSubmit = async (userMessage, userTxid) => {
     const newUserMessage = {
       id: nanoid(),
@@ -43,8 +50,13 @@ function IndexPage({ tokens }) {
       txid: userTxid,
     };
   
-    setChat((prevChat) => [...prevChat, newUserMessage]);
-    localStorage.setItem('chat', JSON.stringify([...chat, newUserMessage]));
+    setChat((prevChat) => {
+      const updatedChat = [...prevChat, newUserMessage];
+      if (newUserMessage.role !== 'error' && newUserMessage.role !== 'loading') {
+        localStorage.setItem('chat', JSON.stringify(updatedChat));
+      }
+      return updatedChat;
+    });
   
     setIsError(false);
     setIsLoading(true);
@@ -63,14 +75,14 @@ function IndexPage({ tokens }) {
         txid: userTxid && !isLoading ? userTxid : null,
       };
   
-      setChat((prevChat) => [...prevChat, newAssistantMessage]);
-  
-      // Only save the assistant message to localStorage if it's not an error
-      if (assistantResponse.message !== 'An error occurred during processing.') {
-        const updatedChat = [...parsedChat, newAssistantMessage];
-        localStorage.setItem('chat', JSON.stringify(updatedChat));
-        localStorage.setItem('tokens', assistantResponse.tokens);
-      }
+      setChat((prevChat) => {
+        const updatedChat = [...prevChat, newAssistantMessage];
+        if (newAssistantMessage.role !== 'error' && newAssistantMessage.role !== 'loading') {
+          localStorage.setItem('chat', JSON.stringify(updatedChat));
+          localStorage.setItem('tokens', assistantResponse.tokens);
+        }
+        return updatedChat;
+      });
   
       setIsLoading(false);
     } catch (error) {
@@ -80,7 +92,6 @@ function IndexPage({ tokens }) {
       setIsLoading(false);
     }
   };
-  
   
   
   
