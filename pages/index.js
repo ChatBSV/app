@@ -9,7 +9,33 @@ import Header from '../components/Header';
 import Head from 'next/head';
 import './global.css';
 
-function IndexPage({ tokens }) {
+import HandCashService from "../src/services/HandCashService";
+import SessionTokenRepository from "../src/repositories/SessionTokenRepository";
+
+export function getServerSideProps({query}) {
+  const {sessionToken} = query;
+  const redirectionUrl = new HandCashService().getRedirectionUrl();
+  try {
+      return {
+          props: {
+              redirectionUrl,
+              sessionToken: sessionToken || false,
+              user: sessionToken ? SessionTokenRepository.decode(sessionToken).user : false,
+          },
+      };
+  } catch (error) {
+      console.log(error);
+      return {
+          props: {
+              redirectionUrl,
+              sessionToken: false,
+              user: false,
+          },
+      };
+  }
+}
+
+function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -17,12 +43,16 @@ function IndexPage({ tokens }) {
   const [txid, setTxid] = useState('');
 
   const getAssistantReply = async (prompt, chatHistory) => {
+    console.log('getAssistantReply', prompt, chatHistory)
     try {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 20000);
   
-      const response = await fetch('/.netlify/functions/getChatReply', {
+      const response = await fetch('/api/getChatReply', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ prompt, history: chatHistory }),
         signal: controller.signal,
       });
@@ -43,6 +73,7 @@ function IndexPage({ tokens }) {
   
   
   const handleSubmit = async (userMessage, userTxid) => {
+    console.log('handleSubmit', userMessage, userTxid)
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -64,6 +95,8 @@ function IndexPage({ tokens }) {
     try {
       const storedChat = localStorage.getItem('chat');
       const parsedChat = storedChat ? JSON.parse(storedChat) : [];
+
+      console.log('handleSubmit', userMessage, parsedChat)
   
       const assistantResponse = await getAssistantReply(userMessage, parsedChat);
   
@@ -91,11 +124,7 @@ function IndexPage({ tokens }) {
       setErrorMessage(error.message || 'An error occurred');
       setIsLoading(false);
     }
-  };
-  
-  
-  
-  
+  };  
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
@@ -148,21 +177,21 @@ function IndexPage({ tokens }) {
           href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png"
         />
       </Head>
-      <Header resetChat={resetChat} />
+      <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
-      <ChatInput handleSubmit={handleSubmit} />
+      <ChatInput handleSubmit={handleSubmit} sessionToken={sessionToken} redirectionUrl={redirectionUrl} />
     </div>
   );
 }
 
-export async function getStaticProps() {
-  const tokens = 100;
+// export async function getStaticProps() {
+//   const tokens = 100;
 
-  return {
-    props: {
-      tokens,
-    },
-  };
-}
+//   return {
+//     props: {
+//       tokens,
+//     },
+//   };
+// }
 
 export default IndexPage;

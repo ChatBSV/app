@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .chatFooter {
     min-height: 10vh;
     justify-content: center;

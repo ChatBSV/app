@@ -34,4 +34,16 @@
     border-width: 0;
     cursor: pointer;
   }
+
+  .loginButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 20px;
+    position: absolute;
+    top: 5vh;
+    left: 5vw;
+    margin-top: -16px;
+    border-width: 0;
+    cursor: pointer;
+  }
   
