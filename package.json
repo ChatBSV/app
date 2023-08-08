@@ -15,7 +15,12 @@
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "simple-data-storage": "^1.0.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "autoprefixer": "10.4.14",
+    "axios": "^0.26.1",
+    "isomorphic-unfetch": "^4.0.2",
+    "nanoid": "^4.0.2",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "autoprefixer": "10.4.14",
