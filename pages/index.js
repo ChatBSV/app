@@ -184,14 +184,4 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   );
 }
 
-// export async function getStaticProps() {
-//   const tokens = 100;
-
-//   return {
-//     props: {
-//       tokens,
-//     },
-//   };
-// }
-
 export default IndexPage;

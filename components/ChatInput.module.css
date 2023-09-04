@@ -8,13 +8,6 @@
     box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
   }
 
-  .mbWrapper {
-    overflow: hidden;
-    /* width: 180px;
-    max-width: 180px; */
-    cursor: pointer;
-  }
-
 .chatInput {
     flex: 1;
     margin-bottom: 0;
@@ -47,18 +40,18 @@
 .inputField:active,
 .inputField:focus {
     border-style: solid !important;
-    border-color: #37C078 !important;  /* Replace with your desired HEX code */
+    border-color: #37C078 !important;  
     box-shadow: none !important;
     outline: none !important;
 }
 
 .inputField:focus-visible {
-    border-color: #37C078 !important;  /* Replace with your desired HEX code */
+    border-color: #37C078 !important; 
     box-shadow: none !important;
     outline: none !important;
 }
 
-/* Reset WebKit styles */
+
 input[type="text"]::-webkit-input-placeholder,
 input[type="password"]::-webkit-input-placeholder,
 input[type="email"]::-webkit-input-placeholder,
@@ -176,18 +169,18 @@ input[type="search"]::-webkit-search-results-decoration {
       .inputField:active,
       .inputField:focus {
           border-style: solid !important;
-          border-color: #37C078 !important;  /* Replace with your desired HEX code */
+          border-color: #37C078 !important; 
           box-shadow: none !important;
           outline: none !important;
       }
       
       .inputField:focus-visible {
-          border-color: #37C078 !important;  /* Replace with your desired HEX code */
+          border-color: #37C078 !important; 
           box-shadow: none !important;
           outline: none !important;
       }
       
-      /* Reset WebKit styles */
+     
       input[type="text"]::-webkit-input-placeholder,
       input[type="password"]::-webkit-input-placeholder,
       input[type="email"]::-webkit-input-placeholder,
