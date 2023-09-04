@@ -77,9 +77,11 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   //   }
   // }, [moneyButtonLoaded]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault();
+      event.preventDefault(); // Prevent the default 'Enter' key action
+      await pay(); // Trigger the payment
+      handleFormSubmit(); // Submit the form
     }
   };
 
