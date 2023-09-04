@@ -2,7 +2,7 @@
     max-width: 70%;
     font-weight: 600;
     font-size: 16pt;
-    line-height: 22pt;
+    line-height: 20pt;
     background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 10px;
@@ -82,10 +82,10 @@
   @media screen and (max-width: 479px) {
 
     .chatMessage {
-      max-width: 80%;
+      max-width: 90%;
       font-weight: 600;
       font-size: 16pt;
-      line-height: 22pt;
+      line-height: 20pt;
       background-color: #fcfcfc;
       border-radius: 8px;
       margin-top: 10px;

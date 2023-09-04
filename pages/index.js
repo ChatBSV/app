@@ -67,7 +67,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
       return { message: data.message, tokens: data.tokens };
     } catch (error) {
       console.error('Error:', error);
-      return { message: 'OpenAI Error', tokens: 0 };
+      return { message: '408 Request Timeout', tokens: 0 };
     }
   };
   
@@ -110,7 +110,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   
       setChat((prevChat) => {
         const updatedChat = [...prevChat, newAssistantMessage];
-        if (newAssistantMessage.content !== 'OpenAI Error') {
+        if (newAssistantMessage.content !== '408 Request Timeout') {
           localStorage.setItem('chat', JSON.stringify(updatedChat));
           localStorage.setItem('tokens', assistantResponse.tokens);
         }
