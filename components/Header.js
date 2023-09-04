@@ -24,7 +24,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
                         <img src={user.avatarUrl}
                               className="inline-block w-8 h-8 border-white/50 rounded-full border-r border-t border-b"/>
                         <div className="flex flex-col justify-center items-start gap-y-0.5">
-                            <span className="font-bold text-white/90 leading-4">${user.handle}</span>
+                            <span className="font-bold text-white/90 leading-4">\${user.handle}</span>
                         </div>
                     </div>
                 </div> */}
