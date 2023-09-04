@@ -23,7 +23,7 @@ function ChatBody({ chat, isLoading, isError }) {
         <ChatMessage
           content="Welcome to ChatBSV. Ask me anything."
           role="intro"
-          className={styles.introMessage}
+          className={styles.assistantMessage}
         />
   
         {chat.map((message) => (
