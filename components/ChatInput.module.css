@@ -34,7 +34,7 @@
     font-weight: 600;
     font-size: 16pt;
     background-color: #F2EFEF;
-    border: 1px solid #DAD8D8;
+    border: 1px solid #37C078;
     border-radius: 30px;
     margin-bottom: 0;
     padding-left: 30px;
@@ -46,14 +46,27 @@
 
 .inputField:active,
 .inputField:focus {
-    border-style: solid;
-    border-color: #DAD8D8;
-    box-shadow: none;
+    border-style: solid !important;
+    border-color: #37C078 !important;  /* Replace with your desired HEX code */
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 .inputField:focus-visible {
-    border-color: #DAD8D8;
-    box-shadow: none;
+    border-color: #37C078 !important;  /* Replace with your desired HEX code */
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Reset WebKit styles */
+input[type="text"]::-webkit-input-placeholder,
+input[type="password"]::-webkit-input-placeholder,
+input[type="email"]::-webkit-input-placeholder,
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
 }
 
 .inputField::-ms-input-placeholder {
@@ -126,7 +139,7 @@
         background-color: #F2EFEF;
         border: 1px solid #DAD8D8;
         border-radius: 30px;
-        margin-bottom: 0;
+        margin-bottom: 10px;
         margin-right: 0px;
         padding-left: 24px;
         padding-right: 24px;
