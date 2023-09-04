@@ -135,7 +135,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
         <div className={styles.mbWrapper}>
           {/* <div ref={moneyButtonContainerRef} className={styles.moneyButton}></div> */}
           <ButtonIcon 
-            icon="https://handcash.io/favicon.ico" 
+            icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
             text={paymentResult?.status === 'pending' ? 'Sending...' : 'Send'}             
             onClick={paymentResult?.status === 'pending' ? null : pay}
           />

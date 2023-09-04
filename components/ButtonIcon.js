@@ -9,7 +9,7 @@ export default function ButtonIcon({ icon, text, onClick }) {
     >
         <div className="flex gap-x-3 pr-6">
             <img src={icon}
-                    className="inline-block w-8 h-8 border-black/50 rounded-full border-r border-t border-b opacity-90 bg-darkBackground-900"/>
+                    className="inline-block w-8 h-8 rounded-full opacity-90"/>
             <div className="flex flex-col justify-center items-start gap-y-0.5">
                 <span className="font-bold text-white/90 leading-4">{text}</span>
             </div>
