@@ -20,7 +20,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
       <div className={`w-full mb-4 flex justify-between items-end ${styles.loginButton}`}>
             <div className="flex items-center gap-x-1 group">
                 {/* <div className="bg-darkBackground-700 rounded-full border m-0 hover:bg-darkBackground-900">
-                    <div className="flex gap-x-3 pr-6" style={{ paddingTop: '7px', paddingLeft: '7px', paddingBottom: '7px', paddingRight: '20px' }} >
+                    <div className="flex gap-x-2 pr-6" style={{ paddingTop: '6px', paddingLeft: '6px', paddingBottom: '6px', paddingRight: '20px' }} >
                         <img src={user.avatarUrl}
                               className="inline-block w-8 h-8 border-white/50 rounded-full border-r border-t border-b"/>
                         <div className="flex flex-col justify-center items-start gap-y-0.5">

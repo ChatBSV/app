@@ -7,7 +7,7 @@ export default function ButtonIcon({ icon, text, onClick }) {
         className="bg-darkBackground-700 rounded-full border m-0 hover:bg-darkBackground-900"
         onClick={onClick}
     >
-        <div className="flex gap-x-3 pr-6" style={{ paddingTop: '7px', paddingLeft: '7px', paddingBottom: '7px', paddingRight: '20px' }} >
+        <div className="flex gap-x-2 pr-6" style={{ paddingTop: '6px', paddingLeft: '6px', paddingBottom: '6px', paddingRight: '20px' }} >
             <img src={icon}
                     className="inline-block w-8 h-8 rounded-full opacity-90"/>
             <div className="flex flex-col justify-center items-start gap-y-0.5">
