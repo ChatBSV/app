@@ -44,7 +44,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
         <a href={redirectionUrl}>
         <ButtonIcon icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" text="Connect" />
         {/* <div className="bg-darkBackground-700 rounded-full border m-0 hover:bg-darkBackground-900">
-                    <div className="flex gap-x-3 pr-6" style={{ paddingTop: '7px', paddingLeft: '7px', paddingBottom: '7px', paddingRight: '20px' }}>
+                    <div className="flex gap-x-2 pr-6" style={{ paddingTop: '6px', paddingLeft: '6px', paddingBottom: '6px', paddingRight: '20px' }}>
                         <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
                               className="inline-block w-8 h-8 border-black/50 rounded-full border-r border-t border-b opacity-90 bg-darkBackground-900"/>
                         <div className="flex flex-col justify-center items-start gap-y-0.5">

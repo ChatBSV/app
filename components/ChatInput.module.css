@@ -110,6 +110,19 @@ input[type="search"]::-webkit-search-results-decoration {
 
   @media screen and (max-width: 479px) {
 
+
+    .chatFooter {
+        min-height: 10vh;
+        justify-content: center;
+        align-items: center;
+        padding-left: 5vw;
+        padding-right: 5vw;
+        padding-top: 20px;
+        padding-bottom: 30px;
+        display: flex;
+        box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
+      }
+
     .moneyButton {
         display: inline-block;
         width: 180;

@@ -19,9 +19,9 @@
   
 
   .resetButton {
-    width: 32px;
-    height: 32px;
-    border-radius: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
     background-color: #37C078;
     background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
     background-size: 20px;
@@ -30,20 +30,20 @@
     position: absolute;
     top: 5vh;
     right: 5vw;
-    margin-top: -16px;
+    margin-top: -22px;
     border-width: 0;
     cursor: pointer;
   }
 
   .loginButton {
-    width: 32px;
-    height: 32px;
-    border-radius: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
     position: absolute;
-    padding: 4px;
+    padding: 6px;
     top: 5vh;
     left: 5vw;
-    margin-top: -16px;
+    margin-top: -22px;
     border-width: 0;
     cursor: pointer;
   }
