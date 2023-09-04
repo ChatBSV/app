@@ -40,6 +40,7 @@
     height: 32px;
     border-radius: 20px;
     position: absolute;
+    padding: 4px;
     top: 5vh;
     left: 5vw;
     margin-top: -16px;
