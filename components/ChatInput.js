@@ -7,54 +7,59 @@ import ButtonIcon from './ButtonIcon';
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
+  const [paymentResult, setPaymentResult] = useState({status: 'none'});
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
       const storedTxid = localStorage.getItem('txid');
-      handleSubmit(prompt, storedTxid);
+      await handleSubmit(prompt, storedTxid);
       inputRef.current.value = '';
     } else {
       console.log('Prompt is empty. No request sent.');
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      pay().then(handleFormSubmit);
+      await pay();
+      await handleFormSubmit();
     }
   };
 
-  const [paymentResult, setPaymentResult] = useState({status: 'none'});
-
   const pay = async () => {
-    console.log('pay');
+    localStorage.removeItem('txid');
+
     if (!sessionToken) {
       console.log('No session token.');
       window.location.href = redirectionUrl;
       return;
     }
     setPaymentResult({status: 'pending'});
-    const response = await fetch('/api/pay', {
-      method: "POST",
-      headers: {
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-    });
-    const paymentResult = await response.json();
-    console.log('payResult', paymentResult);
-    if (paymentResult.status === 'sent') {
-      const { transactionId } = paymentResult;
-      console.log('Transaction ID:', transactionId);
-      localStorage.setItem('txid', transactionId);
-      setTxid(transactionId);
-      handleFormSubmit();
+    try {
+      const response = await fetch('/api/pay', {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`,
+        },
+      });
+      const paymentResult = await response.json();
+      if (paymentResult.status === 'sent') {
+        const { transactionId } = paymentResult;
+        localStorage.setItem('txid', transactionId);
+        setTxid(transactionId);
+        await handleFormSubmit();
+      }
+      if (paymentResult.status === 'error') {
+        console.log('Error:', paymentResult.message);
+        localStorage.removeItem('txid');  
+      }
+      setPaymentResult(paymentResult);
+    } catch (error) {
+      console.log('An error occurred:', error);
+      localStorage.removeItem('txid');  
     }
-    if (paymentResult.status === 'error') {
-      console.log('Error:', paymentResult.message);
-    }
-    setPaymentResult(paymentResult);
   };
 
   return (

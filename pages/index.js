@@ -1,7 +1,6 @@
 // index.js
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { nanoid } from 'nanoid';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
@@ -137,6 +136,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const resetChat = () => {
     localStorage.removeItem('chat');
     localStorage.removeItem('txid');
+    localStorage.removeItem('tokens');
     window.location.reload();
   };
 
