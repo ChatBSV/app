@@ -155,7 +155,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         />
         <meta
           property="og:image"
-          content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png"
+          content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e609cfeef5f1198151_ChatBSV_openGraph.jpg"
         />
         <meta property="twitter:title" content="ChatBSV - OpenAI on Bitcoin" />
         <meta
@@ -164,17 +164,17 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         />
         <meta
           property="twitter:image"
-          content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9aee77d85408f3b04e_ChatBSV_openGraph.png"
+          content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e609cfeef5f1198151_ChatBSV_openGraph.jpg"
         />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <link
           rel="icon"
-          href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9af32cc531d70618d3_ChatBSV_favicon.png"
+          href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e6fa8e0eb88fceaf82_chatbsv_favicon.png"
         />
         <link
           rel="apple-touch-icon"
-          href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a07b99fb15443b97e_ChatBSV_webclip.png"
+          href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e72ee859647da0aa56_ChatBSV_webclip.png"
         />
       </Head>
       <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />

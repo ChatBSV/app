@@ -42,10 +42,10 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
       </div>
       :        <div className={`w-full mb-4 flex justify-between items-end ${styles.loginButton}`}>
         <a href={redirectionUrl}>
-        <ButtonIcon icon="https://handcash.io/favicon.ico" text="connect" />
+        <ButtonIcon icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" text="connect" />
         {/* <div className="bg-darkBackground-700 rounded-full border m-0 hover:bg-darkBackground-900">
                     <div className="flex gap-x-3 pr-6">
-                        <img src="https://handcash.io/favicon.ico"
+                        <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
                               className="inline-block w-8 h-8 border-black/50 rounded-full border-r border-t border-b opacity-90 bg-darkBackground-900"/>
                         <div className="flex flex-col justify-center items-start gap-y-0.5">
                             <span className="font-bold text-white/90 leading-4">connect</span>
@@ -57,7 +57,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
           </div>}
 
       <img
-        src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/646c5d9a14230f767d19fea9_ChatBSV_logo.png"
+        src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e6b0587817f80e105b_ChatBSV_logo.svg"
         alt="ChatBSV"
         style={{ height: '44px', marginTop: '5px' }}
       />
