@@ -16,11 +16,11 @@ module.exports = {
         brandLight: "#74FFAC",
         brandNormal: "#38CB7C",
         brandDark: "#00994F",
-        normalBackground: "#4772f6",
+        normalBackground: "#37C078",
         darkBackground: {
             800: "#1D1D1D",
-            900: "#121212",
-            700: "#4772f6"
+            900: "#37C078",
+            700: "#37C078"
       },
     },
     },
