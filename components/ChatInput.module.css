@@ -40,6 +40,7 @@
     padding-left: 30px;
     padding-right: 30px;
     font-size: 16px;
+    margin-right: 8px;
     flex: 1;
 }
 
@@ -126,6 +127,7 @@
         border: 1px solid #DAD8D8;
         border-radius: 30px;
         margin-bottom: 0;
+        margin-right: 0px;
         padding-left: 24px;
         padding-right: 24px;
         font-size: 16px;
