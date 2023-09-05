@@ -1,10 +1,10 @@
 .chatMessage {
     font-family: 'Open Sans';
     max-width: 70%;
-    font-weight: 500;
-    
+    font-weight: 600;
+
     font-size: 15pt;
-    line-height: 18pt;
+    line-height: 15pt;
     background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 10px;
@@ -85,9 +85,10 @@
 
     .chatMessage {
       max-width: 90%;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: 'Open Sans';
       font-size: 15pt;
-      line-height: 18pt;
+      line-height: 15pt;
       background-color: #fcfcfc;
       border-radius: 8px;
       margin-top: 10px;
