@@ -10,6 +10,7 @@ export default async function handler(req, res) {
         return res.status(404).json({error: 'Not a POST request'});
     }
     try {
+        
         const {authorization} = req.headers;
         console.log('pay.js: Authorization header:', authorization);
         
