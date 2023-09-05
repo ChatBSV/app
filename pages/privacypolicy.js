@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
       <p>Last Updated: Sep 06, 2023</p>
       
       <h2>Introduction</h2>
-      <p>Welcome to ChatBSV. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices with regards to your personal information, please contact us at {"hello@chatbsv.com"}.</p>
+      <p>Welcome to ChatBSV. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices with regards to your personal information, please contact us at {'"hello@chatbsv.com"'}</p>
       
       <h2>What Information Do We Collect?</h2>
       <p>Information You Share with Us</p>
@@ -40,10 +40,10 @@ const PrivacyPolicy = () => {
       <p>Since we do not collect or store your data on our servers, we do not have a process for you to request access or deletion of your data. You can manage all your information locally on your browser.</p>
       
       <h2>Updates to this Policy</h2>
-      <p>We may update this privacy policy from time to time. The updated version will be indicated by an updated "Revised" date and the updated version will be effective as soon as it is accessible.</p>
+      <p>We may update this privacy policy from time to time. The updated version will be indicated by an updated &quot;Revised&quot; date and the updated version will be effective as soon as it is accessible.</p>
       
       <h2>Contact Us</h2>
-      <p>If you have questions or comments about this policy, you may contact us at {"hello@chatbsv.com"}.</p>
+      <p>If you have questions or comments about this policy, you may contact us at {'"hello@chatbsv.com"'}</p>
     </div>
   );
 };
