@@ -10,6 +10,14 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [paymentResult, setPaymentResult] = useState({status: 'none'});
   const [isConnected, setIsConnected] = useState(true); // Add this line
 
+  useEffect(() => {
+    if (sessionToken) {
+      setIsConnected(true);
+    } else {
+      setIsConnected(false);
+    }
+  }, [sessionToken]);
+
   const buttonText = () => {
     if (paymentResult?.status === 'pending') return 'Sending...';
     if (!isConnected) return 'Connect'; // Add this line
