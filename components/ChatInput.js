@@ -23,8 +23,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      await pay();
-      await handleFormSubmit();
+      await pay();  
     }
   };
 
