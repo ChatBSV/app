@@ -8,6 +8,13 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({status: 'none'});
+  const [isConnected, setIsConnected] = useState(true); // Add this line
+
+  const buttonText = () => {
+    if (paymentResult?.status === 'pending') return 'Sending...';
+    if (!isConnected) return 'Connect'; // Add this line
+    return 'Send';
+  };
 
   const handleFormSubmit = async () => {
     const prompt = inputRef.current.value.trim();
@@ -60,6 +67,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
       console.log('An error occurred:', error);
       localStorage.removeItem('txid');  
     }
+  
   };
 
   return (
@@ -75,7 +83,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
         <div className={styles.mbWrapper}>
           <ButtonIcon 
             icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
-            text={paymentResult?.status === 'pending' ? 'Sending...' : 'Send'}             
+            text={buttonText()} // Update this line           
             onClick={paymentResult?.status === 'pending' ? null : pay}
           />
         </div>
