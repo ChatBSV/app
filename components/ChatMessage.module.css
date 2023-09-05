@@ -94,5 +94,17 @@
       box-shadow: -1px -1px 3px rgba(255, 255, 255, .5), 1px 1px 3px rgba(0, 0, 0, .1);
   }
 
+  .chatLink {
+    border-top: 1px solid #ddd;
+    padding-top: 3px;
+    margin-top: 3px;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    font-family: 'Courier New';
+    font-weight: 600;
+    
+    
+  }
 
   }
