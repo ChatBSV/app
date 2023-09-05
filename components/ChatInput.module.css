@@ -128,8 +128,8 @@ input[type="search"]::-webkit-search-results-decoration {
         border-radius: 8px;
         display: flex;
         flex-direction: column;
-        max-width: 80vw;
-        min-width: 80vw;
+        max-width: 90vw;
+        min-width: 90vw;
         justify-content: center;
         align-items: center;
         flex: none;
@@ -139,7 +139,7 @@ input[type="search"]::-webkit-search-results-decoration {
         height: 50px;
         box-shadow: none;
         color: #555;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 16pt;
         margin-top: 10px;
         background-color: #F2EFEF;
@@ -147,11 +147,11 @@ input[type="search"]::-webkit-search-results-decoration {
         border-radius: 30px;
         margin-bottom: 10px;
         margin-right: 0px;
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 20px;
+        padding-right: 20px;
         font-size: 16px;
-        max-width: 80vw;
-        min-width: 80vw;
+        max-width: 90vw;
+        min-width: 90vw;
         flex: none;
     }
 
