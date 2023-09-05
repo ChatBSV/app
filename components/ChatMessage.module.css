@@ -1,5 +1,5 @@
 .chatMessage {
-    font-family: 'Open Sans';
+   
     max-width: 70%;
     font-weight: 600;
 
@@ -86,7 +86,7 @@
     .chatMessage {
       max-width: 90%;
       font-weight: 600;
-      font-family: 'Open Sans';
+      
       font-size: 15pt;
       line-height: 15pt;
       background-color: #fcfcfc;
