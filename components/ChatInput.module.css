@@ -149,6 +149,7 @@ input[type="search"]::-webkit-search-results-decoration {
         margin-right: 0px;
         padding-left: 24px;
         padding-right: 24px;
+        font-size: 16px;
         max-width: 80vw;
         min-width: 80vw;
         flex: none;
