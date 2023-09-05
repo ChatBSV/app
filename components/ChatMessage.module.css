@@ -1,8 +1,8 @@
 .chatMessage {
     max-width: 70%;
-    font-weight: 600;
-    font-size: 16pt;
-    line-height: 20pt;
+    font-weight: 500;
+    font-size: 15pt;
+    line-height: 18pt;
     background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 10px;
@@ -83,9 +83,9 @@
 
     .chatMessage {
       max-width: 90%;
-      font-weight: 600;
-      font-size: 16pt;
-      line-height: 20pt;
+      font-weight: 500;
+      font-size: 15pt;
+      line-height: 18pt;
       background-color: #fcfcfc;
       border-radius: 8px;
       margin-top: 10px;
