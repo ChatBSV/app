@@ -8,16 +8,14 @@ const PrivacyPolicy = () => {
       <Head>
         <title>Privacy Policy - ChatBSV</title>
       </Head>
-      Privacy Policy for ChatBSV
 
 
-Last Updated: Sep 06 2023
-
-Introduction
-
-Welcome to ChatBSV. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices with regards to your personal information, please contact us at [Contact Email].
-
-What Information Do We Collect?
+      <h1>Privacy Policy for ChatBSV</h1>
+      <p>Last Updated: Sep 06, 2023</p>
+      
+      <h2>Introduction</h2>
+      <p>Welcome to ChatBSV. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices with regards to your personal information, please contact us at {"hello@chatbsv.com]"}.</p>
+      <p>What Information Do We Collect?
 Information You Share with Us
 Public Username. We collect your public username from your HandCash wallet when you connect it to our service.
 Information Automatically Collected
@@ -44,7 +42,8 @@ Updates to this Policy
 We may update this privacy policy from time to time. The updated version will be indicated by an updated "Revised" date and the updated version will be effective as soon as it is accessible.
 
 Contact Us
-If you have questions or comments about this policy, you may contact us at hello@chatbsv.com.
+If you have questions or comments about this policy, you may contact us at {"hello@chatbsv.com]"}.</p>
+      
     </div>
   );
 };
