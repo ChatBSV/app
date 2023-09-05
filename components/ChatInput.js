@@ -1,8 +1,9 @@
 // components/ChatInput.js
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
+
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [txid, setTxid] = useState('');
