@@ -14,6 +14,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
   const paymentResult = null;
   const pay = null;
 
+  
   return (
     <div className={styles.chatHeader}>
       {sessionToken ?
