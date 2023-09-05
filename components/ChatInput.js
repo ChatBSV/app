@@ -27,7 +27,12 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
     }
   };
 
+  useEffect(() => {
+    console.log('ChatInput: useEffect, sessionToken:', sessionToken); // Log sessionToken
+  }, [sessionToken]);
+
   const pay = async () => {
+    console.log('ChatInput: pay, sessionToken:', sessionToken); // Log sessionToken
     localStorage.removeItem('txid');
 
     if (!sessionToken) {

@@ -126,6 +126,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   };  
 
   useEffect(() => {
+    console.log('IndexPage: useEffect, sessionToken:', sessionToken);
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
       const parsedChat = JSON.parse(storedChat);

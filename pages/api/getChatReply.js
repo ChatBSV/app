@@ -1,12 +1,11 @@
 // pages/api/getChatReply.js
+
+
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  // console.log('Received body:', req.body)
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const { prompt, history } = req.body;
-
-  // console.log('getChatReply.js', OPENAI_API_KEY, CORE_PROMPT, prompt, history)
 
   let messages;
 
