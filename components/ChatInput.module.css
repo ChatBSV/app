@@ -105,13 +105,13 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
     .chatFooter {
-        min-height: 150px;
+        min-height: 120px;
         justify-content: center;
         align-items: center;
-        padding-left: 5vw;
-        padding-right: 5vw;
-        padding-top: 20px;
-        padding-bottom: 30px;
+        padding-left: 3vw;
+        padding-right: 3vw;
+        padding-top: 10px;
+        padding-bottom: 20px;
         display: flex;
         box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
       }
@@ -139,9 +139,9 @@ input[type="search"]::-webkit-search-results-decoration {
         height: 50px;
         box-shadow: none;
         color: #555;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16pt;
-        margin-top: 20px;
+        margin-top: 10px;
         background-color: #F2EFEF;
         border: 2px solid #37C078;
         border-radius: 30px;
@@ -149,7 +149,6 @@ input[type="search"]::-webkit-search-results-decoration {
         margin-right: 0px;
         padding-left: 24px;
         padding-right: 24px;
-        font-size: 16px;
         max-width: 80vw;
         min-width: 80vw;
         flex: none;
