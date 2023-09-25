@@ -45,9 +45,9 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     console.log('getAssistantReply', prompt, chatHistory)
     try {
       const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 60000);
+      const id = setTimeout(() => controller.abort(), 30000);
   
-      const response = await fetch('/api/getChatReply', {
+      const response = await fetch('/api/get-chat-reply', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
