@@ -11,8 +11,15 @@ import './global.css';
 import HandCashService from "../src/services/HandCashService";
 import SessionTokenRepository from "../src/repositories/SessionTokenRepository";
 
-export function getServerSideProps({query}) {
-  const {sessionToken} = query;
+export function getServerSideProps({query, req}) {
+  const cookies = req.headers.cookie || '';
+  const sessionTokenFromCookie = cookies
+    .split('; ')
+    .find(row => row.startsWith('sessionToken='))
+    ?.split('=')[1];
+  console.log('sessionTokenFromCookie', sessionTokenFromCookie)
+  const sessionToken = sessionTokenFromCookie;
+  // const {sessionToken} = query;
   const redirectionUrl = new HandCashService().getRedirectionUrl();
   try {
       return {
@@ -41,6 +48,12 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
+  useEffect(() => {
+    if (window.location.search.includes('reload=true')) {
+      window.location.href = '/';
+    }
+  }, []);
+  
   const getAssistantReply = async (prompt, chatHistory) => {
     console.log('getAssistantReply', prompt, chatHistory)
     try {
