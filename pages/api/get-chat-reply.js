@@ -1,6 +1,5 @@
 // pages/api/getChatReply.js
 
-
 import axios from 'axios';
 
 export default async function handler(req, res) {
@@ -28,6 +27,13 @@ export default async function handler(req, res) {
       { role: 'user', content: prompt },
     ];
   }
+
+  const source = axios.CancelToken.source();
+
+  req.on('close', () => {
+    // Cancela a solicitação axios se a conexão com o cliente for fechada
+    source.cancel('Request was aborted by the client.');
+  });
   
   try {
     const response = await axios.post(
@@ -42,6 +48,7 @@ export default async function handler(req, res) {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
+        cancelToken: source.token, // Adiciona o token de cancelamento à solicitação axios
       }
     );
 
@@ -51,11 +58,16 @@ export default async function handler(req, res) {
     res.status(200).json({ message: assistantResponse, tokens: tokens });
   } catch (error) {
     console.error('Error:', error);
-    if (error.response && error.response.data && error.response.data.error) {
-      console.error('API Error:', error.response.data.error.message);
-      res.status(500).json({ error: error.response.data.error.message });
+    if (axios.isCancel(error)) {
+      console.log('Request was cancelled:', error.message);
+      res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: 'An error occurred during processing.' });
+      if (error.response && error.response.data && error.response.data.error) {
+        console.error('API Error:', error.response.data.error.message);
+        res.status(500).json({ error: error.response.data.error.message });
+      } else {
+        res.status(500).json({ error: 'An error occurred during processing.' });
+      }
     }
   }
 };

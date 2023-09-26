@@ -8,6 +8,9 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
   // const sessionToken = true;
 
   const onDisconnect = async () => {
+    await fetch('/api/logout', {
+      method: 'POST',
+    });
     window.location.href = "/";
   };
 
