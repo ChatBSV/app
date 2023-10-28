@@ -140,7 +140,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     try {
       if (userMessage.startsWith('/imagine ')) {
         const prompt = userMessage.replace('/imagine ', '');
-        await getDalleImage(prompt, '300x300');
+        await getDalleImage(prompt, '512x512');
       } else {
         const assistantResponse = await getAssistantReply(userMessage, chat);
   
