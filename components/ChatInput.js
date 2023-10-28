@@ -1,5 +1,4 @@
 // components/ChatInput.js
-
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
@@ -36,21 +35,27 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
     }
   };
 
+  const handleKeyDown = async (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      await pay();
+    }
+  };
+
   const pay = async () => {
     console.log('ChatInput: pay, sessionToken:', sessionToken);
     localStorage.removeItem('txid');
 
     const prompt = inputRef.current.value.trim();
     const isDalle = prompt.startsWith('/imagine');
-    const api = '/api/pay';
     const headers = {
       'Authorization': `Bearer ${sessionToken}`,
-      'requestType': isDalle ? 'image' : 'text' // set request type
+      'requestType': isDalle ? 'image' : 'text'
     };
 
     setPaymentResult({status: 'pending'});
     try {
-      const response = await fetch(api, {
+      const response = await fetch('/api/pay', {
         method: "POST",
         headers: headers
       });
@@ -63,12 +68,12 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
       }
       if (paymentResult.status === 'error') {
         console.log('Error:', paymentResult.message);
-        localStorage.removeItem('txid');  
+        localStorage.removeItem('txid');
       }
       setPaymentResult(paymentResult);
     } catch (error) {
       console.log('An error occurred:', error);
-      localStorage.removeItem('txid');  
+      localStorage.removeItem('txid');
     }
   };
 
@@ -85,7 +90,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
         <div className={styles.mbWrapper}>
           <ButtonIcon 
             icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
-            text={buttonText()}           
+            text={buttonText()}
             onClick={paymentResult?.status === 'pending' ? null : pay}
           />
         </div>
