@@ -54,6 +54,39 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     }
   }, []);
   
+  const getDalleImage = async (prompt, format) => {
+    try {
+      const response = await fetch('/api/dalle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt, format }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const imageUrl = data.imageUrl;
+
+      const newDalleMessage = {
+        id: nanoid(),
+        role: 'dalle-image',
+        content: imageUrl,
+      };
+
+      setChat((prevChat) => {
+        const updatedChat = [...prevChat, newDalleMessage];
+        localStorage.setItem('chat', JSON.stringify(updatedChat));
+        return updatedChat;
+      });
+    } catch (error) {
+      console.error('Error fetching DALLE image:', error);
+    }
+  };
+
   const getAssistantReply = async (prompt, chatHistory) => {
     console.log('getAssistantReply', prompt, chatHistory)
     try {
@@ -105,31 +138,31 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     setIsLoading(true);
   
     try {
-      const storedChat = localStorage.getItem('chat');
-      const parsedChat = storedChat ? JSON.parse(storedChat) : [];
-
-      console.log('handleSubmit', userMessage, parsedChat)
+      if (userMessage.startsWith('/imagine ')) {
+        const prompt = userMessage.replace('/imagine ', '');
+        await getDalleImage(prompt, '300x300');
+      } else {
+        // Note: Added the missing else block here.
+        const assistantResponse = await getAssistantReply(userMessage, parsedChat);
   
-      const assistantResponse = await getAssistantReply(userMessage, parsedChat);
+        const newAssistantMessage = {
+          id: nanoid(),
+          role: 'assistant',
+          content: assistantResponse.message,
+          tokens: assistantResponse.tokens,
+          txid: userTxid && !isLoading ? userTxid : null,
+        };
   
-      const newAssistantMessage = {
-        id: nanoid(),
-        role: 'assistant',
-        content: assistantResponse.message,
-        tokens: assistantResponse.tokens,
-        txid: userTxid && !isLoading ? userTxid : null,
-      };
+        setChat((prevChat) => {
+          const updatedChat = [...prevChat, newAssistantMessage];
+          if (newAssistantMessage.content !== '408 Request Timeout') {
+            localStorage.setItem('chat', JSON.stringify(updatedChat));
+            localStorage.setItem('tokens', assistantResponse.tokens);
+          }
+          return updatedChat;
+        });
   
-      setChat((prevChat) => {
-        const updatedChat = [...prevChat, newAssistantMessage];
-        if (newAssistantMessage.content !== '408 Request Timeout') {
-          localStorage.setItem('chat', JSON.stringify(updatedChat));
-          localStorage.setItem('tokens', assistantResponse.tokens);
-        }
-        return updatedChat;
-      });
-  
-      setIsLoading(false);
+        setIsLoading(false);}
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
@@ -190,7 +223,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
           rel="apple-touch-icon"
           href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e72ee859647da0aa56_ChatBSV_webclip.png"
         />
-      </Head>
+       </Head>
       <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
       <ChatInput handleSubmit={handleSubmit} sessionToken={sessionToken} redirectionUrl={redirectionUrl} />
