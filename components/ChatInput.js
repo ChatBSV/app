@@ -4,12 +4,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
 
-
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({status: 'none'});
-  const [isConnected, setIsConnected] = useState(true); // Add this line
+  const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
     if (sessionToken) {
@@ -21,7 +20,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
 
   const buttonText = () => {
     if (paymentResult?.status === 'pending') return 'Sending...';
-    if (!isConnected) return 'Connect'; // Add this line
+    if (!isConnected) return 'Connect';
     return 'Send';
   };
 
@@ -29,36 +28,31 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
       const storedTxid = localStorage.getItem('txid');
-      await handleSubmit(prompt, storedTxid);
+      const isDalle = prompt.startsWith('/imagine');
+      await handleSubmit(prompt, storedTxid, isDalle);
       inputRef.current.value = '';
     } else {
       console.log('Prompt is empty. No request sent.');
     }
   };
 
-  const handleKeyDown = async (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      await pay();  
-    }
-  };
-
   const pay = async () => {
-    console.log('ChatInput: pay, sessionToken:', sessionToken); // Log sessionToken
+    console.log('ChatInput: pay, sessionToken:', sessionToken);
     localStorage.removeItem('txid');
 
-    if (!sessionToken) {
-      console.log('No session token.');
-      window.location.href = redirectionUrl;
-      return;
-    }
+    const prompt = inputRef.current.value.trim();
+    const isDalle = prompt.startsWith('/imagine');
+    const api = '/api/pay';
+    const headers = {
+      'Authorization': `Bearer ${sessionToken}`,
+      'requestType': isDalle ? 'image' : 'text' // set request type
+    };
+
     setPaymentResult({status: 'pending'});
     try {
-      const response = await fetch('/api/pay', {
+      const response = await fetch(api, {
         method: "POST",
-        headers: {
-          'Authorization': `Bearer ${sessionToken}`,
-        },
+        headers: headers
       });
       const paymentResult = await response.json();
       if (paymentResult.status === 'sent') {
@@ -76,7 +70,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
       console.log('An error occurred:', error);
       localStorage.removeItem('txid');  
     }
-  
   };
 
   return (
@@ -92,7 +85,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
         <div className={styles.mbWrapper}>
           <ButtonIcon 
             icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
-            text={buttonText()} // Update this line           
+            text={buttonText()}           
             onClick={paymentResult?.status === 'pending' ? null : pay}
           />
         </div>
