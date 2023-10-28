@@ -1,4 +1,5 @@
 // components/ChatBody.js
+
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
