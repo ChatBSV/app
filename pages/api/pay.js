@@ -11,8 +11,9 @@ export default async function handler(req, res) {
     }
     try {
         
-        const {authorization} = req.headers;
+        const {authorization, requestType} = req.headers;  // Extract requestType from headers
         console.log('pay.js: Authorization header:', authorization);
+        console.log('pay.js: Request type:', requestType);  // Log the request type
         
         const sessionToken = authorization.split(' ')[1];
         if (!sessionToken) {
@@ -24,9 +25,16 @@ export default async function handler(req, res) {
         if (!authToken) {
             return res.status(401).json({status: 'error', error: 'Expired authorization.'});
         }
+
+        // Determine the payment amount based on the request type
+        let paymentAmount = process.env.CHAT_AMOUNT;  // Default amount for chat
+        if (requestType === 'image') {
+            paymentAmount = process.env.IMAGE_AMOUNT;  // Amount for DALL-E image request
+        }
+
         const paymentResult = await new HandCashService(authToken).pay({
             destination: process.env.DEST, 
-            amount: process.env.AMOUNT, 
+            amount: paymentAmount,  // Use the determined amount
             currencyCode: process.env.CURRENCY, 
             description: 'ChatBSV payment'
         });
