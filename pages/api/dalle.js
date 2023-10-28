@@ -1,8 +1,8 @@
 // pages/api/dalle.js
-import openai from "openai";
-import { config } from "dotenv";
+import { OpenAIAPI } from "openai";  // Corrected import for openai
+import dotenv from "dotenv";  // Corrected import for dotenv
 
-config();  // Initialize dotenv
+dotenv.config();  // Initialize dotenv
 
 export async function handleDalleRequest(reqBody, reqHeaders) {
   const { prompt, format } = reqBody;
@@ -13,7 +13,7 @@ export async function handleDalleRequest(reqBody, reqHeaders) {
   }
 
   try {
-    const openaiClient = new openai.OpenAIAPI({
+    const openaiClient = new OpenAIAPI({  // Changed from new openai.OpenAIAPI
       key: process.env.OPENAI_API_KEY,
     });
 
