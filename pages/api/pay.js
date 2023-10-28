@@ -4,41 +4,41 @@ import HandCashService from "../../src/services/HandCashService";
 import SessionTokenRepository from "../../src/repositories/SessionTokenRepository";
 
 export default async function handler(req, res) {
-  console.log('pay.js: Entered handler');
-  if (req.method !== 'POST') {
-    return res.status(404).json({error: 'Not a POST request'});
-  }
-  
-  try {
-    const { authorization } = req.headers;
-    const requestType = req.body.requestType; // Extract requestType from the body
-    
-    const sessionToken = authorization.split(' ')[1];
-    if (!sessionToken) {
-      return res.status(401).json({error: 'Missing authorization.'});
+    console.log('pay.js: Entered handler');
+    if (req.method !== 'POST') {
+        return res.status(404).json({error: 'Not a POST request'});
     }
+    try {
+        const {authorization, requestType} = req.headers;  // Extract requestType from headers
+        console.log('pay.js: Authorization header:', authorization);
+        console.log('pay.js: Request type:', requestType);  // Log the request type
+        
+        const sessionToken = authorization.split(' ')[1];
+        if (!sessionToken) {
+            return res.status(401).json({error: 'Missing authorization.'});
+        }
 
-    const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
-    const authToken = AuthTokenRepository.getById(sessionId);
-    if (!authToken) {
-      return res.status(401).json({status: 'error', error: 'Expired authorization.'});
+        const {sessionId, user} = SessionTokenRepository.verify(sessionToken);
+        const authToken = AuthTokenRepository.getById(sessionId);
+        if (!authToken) {
+            return res.status(401).json({status: 'error', error: 'Expired authorization.'});
+        }
+
+        // Determine the payment amount based on the request type
+        let paymentAmount = process.env.CHAT_AMOUNT;  // Default amount for chat
+        if (requestType === 'image') {
+            paymentAmount = process.env.IMAGE_AMOUNT;  // Amount for DALL-E image request
+        }
+
+        const paymentResult = await new HandCashService(authToken).pay({
+            destination: process.env.DEST, 
+            amount: paymentAmount,  // Use the determined amount
+            currencyCode: process.env.CURRENCY, 
+            description: 'ChatBSV payment'
+        });
+        return res.status(200).json({status: 'sent', transactionId: paymentResult.transactionId});
+    } catch (error) {
+        console.error('pay.js: Error', error);
+        return res.status(400).json({status: 'error', message: error.toString()});
     }
-
-    let paymentAmount = process.env.CHAT_AMOUNT;
-    if (requestType === 'image') {
-      paymentAmount = process.env.IMAGE_AMOUNT;
-    }
-
-    const paymentResult = await new HandCashService(authToken).pay({
-      destination: process.env.DEST,
-      amount: paymentAmount,
-      currencyCode: process.env.CURRENCY,
-      description: 'ChatBSV payment'
-    });
-
-    return res.status(200).json({status: 'sent', transactionId: paymentResult.transactionId});
-  } catch (error) {
-    console.error('pay.js: Error', error);
-    return res.status(400).json({status: 'error', message: error.toString()});
-  }
 }

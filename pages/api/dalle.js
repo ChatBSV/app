@@ -1,34 +1,53 @@
 // pages/api/dalle.js
-import { OpenAIAPI } from "openai";  // Corrected import for openai
-import dotenv from "dotenv";  // Corrected import for dotenv
+import axios from 'axios';
+import dotenv from "dotenv";
 
-dotenv.config();  // Initialize dotenv
+dotenv.config();
 
-export async function handleDalleRequest(reqBody, reqHeaders) {
+// Function to handle DALLE request
+async function handleDalleRequest(reqBody) {
   const { prompt, format } = reqBody;
-  const { requestType } = reqHeaders;
 
   if (!prompt || !format) {
     throw new Error("Prompt and format are required");
   }
 
-  try {
-    const openaiClient = new OpenAIAPI({  // Changed from new openai.OpenAIAPI
-      key: process.env.OPENAI_API_KEY,
-    });
+  const apiEndpoint = "https://api.openai.com/v1/images/generations";
 
-    const response = await openaiClient.createImage({
-      model: "image-alpha-001",
+  try {
+    const response = await axios.post(apiEndpoint, {
       prompt,
       n: 1,
-      size: format,
       response_format: "url",
+      size: format
+    }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
     });
 
-    const imageUrl = response.data[0].url;
+    const imageUrl = response.data.url;
     return { imageUrl };
   } catch (error) {
     console.error("Error generating image:", error);
     throw error;
   }
 }
+
+// Default export to handle POST requests
+export default async (req, res) => {
+  if (req.method !== "POST") {
+    res.status(405).end(); // Method Not Allowed
+    return;
+  }
+
+  const reqBody = JSON.parse(req.body);
+
+  try {
+    const result = await handleDalleRequest(reqBody);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
