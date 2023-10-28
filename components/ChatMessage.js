@@ -1,16 +1,13 @@
 // components/ChatMessage.js
-
 import React, { useState } from 'react';
 import styles from './ChatMessage.module.css';
 
 function ChatMessage({ content, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
+  const isDalleImage = role === 'dalle-image';
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
-  const messageStyle = {
-    fontSize: isAssistantMessage ? '16pt' : '16px',
-  };
 
   const [copyButtonText, setCopyButtonText] = useState('Copy');
 
@@ -28,15 +25,17 @@ function ChatMessage({ content, role, tokens, txid }) {
         isAssistantMessage ? styles.assistantMessage : ''
       } ${isUserMessage ? styles.userMessage : ''} ${
         isLoadingMessage ? styles.loadingMessage : ''
-      } ${isIntroMessage ? styles.introMessage : ''}`}
+      } ${isIntroMessage ? styles.introMessage : ''} ${
+        isDalleImage ? styles.dalleImage : ''
+      }`}
     >
-      <div>
-        <span
-          style={isAssistantMessage ? messageStyle : { fontSize: '16pt' }}
-        >
-          <span style={{ fontSize: '16px' }}>{content}</span>
-        </span>
-      </div>
+      {isDalleImage ? (
+        <img src={content} alt="DALL-E Generated Image" />
+      ) : (
+        <div>
+          <span>{content}</span>
+        </div>
+      )}
       {isAssistantMessage && !isLoadingMessage && (
         <div className={styles.chatLink}>
           <a
