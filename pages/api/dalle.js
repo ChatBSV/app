@@ -6,12 +6,16 @@ dotenv.config();
 
 // Function to handle DALLE request
 async function handleDalleRequest(reqBody) {
-  const { prompt, format } = reqBody;
+  // Default values for prompt and format
+  const { prompt = "a scenic view of a mountain", format = "512x512" } = reqBody;
+  
   console.log('Entered handleDalleRequest with:', { prompt, format });
 
-  if (!prompt || !format) {
-    console.error("Prompt and format are required");
-    throw new Error("Prompt and format are required");
+  const validFormats = ["256x256", "512x512", "1024x1024"];
+  
+  if (!validFormats.includes(format)) {
+    console.error("Invalid format");
+    throw new Error("Invalid format");
   }
 
   const apiEndpoint = "https://api.openai.com/v1/images/generations";
@@ -36,7 +40,7 @@ async function handleDalleRequest(reqBody) {
     console.log('Generated image URL:', imageUrl);
     return { imageUrl };
   } catch (error) {
-    console.error("Error generating image:", error);
+    console.error("Error generating image:", error.response ? error.response.data : error);
     throw error;
   }
 }
