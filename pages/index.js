@@ -142,8 +142,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         const prompt = userMessage.replace('/imagine ', '');
         await getDalleImage(prompt, '300x300');
       } else {
-        // Note: Added the missing else block here.
-        const assistantResponse = await getAssistantReply(userMessage, parsedChat);
+        const assistantResponse = await getAssistantReply(userMessage, chat);
   
         const newAssistantMessage = {
           id: nanoid(),
