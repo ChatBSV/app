@@ -30,7 +30,7 @@
     font-size: 16pt;
     background-color: #F2EFEF;
     border: 2px solid #37C078;
-    border-radius: 4px;
+    border-radius: 5px;
     margin-bottom: 0;
     padding-left: 16px;
     padding-right: 16px;
@@ -155,7 +155,7 @@ input[type="search"]::-webkit-search-results-decoration {
         margin-top: 10px;
         background-color: #F2EFEF;
         border: 2px solid #37C078;
-        border-radius: 4px;
+        border-radius: 5px;
         margin-bottom: 10px;
         margin-right: 0px;
         padding-left: 16px;
