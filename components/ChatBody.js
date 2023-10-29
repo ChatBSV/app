@@ -17,6 +17,9 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
+  // Log the chat array here to inspect its content
+  console.log("Chat array:", chat);
+
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
