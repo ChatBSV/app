@@ -1,4 +1,5 @@
 // components/ChatInput.js
+
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
