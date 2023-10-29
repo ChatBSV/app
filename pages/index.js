@@ -53,7 +53,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     }
   }, []);
   
-  const getDalleImage = async (prompt, format) => {
+  const getDalleImage = async (prompt, format, txid) => {
     try {
       const response = await fetch('/api/dalle', {
         method: 'POST',
@@ -62,21 +62,21 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         },
         body: JSON.stringify({ prompt, format }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       const imageUrl = data.imageUrl;
-
+  
       const newDalleMessage = {
         id: nanoid(),
         role: 'dalle-image',
         content: imageUrl,
         txid: txid,
       };
-
+  
       setChat((prevChat) => {
         const updatedChat = [...prevChat, newDalleMessage];
         localStorage.setItem('chat', JSON.stringify(updatedChat));
@@ -86,6 +86,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
       console.error('Error fetching DALLE image:', error);
     }
   };
+  
 
   const getAssistantReply = async (prompt, chatHistory) => {
     console.log('getAssistantReply', prompt, chatHistory)
@@ -118,7 +119,6 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   
   
   const handleSubmit = async (userMessage, txid) => {
-    console.log('handleSubmit', userMessage, txid)
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -140,7 +140,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     try {
       if (userMessage.startsWith('/imagine ')) {
         const prompt = userMessage.replace('/imagine ', '');
-        await getDalleImage(prompt, '512x512');
+        await getDalleImage(prompt, '512x512', txid);
       } else {
         const assistantResponse = await getAssistantReply(userMessage, chat);
   
