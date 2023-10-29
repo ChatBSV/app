@@ -89,7 +89,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
         />
         <div className={styles.mbWrapper}>
           <ButtonIcon 
-            icon="https://upload.wikimedia.org/wikipedia/commons/b/b3/Paper-plane_font_awesome_white.svg" 
+            icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
             text={buttonText()}
             onClick={paymentResult?.status === 'pending' ? null : pay}
           />
