@@ -37,6 +37,13 @@
     font-size: 16px;
     margin-right: 8px;
     flex: 1;
+    max-height: calc(4 * 24px);
+    overflow: hidden;
+    resize: none; 
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .inputField:active,
@@ -155,6 +162,13 @@ input[type="search"]::-webkit-search-results-decoration {
         max-width: 90vw;
         min-width: 90vw;
         flex: none;
+        max-height: calc(4 * 24px);
+        overflow: hidden;
+        resize: none; 
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
     }
 
     .submit {

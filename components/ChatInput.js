@@ -4,6 +4,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
 
+const handleTextareaChange = (e) => {
+  const textarea = e.target;
+
+  // Reset the height of the textarea
+  textarea.style.height = 'auto';
+
+  // Set the height to the scroll height
+  // This will expand the textarea to fit its content up to the max-height set in the CSS
+  textarea.style.height = `${textarea.scrollHeight}px`;
+};
+
+
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
@@ -81,13 +93,13 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-        <input
-          type="text"
-          onKeyDown={handleKeyDown}
-          className={styles.inputField}
-          placeholder="Enter your prompt or start with /imagine to generate an image."
-          ref={inputRef}
-        />
+      <textarea
+        onKeyDown={handleKeyDown}
+        className={styles.inputField}
+        placeholder="Enter your prompt or start with /imagine to generate an image."
+        ref={inputRef}
+        onChange={handleTextareaChange}
+      ></textarea>
         <div className={styles.mbWrapper}>
           <ButtonIcon 
             icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
