@@ -11,6 +11,9 @@
     min-height: 100px;
     display: flex;
     flex-direction: column;
+    max-width: 640;
+    margin-right: auto;
+    margin-left: auto;
 }
 .spacer {
     height: 50px;
