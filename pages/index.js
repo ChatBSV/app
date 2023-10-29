@@ -82,6 +82,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         localStorage.setItem('chat', JSON.stringify(updatedChat));
         return updatedChat;
       });
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching DALLE image:', error);
     }
