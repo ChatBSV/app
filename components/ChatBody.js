@@ -24,7 +24,8 @@ function ChatBody({ chat, isLoading, isError }) {
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
         <ChatMessage
-          content="Welcome to ChatBSV. Ask me anything."
+          content="Welcome to ChatBSV!
+          <br />Chat with OpenAI or Generate Images with Microtransactions on Bitcoin SV"
           role="intro"
           className={styles.introMessage}
         />

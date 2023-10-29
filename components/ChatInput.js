@@ -84,7 +84,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
           type="text"
           onKeyDown={handleKeyDown}
           className={styles.inputField}
-          placeholder="Enter your prompt..."
+          placeholder="Enter your prompt or start with /imagine to generate an image."
           ref={inputRef}
         />
         <div className={styles.mbWrapper}>
