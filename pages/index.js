@@ -66,6 +66,18 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
+
+  const displayError = (errorMessage) => {
+    const errorChatMessage = {
+      id: nanoid(),
+      role: 'error',
+      content: errorMessage,
+    };
+    setChat(prevChat => [...prevChat, errorChatMessage]);
+    setIsLoading(false);
+  };
+
+
   useEffect(() => {
     if (window.location.search.includes('reload=true')) {
       window.location.href = '/';
@@ -182,11 +194,10 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         });
   
         setIsLoading(false);}
-    } catch (error) {
+   } catch (error) {
       console.error('Error:', error);
-      setIsError(true);
-      setErrorMessage(error.message || 'An error occurred');
-      setIsLoading(false);
+      const errorMessage = error.message || 'An error occurred';
+      displayError(errorMessage);
     }
   };  
 

@@ -1,4 +1,4 @@
-// components/ChatBody.js
+// filepath/components/ChatBody.js
 
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
@@ -17,8 +17,7 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
-  // Log the chat array here to inspect its content
-  console.log("Chat array:", chat);
+  const errorMessage = chat.find(message => message.role === "error")?.content || "OpenAI error. Please try again or come back later.";
 
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
@@ -47,10 +46,11 @@ function ChatBody({ chat, isLoading, isError }) {
             className={styles.loadingMessage}
           />
         )}
-  
+
+        {/* Displaying the dynamic error message */}
         {isError && (
           <ChatMessage
-            content="OpenAI error. Please try again or come back later."
+            content={errorMessage}
             role="error"
             className={styles.errorMessage}
           />
