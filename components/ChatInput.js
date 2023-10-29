@@ -56,6 +56,10 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   };
 
   const pay = async () => {
+    if (!isConnected) {
+      window.location.href = redirectionUrl;
+      return;}
+      
     console.log('ChatInput: pay, sessionToken:', sessionToken);
     localStorage.removeItem('txid');
 
