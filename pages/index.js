@@ -74,6 +74,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         id: nanoid(),
         role: 'dalle-image',
         content: imageUrl,
+        txid: txid,
       };
 
       setChat((prevChat) => {
