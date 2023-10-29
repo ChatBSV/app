@@ -1,5 +1,4 @@
 // index.js
-
 import React, { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import ChatBody from '../components/ChatBody';
