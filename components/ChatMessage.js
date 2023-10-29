@@ -20,6 +20,8 @@ function ChatMessage({ content, role, tokens, txid }) {
     }, 2000);
   };
 
+  const shouldShowWidget = isAssistantMessage || isDalleImage;
+
   return (
     <div
       className={`${styles.chatMessage} ${
@@ -37,10 +39,10 @@ function ChatMessage({ content, role, tokens, txid }) {
           <span>{content}</span>
         </div>
       )}
-      {isAssistantMessage && !isLoadingMessage && (
+      {shouldShowWidget && !isLoadingMessage && (
         <div className={styles.chatLink}>
           <a
-           className={`${styles.copyButton} copyButton`}
+            className={`${styles.copyButton} copyButton`}
             href={`https://whatsonchain.com/tx/${txid}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -69,7 +71,7 @@ function ChatMessage({ content, role, tokens, txid }) {
             alt="Token Count"
           />
           <span style={{ fontSize: '12px', color: 'gray', marginRight: '12px' }}>
-            Tokens:{tokens}
+            Tokens:{tokens || 0}  {/* Ensure we always display tokens */}
           </span>
           <a
             className={`${styles.copyButton} copyButton`}
