@@ -4,6 +4,8 @@
     align-items: center;
     padding-left: 5vw;
     padding-right: 5vw;
+    padding-top: 10px;
+    padding-bottom: 20px;
     display: flex;
     box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
   }
@@ -14,21 +16,21 @@
 }
 
 .inputForm {
-    border-radius: 8px;
+    border-radius: 4px;
     display: flex;
     width: 100%;
     flex: 1;
 }
 
 .inputField {
-    height: 46px;
+    min-height: 46px;
     box-shadow: none;
     color: #555;
     font-weight: 600;
     font-size: 16pt;
     background-color: #F2EFEF;
     border: 2px solid #37C078;
-    border-radius: 30px;
+    border-radius: 4px;
     margin-bottom: 0;
     padding-left: 30px;
     padding-right: 30px;
@@ -125,7 +127,7 @@ input[type="search"]::-webkit-search-results-decoration {
     }
 
     .inputForm {
-        border-radius: 8px;
+        border-radius: 4px;
         display: flex;
         flex-direction: column;
         max-width: 90vw;
@@ -144,7 +146,7 @@ input[type="search"]::-webkit-search-results-decoration {
         margin-top: 10px;
         background-color: #F2EFEF;
         border: 2px solid #37C078;
-        border-radius: 30px;
+        border-radius: 4px;
         margin-bottom: 10px;
         margin-right: 0px;
         padding-left: 20px;
