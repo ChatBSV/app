@@ -10,44 +10,33 @@ import './global.css';
 import HandCashService from "../src/services/HandCashService";
 import SessionTokenRepository from "../src/repositories/SessionTokenRepository";
 
-export function getServerSideProps({query, req, res}) {
-  const cookies = req.headers.cookie || '';
-  const sessionTokenFromCookie = cookies
-    .split('; ')
-    .find(row => row.startsWith('sessionToken='))
-    ?.split('=')[1];
-  console.log('sessionTokenFromCookie', sessionTokenFromCookie);
-  const sessionToken = sessionTokenFromCookie;
-
-  const redirectionUrl = new HandCashService().getRedirectionUrl();
-
-  if (!sessionToken || !SessionTokenRepository.verify(sessionToken)) {
-      res.writeHead(302, {
-          Location: 'https://app.handcash.io/#/authorizeApp?appId=647a849256e3911fdf8c7026'
-      });
-      res.end();
-      return { props: {} };
-  }
-
-  try {
-      return {
-          props: {
-              redirectionUrl,
-              sessionToken: sessionToken || false,
-              user: sessionToken ? SessionTokenRepository.decode(sessionToken).user : false,
-          },
-      };
-  } catch (error) {
-      console.log(error);
-      return {
-          props: {
-              redirectionUrl,
-              sessionToken: false,
-              user: false,
-          },
-      };
-  }
+export function getServerSideProps({query, req}) {
+    const cookies = req.headers.cookie || '';
+    const sessionTokenFromCookie = cookies
+        .split('; ')
+        .find(row => row.startsWith('sessionToken='))
+        ?.split('=')[1];
+    
+    const sessionToken = sessionTokenFromCookie;
+    const redirectionUrl = new HandCashService().getRedirectionUrl();
+    
+    // Check if session token is valid
+    let decodedSession = null;
+    try {
+        decodedSession = SessionTokenRepository.verify(sessionToken);
+    } catch (error) {
+        console.log('Invalid or expired session token:', error);
+    }
+    
+    return {
+        props: {
+            redirectionUrl,
+            sessionToken: decodedSession ? sessionToken : false,
+            user: decodedSession ? decodedSession.user : false,
+        },
+    };
 }
+
 
 function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [isLoading, setIsLoading] = useState(false);
