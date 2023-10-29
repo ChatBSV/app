@@ -1,4 +1,5 @@
 // index.js
+
 import React, { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import ChatBody from '../components/ChatBody';
@@ -22,21 +23,25 @@ export function getServerSideProps({query, req}) {
     
     // Check if session token is valid
     let decodedSession = null;
-    try {
-        decodedSession = SessionTokenRepository.verify(sessionToken);
-    } catch (error) {
-        console.log('Invalid or expired session token:', error);
+    let validToken = false;
+    if (sessionToken) {
+        try {
+            decodedSession = SessionTokenRepository.verify(sessionToken);
+            validToken = true;
+        } catch (error) {
+            console.error('Invalid or expired session token:', error);
+            validToken = false;
+        }
     }
     
     return {
         props: {
             redirectionUrl,
-            sessionToken: decodedSession ? sessionToken : false,
-            user: decodedSession ? decodedSession.user : false,
+            sessionToken: validToken ? sessionToken : false,
+            user: validToken ? decodedSession.user : false,
         },
     };
 }
-
 
 function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [isLoading, setIsLoading] = useState(false);
