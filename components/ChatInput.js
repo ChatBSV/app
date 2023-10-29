@@ -27,7 +27,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
     const prompt = inputRef.current.value.trim();
     if (prompt !== '') {
       const storedTxid = localStorage.getItem('txid');
-      const isDalle = prompt.startsWith('/imagine');
+      const isDalle = prompt.toLowerCase().startsWith('/imagine');
       await handleSubmit(prompt, storedTxid, isDalle);
       inputRef.current.value = '';
     } else {
@@ -47,7 +47,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
     localStorage.removeItem('txid');
 
     const prompt = inputRef.current.value.trim();
-    const isDalle = prompt.startsWith('/imagine');
+    const isDalle = prompt.toLowerCase().startsWith('/imagine');
     const headers = {
       'Authorization': `Bearer ${sessionToken}`,
       'requestType': isDalle ? 'image' : 'text'
