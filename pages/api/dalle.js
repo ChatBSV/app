@@ -26,7 +26,6 @@ async function handleDalleRequest(reqBody) {
     const response = await axios.post(apiEndpoint, {
       prompt,
       n: 1,
-      response_format: "url",
       size: format
     }, {
       headers: {
@@ -34,9 +33,12 @@ async function handleDalleRequest(reqBody) {
         'Content-Type': 'application/json'
       }
     });
+    
     console.log('Received response from DALLE API:', response);
+    
+    // Corrected line to get the image URL based on API documentation
+    const imageUrl = response.data.data[0].url;
 
-    const imageUrl = response.data.url;
     console.log('Generated image URL:', imageUrl);
     return { imageUrl };
   } catch (error) {
@@ -61,7 +63,6 @@ export default async (req, res) => {
     const result = await handleDalleRequest(req.body);
     console.log('Successfully handled DALLE request. Returning:', result);
     res.status(200).json(result);
-    
   } catch (error) {
     console.log('Failed to handle DALLE request. Error:', error.message);
     res.status(500).json({ error: error.message });
