@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/*width*/
+::-webkit-scrollbar {
+width:10px;
+}
+/*track*/
+::-webkit-scrollbar-track {
+background:rgba(255, 255, 255, 0);
+border-style:none;
+border-color:rgba(255, 255, 255, 0);
+}
+/*thumb*/
+::-webkit-scrollbar-thumb {
+background:rgb(55, 192, 120);
+border-width:2px;
+border-style:none;
+border-radius:10px;
+}
 .chatFooter {
     min-height: 10vh;
     justify-content: center;

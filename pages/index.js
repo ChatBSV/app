@@ -210,10 +210,11 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     <div className="viewport">
       <Head>
         <title>ChatBSV - OpenAI on Bitcoin</title>
-        <meta
+                <meta
           name="description"
           content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens."
         />
+        <meta name="theme-color" content="#37C078"></meta>
         <meta property="og:title" content="ChatBSV - OpenAI on Bitcoin" />
         <meta
           property="og:description"
