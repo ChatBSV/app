@@ -14,7 +14,8 @@
   
   .chatMessage {
    
-    max-width: 70%;
+    width: 70%;
+    max-width: 1024px;
     background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 20px;
