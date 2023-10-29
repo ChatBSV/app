@@ -10,16 +10,25 @@ import './global.css';
 import HandCashService from "../src/services/HandCashService";
 import SessionTokenRepository from "../src/repositories/SessionTokenRepository";
 
-export function getServerSideProps({query, req}) {
+export function getServerSideProps({query, req, res}) {
   const cookies = req.headers.cookie || '';
   const sessionTokenFromCookie = cookies
     .split('; ')
     .find(row => row.startsWith('sessionToken='))
     ?.split('=')[1];
-  console.log('sessionTokenFromCookie', sessionTokenFromCookie)
+  console.log('sessionTokenFromCookie', sessionTokenFromCookie);
   const sessionToken = sessionTokenFromCookie;
-  // const {sessionToken} = query;
+
   const redirectionUrl = new HandCashService().getRedirectionUrl();
+
+  if (!sessionToken || !SessionTokenRepository.verify(sessionToken)) {
+      res.writeHead(302, {
+          Location: 'https://app.handcash.io/#/authorizeApp?appId=647a849256e3911fdf8c7026'
+      });
+      res.end();
+      return { props: {} };
+  }
+
   try {
       return {
           props: {

@@ -8,7 +8,12 @@ export default class SessionTokenRepository {
     };
 
     static verify(token) {
-        return jwt.verify(token, jwtSecret);
+        try {
+            jwt.verify(token, jwtSecret);
+            return true;
+        } catch(err) {
+            return false;
+        }
     }
 
     static decode(token) {
