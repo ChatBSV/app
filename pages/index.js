@@ -116,13 +116,13 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   };
   
   
-  const handleSubmit = async (userMessage, userTxid) => {
-    console.log('handleSubmit', userMessage, userTxid)
+  const handleSubmit = async (userMessage, txid) => {
+    console.log('handleSubmit', userMessage, txid)
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       content: userMessage,
-      txid: userTxid,
+      txid: txid,
     };
   
     setChat((prevChat) => {
@@ -148,7 +148,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
           role: 'assistant',
           content: assistantResponse.message,
           tokens: assistantResponse.tokens,
-          txid: userTxid && !isLoading ? userTxid : null,
+          txid: txid && !isLoading ? txid : null,
         };
   
         setChat((prevChat) => {

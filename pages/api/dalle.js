@@ -61,6 +61,7 @@ export default async (req, res) => {
     const result = await handleDalleRequest(req.body);
     console.log('Successfully handled DALLE request. Returning:', result);
     res.status(200).json(result);
+    
   } catch (error) {
     console.log('Failed to handle DALLE request. Error:', error.message);
     res.status(500).json({ error: error.message });
