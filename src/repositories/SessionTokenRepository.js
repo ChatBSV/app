@@ -9,8 +9,7 @@ export default class SessionTokenRepository {
 
     static verify(token) {
         try {
-            jwt.verify(token, jwtSecret);
-            return true;
+            return jwt.verify(token, jwtSecret); // Return the decoded payload instead of just true
         } catch(err) {
             return false;
         }

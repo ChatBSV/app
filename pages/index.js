@@ -13,10 +13,23 @@ import SessionTokenRepository from "../src/repositories/SessionTokenRepository";
 
 export function getServerSideProps({query, req}) {
     const cookies = req.headers.cookie || '';
-    const sessionTokenFromCookie = cookies
-        .split('; ')
-        .find(row => row.startsWith('sessionToken='))
-        ?.split('=')[1];
+    let sessionTokenFromCookie;
+
+    try {
+        sessionTokenFromCookie = cookies
+            .split('; ')
+            .find(row => row.startsWith('sessionToken='))
+            ?.split('=')[1];
+    } catch (error) {
+        console.error('Error while parsing cookies:', error);
+        return {
+            props: {
+                redirectionUrl: new HandCashService().getRedirectionUrl(),
+                sessionToken: false,
+                user: false,
+            },
+        };
+    }
     
     const sessionToken = sessionTokenFromCookie;
     const redirectionUrl = new HandCashService().getRedirectionUrl();
@@ -32,6 +45,8 @@ export function getServerSideProps({query, req}) {
             console.error('Invalid or expired session token:', error);
             validToken = false;
         }
+    } else {
+        console.log("No session token found.");
     }
     
     return {
@@ -42,6 +57,7 @@ export function getServerSideProps({query, req}) {
         },
     };
 }
+
 
 function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [isLoading, setIsLoading] = useState(false);
