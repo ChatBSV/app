@@ -147,7 +147,7 @@ input[type="search"]::-webkit-search-results-decoration {
     }
 
     .inputField {
-        height: 50px;
+        min-height: 46px;
         box-shadow: none;
         color: #555;
         font-weight: 600;
