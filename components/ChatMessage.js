@@ -35,13 +35,12 @@ function ChatMessage({ content, role, tokens, txid }) {
       {isDalleImage ? (
         <img src={content} alt="DALL-E Generated Image" />
       ) : (
-        <div>
-          <span>{content}</span>
+        <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }}>
         </div>
       )}
       {shouldShowWidget && !isLoadingMessage && (
         <div className={styles.chatLink}>
-          {txid ? (  // Add a check here to ensure txid is not null
+          {txid ? (
             <a
               className={`${styles.copyButton} copyButton`}
               href={`https://whatsonchain.com/tx/${txid}`}
@@ -75,7 +74,7 @@ function ChatMessage({ content, role, tokens, txid }) {
             alt="Token Count"
           />
           <span style={{ fontSize: '12px', color: 'gray', marginRight: '12px' }}>
-            Tokens:{tokens || 0}  {/* Ensure we always display tokens */}
+            Tokens:{tokens || 0}
           </span>
           <a
             className={`${styles.copyButton} copyButton`}
