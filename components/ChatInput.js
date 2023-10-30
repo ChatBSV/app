@@ -1,5 +1,4 @@
 // components/ChatInput.js
-
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
@@ -17,9 +16,7 @@ const onDisconnect = async () => {
   window.location.href = "/";
 };
 
-
-
-const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, onDisconnect }) => {
+const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({status: 'none'});
@@ -34,7 +31,8 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, onDi
     return isConnected ? 'Send' : 'Connect';
   };
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
     const prompt = inputRef.current.value.trim();
     if (prompt) {
       const storedTxid = localStorage.getItem('txid');
@@ -72,19 +70,20 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, onDi
       if (paymentResult.status === 'sent') {
         localStorage.setItem('txid', paymentResult.transactionId);
         setTxid(paymentResult.transactionId);
-        await handleFormSubmit();
+        await handleFormSubmit(new Event('submit'));
       }
       setPaymentResult(paymentResult);
     } catch (error) {
       localStorage.removeItem('txid');
+      setPaymentResult({ status: 'failed' });
     }
   };
 
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-        <button className={`${styles.actionButton} ${styles.resetButtonMobile}`} onClick={resetChat}></button>
-        <button className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button>      
+        <button type="button" className={`${styles.actionButton} ${styles.resetButtonMobile}`} onClick={resetChat}></button>
+        <button type="button" className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button>
         <textarea
           onKeyDown={handleKeyDown}
           className={styles.inputField}
@@ -93,8 +92,8 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, onDi
           onChange={handleTextareaChange}
         ></textarea>
         <div className={styles.mbWrapper}>
-          <ButtonIcon 
-            icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" 
+          <ButtonIcon
+            icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
             text={buttonText()}
             onClick={paymentResult?.status === 'pending' ? null : pay}
           />
