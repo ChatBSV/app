@@ -27,7 +27,7 @@
     background-size: 20px;
     background-position: center;
     background-repeat: no-repeat;
-    position: absolute;
+    position: fixed;
     top: 5vh;
     right: 5vw;
     margin-top: -22px;
@@ -59,7 +59,7 @@
       position: absolute;
       padding: 6px;
       top: 5vh;
-      left: 5vw;
+      right: 5vw;
       margin-top: -16px;
       border-width: 0;
       cursor: pointer;
@@ -74,11 +74,21 @@
       background-position: center;
       background-repeat: no-repeat;
       position: absolute;
-      top: 5vh;
+      bottom: 20px;
       right: 5vw;
-      margin-top: -16px;
+      margin-top: 0;
       border-width: 0;
       cursor: pointer;
+    }
+    .chatHeader {
+      height: 10vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      padding-left: 5vw;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+      flex: none;
     }
 
   }
