@@ -257,7 +257,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
        </Head>
       <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />
       <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
-      <ChatInput handleSubmit={handleSubmit} sessionToken={sessionToken} redirectionUrl={redirectionUrl} />
+      <ChatInput resetChat={resetChat} handleSubmit={handleSubmit} sessionToken={sessionToken} redirectionUrl={redirectionUrl} />
     </div>
   );
 }
