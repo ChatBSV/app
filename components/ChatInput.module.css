@@ -2,28 +2,19 @@
     min-height: 10vh;
     justify-content: center;
     align-items: center;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    padding-top: 10px;
-    padding-bottom: 20px;
+    padding: 10px 5vw 20px;
     display: flex;
     box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
   }
-
-.chatInput {
-    flex: 1;
-    margin-bottom: 0;
-}
-
-.inputForm {
+  
+  .inputForm {
     border-radius: 4px;
     display: flex;
     width: 100%;
     flex: 1;
-}
-
-
-.inputField {
+  }
+  
+  .inputField {
     min-height: 24px;
     box-shadow: none;
     color: #555;
@@ -32,193 +23,94 @@
     background-color: #F2EFEF;
     border: 2px solid #37C078;
     border-radius: 5px;
-    margin-bottom: 0;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    font-size: 16px;
+    padding: 8px 16px;
     margin-right: 8px;
     flex: 1;
     max-height: calc(4 * 24px);
-    overflow-y: auto; 
-    resize: none; 
+    overflow-y: auto;
+    resize: none;
     outline: none;
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.inputField:active,
-.inputField:focus {
-    border-style: solid !important;
-    border-color: #37C078 !important;  
-    box-shadow: none !important;
-    outline: none !important;
-}
-
-.inputField:focus-visible {
-    border-color: #37C078 !important; 
-    box-shadow: none !important;
-    outline: none !important;
-}
-
-
-input[type="text"]::-webkit-input-placeholder,
-input[type="password"]::-webkit-input-placeholder,
-input[type="email"]::-webkit-input-placeholder,
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-    -webkit-appearance: none;
-}
-
-.inputField::-ms-input-placeholder {
-    color: #979797;
-}
-
-.inputField::placeholder {
-    color: #979797;
-}
-.submit {
-    color: #ffffff;
-    padding: 0 20px;
-    min-width: 50px;
-    min-height: 50px;
-    height: 50px;
-    height: 50px;
-    font-weight: 600;
-    border-radius: 25px;
-    margin-left: 20px;
-    background-color: #37C078;
+  }
+  
+  .inputField:active,
+  .inputField:focus,
+  .inputField:focus-visible {
     border-color: #37C078;
-    background-image: url('../pages/images/send.svg');
-    background-position: 43%;
-    background-repeat: no-repeat;
-    background-size: 20px;
-    border-width: 1px;
-    font-size: 16px;
-    flex: none;
-    cursor: pointer;
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .inputField::placeholder {
+    color: #979797;
+  }
+  
+  .submit {
     display: none;
   }
-
+  
   .moneyButton {
     display: inline-block;
     width: 180;
     margin-left: 20px;
     flex: none;
-    overflow: hidden;
+  }
+  .actionButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    background-size: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
   }
   
-
-  @media screen and (max-width: 479px) {
-
-
-    .chatFooter {
-        min-height: 120px;
-        justify-content: center;
-        align-items: center;
-        padding-left: 3vw;
-        padding-right: 3vw;
-        padding-top: 10px;
-        padding-bottom: 20px;
-        display: flex;
-        box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
-      }
-
-    .moneyButton {
-        display: inline-block;
-        width: 180;
-        margin-top: 10px;
-        margin-bottom: 30px;
-        flex: none;
-    }
-
-    .inputForm {
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        max-width: 90vw;
-        min-width: 90vw;
-        justify-content: center;
-        align-items: center;
-        flex: none;
-    }
-
-    .inputField {
-        min-height: 24px;
-        box-shadow: none;
-        color: #555;
-        font-weight: 600;
-        font-size: 16pt;
-        margin-top: 10px;
-        background-color: #F2EFEF;
-        border: 2px solid #37C078;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        margin-right: 0px;
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-        font-size: 16px;
-        max-width: 90vw;
-        min-width: 90vw;
-        flex: none;
-        max-height: calc(4 * 24px);
-        overflow-y: auto; 
-        resize: none; 
-        outline: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-
-    .submit {
-        color: #ffffff;
-        padding: 0 16px;
-        font-weight: 600;
-        border-radius: 25px;
-        margin-left: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        display: none;
-      }
-    
-      .inputField:active,
-      .inputField:focus {
-          border-style: solid !important;
-          border-color: #37C078 !important; 
-          box-shadow: none !important;
-          outline: none !important;
-      }
-      
-      .inputField:focus-visible {
-          border-color: #37C078 !important; 
-          box-shadow: none !important;
-          outline: none !important;
-      }
-      
-     
-      input[type="text"]::-webkit-input-placeholder,
-      input[type="password"]::-webkit-input-placeholder,
-      input[type="email"]::-webkit-input-placeholder,
-      input[type="search"]::-webkit-search-decoration,
-      input[type="search"]::-webkit-search-cancel-button,
-      input[type="search"]::-webkit-search-results-button,
-      input[type="search"]::-webkit-search-results-decoration {
-          -webkit-appearance: none;
-      }
-    
-    .inputField::-ms-input-placeholder {
-        color: #979797;
-    }
-    
-    .inputField::placeholder {
-        color: #979797;
-    }
-
-
+  .resetButtonMobile {
+    background-color: #37C078;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
+    display: none;
   }
+  
+  .logoutButtonMobile {
+    background-color: #FF5733; /* Replace with actual color */
+    background-image: url("path/to/logout/icon"); /* Replace with actual logout icon */
+    display: none;
+  }
+  
+  @media screen and (max-width: 479px) {
+    .resetButtonMobile, .logoutButtonMobile {
+      display: inline-block;
+    }
+  
+    .chatFooter {
+      min-height: 120px;
+      padding: 10px 3vw 20px;
+    }
+  
+    .moneyButton {
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+  
+    .inputForm {
+      display: flex;
+      flex-direction: column;
+      max-width: 90vw;
+      min-width: 90vw;
+      justify-content: center;
+      align-items: center;
+      flex: none;
+    }
+  
+    .inputField {
+      min-height: 24px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-right: 0;
+      max-width: 90vw;
+      min-width: 90vw;
+      flex: none;
+    }
+  }
+
+  

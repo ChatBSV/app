@@ -1,84 +1,57 @@
 /* components/Header.module.css */
 .chatHeader {
-    height: 10vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
-    flex: none;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  flex: none;
+}
+
+.resetButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background-color: #37C078;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+  margin-top: -22px;
+  cursor: pointer;
+}
+
+.loginButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  position: absolute;
+  padding: 6px;
+  top: 5vh;
+  left: 5vw;
+  margin-top: -16px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 479px) {
+  .loginButton {
+    display: none;
   }
-  
-  .heading {
-    font-family: IBM Plex Sans, sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 32px;
-    color: #555;
-  }
-  
 
   .resetButton {
-    width: 44px;
-    height: 44px;
-    border-radius: 22px;
+    display: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
     background-color: #37C078;
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
     background-size: 20px;
     background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
     top: 5vh;
     right: 5vw;
-    margin-top: -22px;
-    border-width: 0;
-    cursor: pointer;
-  }
-
-  .loginButton {
-    width: 44px;
-    height: 44px;
-    border-radius: 22px;
-    position: absolute;
-    padding: 6px;
-    top: 5vh;
-    left: 5vw;
     margin-top: -16px;
-    border-width: 0;
-    cursor: pointer;
   }
-  
-
-  @media screen and (max-width: 479px) {
-
-    .loginButton {
-      display: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 22px;
-      position: absolute;
-      padding: 6px;
-      top: 5vh;
-      left: 5vw;
-      margin-top: -16px;
-      border-width: 0;
-      cursor: pointer;
-    }
-    .resetButton {
-      width: 32px;
-      height: 32px;
-      border-radius: 16px;
-      background-color: #37C078;
-      background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
-      background-size: 20px;
-      background-position: center;
-      background-repeat: no-repeat;
-      position: absolute;
-      top: 5vh;
-      right: 5vw;
-      margin-top: -16px;
-      border-width: 0;
-      cursor: pointer;
-    }
-
-  }
+}
