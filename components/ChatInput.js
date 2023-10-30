@@ -19,7 +19,7 @@ const onDisconnect = async () => {
 
 
 
-const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
+const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, onDisconnect }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({status: 'none'});

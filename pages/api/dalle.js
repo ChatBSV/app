@@ -1,12 +1,12 @@
-// pages/api/dalle.js
+// filepath/pages/api/dalle.js
 
 import axios from 'axios';
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// Function to handle DALLE request
-async function handleDalleRequest(reqBody) {
+// Function to handle DALLE request, exported for use in other files
+export async function handleDalleRequest(reqBody) {
   // Default values for prompt and format
   const { prompt = "a scenic view of a mountain", format = "512x512" } = reqBody;
   
