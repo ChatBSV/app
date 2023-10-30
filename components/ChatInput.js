@@ -10,6 +10,15 @@ const handleTextareaChange = (e) => {
   textarea.style.height = `${textarea.scrollHeight}px`;
 };
 
+const onDisconnect = async () => {
+  await fetch('/api/logout', {
+    method: 'POST',
+  });
+  window.location.href = "/";
+};
+
+
+
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
