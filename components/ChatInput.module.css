@@ -73,7 +73,7 @@
   
   .logoutButtonMobile {
     background-color: #FF5733; /* Replace with actual color */
-    background-image: url("path/to/logout/icon"); /* Replace with actual logout icon */
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png"); /* Replace with actual logout icon */
     display: none;
   }
   
