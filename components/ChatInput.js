@@ -100,7 +100,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl }) => {
       <textarea
         onKeyDown={handleKeyDown}
         className={styles.inputField}
-        placeholder="Enter your prompt or start with /imagine to generate an image."
+        placeholder="Enter your prompt or /imagine"
         ref={inputRef}
         onChange={handleTextareaChange}
       ></textarea>

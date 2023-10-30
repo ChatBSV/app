@@ -24,7 +24,7 @@ function ChatBody({ chat, isLoading, isError }) {
       <div className={styles.chatContainer}>
         <ChatMessage
           content="Welcome to ChatBSV!
-          <br />Chat with OpenAI or Generate Images with Microtransactions on Bitcoin SV"
+          <br />Chat with OpenAI or type /imagine to generate an image with DALLE."
           role="intro"
           className={styles.introMessage}
         />
@@ -41,7 +41,7 @@ function ChatBody({ chat, isLoading, isError }) {
   
         {isLoading && (
           <ChatMessage
-            content="Counting satoshis, please hold..."
+            content="Processing..."
             role="loading"
             className={styles.loadingMessage}
           />
