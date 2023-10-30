@@ -24,7 +24,7 @@
 
 
 .inputField {
-    min-height: 46px;
+    min-height: 24px;
     box-shadow: none;
     color: #555;
     font-weight: 600;
@@ -148,7 +148,7 @@ input[type="search"]::-webkit-search-results-decoration {
     }
 
     .inputField {
-        min-height: 46px;
+        min-height: 24px;
         box-shadow: none;
         color: #555;
         font-weight: 600;
