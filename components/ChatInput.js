@@ -58,10 +58,12 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
     localStorage.removeItem('txid');
     const prompt = inputRef.current.value.trim();
     const isDalle = prompt.toLowerCase().startsWith('/imagine');
-    const headers = {
+    
+    const headers = new Headers({
       'Authorization': `Bearer ${sessionToken}`,
       'requestType': isDalle ? 'image' : 'text'
-    };
+    });
+
 
     setPaymentResult({status: 'pending'});
     try {
