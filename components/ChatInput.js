@@ -64,7 +64,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
       'requestType': isDalle ? 'image' : 'text'
     });
 
-
     setPaymentResult({status: 'pending'});
     try {
       const response = await fetch('/api/pay', { method: "POST", headers });

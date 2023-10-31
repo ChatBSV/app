@@ -9,9 +9,9 @@ export default async function handler(req, res) {
         return res.status(404).json({error: 'Not a POST request'});
     }
     try {
-        const {authorization, requestType} = req.headers;  // Extract requestType from headers
+        const {authorization, requesttype} = req.headers;  // Extract requesttype from headers, note the lowercase
         console.log('pay.js: Authorization header:', authorization);
-        console.log('pay.js: Request type:', requestType);  // Log the request type
+        console.log('pay.js: Request type:', requesttype);  // Log the request type
         
         const sessionToken = authorization.split(' ')[1];
         if (!sessionToken) {
@@ -26,11 +26,10 @@ export default async function handler(req, res) {
 
         // Determine the payment amount based on the request type
         let paymentAmount = process.env.CHAT_AMOUNT;  // Default amount for chat
-        if (requestType === 'image') {
+        if (requesttype === 'image') {
             paymentAmount = process.env.IMAGE_AMOUNT;  // Amount for DALL-E image request
         }
         console.log('pay.js: Using paymentAmount:', paymentAmount);  // Debug log to check used paymentAmount
-
 
         const paymentResult = await new HandCashService(authToken).pay({
             destination: process.env.DEST, 
