@@ -24,12 +24,14 @@ function ChatBody({ chat, isLoading, isError }) {
       <div className={styles.chatContainer}>
         <ChatMessage
           content="Welcome to ChatBSV!
-          <br />Chat with OpenAI or type /imagine to generate an image with DALLE.
-          <br />Prices: $0.0099 per prompt, $0.099 per image 1024x1024px.
-          <br /><br /> Examples:
-          <br />- '/imagine a watercolor of New York City, showing Times Square at night'
-          <br />- 'What is the distance between the sun and the moon?'
-          <br /><br /> Contact: hello@chatbsv.com"
+          <br /><br /> Chat with OpenAI or type /imagine to generate an image with DALLE."
+          role="intro"
+          className={styles.introMessage}
+        />
+        <ChatMessage
+          content="Try these examples:
+          <br />What is the distance between the Earth and the Sun? (OpenAI, $0.0099)
+          <br />/Imagine a watercolor of Times Square, NYC, at night (DALLE, $0.099)"
           role="intro"
           className={styles.introMessage}
         />

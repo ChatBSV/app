@@ -12,8 +12,8 @@
 }
 
 .resetButton {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 22px;
   background-color: #37C078;
   background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
@@ -35,7 +35,6 @@
   height: 44px;
   border-radius: 22px;
   position: absolute;
-  padding: 6px;
   top: 5vh;
   left: 5vw;
   margin-top: -22px;
