@@ -86,13 +86,13 @@
     .resetButtonMobile {
       background-color: #37C078;
       background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
-      display: none;
+      display: block;
     }
     
     .logoutButtonMobile {
       background-color: #37C078; 
       background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg"); 
-      display: none;
+      display: block;
     }
   
     .chatFooter {
