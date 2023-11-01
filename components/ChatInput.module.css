@@ -1,80 +1,81 @@
 .chatFooter {
-    min-height: 10vh;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 5vw 20px;
-    display: flex;
-    box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
-  }
-  
-  .inputForm {
-    border-radius: 4px;
-    display: flex;
-    width: 100%;
-    flex: 1;
-  }
-  
-  .inputField {
-    min-height: 46px;
-    box-shadow: none;
-    color: #555;
-    font-weight: 600;
-    background-color: #F2EFEF;
-    border: 2px solid #37C078;
-    border-radius: 5px;
-    padding: 8px 16px;
-    margin-right: 8px;
-    flex: 1;
-    max-height: calc(4 * 24px);
-    overflow-y: auto;
-    resize: none;
-    outline: none;
-    -webkit-appearance: none;
-  }
-  
-  .inputField:active,
-  .inputField:focus,
-  .inputField:focus-visible {
-    border-color: #37C078;
-    box-shadow: none;
-    outline: none;
-  }
-  
-  .inputField::placeholder {
-    color: #979797;
-  }
-  
-  .submit {
-    display: none;
-  }
-  
-  .moneyButton {
-    display: inline-block;
-    width: 180;
-    margin-left: 20px;
-    flex: none;
-  }
-  .actionButton {
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
-    background-size: 20px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-  }
-  
-  .resetButtonMobile {
-    background-color: #37C078;
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
-    display: none;
-  }
-  
-  .logoutButtonMobile {
-    background-color: #FF5733; /* Replace with actual color */
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png"); /* Replace with actual logout icon */
-    display: none;
-  }
+  min-height: 10vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 5vw 20px;
+  display: flex;
+  box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
+}
+
+.inputForm {
+  border-radius: 4px;
+  display: flex;
+  width: 100%;
+  flex: 1;
+}
+
+.inputField {
+  min-height: 46px;
+  box-shadow: none;
+  color: #555;
+  font-weight: 600;
+  background-color: #F2EFEF;
+  border: 2px solid #37C078;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin-right: 8px;
+  flex: 1;
+  max-height: calc(4 * 24px);
+  overflow-y: auto;
+  resize: none;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.inputField:active,
+.inputField:focus,
+.inputField:focus-visible {
+  border-color: #37C078;
+  box-shadow: none;
+  outline: none;
+}
+
+.inputField::placeholder {
+  color: #979797;
+}
+
+.submit {
+  display: none;
+}
+
+.moneyButton {
+  display: inline-block;
+  width: 180;
+  margin-left: 20px;
+  flex: none;
+}
+
+.actionButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.resetButtonMobile {
+  background-color: #37C078;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
+  display: none;
+}
+
+.logoutButtonMobile {
+  background-color: #37C078; /* Replace with actual color */
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png"); /* Replace with actual logout icon */
+  display: none;
+}
   
   @media screen and (max-width: 479px) {
     .resetButtonMobile, .logoutButtonMobile {
