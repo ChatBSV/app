@@ -43,7 +43,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
   };
 
   const handleKeyDown = async (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       await pay();
     }
