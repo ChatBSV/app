@@ -1,7 +1,7 @@
 import './globals.css'
-import { Cormorant } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
-const Cormorant = Cormorant({ subsets: ['latin'] })
+const Inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -11,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={Cormorant.className}>{children}</body>
+      <body className={Inter.className}>{children}</body>
     </html>
   )
 }
