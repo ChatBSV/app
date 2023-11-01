@@ -16,8 +16,8 @@
   height: 44px;
   border-radius: 22px;
   background-color: #37C078;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
-  background-size: 20px;
+  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
+  background-size: 40px;
   background-position: center;
   background-repeat: no-repeat;
   position: absolute;
@@ -25,6 +25,10 @@
   right: 5vw;
   margin-top: -22px;
   cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+.resetButton:hover {
+  background-color: #19884d;
 }
 
 .loginButton {

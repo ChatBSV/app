@@ -1,19 +1,20 @@
+// filepath/components/ButtonIcon.js
+
 import React from 'react';
+import styles from './ButtonIcon.module.css';
 
 export default function ButtonIcon({ icon, text, onClick }) {
-
   return (
     <div 
-        className="bg-darkBackground-700 rounded-full border m-0 hover:bg-darkBackground-900"
-        onClick={onClick}
+      className={styles.bgDarkBackground}
+      onClick={onClick}
     >
-        <div className="flex gap-x-2 pr-6" style={{ paddingTop: '6px', paddingLeft: '6px', paddingBottom: '6px', paddingRight: '20px', cursor:'pointer' }} >
-            <img src={icon}
-                    className="inline-block rounded-full w-8 h-8 opacity-90"/>
-            <div className="flex flex-col justify-center items-start gap-y-0.5">
-                <span className="font-bold text-white/90 leading-4">{text}</span>
-            </div>
+      <div className={styles.flexGap} >
+        <img src={icon} className={styles.inlineBlock} />
+        <div className={styles.flexCol}>
+          <span className={styles.fontBold}>{text}</span>
         </div>
+      </div>
     </div>
   );
 }
