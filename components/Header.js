@@ -23,7 +23,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
           <div className="flex items-center gap-x-1 group">
             <ButtonIcon icon={user.avatarUrl} text={user.handle} />
             <button
-              className="rounded-lg px-3 py-1.5 text-xs bg-white/20 shadow-sm shadow-white/20 invisible group-hover:visible font-semibold text-red-400 hover:text-500 border border-transparent "
+              className="rounded-lg px-3 py-1.5 text-xs bg-white/20 shadow-sm shadow-white/20 invisible group-hover:visible font-semibold text-600 hover:text-600 border border-transparent "
               onClick={onDisconnect}>Disconnect
             </button>
           </div>
