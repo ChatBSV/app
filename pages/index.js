@@ -170,7 +170,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     setIsLoading(true);
   
     try {
-      if (userMessage.startsWith('/imagine ')) {
+      if (userMessage.toLowerCase().startsWith('/imagine ')) {
         const prompt = userMessage.replace('/imagine ', '');
         await getDalleImage(prompt, '1024x1024', txid);
       } else {
