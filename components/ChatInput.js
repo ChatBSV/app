@@ -83,9 +83,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-      <button type="button" className={`${styles.actionButton} ${styles.resetButtonMobile}`} onClick={resetChat}></button>
-        { isConnected && <button type="button" className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button> }
-        <textarea
+          <textarea
           onKeyDown={handleKeyDown}
           className={styles.inputField}
           placeholder="Enter your prompt or /imagine"
@@ -93,6 +91,8 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
           onChange={handleTextareaChange}
         ></textarea>
         <div className={styles.mbWrapper}>
+        <button type="button" className={`${styles.actionButton} ${styles.resetButtonMobile}`} onClick={resetChat}></button>
+        { isConnected && <button type="button" className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button> }
           <ButtonIcon
             icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
             text={buttonText()}

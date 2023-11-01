@@ -56,25 +56,25 @@
 }
 
 .actionButton {
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  background-size: 20px;
-  background-position: center;
-  background-repeat: no-repeat;
-  cursor: pointer;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 16px !important;
+  background-size: 20px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  cursor: pointer !important;
 }
 
 .resetButtonMobile {
-  background-color: #37C078;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
-  display: none;
+  background-color: #37C078 !important;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png") !important;
+  display: none !important;
 }
 
 .logoutButtonMobile {
-  background-color: #37C078; /* Replace with actual color */
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png"); /* Replace with actual logout icon */
-  display: none;
+  background-color: #37C078 !important; /* Replace with actual color */
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png") !important; /* Replace with actual logout icon */
+  display: none !important;
 }
   
   @media screen and (max-width: 479px) {
