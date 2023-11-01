@@ -25,11 +25,10 @@ function ChatBody({ chat, isLoading, isError }) {
         <ChatMessage
           content="Welcome to ChatBSV!
           <br />Chat with OpenAI or type /imagine to generate an image with DALLE.
+          <br />Prices: $0.0099 per prompt, $0.099 per image 1024x1024px.
           <br /><br /> Examples:
-          <br /><br /> /imagine a watercolor of New York City, showing Times Square at night
-          <br /><br /> or, try: 
-          <br /><br /> What is the distance between the sun and the moon?
-          <br /><br />Prices: $0.0099 per prompt, $0.099 per image 1024x1024px." 
+          <br />/imagine a watercolor of New York City, showing Times Square at night
+          <br />What is the distance between the sun and the moon?" 
           role="intro"
           className={styles.introMessage}
         />
