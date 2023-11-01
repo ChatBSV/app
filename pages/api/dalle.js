@@ -1,4 +1,4 @@
-// filepath/pages/api/dalle.js
+// pages/api/dalle.js
 
 import axios from 'axios';
 import dotenv from "dotenv";
