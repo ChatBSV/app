@@ -35,7 +35,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
           </a>
         </div>
       }
-      <img
+      <img className='logo'
         src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e6b0587817f80e105b_ChatBSV_logo.svg"
         alt="ChatBSV"
         style={{ height: '44px', marginTop: '5px' }}

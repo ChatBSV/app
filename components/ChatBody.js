@@ -27,8 +27,9 @@ function ChatBody({ chat, isLoading, isError }) {
           <br />Chat with OpenAI or type /imagine to generate an image with DALLE.
           <br />Prices: $0.0099 per prompt, $0.099 per image 1024x1024px.
           <br /><br /> Examples:
-          <br />/imagine a watercolor of New York City, showing Times Square at night
-          <br />What is the distance between the sun and the moon?" 
+          <br />- '/imagine a watercolor of New York City, showing Times Square at night'
+          <br />- 'What is the distance between the sun and the moon?'
+          <br /><br /> Contact: hello@chatbsv.com"
           role="intro"
           className={styles.introMessage}
         />

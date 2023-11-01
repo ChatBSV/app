@@ -41,9 +41,11 @@
   .loginButton {
     display: none;
   }
+  .logo {
+    display: none;
+  }
 
   .resetButton {
-    display: none;
     width: 32px;
     height: 32px;
     border-radius: 16px;

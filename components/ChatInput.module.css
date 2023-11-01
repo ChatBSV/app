@@ -84,6 +84,7 @@
     .chatFooter {
       min-height: 120px;
       padding: 10px 3vw 20px;
+      flex-flow: wrap-reverse;
     }
   
     .moneyButton {
