@@ -66,8 +66,4 @@
   .resetButton, .loginButton {
     display: none;
   }
-  .logo {
-    display: none;
-    opacity: 0;
-  }
 }

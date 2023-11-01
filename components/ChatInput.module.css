@@ -67,30 +67,32 @@
 
 .resetButtonMobile {
   background-color: #37C078;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
+  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
   display: none;
 }
 
 .logoutButtonMobile {
   background-color: #37C078; /* Replace with actual color */
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png"); /* Replace with actual logout icon */
+  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg"); 
   display: none;
 }
 .mbWrapper {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
   
   @media screen and (max-width: 479px) {
     .resetButtonMobile {
       background-color: #37C078;
-      background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png");
-      display: block;
+      background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
+      display: none;
     }
     
     .logoutButtonMobile {
-      background-color: #37C078; /* Replace with actual color */
-      background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/VisualEditor_-_Icon_-_Close_-_white.svg/2048px-VisualEditor_-_Icon_-_Close_-_white.svg.png"); /* Replace with actual logout icon */
-      display: block;
+      background-color: #37C078; 
+      background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg"); 
+      display: none;
     }
   
     .chatFooter {
