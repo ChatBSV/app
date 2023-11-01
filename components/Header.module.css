@@ -1,4 +1,5 @@
 /* components/Header.module.css */
+
 .chatHeader {
   height: 10vh;
   display: flex;
@@ -7,6 +8,7 @@
   align-items: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
   flex: none;
+  position: relative;
 }
 
 .resetButton {
@@ -26,7 +28,6 @@
 }
 
 .loginButton {
-  width: 44px;
   height: 44px;
   border-radius: 22px;
   position: absolute;
@@ -37,6 +38,30 @@
   cursor: pointer;
 }
 
+.logo {
+  height: 44px;
+  margin-top: 5px;
+}
+
+.loginContainer {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.disconnectButton {
+  border-radius: 12px;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  display: none;
+}
+
+.loginContainer:hover .disconnectButton {
+  display: inline-block;
+}
+
 @media screen and (max-width: 479px) {
   .resetButton, .loginButton {
     display: none;
@@ -44,16 +69,5 @@
   .logo {
     display: none;
     opacity: 0;
-  }
-  .resetButton {
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
-    background-color: #37C078;
-    background-size: 20px;
-    background-position: center;
-    top: 5vh;
-    right: 5vw;
-    margin-top: -16px;
   }
 }

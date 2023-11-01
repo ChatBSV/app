@@ -15,11 +15,11 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
   return (
     <div className={styles.chatHeader}>
       {sessionToken ? (
-        <div className={`w-full mb-4 flex justify-between items-end ${styles.loginButton}`}>
-          <div className="flex items-center gap-x-1 group">
+        <div className={styles.loginButton}>
+          <div className={styles.loginContainer}>
             <ButtonIcon icon={user.avatarUrl} text={user.handle} />
             <button
-              className="rounded-lg px-3 py-1.5 text-xs bg-white/20 shadow-sm shadow-white/20 invisible group-hover:visible font-semibold text-600 hover:text-600 border border-transparent"
+              className={styles.disconnectButton}
               onClick={onDisconnect}
             >
               Disconnect
@@ -27,7 +27,7 @@ function Header({ resetChat, redirectionUrl, sessionToken, user }) {
           </div>
         </div>
       ) : (
-        <div className={`w-full mb-4 flex justify-between items-end ${styles.loginButton}`}>
+        <div className={styles.loginButton}>
           <a href={redirectionUrl}>
             <ButtonIcon icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg" text="Connect" />
           </a>
