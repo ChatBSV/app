@@ -43,6 +43,7 @@
   }
   .logo {
     display: none;
+    opacity: 0;
   }
   .resetButton {
     width: 32px;
