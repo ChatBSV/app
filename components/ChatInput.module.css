@@ -5,6 +5,7 @@
   padding: 10px 5vw 20px;
   display: flex;
   box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
+  flex-grow: 0;
 }
 
 .inputForm {
@@ -24,8 +25,9 @@
   border-radius: 5px;
   padding: 8px 16px;
   margin-right: 8px;
+  font-weight: 600;
   flex: 1;
-  max-height: calc(4 * 24px);
+  max-height: calc(6 * 24px);
   overflow-y: auto;
   resize: none;
   outline: none;
@@ -94,7 +96,7 @@
       width: 40px;
       height: 40px;
       border-radius: 22px;
-      background-size: 40px;
+      background-size: 32px;
     }
     
     .logoutButtonMobile {
@@ -105,7 +107,7 @@
   
     .chatFooter {
       min-height: 120px;
-      padding: 10px 3vw 20px;
+      padding: 5px 3vw 30px;
       flex-flow: wrap-reverse;
     }
   

@@ -2,7 +2,7 @@
    
     width: 70%;
     max-width: 1024px;
-    font-weight: 600;
+    font-weight: 500;
     flex: 1;
 
     
@@ -13,6 +13,10 @@
     margin-bottom: 10px;
     padding: 12px;
     box-shadow: -1px -1px 3px rgba(255, 255, 255, .5), 1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.chatMessage.introMessage {
+  
 }
 
 .chatMessage.userMessage {

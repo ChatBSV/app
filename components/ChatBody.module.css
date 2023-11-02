@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 .spacer {
-    height: 20px;
+    height: 150px;
     flex: none;
     justify-content: flex-end;
 }
@@ -23,3 +23,4 @@
     border-top-width: 1px;
     border-top-style: solid;
   }
+

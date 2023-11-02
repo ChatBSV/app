@@ -66,7 +66,7 @@ function ChatMessage({ content, role, tokens, txid }) {
               </span>
             </a>
           ) : (
-            <span>No transaction ID available.</span>
+            <span>N/A</span>
           )}
           <img
             className={styles.copyIcon}
