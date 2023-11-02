@@ -6,6 +6,7 @@
   display: flex;
   box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
   flex-grow: 0;
+  z-index: 10;
 }
 
 .inputForm {

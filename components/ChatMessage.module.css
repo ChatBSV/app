@@ -3,6 +3,7 @@
     width: 70%;
     max-width: 1024px;
     font-weight: 500;
+    font-size: medium;
     flex: 1;
 
     
@@ -25,12 +26,16 @@
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
+    font-weight: 500;
+    font-size: medium;
 }
 
 .chatMessage.assistantMessage {
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
     margin-right: auto;
+    font-weight: 500;
+    font-size: medium;
 }
 
 .chatMessage.introMessage {
@@ -91,7 +96,6 @@
 
     .chatMessage {
       max-width: 90%;
-      font-weight: 600;
       flex: 1;
       width: 90%;
       
