@@ -109,6 +109,7 @@
       min-height: 120px;
       padding: 5px 3vw 30px;
       flex-flow: wrap-reverse;
+      flex-grow: 0;
     }
   
     .moneyButton {

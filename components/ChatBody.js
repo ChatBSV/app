@@ -23,13 +23,13 @@ function ChatBody({ chat, isLoading, isError }) {
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
         <ChatMessage
-          content={`<span style="font-size:15px;">Hi there, I'm ChatBSV!
+          content={`<span style="font-size:15px;font-weight:600;">Hi there, I'm ChatBSV!
           <span style="font-size:13px;font-weight:500; line-height:12pt;">
           <span style="font-size:14px;font-weight:500; line-height:12pt;">I'm your new personal assistant with a streamlined interface to OpenAI and DALLE for micro-transactions on BitcoinSV.
           
-          You may speak to me in any language. Our chat is private and saved temporarily in your browser for memory and context. I do not store any of your data and you can delete it at any time.
+          You may speak to me in any language. Our chat is private and saved temporarily in your browser for memory and context and you can delete it at any time. I do not store any of your data.
           
-          See below examples of what you can do with me:
+          See below examples of what I can help you with:
 
           <span style="font-weight:700;">/Imagine <span style="font-weight:500;"> to generate an image.
           <span style="font-weight:700;">[Enter] <span style="font-weight:500;">to send.
