@@ -20,13 +20,12 @@
   min-height: 46px;
   box-shadow: none;
   color: #555;
-  font-weight: 600;
+  font-weight: 500;
   background-color: #F2EFEF;
   border: 2px solid #37C078;
   border-radius: 5px;
   padding: 8px 16px;
   margin-right: 8px;
-  font-weight: 600;
   flex: 1;
   max-height: calc(6 * 24px);
   overflow-y: auto;
