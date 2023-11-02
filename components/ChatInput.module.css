@@ -5,7 +5,8 @@
   padding: 10px 5vw 20px;
   display: flex;
   box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
-  flex-grow: 0;
+  flex-shrink: 0; 
+  flex-wrap: wrap;
   z-index: 10;
 }
 
@@ -52,7 +53,7 @@
 
 .moneyButton {
   display: inline-block;
-  width: 180;
+  width: 180px; /* Added px to make the value valid */
   margin-left: 20px;
   flex: none;
 }
@@ -68,76 +69,69 @@
   transition: all 0.25s ease-in-out;
 }
 
-.resetButtonMobile {
-  background-color: #37C078;
-  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
-  display: none;
-}
-
-.logoutButtonMobile {
-  background-color: #37C078; 
-  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg"); 
-  display: none;
-}
 .mbWrapper {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-  
-  @media screen and (max-width: 479px) {
-    .resetButtonMobile {
-      background-color: #37C078;
-      background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
-      display: block;
-    }
 
-    .actionButton {
-      width: 40px;
-      height: 40px;
-      border-radius: 22px;
-      background-size: 32px;
-    }
-    
-    .logoutButtonMobile {
-      background-color: #37C078; 
-      background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg"); 
-      display: block;
-    }
-  
-    .chatFooter {
-      min-height: 120px;
-      padding: 5px 3vw 30px;
-      flex-flow: wrap-reverse;
-      flex-grow: 0;
-    }
-  
-    .moneyButton {
-      margin-top: 10px;
-      margin-bottom: 30px;
-    }
-  
-    .inputForm {
-      min-height: 100px;
-      padding-top: 10px;
-      display: flex;
-      flex-direction: column;
-      max-width: 90vw;
-      min-width: 90vw;
-      justify-content: center;
-      align-items: center;
-      flex: none;
-    }
-  
-    .inputField {
-      min-height: 46px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      margin-right: 0;
-      max-width: 90vw;
-      min-width: 90vw;
-      flex: none;
-    }
+.resetButtonMobile,
+.logoutButtonMobile {
+  background-color: #37C078;
+  display: none;
+}
+
+.resetButtonMobile {
+  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
+}
+
+.logoutButtonMobile {
+  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg");
+}
+
+@media screen and (max-width: 479px) {
+  .resetButtonMobile,
+  .logoutButtonMobile {
+    display: block;
   }
 
+  .actionButton {
+    width: 40px;
+    height: 40px;
+    border-radius: 22px;
+    background-size: 32px;
+  }
   
+  .chatFooter {
+    min-height: 120px;
+    padding: 5px 3vw 30px;
+    flex-wrap: wrap;
+  }
+
+  .moneyButton {
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+
+  .inputForm {
+    min-height: 100px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 90vw;
+    min-width: 90vw;
+    justify-content: center;
+    align-items: center;
+    flex: none;
+  }
+
+  .inputField {
+    min-height: 46px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 0;
+    max-width: 90vw;
+    min-width: 90vw;
+    flex: none;
+  }
+}
