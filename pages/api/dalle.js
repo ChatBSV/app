@@ -5,9 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Function to handle DALLE request, exported for use in other files
 export async function handleDalleRequest(reqBody) {
-  // Default values for prompt and format
   const { prompt = "a scenic view of a mountain", format = "512x512" } = reqBody;
   
   console.log('Entered handleDalleRequest with:', { prompt, format });
@@ -37,7 +35,6 @@ export async function handleDalleRequest(reqBody) {
     
     console.log('Received response from DALLE API:', response);
     
-    // Corrected line to get the image URL based on API documentation
     const imageUrl = response.data.data[0].url;
 
     console.log('Generated image URL:', imageUrl);
@@ -48,14 +45,13 @@ export async function handleDalleRequest(reqBody) {
   }
 }
 
-// Default export to handle POST requests
 export default async (req, res) => {
   console.log("Received request with method:", req.method);
   console.log("Received request with body:", req.body);
 
   if (req.method !== "POST") {
     console.log('Method not allowed. Only POST is supported.');
-    res.status(405).end(); // Method Not Allowed
+    res.status(405).end();
     return;
   }
 
