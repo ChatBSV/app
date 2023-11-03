@@ -131,7 +131,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'requestType': isDalle ? 'image' : 'text'
+          'requestType': isDalle ? 'image' : 'text'  // Add this line
         },
         body: JSON.stringify({ prompt, history: chatHistory }),
         signal: controller.signal,
