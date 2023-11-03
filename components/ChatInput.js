@@ -19,6 +19,7 @@ const onDisconnect = async () => {
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
+  
   const [paymentResult, setPaymentResult] = useState({status: 'none'});
   const [isConnected, setIsConnected] = useState(true);
 
@@ -71,7 +72,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
       if (paymentResult.status === 'sent') {
         localStorage.setItem('txid', paymentResult.transactionId);
         setTxid(paymentResult.transactionId);
-        await handleFormSubmit(new Event('submit'));
+        await handleFormSubmit(new Event('submit'), paymentResult.requestType);
       }
       setPaymentResult(paymentResult);
     } catch (error) {
