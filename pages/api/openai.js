@@ -37,7 +37,7 @@ export async function handleOpenAIRequest(reqBody, reqHeaders) {
       {
         model: 'gpt-4',
         messages: messages,
-        max_tokens: 2000,
+        max_tokens: 3000,
       },
       {
         headers: {
