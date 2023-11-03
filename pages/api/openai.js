@@ -1,5 +1,5 @@
-
 // pages/api/openai.js
+
 import axios from 'axios';
 
 export async function handleOpenAIRequest(reqBody, reqHeaders) {
