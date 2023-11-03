@@ -38,7 +38,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
     if (prompt) {
       const storedTxid = localStorage.getItem('txid');
       const isDalle = prompt.toLowerCase().startsWith('/imagine');
-      await handleSubmit(prompt, storedTxid, isDalle);
+      await handleSubmit(prompt, storedTxid, isDalle, isDalle ? 'image' : 'text');
       inputRef.current.value = '';
     }
   };
