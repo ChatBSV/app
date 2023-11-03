@@ -124,7 +124,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     console.log('getAssistantReply', prompt, chatHistory)
     try {
       const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 60000);
+      const id = setTimeout(() => controller.abort(), 59000);
   
       const response = await fetch('/api/get-chat-reply', {
         method: 'POST',
