@@ -125,11 +125,13 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     try {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 59000);
+      const isDalle = prompt.toLowerCase().startsWith('/imagine');
   
       const response = await fetch('/api/get-chat-reply', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'requestType': isDalle ? 'image' : 'text'
         },
         body: JSON.stringify({ prompt, history: chatHistory }),
         signal: controller.signal,
