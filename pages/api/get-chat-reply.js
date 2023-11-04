@@ -5,9 +5,9 @@ import { handleDalleRequest } from './dalle';
 
 export default async function handler(req, res) {
   const { prompt, history } = req.body;
-  const { requestType } = req.headers;
+  const { requesttype } = req.headers;
 
-  console.log('getChatReply.js: Request type:', requestType);
+  console.log('getChatReply.js: Request type:', requesttype);
 
   try {
     if (prompt.startsWith('/imagine')) {

@@ -37,7 +37,7 @@ export default async function handler(req, res) {
             currencyCode: process.env.CURRENCY, 
             description: 'ChatBSV payment'
         });
-        return res.status(200).json({status: 'sent', transactionId: paymentResult.transactionId, requestType: requesttype});
+        return res.status(200).json({status: 'sent', transactionId: paymentResult.transactionId, requesttype: requesttype});
     } catch (error) {
         console.error('pay.js: Error', error);
         return res.status(400).json({status: 'error', message: error.toString()});

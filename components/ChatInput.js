@@ -63,7 +63,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
     
     const headers = new Headers({
       'Authorization': `Bearer ${sessionToken}`,
-      'requestType': isDalle ? 'image' : 'text'
+      'requesttype': isDalle ? 'image' : 'text'
     });
 
     setPaymentResult({status: 'pending'});
@@ -73,7 +73,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
       if (paymentResult.status === 'sent') {
         localStorage.setItem('txid', paymentResult.transactionId);
         setTxid(paymentResult.transactionId);
-        await handleFormSubmit(new Event('submit'), paymentResult.requestType);
+        await handleFormSubmit(new Event('submit'), paymentResult.requesttype);
       }
       setPaymentResult(paymentResult);
     } catch (error) {
