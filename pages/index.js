@@ -120,7 +120,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   };
   
 
-  const getAssistantReply = async (prompt, chatHistory, requestType) => {  // add requestType parameter
+  const getAssistantReply = async (prompt, chatHistory, requesttype) => {  // add requesttype parameter
     console.log('getAssistantReply', prompt, chatHistory)
     try {
       const controller = new AbortController();
@@ -131,7 +131,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'requestType': requestType  // use requestType here
+          'requesttype': requesttype  // use requesttype here
         },
         body: JSON.stringify({ prompt, history: chatHistory }),
         signal: controller.signal,
@@ -152,7 +152,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   };
   
   
-  const handleSubmit = async (userMessage, txid, isDalle, requestType) => {  // add requestType parameter
+  const handleSubmit = async (userMessage, txid, isDalle, requesttype) => {  // add requesttype parameter
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -176,7 +176,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         const prompt = userMessage.replace('/imagine ', '');
         await getDalleImage(prompt, '1024x1024', txid);
       } else {
-        const assistantResponse = await getAssistantReply(userMessage, chat, requestType);  // pass requestType here
+        const assistantResponse = await getAssistantReply(userMessage, chat, requesttype);  // pass requesttype here
   
         const newAssistantMessage = {
           id: nanoid(),
