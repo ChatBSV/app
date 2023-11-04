@@ -3,6 +3,10 @@
 import { handleOpenAIRequest } from './openai';
 import { handleDalleRequest } from './dalle';
 
+export const config = {
+  maxDuration: 300, // 5 minutes.
+};
+
 export default async function handler(req, res) {
   const { prompt, history } = req.body;
   const { requesttype } = req.headers;
