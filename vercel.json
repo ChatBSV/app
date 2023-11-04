@@ -1,7 +1,7 @@
 {
     "functions": {
       "pages/api/get-chat-reply.js": {
-        "maxDuration": 59
+        "maxDuration": 300
       }
     }
   }
