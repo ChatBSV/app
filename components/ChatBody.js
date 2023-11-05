@@ -38,7 +38,7 @@ function ChatBody({ chat, isLoading, isError }) {
         />
         <ChatMessage
           content={`<span style=" font-weight:600;">Chat with OpenAI
-          <span style="font-size:13px; font-weight:600;">GPT 3.5 Turbo, $0.099 / Message</span>
+          <span style="font-size:13px; font-weight:600;">GPT 3.5 Turbo, $0.01 / Message</span>
           
           <span style="font-weight:600;">Example:
           <span style="font-weight:600;">User:<span style="font-weight:500;"> What is the circumference of the earth?
@@ -50,7 +50,7 @@ function ChatBody({ chat, isLoading, isError }) {
         />
         <ChatMessage
           content={`<span style="font-weight:600;">Generate Images with /Imagine
-          <span style="font-size:13px; font-weight:600;">DALL-E, 1024x1024, $0.099 / Image</span>
+          <span style="font-size:13px; font-weight:600;">DALL-E, 512x512, $0.05 / Image</span>
           
           <span style="font-weight:600;">Example:
           <span style="font-weight:600;">User:<span style="font-weight:500;"> /Imagine a watercolor of times square
