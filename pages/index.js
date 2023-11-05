@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
+import getErrorMessage from "../lib/getErrorMessage";
 import Header from '../components/Header';
 import Head from 'next/head';
 import './global.css';
@@ -196,11 +197,11 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         });
   
         setIsLoading(false);}
-   } catch (error) {
-      console.error('Error:', error);
-      const errorMessage = error.message || 'An error occurred';
-      displayError(errorMessage);
-    }
+      } catch (error) {
+        console.error('Error:', error);
+        const errorMessage = getErrorMessage(error);
+        displayError(errorMessage);
+        }
   };  
 
   useEffect(() => {
