@@ -38,7 +38,7 @@ function ChatBody({ chat, isLoading, isError }) {
         />
         <ChatMessage
           content={`<span style=" font-weight:600;">Chat with OpenAI
-          <span style="font-size:13px; font-weight:600;">GPT 3.5 Turbo, $0.05 / Message</span>
+          <span style="font-size:13px; font-weight:600;">GPT 4, $0.05 / Message</span>
           
           <span style="font-weight:600;">Example:
           <span style="font-weight:600;">User:<span style="font-weight:500;"> What is the circumference of the earth?
