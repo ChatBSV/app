@@ -27,16 +27,13 @@
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
-    font-weight: 500;
-    font-size: medium;
+    
 }
 
 .chatMessage.assistantMessage {
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
     margin-right: auto;
-    font-weight: 500;
-    font-size: medium;
 }
 
 .chatMessage.introMessage {
