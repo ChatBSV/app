@@ -69,13 +69,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
     setPaymentResult({status: 'pending'});
     try {
       const response = await fetch('/api/pay', { method: "POST", headers });
-      if (response.status === 401) {
-        // On a 401 response, we redirect the user to HandCash Connect.
-        const data = await response.json();
-        onDisconnect(); // Invoke onDisconnect before redirecting.
-        window.location.href = data.redirectUrl;
-        return;
-    }
       const paymentResult = await response.json();
       if (paymentResult.status === 'sent') {
         localStorage.setItem('txid', paymentResult.transactionId);
