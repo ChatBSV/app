@@ -3,11 +3,12 @@
     width: 70%;
     max-width: 1024px;
     font-weight: 500;
-    font-size: medium;
+    font-size: 16px;
     flex: 1;
 
     
-    line-height: 17pt;
+    line-height: 22px;
+    
     background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 10px;
@@ -91,6 +92,7 @@
     margin-right: 4px;
     opacity: 67%;
   }
+  
 
   @media screen and (max-width: 479px) {
 

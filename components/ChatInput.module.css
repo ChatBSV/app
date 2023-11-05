@@ -19,11 +19,12 @@
 
 .inputField {
   min-height: 46px;
+  font-size: 15px;
   box-shadow: none;
   color: #555;
   font-weight: 500;
-  background-color: #F2EFEF;
-  border: 2px solid #37C078;
+  background-color: #fcfcfc;
+  border: 2px solid #dadada;
   border-radius: 5px;
   padding: 8px 16px;
   margin-right: 8px;
@@ -59,16 +60,18 @@
 }
 
 .actionButton {
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  background-size: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-size: 32px;
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
   transition: all 0.25s ease-in-out;
 }
-
+.actionButton:hover {
+  background-color: #19884d;
+}
 .mbWrapper {
   display: flex;
   align-items: center;
@@ -78,7 +81,7 @@
 .resetButtonMobile,
 .logoutButtonMobile {
   background-color: #37C078;
-  display: none;
+  display: block;
 }
 
 .resetButtonMobile {
