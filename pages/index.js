@@ -124,7 +124,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     console.log('getAssistantReply', prompt, chatHistory)
     try {
       const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 59000);
+      const id = setTimeout(() => controller.abort(), 298000);
       const isDalle = prompt.toLowerCase().startsWith('/imagine');
   
       const response = await fetch('/api/get-chat-reply', {
