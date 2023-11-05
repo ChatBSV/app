@@ -38,7 +38,7 @@ function ChatBody({ chat, isLoading, isError }) {
         />
         <ChatMessage
           content={`<span style=" font-weight:600;">Chat with OpenAI
-          <span style=" font-weight:600;">GPT 3.5 Turbo, $0.099 / Message</span>
+          <span style="font-size:13px; font-weight:600;">GPT 3.5 Turbo, $0.099 / Message</span>
           
           <span style="font-weight:600;">Example:
           <span style="font-weight:600;">User:<span style="font-weight:500;"> What is the circumference of the earth?
@@ -50,12 +50,12 @@ function ChatBody({ chat, isLoading, isError }) {
         />
         <ChatMessage
           content={`<span style="font-weight:600;">Generate Images with /Imagine
-          <span style="font-weight:600;">DALL-E, 1024x1024, $0.099 / Image</span>
+          <span style="font-size:13px; font-weight:600;">DALL-E, 1024x1024, $0.099 / Image</span>
           
           <span style="font-weight:600;">Example:
           <span style="font-weight:600;">User:<span style="font-weight:500;"> /Imagine a watercolor of times square
           <span style="font-weight:600;">ChatBSV:
-          
+
           <img src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542e7bbccf00a99b6077f7c_img-ahuZzOYeaS0R4vCO02BgAPuc.png" alt="DALL-E Image" style="width:100%" />`}
           role="intro"
           className={styles.introMessage}

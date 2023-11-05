@@ -100,8 +100,8 @@
       max-width: 90%;
       flex: 1;
       width: 90%;
-      
-      line-height: 15pt;
+      font-size: 15px;
+      line-height: 20px;
       background-color: #fcfcfc;
       border-radius: 8px;
       margin-top: 10px;
