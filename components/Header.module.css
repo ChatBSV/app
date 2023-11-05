@@ -6,10 +6,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
   flex: none;
   position: relative;
   flex-shrink: 0; 
+  border-bottom: 2px solid #000;
 }
 
 .resetButton {
@@ -47,6 +47,7 @@
 .logo {
   height: 44px;
   margin-top: 5px;
+  filter: brightness(1000%);
 }
 
 .loginContainer {
