@@ -35,7 +35,7 @@ export default async function handler(req, res) {
             destination: process.env.DEST, 
             amount: paymentAmount,  // Use the determined amount
             currencyCode: process.env.CURRENCY, 
-            description: 'ChatBSV payment'
+            description: 'ChatBSV4 payment'
         });
         return res.status(200).json({status: 'sent', transactionId: paymentResult.transactionId, requesttype: requesttype});
     } catch (error) {
