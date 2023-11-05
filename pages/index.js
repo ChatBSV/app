@@ -174,7 +174,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     try {
       if (userMessage.toLowerCase().startsWith('/imagine ')) {
         const prompt = userMessage.replace('/imagine ', '');
-        await getDalleImage(prompt, '1024x1024', txid);
+        await getDalleImage(prompt, '512x512', txid);
       } else {
         const assistantResponse = await getAssistantReply(userMessage, chat, requesttype);  // pass requesttype here
   
