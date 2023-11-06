@@ -3,8 +3,9 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
+import getErrorMessage from '../lib/getErrorMessage'; // Import the getErrorMessage function
 
-function ChatBody({ chat, isLoading, isError }) {
+function ChatBody({ chat, isLoading, isError, error }) { // Include an error prop
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -17,7 +18,8 @@ function ChatBody({ chat, isLoading, isError }) {
     }
   };
 
-  const errorMessage = chat.find(message => message.role === "error")?.content || "OpenAI error. Please try again or come back later.";
+  // Use getErrorMessage to parse the error object and get a user-friendly message
+  const errorMessage = isError ? getErrorMessage(error) : '';
 
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
@@ -34,11 +36,10 @@ function ChatBody({ chat, isLoading, isError }) {
           className={styles.introMessage}
         />
         
-  
         {chat.map((message) => (
           <ChatMessage
             key={message.id}
-            content={message.content} 
+            content={message.content}
             role={message.role}
             tokens={message.role === 'assistant' ? message.tokens : 0}
             txid={message.txid}
@@ -47,7 +48,7 @@ function ChatBody({ chat, isLoading, isError }) {
   
         {isLoading && (
           <ChatMessage
-            content="Processing..."
+            content="Processing, please wait..."
             role="loading"
             className={styles.loadingMessage}
           />
@@ -55,11 +56,11 @@ function ChatBody({ chat, isLoading, isError }) {
 
         {/* Displaying the dynamic error message */}
         {isError && (
-          <ChatMessage
-            content={errorMessage}
-            role="error"
-            className={styles.errorMessage}
-          />
+        <ChatMessage
+          content={errorMessage} // Assume error is already a string
+          role="error"
+          className={styles.errorMessage}
+        />
         )}
   
         <div className={styles.spacer}></div>

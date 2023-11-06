@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './ChatMessage.module.css';
+import getErrorMessage from '../lib/getErrorMessage';
 
 function ChatMessage({ content, role, tokens, txid }) {
   const isAssistantMessage = role === 'assistant';
@@ -11,13 +12,18 @@ function ChatMessage({ content, role, tokens, txid }) {
   const isIntroMessage = role === 'intro';
 
   const [copyButtonText, setCopyButtonText] = useState('Copy');
+  const [error, setError] = useState('');
 
-  const handleCopy = (message) => {
-    navigator.clipboard.writeText(message);
-    setCopyButtonText('Copied!');
-    setTimeout(() => {
-      setCopyButtonText('Copy');
-    }, 2000);
+  const handleCopy = async (message) => {
+    try {
+      await navigator.clipboard.writeText(message);
+      setCopyButtonText('Copied!');
+      setTimeout(() => {
+        setCopyButtonText('Copy');
+      }, 2000);
+    } catch (error) {
+      setError(getErrorMessage(error));
+    }
   };
 
   const shouldShowWidget = isAssistantMessage || isDalleImage;
@@ -28,6 +34,7 @@ function ChatMessage({ content, role, tokens, txid }) {
         isAssistantMessage ? styles.assistantMessage : ''
       } ${isUserMessage ? styles.userMessage : ''} ${
         isLoadingMessage ? styles.loadingMessage : ''
+      } ${error ? styles.errorMessage : ''
       } ${isIntroMessage ? styles.introMessage : ''} ${
         isDalleImage ? styles.dalleImage : ''
       }`}
@@ -35,8 +42,7 @@ function ChatMessage({ content, role, tokens, txid }) {
       {isDalleImage ? (
         <img src={content} alt="DALL-E Generated Image" />
       ) : (
-        <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }}>
-        </div>
+        <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }} />
       )}
       {shouldShowWidget && !isLoadingMessage && (
         <div className={styles.chatLink}>
@@ -89,6 +95,7 @@ function ChatMessage({ content, role, tokens, txid }) {
           </a>
         </div>
       )}
+      {error && <p className={styles.errorMessage}>{error}</p>}
     </div>
   );
 }

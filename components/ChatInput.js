@@ -20,7 +20,7 @@ const onDisconnect = async () => {
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
-  
+  const [error, setError] = useState(null);
   const [paymentResult, setPaymentResult] = useState({status: 'none'});
   const [isConnected, setIsConnected] = useState(true);
 
@@ -37,12 +37,16 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
     event.preventDefault();
     const prompt = inputRef.current.value.trim();
     if (prompt) {
-      const storedTxid = localStorage.getItem('txid');
-      const isDalle = prompt.toLowerCase().startsWith('/imagine');
-      await handleSubmit(prompt, storedTxid, isDalle, isDalle ? 'image' : 'text');
-      inputRef.current.value = '';
+    const storedTxid = localStorage.getItem('txid');
+    const isDalle = prompt.toLowerCase().startsWith('/imagine');
+    const response = await handleSubmit(prompt, storedTxid, isDalle, isDalle ? 'image' : 'text');
+    if (response && response.status === 401) {
+    setError(response.message); // assuming the error message is returned in a 'message' key
+    } else {
+    inputRef.current.value = '';
     }
-  };
+    }
+    };
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -56,7 +60,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
       window.location.href = redirectionUrl;
       return;
     }
-
+  
     localStorage.removeItem('txid');
     const prompt = inputRef.current.value.trim();
     const isDalle = prompt.toLowerCase().startsWith('/imagine');
@@ -65,10 +69,18 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
       'Authorization': `Bearer ${sessionToken}`,
       'requesttype': isDalle ? 'image' : 'text'
     });
-
+  
     setPaymentResult({status: 'pending'});
     try {
       const response = await fetch('/api/pay', { method: "POST", headers });
+      if (!response.ok) {
+        // Handle non-200 responses
+        const errorResult = await response.json();
+        setError(errorResult.error || "An unexpected error occurred.");
+        setPaymentResult({status: 'error', message: errorResult.error});
+        return; // Exit the function if there is an error
+      }
+  
       const paymentResult = await response.json();
       if (paymentResult.status === 'sent') {
         localStorage.setItem('txid', paymentResult.transactionId);
@@ -77,11 +89,13 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
       }
       setPaymentResult(paymentResult);
     } catch (error) {
-      localStorage.removeItem('txid');
-      setPaymentResult({ status: 'failed' });
+      // Handle fetch errors
+      const errorMessage = error.message || "An unexpected network error occurred.";
+      setError(errorMessage);
+      setPaymentResult({status: 'error', message: errorMessage});
     }
   };
-
+  
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>

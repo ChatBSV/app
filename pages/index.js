@@ -68,17 +68,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const [txid, setTxid] = useState('');
 
 
-  const displayError = (errorMessage) => {
-    const errorChatMessage = {
-      id: nanoid(),
-      role: 'error',
-      content: errorMessage,
-    };
-    setChat(prevChat => [...prevChat, errorChatMessage]);
-    setIsLoading(false);
-  };
-
-
+  
   useEffect(() => {
     if (window.location.search.includes('reload=true')) {
       window.location.href = '/';
@@ -141,8 +131,14 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
       clearTimeout(id);
   
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+// Add handling for HTTP status 401 here
+if (response.status === 401) {
+displayError('Authentication failed, please login again.');
+// Perform any other necessary actions such as logging out the user or redirecting
+}
   
       const data = await response.json();
       return { message: data.message, tokens: data.tokens };
@@ -198,11 +194,13 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   
         setIsLoading(false);}
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error in handleSubmit:', error);
         const errorMessage = getErrorMessage(error);
-        displayError(errorMessage);
-        }
-  };  
+        setErrorMessage(errorMessage);
+        setIsLoading(false);
+        setIsError(true); // Set isError to true to indicate an error occurred
+      }
+    };
 
   useEffect(() => {
     console.log('IndexPage: useEffect, sessionToken:', sessionToken);
