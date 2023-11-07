@@ -13,15 +13,19 @@ export default async function handler(req, res) {
   try {
     const { authorization, requesttype } = req.headers;
     
-    const sessionToken = authorization?.split(' ')[1];
+    if (!authorization) {
+      return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization.')) });
+    }
+
+    const sessionToken = authorization.split(' ')[1];
     if (!sessionToken) {
-      throw new Error('Missing authorization.'); // Throw an error to be caught below
+      return res.status(401).json({ error: getErrorMessage(new Error('Missing session token.')) });
     }
 
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      throw new Error('Expired authorization.'); // Throw an error to be caught below
+      return res.status(401).json({ error: getErrorMessage(new Error('Expired authorization.')) });
     }
 
     const paymentAmount = requesttype === 'image' ? process.env.IMAGE_AMOUNT : process.env.CHAT_AMOUNT;
@@ -35,7 +39,10 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ status: 'sent', transactionId: paymentResult.transactionId });
   } catch (error) {
+    console.error(error);
     const errorMessage = getErrorMessage(error);
-    res.status(error.status || 500).json({ status: 'error', error: errorMessage });
+    // Determine the status code based on the error type or default to 500
+    const statusCode = error.statusCode || error.status || 500;
+    return res.status(statusCode).json({ status: 'error', error: errorMessage });
   }
 }

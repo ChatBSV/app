@@ -1,6 +1,6 @@
 // hooks/useChatService.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
 
@@ -20,7 +20,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     }
   }, []);
 
-  const addMessageToChat = (message) => {
+  const addMessageToChat = useCallback((message) => {
     setChat((prevChat) => {
       const updatedChat = [...prevChat, message];
       // Save to local storage without error messages
@@ -28,7 +28,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
       return updatedChat;
     });
-  };
+  }, []);
 
   const getChatReply = async (prompt, chatHistory, requestType) => {
     setIsLoading(true);
@@ -78,9 +78,13 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       txid: txid,
     };
 
+    // Immediately add the new user message to the chat state
     addMessageToChat(newUserMessage);
 
-    const chatReply = await getChatReply(userMessage, chat, requestType);
+    // Use a temporary updated chat array to ensure the latest chat is used
+    const tempUpdatedChat = [...chat, newUserMessage];
+
+    const chatReply = await getChatReply(userMessage, tempUpdatedChat, requestType);
     if (chatReply) {
       const newMessage = {
         id: nanoid(),
@@ -90,6 +94,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
         txid: txid,
       };
 
+      // Add the new message from the assistant or image to the chat state
       addMessageToChat(newMessage);
     }
 
