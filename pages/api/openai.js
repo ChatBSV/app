@@ -17,9 +17,9 @@ export async function handleOpenAIRequest(prompt, history) {
     throw new Error('History should be an array of message objects.');
   }
 
-  const messages = !history || history.length === 0
-  ? [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }]
-  : history.map((message) => ({ role: message.role, content: message.content }));
+  const messages = history && history.length > 0
+  ? [...history.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
+  : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
 
   try {
     const response = await axios.post(
