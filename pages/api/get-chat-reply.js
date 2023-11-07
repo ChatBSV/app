@@ -24,9 +24,6 @@ export default async function handler(req, res) {
       const { imageUrl } = await handleDalleRequest({ prompt });
       res.status(200).json({ imageUrl, tokens: 10000 }); 
     } else {
-      if (!prompt || !history) {
-        throw new Error('Both prompt and history are required for chat replies');
-      }
       const { message, tokens } = await handleOpenAIRequest(prompt, history);
       res.status(200).json({ message, tokens });
     }

@@ -5,7 +5,6 @@ import axios from 'axios';
 export async function handleOpenAIRequest(prompt, history) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
 
-  // Ensure environment variables are set
   if (!OPENAI_API_KEY) {
     throw new Error('The OPENAI_API_KEY is not set in environment variables.');
   }
@@ -14,14 +13,13 @@ export async function handleOpenAIRequest(prompt, history) {
     throw new Error('The CORE_PROMPT is not set in environment variables and no history is provided.');
   }
 
-  // Validate history structure
   if (history && !Array.isArray(history)) {
     throw new Error('History should be an array of message objects.');
   }
 
-  const messages = history?.length
-    ? history.map((message) => ({ role: message.role, content: message.content }))
-    : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
+  const messages = !history || history.length === 0
+  ? [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }]
+  : history.map((message) => ({ role: message.role, content: message.content }));
 
   try {
     const response = await axios.post(

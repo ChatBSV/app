@@ -14,18 +14,18 @@ export default async function handler(req, res) {
     const { authorization, requesttype } = req.headers;
     
     if (!authorization) {
-      return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization.')) });
+      return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization. Please reconnect to Handcash.')) });
     }
 
     const sessionToken = authorization.split(' ')[1];
     if (!sessionToken) {
-      return res.status(401).json({ error: getErrorMessage(new Error('Missing session token.')) });
+      return res.status(401).json({ error: getErrorMessage(new Error('Missing session token. Please reconnect to Handcash.')) });
     }
 
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      return res.status(401).json({ error: getErrorMessage(new Error('Expired authorization.')) });
+      return res.status(401).json({ error: getErrorMessage(new Error('Expired authorization. Please reconnect to Handcash.')) });
     }
 
     const paymentAmount = requesttype === 'image' ? process.env.IMAGE_AMOUNT : process.env.CHAT_AMOUNT;
@@ -41,7 +41,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error(error);
     const errorMessage = getErrorMessage(error);
-    // Determine the status code based on the error type or default to 500
     const statusCode = error.statusCode || error.status || 500;
     return res.status(statusCode).json({ status: 'error', error: errorMessage });
   }

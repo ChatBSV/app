@@ -26,7 +26,6 @@ export function getSessionProps({query, req}) {
     const sessionToken = sessionTokenFromCookie;
     const redirectionUrl = new HandCashService().getRedirectionUrl();
     
-    // Check if session token is valid
     let decodedSession = null;
     let validToken = false;
     if (sessionToken) {

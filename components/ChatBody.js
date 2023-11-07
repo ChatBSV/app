@@ -1,4 +1,4 @@
-// filepath: components/ChatBody.js
+// components/ChatBody.js
 
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
@@ -55,7 +55,7 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
         {/* Displaying the dynamic error message */}
         {isError && errorMessage && (
           <ChatMessage
-            content={errorMessage} // Display the error message
+            content={errorMessage}
             role="error"
             className={styles.errorMessage}
           />

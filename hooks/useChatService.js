@@ -14,7 +14,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
-      // Filter out error messages from the stored chat
       const filteredChat = JSON.parse(storedChat).filter(message => message.role !== 'error');
       setChat(filteredChat);
     }
@@ -23,7 +22,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   const addMessageToChat = useCallback((message) => {
     setChat((prevChat) => {
       const updatedChat = [...prevChat, message];
-      // Save to local storage without error messages
       const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
       localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
       return updatedChat;
@@ -65,9 +63,9 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
         id: nanoid(),
         role: 'error',
         content: errorText,
-        txid: '', // Errors may not have a transaction ID
+        txid: '',
       });
-      return null; // Return null to indicate an error occurred
+      return null;
     } finally {
       setIsLoading(false);
     }
@@ -85,13 +83,9 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       txid: txid,
     };
 
-    // Immediately add the new user message to the chat state
     addMessageToChat(newUserMessage);
 
-    // Use a temporary updated chat array to ensure the latest chat is used
-    const tempUpdatedChat = [...chat, newUserMessage];
-
-    const chatReply = await getChatReply(userMessage, tempUpdatedChat, requestType);
+    const chatReply = await getChatReply(userMessage, chat, requestType);
     if (chatReply) {
       const newMessage = {
         id: nanoid(),
@@ -101,7 +95,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
         txid: txid,
       };
 
-      // Add the new message from the assistant or image to the chat state
       addMessageToChat(newMessage);
     }
 

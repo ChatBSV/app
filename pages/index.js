@@ -16,7 +16,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const {
     isLoading,
     chat,
-    addMessageToChat, // We assume this function is now provided by useChatService
+    addMessageToChat,
     handleSubmit
   } = useChatService({ tokens, redirectionUrl, sessionToken, user });
 
@@ -36,7 +36,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
         handleSubmit={handleSubmit} 
         sessionToken={sessionToken} 
         redirectionUrl={redirectionUrl} 
-        addMessageToChat={addMessageToChat} // Pass the function to ChatInput
+        addMessageToChat={addMessageToChat}
       />
     </div>
   );
