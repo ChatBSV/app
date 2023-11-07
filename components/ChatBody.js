@@ -26,10 +26,10 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
           className={styles.introMessage}
         />
         <ChatMessage
-          content={`Type /imagine to generate an image with DALLE, or type anything else to chat with GPT-4.
+          content={`Type /imagine to generate an image with DALLE, or type anything else to chat with OpenAI.
           
-          <span style="font-size:13px; font-weight:500;">GPT 4, $0.05 / Message</span>
-          <span style="font-size:13px; font-weight:500;">DALL-E, 1024x1024, $0.1 / Image</span>`}
+          <span style="font-size:13px; font-weight:500;">GPT 3.5 Turbo, $0.01 per Message</span>
+          <span style="font-size:13px; font-weight:500;">DALL-E, 512x512, $0.05 per Image</span>`}
           role="intro"
           className={styles.introMessage}
         />

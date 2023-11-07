@@ -9,7 +9,7 @@
     
     line-height: 22px;
     
-    background-color: #333;
+    background-color: #fcfcfc;
     border-radius: 8px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -21,8 +21,8 @@
 }
 
 .chatMessage.userMessage {
-    color: #ccc;
-    background-color: #111;
+    color: #333;
+    background-color: #fff;
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
@@ -52,7 +52,7 @@
   }
 
   .chatLink {
-    border-top: 1px solid #111;
+    border-top: 1px solid #ddd;
     padding-top: 6px;
     margin-top: 12px;
     display: flex;
@@ -87,7 +87,6 @@
     width: 12px;
     margin-right: 4px;
     opacity: 67%;
-    filter: invert(100%);
   }
   
 

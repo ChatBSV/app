@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export async function handleDalleRequest(reqBody) {
-  let { prompt = "a scenic view of a mountain", format = "1024x1024" } = reqBody;
+  let { prompt = "a scenic view of a mountain", format = "512x512" } = reqBody;
   
   console.log('Entered handleDalleRequest with:', { prompt, format });
 
