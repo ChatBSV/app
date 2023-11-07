@@ -13,15 +13,15 @@ export default async function handler(req, res) {
   try {
     const { authorization, requesttype } = req.headers;
     
-    const sessionToken = authorization.split(' ')[1];
+    const sessionToken = authorization?.split(' ')[1];
     if (!sessionToken) {
-      return res.status(401).json({ error: 'Missing authorization.' });
+      throw new Error('Missing authorization.'); // Throw an error to be caught below
     }
 
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      return res.status(401).json({ error: 'Expired authorization.' });
+      throw new Error('Expired authorization.'); // Throw an error to be caught below
     }
 
     const paymentAmount = requesttype === 'image' ? process.env.IMAGE_AMOUNT : process.env.CHAT_AMOUNT;
@@ -36,6 +36,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ status: 'sent', transactionId: paymentResult.transactionId });
   } catch (error) {
     const errorMessage = getErrorMessage(error);
-    return res.status(400).json({ status: 'error', error: errorMessage });
+    res.status(error.status || 500).json({ status: 'error', error: errorMessage });
   }
 }
