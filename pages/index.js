@@ -1,6 +1,6 @@
 // pages/index.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ChatBody from '../components/ChatBody';
 import ChatInput from '../components/ChatInput';
 import Header from '../components/Header';
@@ -15,10 +15,8 @@ export const getServerSideProps = getSessionProps;
 function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   const {
     isLoading,
-    isError,
-    errorMessage,
     chat,
-    txid,
+    addMessageToChat, // We assume this function is now provided by useChatService
     handleSubmit
   } = useChatService({ tokens, redirectionUrl, sessionToken, user });
 
@@ -32,8 +30,14 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     <div className="viewport">
       <MetaHead />
       <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />
-      <ChatBody chat={chat} isLoading={isLoading} isError={isError} errorMessage={errorMessage} />
-      <ChatInput resetChat={resetChat} handleSubmit={handleSubmit} sessionToken={sessionToken} redirectionUrl={redirectionUrl} />
+      <ChatBody chat={chat} isLoading={isLoading} />
+      <ChatInput 
+        resetChat={resetChat} 
+        handleSubmit={handleSubmit} 
+        sessionToken={sessionToken} 
+        redirectionUrl={redirectionUrl} 
+        addMessageToChat={addMessageToChat} // Pass the function to ChatInput
+      />
     </div>
   );
 }
