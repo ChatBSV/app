@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
+import { nanoid } from 'nanoid'; 
 
 const handleTextareaChange = (e) => {
   const textarea = e.target;
@@ -17,11 +18,10 @@ const onDisconnect = async () => {
   window.location.href = "/";
 };
 
-const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) => {
+const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
-  
-  const [paymentResult, setPaymentResult] = useState({status: 'none'});
+  const [paymentResult, setPaymentResult] = useState({ status: 'none' });
   const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
@@ -38,16 +38,11 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
     const prompt = inputRef.current.value.trim();
     if (prompt) {
       const storedTxid = localStorage.getItem('txid');
-      const isDalle = prompt.toLowerCase().startsWith('/imagine');
-      await handleSubmit(prompt, storedTxid, isDalle, isDalle ? 'image' : 'text');
-      inputRef.current.value = '';
-    }
-  };
+      const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
 
-  const handleKeyDown = async (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      await pay();
+      await handleSubmit(prompt, storedTxid, requestType);
+      inputRef.current.value = '';
+      setPaymentResult({ status: 'none' });
     }
   };
 
@@ -59,41 +54,67 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat }) =>
 
     localStorage.removeItem('txid');
     const prompt = inputRef.current.value.trim();
-    const isDalle = prompt.toLowerCase().startsWith('/imagine');
+    const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
     
     const headers = new Headers({
       'Authorization': `Bearer ${sessionToken}`,
-      'requesttype': isDalle ? 'image' : 'text'
+      'Content-Type': 'application/json',
+      'requesttype': requestType
     });
-
-    setPaymentResult({status: 'pending'});
+  
+    setPaymentResult({ status: 'pending' });
     try {
       const response = await fetch('/api/pay', { method: "POST", headers });
+      if (!response.ok) {
+        const errorResult = await response.json();
+        setPaymentResult({ status: 'error', message: errorResult.error });
+        
+        addMessageToChat({
+          id: nanoid(),
+          role: 'error',
+          content: errorResult.error || "An unexpected error occurred.",
+          txid: '',
+        });
+        return;
+      }
+  
       const paymentResult = await response.json();
       if (paymentResult.status === 'sent') {
         localStorage.setItem('txid', paymentResult.transactionId);
         setTxid(paymentResult.transactionId);
-        await handleFormSubmit(new Event('submit'), paymentResult.requesttype);
+        handleFormSubmit(new Event('submit'));
       }
       setPaymentResult(paymentResult);
     } catch (error) {
-      localStorage.removeItem('txid');
-      setPaymentResult({ status: 'failed' });
+      const errorMessage = error.message || "An unexpected network error occurred.";
+      setPaymentResult({ status: 'error', message: errorMessage });
+      
+      addMessageToChat({
+        id: nanoid(),
+        role: 'error',
+        content: errorMessage,
+        txid: '',
+      });
     }
   };
 
   return (
     <div className={styles.chatFooter}>
       <form onSubmit={handleFormSubmit} className={styles.inputForm}>
-          <textarea
-          onKeyDown={handleKeyDown}
+        <textarea
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              pay();
+            }
+          }}
           className={styles.inputField}
           placeholder="Enter your prompt or /imagine"
           ref={inputRef}
           onChange={handleTextareaChange}
         ></textarea>
         <div className={styles.mbWrapper}>
-        { isConnected && <button className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button> }
+          {isConnected && <button className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button>}
           <ButtonIcon
             icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
             text={buttonText()}

@@ -4,10 +4,10 @@
   align-items: center;
   padding: 10px 5vw 20px;
   display: flex;
-  box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
   flex-shrink: 0; 
   flex-wrap: wrap;
   z-index: 10;
+  border-top: 2px solid #000;
 }
 
 .inputForm {
@@ -21,10 +21,10 @@
   min-height: 46px;
   font-size: 16px;
   box-shadow: none;
-  color: #555;
+  color: #fff;
   font-weight: 500;
-  background-color: #fcfcfc;
-  border: 2px solid #dadada;
+  background-color: #111;
+  border: 2px solid #333;
   border-radius: 5px;
   padding: 8px 16px;
   margin-right: 8px;
@@ -39,13 +39,13 @@
 .inputField:active,
 .inputField:focus,
 .inputField:focus-visible {
-  border-color: #37C078;
+  border-color: #444;
   box-shadow: none;
   outline: none;
 }
 
 .inputField::placeholder {
-  color: #979797;
+  color: #bbb;
 }
 
 .submit {
@@ -70,7 +70,7 @@
   transition: all 0.25s ease-in-out;
 }
 .actionButton:hover {
-  background-color: #19884d;
+  background-color: #111;
 }
 .mbWrapper {
   display: flex;
@@ -80,7 +80,7 @@
 
 .resetButtonMobile,
 .logoutButtonMobile {
-  background-color: #37C078;
+  background-color: #333;
   display: block;
 }
 

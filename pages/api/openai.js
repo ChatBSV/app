@@ -1,50 +1,39 @@
-// pages/api/openai.js
+//pages/api/openai.js
 
 import axios from 'axios';
 
-export async function handleOpenAIRequest(reqBody, reqHeaders) {
+export async function handleOpenAIRequest(prompt, history) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
-  const { prompt, history } = reqBody;
-  const { requestType } = reqHeaders;
 
-  let messages;
-
-  if (history && history.length > 0) {
-    const lastAssistantMessage = history.filter(
-      (message) => message.role === 'assistant'
-    ).pop();
-
-    if (lastAssistantMessage) {
-      messages = [
-        { role: 'assistant', content: lastAssistantMessage.content },
-        { role: 'user', content: prompt },
-      ];
-    }
+  if (!OPENAI_API_KEY) {
+    throw new Error('The OPENAI_API_KEY is not set in environment variables.');
+  }
+  
+  if (!CORE_PROMPT && (!history || history.length === 0)) {
+    throw new Error('The CORE_PROMPT is not set in environment variables and no history is provided.');
   }
 
-  if (!messages) {
-    messages = [
-      { role: 'system', content: CORE_PROMPT },
-      { role: 'user', content: prompt },
-    ];
+  if (history && !Array.isArray(history)) {
+    throw new Error('History should be an array of message objects.');
   }
 
-  const source = axios.CancelToken.source();
+  const messages = history && history.length > 0
+  ? [...history.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
+  : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
 
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: messages,
-        max_tokens: 2000,
+        max_tokens: 4000,
       },
       {
         headers: {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
-        cancelToken: source.token,
       }
     );
 
@@ -53,7 +42,7 @@ export async function handleOpenAIRequest(reqBody, reqHeaders) {
 
     return { message: assistantResponse, tokens: tokens };
   } catch (error) {
-    console.error('Error:', error);
-    throw error;
+    console.error('OpenAI Request Error:', error);
+    throw new Error(`OpenAI Request failed: ${error.response?.data?.error || error.message}`);
   }
 }

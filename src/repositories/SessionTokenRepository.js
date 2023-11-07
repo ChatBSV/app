@@ -1,3 +1,5 @@
+// src/repositories/SessionTokenRepository.js
+
 import jwt from "jsonwebtoken";
 
 const jwtSecret = process.env.jwt_secret;
@@ -9,7 +11,7 @@ export default class SessionTokenRepository {
 
     static verify(token) {
         try {
-            return jwt.verify(token, jwtSecret); // Return the decoded payload instead of just true
+            return jwt.verify(token, jwtSecret); 
         } catch(err) {
             return false;
         }

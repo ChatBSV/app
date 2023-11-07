@@ -9,12 +9,11 @@
     
     line-height: 22px;
     
-    background-color: #fcfcfc;
+    background-color: #333;
     border-radius: 8px;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 12px;
-    box-shadow: -1px -1px 3px rgba(255, 255, 255, .5), 1px 1px 3px rgba(0, 0, 0, .1);
 }
 
 .chatMessage.introMessage {
@@ -22,8 +21,8 @@
 }
 
 .chatMessage.userMessage {
-    color: #fcfcfc;
-    background-color: #37C078;
+    color: #ccc;
+    background-color: #111;
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
@@ -53,7 +52,7 @@
   }
 
   .chatLink {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #111;
     padding-top: 6px;
     margin-top: 12px;
     display: flex;
@@ -80,7 +79,7 @@
     display: flex;
     cursor: pointer;
     font-size: 14pt;
-    color: gray;
+    color: #bbb;
   }
 
   .copyIcon {
@@ -88,6 +87,7 @@
     width: 12px;
     margin-right: 4px;
     opacity: 67%;
+    filter: invert(100%);
   }
   
 
@@ -99,16 +99,13 @@
       width: 90%;
       font-size: 15px;
       line-height: 20px;
-      background-color: #fcfcfc;
       border-radius: 8px;
       margin-top: 10px;
       margin-bottom: 10px;
       padding: 12px;
-      box-shadow: -1px -1px 3px rgba(255, 255, 255, .5), 1px 1px 3px rgba(0, 0, 0, .1);
   }
 
   .chatLink {
-    border-top: 1px solid #ddd;
     padding-top: 3px;
     margin-top: 6px;
     display: flex;

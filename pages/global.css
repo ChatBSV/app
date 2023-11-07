@@ -4,19 +4,21 @@
 
 /*width*/
 ::-webkit-scrollbar {
-width:6px;
+width:10px;
+height: 10px;
 }
 /*track*/
 ::-webkit-scrollbar-track {
 background:rgba(255, 255, 255, 0);
 border-style:none;
-border-color:rgba(255, 255, 255, 0);
+border-color:#222;
 }
 /*thumb*/
 ::-webkit-scrollbar-thumb {
-background:rgb(55, 192, 120);
+background:#111;
 border-width:2px;
-border-style:none;
+border-style:solid;
+border-color:#222;
 border-radius:10px;
 }
 .chatFooter {
@@ -33,7 +35,7 @@ border-radius:10px;
    
     width: 70%;
     max-width: 1024px;
-    background-color: #fcfcfc;
+    background-color: #111;
     border-radius: 8px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -43,7 +45,7 @@ border-radius:10px;
 
 .chatMessage.userMessage {
     color: #fcfcfc;
-    background-color: #37C078;
+    background-color: #111;
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
@@ -65,8 +67,8 @@ border-radius:10px;
 
 
 .viewport {
-  color: #555;
-  background-color: #f1f1f1;
+  color: #ddd;
+  background-color: #222;
   flex-direction: column;
   font-family: Poppins, sans-serif ; 
   font-size: 16px;

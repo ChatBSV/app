@@ -2,11 +2,8 @@
 
 import { Environments, HandCashConnect } from "@handcash/handcash-connect";
 
-const appId = process.env.HANDCASH_APP_ID;  // Updated to match Vercel dashboard
-const appSecret = process.env.HANDCASH_APP_SECRET;  // Updated to match Vercel dashboard
-
-console.log("HandCashService: appId:", appId);  // Debug log
-console.log("HandCashService: appSecret:", appSecret);  // Debug log
+const appId = process.env.HANDCASH_APP_ID;
+const appSecret = process.env.HANDCASH_APP_SECRET;
 
 const handCashConnect = new HandCashConnect({
   appId: appId,
