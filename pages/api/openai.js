@@ -29,7 +29,7 @@ export async function handleOpenAIRequest(prompt, history) {
       {
         model: 'gpt-4',
         messages: messages,
-        max_tokens: 8000,
+        max_tokens: 4000,
       },
       {
         headers: {
