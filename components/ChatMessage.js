@@ -42,7 +42,7 @@ function ChatMessage({ content, role, tokens, txid }) {
       {isDalleImage ? (
         <img src={content} alt="DALL-E Generated Image" />
       ) : (
-        <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }} />
+<div dangerouslySetInnerHTML={{ __html: content ? content.replace(/\n/g, '<br />') : '' }} />
       )}
       {shouldShowWidget && !isLoadingMessage && (
         <div className={styles.chatLink}>

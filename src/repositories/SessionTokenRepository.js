@@ -1,3 +1,5 @@
+// src/repositories/SessionTokenRepository.js
+
 import jwt from "jsonwebtoken";
 
 const jwtSecret = process.env.jwt_secret;

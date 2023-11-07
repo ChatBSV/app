@@ -1,11 +1,10 @@
-// filepath/components/ChatBody.js
+// filepath: components/ChatBody.js
 
 import React, { useEffect, useRef } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
-import getErrorMessage from '../lib/getErrorMessage'; // Import the getErrorMessage function
 
-function ChatBody({ chat, isLoading, isError, error }) { // Include an error prop
+function ChatBody({ chat, isLoading, isError, errorMessage }) {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -18,20 +17,19 @@ function ChatBody({ chat, isLoading, isError, error }) { // Include an error pro
     }
   };
 
-  // Use getErrorMessage to parse the error object and get a user-friendly message
-  const errorMessage = isError ? getErrorMessage(error) : '';
-
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
         <ChatMessage
-          content={`<span style="font-weight:600;">Welcome Home, Master Bruce.`}
+          content={`<span style="font-weight:500;">Welcome Home, Master Bruce.`}
           role="intro"
           className={styles.introMessage}
         />
         <ChatMessage
-          content={`<span style="font-size:13px; font-weight:600;">GPT 4, $0.05 / Message</span>
-          <span style="font-size:13px; font-weight:600;">DALL-E, 1024x1024, $0.1 / Image</span>`}
+          content={`Type /imagine to generate an image with DALLE, or type anything else to chat with GPT-4.
+          
+          <span style="font-size:13px; font-weight:500;">GPT 4, $0.05 / Message</span>
+          <span style="font-size:13px; font-weight:500;">DALL-E, 1024x1024, $0.1 / Image</span>`}
           role="intro"
           className={styles.introMessage}
         />
@@ -55,12 +53,12 @@ function ChatBody({ chat, isLoading, isError, error }) { // Include an error pro
         )}
 
         {/* Displaying the dynamic error message */}
-        {isError && (
-        <ChatMessage
-          content={errorMessage} // Assume error is already a string
-          role="error"
-          className={styles.errorMessage}
-        />
+        {isError && errorMessage && (
+          <ChatMessage
+            content={errorMessage} // Display the error message
+            role="error"
+            className={styles.errorMessage}
+          />
         )}
   
         <div className={styles.spacer}></div>

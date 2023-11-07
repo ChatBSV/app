@@ -1,3 +1,5 @@
+// src/repositories/AuthTokenRepository.js
+
 import SData from 'simple-data-storage';
 
 export default class AuthTokenRepository {

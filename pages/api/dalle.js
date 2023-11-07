@@ -6,9 +6,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export async function handleDalleRequest(reqBody) {
-  const { prompt = "a scenic view of a mountain", format = "512x512" } = reqBody;
+  let { prompt = "a scenic view of a mountain", format = "256x256" } = reqBody;
   
   console.log('Entered handleDalleRequest with:', { prompt, format });
+
+  prompt = prompt.replace(/\/imagine\s*/i, '');
 
   const validFormats = ["256x256", "512x512", "1024x1024"];
   
