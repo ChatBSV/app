@@ -59,7 +59,14 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     } catch (error) {
       console.error('Error:', error);
       setIsError(true);
-      setErrorMessage(getErrorMessage(error));
+      const errorText = getErrorMessage(error);
+      setErrorMessage(errorText);
+      addMessageToChat({
+        id: nanoid(),
+        role: 'error',
+        content: errorText,
+        txid: '', // Errors may not have a transaction ID
+      });
       return null; // Return null to indicate an error occurred
     } finally {
       setIsLoading(false);
@@ -101,7 +108,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setIsLoading(false);
   };
 
-  return { isLoading, isError, errorMessage, chat, txid, handleSubmit };
+  return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit };
 };
 
 export default useChatService;
