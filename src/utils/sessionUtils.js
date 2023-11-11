@@ -1,36 +1,30 @@
-// utils/sessionUtils.js
+// src/utils/sessionUtils.js
 
 import HandCashService from "../services/HandCashService";
 import SessionTokenRepository from "../repositories/SessionTokenRepository";
 
-export function getSessionProps({query, req}) {
+export function getSessionProps({ query, req }) {
     const cookies = req.headers.cookie || '';
     let sessionTokenFromCookie;
+    let redirectionUrl = '';
 
     try {
         sessionTokenFromCookie = cookies
             .split('; ')
             .find(row => row.startsWith('sessionToken='))
             ?.split('=')[1];
+
+        redirectionUrl = new HandCashService().getRedirectionUrl(); // Fetch redirection URL server-side
     } catch (error) {
-        console.error('Error while parsing cookies:', error);
-        return {
-            props: {
-                redirectionUrl: new HandCashService().getRedirectionUrl(),
-                sessionToken: false,
-                user: false,
-            },
-        };
+        console.error('Error while parsing cookies or fetching redirection URL:', error);
     }
-    
-    const sessionToken = sessionTokenFromCookie;
-    const redirectionUrl = new HandCashService().getRedirectionUrl();
-    
+
     let decodedSession = null;
     let validToken = false;
-    if (sessionToken) {
+
+    if (sessionTokenFromCookie) {
         try {
-            decodedSession = SessionTokenRepository.verify(sessionToken);
+            decodedSession = SessionTokenRepository.verify(sessionTokenFromCookie);
             validToken = true;
         } catch (error) {
             console.error('Invalid or expired session token:', error);
@@ -39,11 +33,11 @@ export function getSessionProps({query, req}) {
     } else {
         console.log("No session token found.");
     }
-    
+
     return {
         props: {
             redirectionUrl,
-            sessionToken: validToken ? sessionToken : false,
+            sessionToken: validToken ? sessionTokenFromCookie : false,
             user: validToken ? decodedSession.user : false,
         },
     };

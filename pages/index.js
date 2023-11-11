@@ -1,42 +1,45 @@
 // pages/index.js
 
-import React, { useEffect } from 'react';
-import ChatBody from '../components/ChatBody';
-import ChatInput from '../components/ChatInput';
-import Header from '../components/Header';
+import React, { useEffect, useState } from 'react';
+import ChatBody from '../src/components/ChatBody';
+import ChatInput from '../src/components/ChatInput';
+import Header from '../src/components/Header';
 import { getSessionProps } from '../src/utils/sessionUtils';
-import MetaHead from '../components/MetaHead';
-import { useChatService } from '../hooks/useChatService';
+import MetaHead from '../src/components/MetaHead';
+import { useChatService } from '../src/hooks/useChatService';
 import resetChat from '../src/utils/resetChat';
 import './global.css';
 
 export const getServerSideProps = getSessionProps;
 
-function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
+function IndexPage({ tokens, redirectionUrl, user }) {
+  const [initialPrompt, setInitialPrompt] = useState('');
   const {
     isLoading,
     chat,
     addMessageToChat,
     handleSubmit
-  } = useChatService({ tokens, redirectionUrl, sessionToken, user });
+  } = useChatService({ tokens, redirectionUrl, user });
 
   useEffect(() => {
-    if (window.location.search.includes('reload=true')) {
-      window.location.href = '/';
+    const urlParams = new URLSearchParams(window.location.search);
+    const prompt = urlParams.get('prompt');
+    if (prompt) {
+        setInitialPrompt(prompt);
     }
   }, []);
 
   return (
     <div className="viewport">
       <MetaHead />
-      <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />
+      <Header resetChat={resetChat} redirectionUrl={redirectionUrl} user={user} />
       <ChatBody chat={chat} isLoading={isLoading} />
       <ChatInput 
         resetChat={resetChat} 
-        handleSubmit={handleSubmit} 
-        sessionToken={sessionToken} 
+        handleSubmit={handleSubmit}
         redirectionUrl={redirectionUrl} 
         addMessageToChat={addMessageToChat}
+        initialPrompt={initialPrompt}
       />
     </div>
   );

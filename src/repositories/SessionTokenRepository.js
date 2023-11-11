@@ -2,6 +2,10 @@
 
 import jwt from "jsonwebtoken";
 
+// Ensuring that environment variables are loaded correctly
+import dotenv from 'dotenv';
+dotenv.config();
+
 const jwtSecret = process.env.jwt_secret;
 
 export default class SessionTokenRepository {
@@ -13,6 +17,7 @@ export default class SessionTokenRepository {
         try {
             return jwt.verify(token, jwtSecret); 
         } catch(err) {
+            console.error("Token verification error:", err.message); // More detailed error logging
             return false;
         }
     }

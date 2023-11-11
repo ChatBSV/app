@@ -1,4 +1,4 @@
-// components/MetaHead.js
+// src/components/MetaHead.js
 
 import Head from 'next/head';
 
