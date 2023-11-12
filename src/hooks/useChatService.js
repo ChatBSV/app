@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
-import helpContent from '../../help.json';
+import helpContent from '../../help.html';
 
 
 export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
@@ -34,6 +34,10 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
 
   const getChatReply = async (prompt, chatHistory, requestType) => {
+    const filteredChatHistory = chatHistory.filter(
+      (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
+    );
+  
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
@@ -47,7 +51,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           'Content-Type': 'application/json',
           'request-type': requestType
         },
-        body: JSON.stringify({ prompt, history: chatHistory }),
+        body: JSON.stringify({ prompt, history: filteredChatHistory }), // Use filtered history
         signal: controller.signal,
       });
 

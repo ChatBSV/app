@@ -5,7 +5,7 @@ import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
 import { handleTextareaChange, onDisconnect } from '../utils/ChatInputUtils';
 import { handleFormSubmit, pay } from '../utils/ChatInputHandlers';
-import helpContent from '../../help.json';
+import helpContent from '../../help.html';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
   const [txid, setTxid] = useState('');
@@ -16,7 +16,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
   useEffect(() => {
     setIsConnected(!!sessionToken);
   
-    // Auto-submit pending prompt after reload if conditions are met
     const pendingPromptJSON = localStorage.getItem('pendingPrompt');
     const urlParams = new URLSearchParams(window.location.search);
     const reloadParam = urlParams.get('reload');
@@ -24,13 +23,11 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     if (pendingPromptJSON && reloadParam !== 'true') {
       const pendingPrompt = JSON.parse(pendingPromptJSON);
       if (pendingPrompt && pendingPrompt.content) {
-        // Set the pending prompt content in inputRef
         inputRef.current.value = pendingPrompt.content;
   
-        // Call pay function with necessary parameters
         pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
   
-        localStorage.removeItem('pendingPrompt'); // Clean up
+        localStorage.removeItem('pendingPrompt'); 
       }
     }
   }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
@@ -40,7 +37,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
     const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
     localStorage.setItem('pendingPrompt', pendingPrompt);
-    window.location.href = `${redirectionUrl}`; // Replace with actual handshake URL
+    window.location.href = `${redirectionUrl}`; 
   };
 
   const buttonText = () => {

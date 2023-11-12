@@ -79,7 +79,7 @@ export const handleHelpRequest = (helpCommand, addMessageToChat, helpContent) =>
   addMessageToChat({
     id: nanoid(),
     role: 'help',
-    content: helpContent.message,
+    content: helpContent,
     txid: '',
   });
 };

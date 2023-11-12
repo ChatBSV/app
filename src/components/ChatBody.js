@@ -60,10 +60,7 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
           className={styles.introMessage}
         />
         <ChatMessage
-          content={`Type /imagine to generate an image with DALLE, or type anything else to chat with GPT-4.
-          
-          <span style="font-size:13px; font-weight:500;">GPT 4, $0.05 / Message</span>
-          <span style="font-size:13px; font-weight:500;">DALL-E, 1024x1024, $0.1 / Image</span>`}
+          content={'Type /imagine to generate an image with DALLE, or type anything else to chat with GPT-4.\n\n<span style="font-size:13px; font-weight:500;">GPT 4, $0.05 / Message</span>\n<span style="font-size:13px; font-weight:500;">DALL-E, 1024x1024, $0.1 / Image</span>'}
           role="intro"
           className={styles.introMessage}
         />
@@ -71,12 +68,15 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
         {chat.map((message) => {
   if (message.role === 'help') {
     // Render a special help message
+
     return (
       <ChatMessage
         key={message.id}
         content={message.content}
         role={message.role}
         // Add any other props necessary for help messages
+        dangerouslySetInnerHTML={{ __html: message.content }}
+
       />
     );
   } else {
