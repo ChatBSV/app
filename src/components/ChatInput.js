@@ -15,7 +15,33 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
 
   useEffect(() => {
     setIsConnected(!!sessionToken);
-  }, [sessionToken]);
+  
+    // Auto-submit pending prompt after reload if conditions are met
+    const pendingPromptJSON = localStorage.getItem('pendingPrompt');
+    const urlParams = new URLSearchParams(window.location.search);
+    const reloadParam = urlParams.get('reload');
+  
+    if (pendingPromptJSON && reloadParam !== 'true') {
+      const pendingPrompt = JSON.parse(pendingPromptJSON);
+      if (pendingPrompt && pendingPrompt.content) {
+        // Set the pending prompt content in inputRef
+        inputRef.current.value = pendingPrompt.content;
+  
+        // Call pay function with necessary parameters
+        pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
+  
+        localStorage.removeItem('pendingPrompt'); // Clean up
+      }
+    }
+  }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
+  
+
+  const onDisconnectedSubmit = (inputValue) => {
+    const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
+    const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
+    localStorage.setItem('pendingPrompt', pendingPrompt);
+    window.location.href = `${redirectionUrl}`; // Replace with actual handshake URL
+  };
 
   const buttonText = () => {
     if (paymentResult?.status === 'pending') return 'Sending...';
@@ -29,7 +55,12 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
           onKeyDown={(event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();
-              pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
+              const inputValue = inputRef.current.value;
+              if (!isConnected) {
+                onDisconnectedSubmit(inputValue);
+              } else {
+                pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
+              }
             }
           }}
           className={styles.inputField}
