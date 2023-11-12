@@ -28,7 +28,7 @@ export default class HandCashService {
     });
   }
 
-  getRedirectionUrl(customParams = {}) {
-    return handCashConnect.getRedirectionUrl(customParams);
+  getRedirectionUrl() {
+    return handCashConnect.getRedirectionUrl();
   }
 }

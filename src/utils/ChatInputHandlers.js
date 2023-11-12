@@ -1,8 +1,6 @@
 // src/utils/ChatInputHandlers.js
 
 import { nanoid } from 'nanoid';
-import React, { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 
 export const handleFormSubmit = async (event, prompt, storedTxid, requestType, handleSubmit, setPaymentResult, inputRef) => {
   event.preventDefault();
@@ -13,11 +11,10 @@ export const handleFormSubmit = async (event, prompt, storedTxid, requestType, h
   }
 };
 
-export const pay = async (inputRef, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit) => {
-  const { isAuthenticated, sessionToken } = useContext(AuthContext);
+export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit) => {
   const prompt = inputRef.current.value.trim();
 
-  if (!isAuthenticated) {
+  if (!isConnected) {
     window.location.href = redirectionUrl;
     return;
   }
@@ -48,14 +45,6 @@ export const pay = async (inputRef, redirectionUrl, setPaymentResult, addMessage
         content: errorResult.error || "An unexpected error occurred.",
         txid: '',
       });
-
-      // Check if the error is due to expired or invalid token
-      if (errorResult.error.includes('Expired authorization')) {
-        // Store the prompt
-        localStorage.setItem('pendingPrompt', prompt);
-        // Redirect for re-authentication
-        window.location.href = `${redirectionUrl}?prompt=${encodeURIComponent(prompt)}`;
-      }
       return;
     }
 

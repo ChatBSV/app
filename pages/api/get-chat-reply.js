@@ -16,8 +16,6 @@ export default async function handler(req, res) {
   const { prompt, history } = req.body;
   const requestType = req.headers['request-type'];
 
-
-  
   try {
     if (requestType === 'image') {
       if (!prompt) {

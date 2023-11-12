@@ -89,6 +89,8 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
         tokens={message.role === 'assistant' ? message.tokens : 0}
         txid={message.txid}
         onImageLoad={scrollToBottom} // Pass the scrollToBottom function as a prop
+        isNewMessage={message.isNew} // Assuming you have a way to set this flag
+
       />
     );
   }

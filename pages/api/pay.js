@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { authorization, requesttype, prompt } = req.headers; // Extract prompt from headers
+    const { authorization, requesttype } = req.headers;
     
     if (!authorization) {
       return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization. Please reconnect to Handcash.')) });
@@ -25,10 +25,7 @@ export default async function handler(req, res) {
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      // Construct the redirection URL with custom parameters including the prompt
-      const customParams = { state: `prompt=${encodeURIComponent(prompt)}` };
-      const handCashRedirectUrl = new HandCashService().getRedirectionUrl(customParams);
-      return res.redirect(handCashRedirectUrl);
+      return res.status(401).json({ error: getErrorMessage(new Error('Expired authorization. Please reconnect to Handcash.')) });
     }
 
     const paymentAmount = requesttype === 'image' ? process.env.IMAGE_AMOUNT : process.env.CHAT_AMOUNT;
