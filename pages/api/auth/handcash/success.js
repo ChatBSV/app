@@ -23,5 +23,5 @@ export default async function handler(req, res) {
     res.setHeader('Set-Cookie', `sessionToken=${sessionToken}; Path=/; HttpOnly; SameSite=Strict`);
 
     // Redirect to the root or a default route
-    return res.redirect('/');
+    return res.redirect('/?reload=true');
 }
