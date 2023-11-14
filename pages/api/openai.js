@@ -4,6 +4,9 @@ import axios from 'axios';
 
 export async function handleOpenAIRequest(prompt, history) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  const filteredHistory = history.filter(
+    (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
+  );
 
   if (!OPENAI_API_KEY) {
     throw new Error('The OPENAI_API_KEY is not set in environment variables.');
@@ -17,8 +20,8 @@ export async function handleOpenAIRequest(prompt, history) {
     throw new Error('History should be an array of message objects.');
   }
 
-  const messages = history && history.length > 0
-  ? [...history.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
+  const messages = filteredHistory.length > 0
+  ? [...filteredHistory.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
   : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
 
   try {

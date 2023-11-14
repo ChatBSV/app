@@ -1,4 +1,4 @@
-// helpers/cookies.js
+// src/helpers/cookies.js
 
 export function getCookieValue(name) {
     const value = `; ${document.cookie}`;

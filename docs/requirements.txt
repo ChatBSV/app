@@ -1,0 +1,75 @@
+Technical Documentation Brief
+Overview
+This project is a chat application built using Next.js, deployed on Vercel, and integrated with HandCash for payments using Bitcoin Satoshi Vision (BSV). It provides a chat interface where users can interact with GPT-4 or generate images using DALL-E, with each interaction incurring a cost.
+
+File Structure
+Pages
+pages/index.js: Main entry point of the application. Contains the chat interface layout.
+pages/api/pay.js: Handles payment processing.
+pages/api/get-chat-reply.js: Processes chat messages and image requests.
+Components
+src/components/ChatBody.js: Displays the chat messages.
+src/components/ChatInput.js: Input area for user messages.
+src/components/ChatMessage.js: Individual chat message component.
+src/components/Header.js: Top header section with user login and navigation.
+src/components/MetaHead.js: Meta information for the HTML head.
+src/components/ButtonIcon.js: A button component with an icon.
+Hooks
+src/hooks/useChatService.js: Custom hook for managing chat state and interactions.
+Utilities
+src/utils/sessionUtils.js: Utilities related to session management.
+src/utils/resetChat.js: Utility for resetting the chat.
+src/utils/ChatInputUtils.js: Utilities for handling chat input.
+src/utils/ChatInputHandlers.js: Handlers for chat input actions.
+Libraries
+src/lib/getErrorMessage.js: Library for error message handling.
+Repositories
+src/repositories/AuthTokenRepository.js: Manages authentication tokens.
+src/repositories/SessionTokenRepository.js: Manages session tokens.
+Services
+src/services/HandCashService.js: Service for handling HandCash API interactions.
+Styles
+CSS Modules for each component (e.g., src/components/ChatBody.module.css).
+Static Files
+public/: Static assets like images.
+Configurations
+.env.local or .env.production: Environment variables for configuration.
+Key Functionalities and Variables
+IndexPage (pages/index.js)
+Uses useState and useEffect for managing state and side effects.
+getSessionProps for server-side props.
+useChatService hook for chat service interactions.
+Components: MetaHead, Header, ChatBody, ChatInput.
+useChatService (src/hooks/useChatService.js)
+Manages chat state and interactions.
+Custom hook using useState, useEffect, useCallback.
+Functions: addMessageToChat, getChatReply, handleSubmit, handleHelpRequest.
+ChatInput (src/components/ChatInput.js)
+Manages user input for chat.
+useState, useRef, useEffect for state and DOM references.
+Handlers: handleButtonClick, handleFormSubmit.
+ChatMessage (src/components/ChatMessage.js)
+Displays individual chat messages.
+Handles different roles of messages: assistant, user, dalle-image, loading, intro, error.
+useState, useEffect for state and effects.
+Header (src/components/Header.js)
+User authentication and navigation.
+Functions: onDisconnect for handling user logout.
+API Handlers
+pay.js: Handles payment requests.
+get-chat-reply.js: Processes chat and image generation requests.
+Environment Variables
+IMAGE_AMOUNT, CHAT_AMOUNT, DEST, CURRENCY: Related to payment processing.
+Props
+Each component receives specific props for its functionality, like resetChat, handleSubmit, sessionToken, user, etc.
+
+Technical Requirements
+React for frontend development.
+Next.js for server-side rendering and routing.
+HandCash API integration for BSV payments.
+Environment variables for configuration.
+Deployment on Vercel.
+Handoff Notes
+The project is modular, with clear separation of concerns. Components are reusable and maintainable. Pay special attention to payment processing and error handling. The environment setup needs to be configured for HandCash API integration.
+
+This documentation is intended for a software development team familiar with React, Next.js, and server-side JavaScript development. The focus should be on understanding the flow of data through hooks, state management in React components, and integration with external APIs (HandCash and GPT-4/DALL-E).

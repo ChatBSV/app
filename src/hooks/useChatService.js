@@ -1,8 +1,10 @@
-// hooks/useChatService.js
+// src/hooks/useChatService.js
 
 import { useState, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
+import helpContent from '../../help.html';
+
 
 export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,21 +16,28 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
-      const filteredChat = JSON.parse(storedChat).filter(message => message.role !== 'error');
-      setChat(filteredChat);
+      // Load existing messages and mark them as not new
+      const existingChat = JSON.parse(storedChat).map(message => ({ ...message, isNew: false }));
+      setChat(existingChat);
     }
   }, []);
 
-  const addMessageToChat = useCallback((message) => {
+  const addMessageToChat = useCallback((message, isNew = true) => {
     setChat((prevChat) => {
-      const updatedChat = [...prevChat, message];
+      const newMessage = { ...message, isNew }; // Mark new messages with the isNew flag
+      const updatedChat = [...prevChat, newMessage];
       const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
       localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
       return updatedChat;
     });
   }, []);
 
+
   const getChatReply = async (prompt, chatHistory, requestType) => {
+    const filteredChatHistory = chatHistory.filter(
+      (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
+    );
+  
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
@@ -42,7 +51,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           'Content-Type': 'application/json',
           'request-type': requestType
         },
-        body: JSON.stringify({ prompt, history: chatHistory }),
+        body: JSON.stringify({ prompt, history: filteredChatHistory }), // Use filtered history
         signal: controller.signal,
       });
 
@@ -70,6 +79,16 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       setIsLoading(false);
     }
   };
+
+  const handleHelpRequest = useCallback((helpCommand) => {
+    // Add help message directly to the chat
+    addMessageToChat({
+      id: nanoid(),
+      role: 'help',
+      content: helpContent.message, // Assuming help.json has a message field
+      txid: ''
+    }, false);
+  }, [addMessageToChat]);
 
   const handleSubmit = async (userMessage, txid, requestType) => {
     setIsLoading(true);
@@ -101,7 +120,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setIsLoading(false);
   };
 
-  return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit };
+  return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
 };
 
 export default useChatService;

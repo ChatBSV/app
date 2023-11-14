@@ -3,21 +3,33 @@
 
 import axios from 'axios';
 import dotenv from "dotenv";
+import parseFormat from '../../src/lib/parseFormat'; 
+
 
 dotenv.config();
 
 export async function handleDalleRequest(reqBody) {
-  let { prompt = "a scenic view of a mountain", format = "512x512" } = reqBody;
+  let {
+    prompt = "a scenic view of a mountain",
+    model = "dall-e-3", // default to DALL-E 3
+    quality = "standard", // DALL-E 3 specific parameter
+    style = "vivid", // DALL-E 3 specific parameter
+    n = 1
+  } = reqBody;
   
-  console.log('Entered handleDalleRequest with:', { prompt, format });
+  const { format, newPrompt } = parseFormat(prompt);
 
+  console.log('Entered handleDalleRequest with:', { prompt, model, format, quality, style, n });
+
+  // Remove /imagine command if present in prompt
   prompt = prompt.replace(/\/imagine\s*/i, '');
 
-  const validFormats = ["256x256", "512x512", "1024x1024"];
-  
-  if (!validFormats.includes(format)) {
-    console.error("Invalid format");
-    throw new Error("Invalid format");
+  // Valid formats for DALL-E 3
+  const validFormatsDalle3 = ["1024x1024", "1792x1024", "1024x1792"];
+
+  if (model === "dall-e-3" && !validFormatsDalle3.includes(format)) {
+    console.error("Invalid format for DALL-E 3");
+    throw new Error("Invalid format for DALL-E 3");
   }
 
   const apiEndpoint = "https://api.openai.com/v1/images/generations";
@@ -26,9 +38,13 @@ export async function handleDalleRequest(reqBody) {
   try {
     console.log('About to make POST request to DALLE API.');
     const response = await axios.post(apiEndpoint, {
-      prompt,
-      n: 1,
-      size: format
+      prompt: newPrompt,
+      model,
+      n,
+      quality,
+      response_format: "url",
+      size: format,
+      style
     }, {
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -39,7 +55,6 @@ export async function handleDalleRequest(reqBody) {
     console.log('Received response from DALLE API:', response);
     
     const imageUrl = response.data.data[0].url;
-
     console.log('Generated image URL:', imageUrl);
     return { imageUrl };
   } catch (error) {
@@ -47,6 +62,7 @@ export async function handleDalleRequest(reqBody) {
     throw error;
   }
 }
+
 
 export default async (req, res) => {
   console.log("Received request with method:", req.method);
