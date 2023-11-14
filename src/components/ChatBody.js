@@ -60,10 +60,25 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
           className={styles.introMessage}
         />
         <ChatMessage
-          content={'Type /imagine to generate an image with DALLE, or type anything else to chat with GPT-4.\n\n<span style="font-size:13px; font-weight:500;">GPT 4, $0.05 / Message</span>\n<span style="font-size:13px; font-weight:500;">DALL-E, 1024x1024, $0.1 / Image</span>'}
-          role="intro"
-          className={styles.introMessage}
-        />
+  content={`Powerful AI microservices for tiny Bitcoin microtransactions.
+  
+  Commands:
+    <strong>/help</strong> to Get information.
+    <strong>[Enter]</strong> to Send.
+    <strong>[Shift+Enter]</strong> for a Line Break or to Skip a Line.
+    <strong>/imagine</strong> a description of your image.
+    <strong>/imagine</strong> prompt <strong>--format</strong> 512, 1024, (Formats for DALL-E 2).
+    <strong>/imagine</strong> prompt <strong>--format</strong> Horizontal, Vertical. (Formats for DALL-E 3).
+    
+    <span style="font-size:13px; font-weight:600;">GPT 3.5 Turbo, $0.01 / Message</span>
+    <span style="font-size:13px; font-weight:600;">GPT 4, $0.05 / Message</span>
+    <span style="font-size:13px; font-weight:600;">DALL-E 2: $0.05 per image | Default: 1024</span>
+    <span style="font-size:13px; font-weight:600;">DALL-E 3: $0.10 per image | Default: Square</span>
+
+    Connect your <strong>Handcash</strong> wallet and happy prompting.`}
+  role="intro"
+  className={styles.introMessage}
+/>
         
         {chat.map((message) => {
   if (message.role === 'help') {
