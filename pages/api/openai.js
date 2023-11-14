@@ -28,9 +28,9 @@ export async function handleOpenAIRequest(prompt, history) {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: messages,
-        max_tokens: 2000,
+        max_tokens: 4000,
       },
       {
         headers: {
