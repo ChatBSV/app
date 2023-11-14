@@ -1,4 +1,4 @@
-// components/ButtonIcon.js
+// src/components/ButtonIcon.js
 
 import React from 'react';
 import styles from './ButtonIcon.module.css';

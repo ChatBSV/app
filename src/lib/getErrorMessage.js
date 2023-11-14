@@ -1,4 +1,4 @@
-// lib/getErrorMessage.js
+// src/lib/getErrorMessage.js
 
 export default function getErrorMessage(error) {
     let errorMessage = "";

@@ -1,50 +1,45 @@
-// utils/sessionUtils.js
+// src/utils/sessionUtils.js
 
 import HandCashService from "../services/HandCashService";
 import SessionTokenRepository from "../repositories/SessionTokenRepository";
 
-export function getSessionProps({query, req}) {
+export function getSessionProps({ req }) {
     const cookies = req.headers.cookie || '';
     let sessionTokenFromCookie;
+    let redirectionUrl = '';
+    let userDecoded = null;
+
+    console.log('getSessionProps: Starting to process session props.');
 
     try {
+        // Extract the session token from the cookies
         sessionTokenFromCookie = cookies
             .split('; ')
             .find(row => row.startsWith('sessionToken='))
             ?.split('=')[1];
-    } catch (error) {
-        console.error('Error while parsing cookies:', error);
-        return {
-            props: {
-                redirectionUrl: new HandCashService().getRedirectionUrl(),
-                sessionToken: false,
-                user: false,
-            },
-        };
-    }
-    
-    const sessionToken = sessionTokenFromCookie;
-    const redirectionUrl = new HandCashService().getRedirectionUrl();
-    
-    let decodedSession = null;
-    let validToken = false;
-    if (sessionToken) {
-        try {
-            decodedSession = SessionTokenRepository.verify(sessionToken);
-            validToken = true;
-        } catch (error) {
-            console.error('Invalid or expired session token:', error);
-            validToken = false;
+        console.log('getSessionProps: Retrieved sessionTokenFromCookie:', sessionTokenFromCookie);
+
+        // Fetch redirection URL server-side
+        redirectionUrl = new HandCashService().getRedirectionUrl();
+        console.log('getSessionProps: Retrieved redirectionUrl:', redirectionUrl);
+
+        // Decode user data from the session token
+        if (sessionTokenFromCookie) {
+            userDecoded = SessionTokenRepository.decode(sessionTokenFromCookie).user;
+            console.log('getSessionProps: Decoded user from token:', userDecoded);
+        } else {
+            console.log('getSessionProps: No session token found in cookies.');
         }
-    } else {
-        console.log("No session token found.");
+    } catch (error) {
+        console.error('getSessionProps: Error:', error);
     }
-    
+
+    // Return the session token and user data as props
     return {
         props: {
             redirectionUrl,
-            sessionToken: validToken ? sessionToken : false,
-            user: validToken ? decodedSession.user : false,
+            sessionToken: sessionTokenFromCookie || null,
+            user: userDecoded || null,
         },
     };
 }

@@ -3,7 +3,7 @@
 import AuthTokenRepository from "../../src/repositories/AuthTokenRepository";
 import HandCashService from "../../src/services/HandCashService";
 import SessionTokenRepository from "../../src/repositories/SessionTokenRepository";
-import getErrorMessage from "../../lib/getErrorMessage";
+import getErrorMessage from '../../src/lib/getErrorMessage';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

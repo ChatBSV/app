@@ -1,12 +1,12 @@
 // pages/index.js
 
 import React, { useEffect } from 'react';
-import ChatBody from '../components/ChatBody';
-import ChatInput from '../components/ChatInput';
-import Header from '../components/Header';
+import ChatBody from '../src/components/ChatBody';
+import ChatInput from '../src/components/ChatInput';
+import Header from '../src/components/Header';
 import { getSessionProps } from '../src/utils/sessionUtils';
-import MetaHead from '../components/MetaHead';
-import { useChatService } from '../hooks/useChatService';
+import MetaHead from '../src/components/MetaHead';
+import { useChatService } from '../src/hooks/useChatService';
 import resetChat from '../src/utils/resetChat';
 import './global.css';
 
@@ -33,7 +33,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
       <ChatBody chat={chat} isLoading={isLoading} />
       <ChatInput 
         resetChat={resetChat} 
-        handleSubmit={handleSubmit} 
+        handleSubmit={handleSubmit}
         sessionToken={sessionToken} 
         redirectionUrl={redirectionUrl} 
         addMessageToChat={addMessageToChat}
