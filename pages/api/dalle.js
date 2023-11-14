@@ -1,35 +1,31 @@
 // pages/api/dalle.js
 
-
 import axios from 'axios';
 import dotenv from "dotenv";
 import parseFormat from '../../src/lib/parseFormat'; 
-
 
 dotenv.config();
 
 export async function handleDalleRequest(reqBody) {
   let {
     prompt = "a scenic view of a mountain",
-    model = "dall-e-3", // default to DALL-E 3
-    quality = "standard", // DALL-E 3 specific parameter
-    style = "vivid", // DALL-E 3 specific parameter
+    model = "dall-e-2", // default to DALL-E 2
     n = 1
   } = reqBody;
-  
+
   const { format, newPrompt } = parseFormat(prompt);
 
-  console.log('Entered handleDalleRequest with:', { prompt, model, format, quality, style, n });
+  console.log('Entered handleDalleRequest with:', { prompt, model, format, n });
 
   // Remove /imagine command if present in prompt
   prompt = prompt.replace(/\/imagine\s*/i, '');
 
-  // Valid formats for DALL-E 3
-  const validFormatsDalle3 = ["1024x1024", "1792x1024", "1024x1792"];
+  // Valid formats for DALL-E 2
+  const validFormatsDalle2 = ["512x512", "1024x1024"];
 
-  if (model === "dall-e-3" && !validFormatsDalle3.includes(format)) {
-    console.error("Invalid format for DALL-E 3");
-    throw new Error("Invalid format for DALL-E 3");
+  if (model === "dall-e-2" && !validFormatsDalle2.includes(format)) {
+    console.error("Invalid format for DALL-E 2");
+    throw new Error("Invalid format for DALL-E 2");
   }
 
   const apiEndpoint = "https://api.openai.com/v1/images/generations";
@@ -41,10 +37,8 @@ export async function handleDalleRequest(reqBody) {
       prompt: newPrompt,
       model,
       n,
-      quality,
       response_format: "url",
-      size: format,
-      style
+      size: format
     }, {
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -62,7 +56,6 @@ export async function handleDalleRequest(reqBody) {
     throw error;
   }
 }
-
 
 export default async (req, res) => {
   console.log("Received request with method:", req.method);
