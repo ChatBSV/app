@@ -38,6 +38,15 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
     const response = await fetch('/api/pay', { method: "POST", headers });
     if (!response.ok) {
       const errorResult = await response.json();
+      if (response.status === 401) {
+        // Handle 401 Unauthorized response by redirecting for reauthorization
+        const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
+        const pendingPrompt = JSON.stringify({ type: requestType, content: prompt });
+        localStorage.setItem('pendingPrompt', pendingPrompt);
+
+        window.location.href = redirectionUrl;
+        return;
+      }
       setPaymentResult({ status: 'error', message: errorResult.error });
       addMessageToChat({
         id: nanoid(),
