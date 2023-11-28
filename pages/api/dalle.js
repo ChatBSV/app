@@ -8,24 +8,32 @@ dotenv.config();
 
 export async function handleDalleRequest(reqBody) {
   let {
-    prompt = "a scenic view of a mountain",
-    model = "dall-e-2", // default to DALL-E 2
-    n = 1
+    prompt,
+    model = "dall-e-3", // default to DALL-E 3
+    n = 1,
+    quality = "standard",
+    response_format = "url",
+    size = "1024x1024",
+    style = "vivid",
+    user
   } = reqBody;
 
   const { format, newPrompt } = parseFormat(prompt);
 
-  console.log('Entered handleDalleRequest with:', { prompt, model, format, n });
+  console.log('Entered handleDalleRequest with:', { prompt, model, format, n, quality, style, user });
 
-  // Remove /imagine command if present in prompt
-  prompt = prompt.replace(/\/imagine\s*/i, '');
+  // Valid formats for DALL-E 3
+  const validFormatsDalle3 = ["1024x1024", "1792x1024", "1024x1792"];
 
-  // Valid formats for DALL-E 2
-  const validFormatsDalle2 = ["512x512", "1024x1024"];
+  if (model === "dall-e-3" && !validFormatsDalle3.includes(format)) {
+    console.error("Invalid format for DALL-E 3");
+    throw new Error("Invalid format for DALL-E 3");
+  }
 
-  if (model === "dall-e-2" && !validFormatsDalle2.includes(format)) {
-    console.error("Invalid format for DALL-E 2");
-    throw new Error("Invalid format for DALL-E 2");
+  // DALL-E 3 only supports n=1
+  if (model === "dall-e-3" && n !== 1) {
+    console.error("DALL-E 3 only supports generating one image at a time");
+    throw new Error("DALL-E 3 only supports generating one image at a time");
   }
 
   const apiEndpoint = "https://api.openai.com/v1/images/generations";
@@ -37,8 +45,11 @@ export async function handleDalleRequest(reqBody) {
       prompt: newPrompt,
       model,
       n,
-      response_format: "url",
-      size: format
+      quality,
+      response_format,
+      size: format,
+      style,
+      user
     }, {
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
