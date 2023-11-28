@@ -14,7 +14,7 @@ function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad })
   const [displayedContent, setDisplayedContent] = useState('');
   const [copyButtonText, setCopyButtonText] = useState('Copy');
   const [error, setError] = useState('');
-  const typingSpeed = 10; // milliseconds per character
+  const typingSpeed = 1; // milliseconds per character
 
   const handleImageLoad = () => {
     if (onImageLoad) {
