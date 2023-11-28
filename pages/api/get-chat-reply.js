@@ -2,6 +2,7 @@
 
 import { handleOpenAIRequest } from './openai';
 import { handleDalleRequest } from './dalle';
+import getErrorMessage from '../../src/lib/getErrorMessage';
 
 export const config = {
   api: {
@@ -25,19 +26,22 @@ export default async function handler(req, res) {
       res.status(200).json({ imageUrl, tokens: 10000 }); 
     } else {
       const { message, tokens } = await handleOpenAIRequest(prompt, history);
+
       res.status(200).json({ message, tokens });
     }
   } catch (error) {
     console.error('Error in get-chat-reply:', error);
 
-    if (error.response) {
-      console.error('Error response data:', error.response.data);
-      console.error('Error response status:', error.response.status);
+    // Extracting additional details from OpenAI error if available
+    let detailedErrorMessage = getErrorMessage(error);
+    if (error.response && error.response.data) {
+      console.error('OpenAI Error Response:', error.response.data);
+      detailedErrorMessage = `OpenAI Error: ${getErrorMessage(error.response.data)}`;
     }
 
     res.status(500).json({
       error: 'An error occurred during processing.',
-      details: error.response ? error.response.data : error.message,
+      details: detailedErrorMessage,
     });
   }
 }

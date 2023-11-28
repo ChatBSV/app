@@ -1,4 +1,4 @@
-//pages/api/openai.js
+// pages/api/openai.js
 
 import axios from 'axios';
 
@@ -21,8 +21,8 @@ export async function handleOpenAIRequest(prompt, history) {
   }
 
   const messages = filteredHistory.length > 0
-  ? [...filteredHistory.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
-  : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
+    ? [...filteredHistory.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
+    : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
 
   try {
     const response = await axios.post(
@@ -46,6 +46,8 @@ export async function handleOpenAIRequest(prompt, history) {
     return { message: assistantResponse, tokens: tokens };
   } catch (error) {
     console.error('OpenAI Request Error:', error);
-    throw new Error(`OpenAI Request failed: ${error.response?.data?.error || error.message}`);
+    // Extracting error message from OpenAI response
+    const errorMessage = error.response?.data?.error?.message || error.message;
+    throw new Error(`OpenAI Request failed: ${errorMessage}`);
   }
 }
