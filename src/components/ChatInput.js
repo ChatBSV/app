@@ -20,24 +20,22 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const urlParams = new URLSearchParams(window.location.search);
     const reloadParam = urlParams.get('reload');
   
-    if (pendingPromptJSON && reloadParam !== 'true') {
+    if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
       const pendingPrompt = JSON.parse(pendingPromptJSON);
       if (pendingPrompt && pendingPrompt.content) {
         inputRef.current.value = pendingPrompt.content;
-  
+        // Attempt to pay again after redirection
         pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
-  
         localStorage.removeItem('pendingPrompt'); 
       }
     }
   }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
-  
 
   const onDisconnectedSubmit = (inputValue) => {
     const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
     const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
     localStorage.setItem('pendingPrompt', pendingPrompt);
-    window.location.href = `${redirectionUrl}`; 
+    window.location.href = redirectionUrl; // Redirect to HandCash for reauthorization
   };
 
   const buttonText = () => {

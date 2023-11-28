@@ -9,7 +9,7 @@
   flex: none;
   position: relative;
   flex-shrink: 0; 
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid #ddd;
 }
 
 .resetButton {
@@ -47,7 +47,8 @@
 .logo {
   height: 44px;
   margin-top: 5px;
-  filter: brightness(1000%);
+  filter: brightness(0%);
+  opacity: 67%;
 }
 
 .loginContainer {

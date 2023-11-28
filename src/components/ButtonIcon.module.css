@@ -1,5 +1,5 @@
 .bgDarkBackground {
-  background-color: #333;
+  background-color: #777;
   border-radius: 24px;
   margin: 0;
   cursor: pointer;
@@ -7,7 +7,7 @@
 }
 
 .bgDarkBackground:hover {
-  background-color: #19884d;
+  background-color: #37C078;
 }
 
 .flexGap {

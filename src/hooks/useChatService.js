@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
 import helpContent from '../../help.html';
 
-
 export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -16,7 +15,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
-      // Load existing messages and mark them as not new
       const existingChat = JSON.parse(storedChat).map(message => ({ ...message, isNew: false }));
       setChat(existingChat);
     }
@@ -24,7 +22,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
   const addMessageToChat = useCallback((message, isNew = true) => {
     setChat((prevChat) => {
-      const newMessage = { ...message, isNew }; // Mark new messages with the isNew flag
+      const newMessage = { ...message, isNew };
       const updatedChat = [...prevChat, newMessage];
       const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
       localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
@@ -32,16 +30,38 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     });
   }, []);
 
+  const tokenizeChatHistory = async (chatHistory) => {
+    try {
+      const response = await fetch('/api/tokenizer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ chatHistory })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const { processedHistory } = await response.json();
+      // Reconstruct the array of message objects from the processed history
+      return processedHistory.split('\n').map(content => ({ role: 'user', content }));
+    } catch (error) {
+      console.error('Error in tokenizing chat history:', error);
+      throw error; // Rethrow error to be handled in the caller function
+    }
+  };
 
   const getChatReply = async (prompt, chatHistory, requestType) => {
-    const filteredChatHistory = chatHistory.filter(
-      (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
-    );
-  
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
+
     try {
+      // Tokenize and trim the chat history
+      const tokenizedHistory = await tokenizeChatHistory(chatHistory.map(m => m.content).join('\n'));
+
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 298000);
 
@@ -51,7 +71,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           'Content-Type': 'application/json',
           'request-type': requestType
         },
-        body: JSON.stringify({ prompt, history: filteredChatHistory }), // Use filtered history
+        body: JSON.stringify({ prompt, history: tokenizedHistory }),
         signal: controller.signal,
       });
 
@@ -81,11 +101,10 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   };
 
   const handleHelpRequest = useCallback((helpCommand) => {
-    // Add help message directly to the chat
     addMessageToChat({
       id: nanoid(),
       role: 'help',
-      content: helpContent.message, // Assuming help.json has a message field
+      content: helpContent.message,
       txid: ''
     }, false);
   }, [addMessageToChat]);

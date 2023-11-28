@@ -15,10 +15,10 @@ border-color:#222;
 }
 /*thumb*/
 ::-webkit-scrollbar-thumb {
-background:#111;
+background:#777;
 border-width:2px;
 border-style:solid;
-border-color:#222;
+border-color:#eee;
 border-radius:10px;
 }
 .chatFooter {
@@ -35,7 +35,7 @@ border-radius:10px;
    
     width: 70%;
     max-width: 1024px;
-    background-color: #111;
+    background-color: #fff;
     border-radius: 8px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -44,8 +44,8 @@ border-radius:10px;
 }
 
 .chatMessage.userMessage {
-    color: #fcfcfc;
-    background-color: #111;
+    color: #333;
+    background-color: #fcfcfc;
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
@@ -67,8 +67,8 @@ border-radius:10px;
 
 
 .viewport {
-  color: #ddd;
-  background-color: #222;
+  color: #333;
+  background-color: #eee;
   flex-direction: column;
   font-family: Poppins, sans-serif ; 
   font-size: 16px;
