@@ -2,6 +2,7 @@
 
 import { handleOpenAIRequest } from './openai';
 import { handleDalleRequest } from './dalle';
+import { handleMemeRequest } from './meme'; // Importing the new handleMemeRequest
 import getErrorMessage from '../../src/lib/getErrorMessage';
 
 export const config = {
@@ -18,16 +19,28 @@ export default async function handler(req, res) {
   const requestType = req.headers['request-type'];
 
   try {
-    if (requestType === 'image') {
-      if (!prompt) {
-        throw new Error('Prompt is required for image generation');
-      }
-      const { imageUrl } = await handleDalleRequest({ prompt });
-      res.status(200).json({ imageUrl, tokens: 10000 }); 
-    } else {
-      const { message, tokens } = await handleOpenAIRequest(prompt, history);
+    let imageUrl; // Declare imageUrl variable outside the switch statement
 
-      res.status(200).json({ message, tokens });
+    switch (requestType) {
+      case 'image':
+        if (!prompt) {
+          throw new Error('Prompt is required for image generation');
+        }
+        ({ imageUrl } = await handleDalleRequest({ prompt })); // Assign imageUrl using destructuring
+        res.status(200).json({ imageUrl, tokens: 10000 });
+        break;
+
+      case 'meme':
+        if (!prompt) {
+          throw new Error('Text is required for meme generation');
+        }
+        ({ imageUrl } = await handleMemeRequest({ text: prompt })); // Assign imageUrl using destructuring
+        res.status(200).json({ imageUrl });
+        break;
+
+      default:
+        const { message, tokens } = await handleOpenAIRequest(prompt, history);
+        res.status(200).json({ message, tokens });
     }
   } catch (error) {
     console.error('Error in get-chat-reply:', error);

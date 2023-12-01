@@ -32,7 +32,8 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
   }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
 
   const onDisconnectedSubmit = (inputValue) => {
-    const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
+    const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
+                         inputValue.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
     const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
     localStorage.setItem('pendingPrompt', pendingPrompt);
     window.location.href = redirectionUrl; // Redirect to HandCash for reauthorization
@@ -59,7 +60,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             }
           }}
           className={styles.inputField}
-          placeholder="Enter your prompt or /imagine"
+          placeholder="Enter your prompt or /imagine or /meme"
           ref={inputRef}
           onChange={handleTextareaChange}
         ></textarea>

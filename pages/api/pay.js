@@ -25,11 +25,20 @@ export default async function handler(req, res) {
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      // Redirect to HandCash authorization instead of returning a 401 error
       return res.status(401).json({ error: 'Expired authorization. Please reconnect to Handcash.', redirectUrl: new HandCashService().getRedirectionUrl() });
     }
 
-    const paymentAmount = requesttype === 'image' ? process.env.IMAGE_AMOUNT : process.env.CHAT_AMOUNT;
+    let paymentAmount;
+    switch (requesttype) {
+      case 'image':
+        paymentAmount = process.env.IMAGE_AMOUNT;
+        break;
+      case 'meme':
+        paymentAmount = process.env.MEME_AMOUNT; // New pricing category for memes
+        break;
+      default:
+        paymentAmount = process.env.CHAT_AMOUNT;
+    }
 
     const paymentResult = await new HandCashService(authToken).pay({
       destination: process.env.DEST,

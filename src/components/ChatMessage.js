@@ -8,6 +8,7 @@ function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad })
   const isAssistantMessage = role === 'assistant';
   const isUserMessage = role === 'user';
   const isDalleImage = role === 'dalle-image';
+  const isMemeMessage = role === 'meme'; // Adjusted to handle memes like DALL-E images
   const isLoadingMessage = role === 'loading';
   const isIntroMessage = role === 'intro';
 
@@ -42,6 +43,7 @@ function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad })
       setDisplayedContent(stringContent); // Immediate display for other cases
     }
   }, [content, isAssistantMessage, isNewMessage]);
+
   const handleCopy = async (message) => {
     try {
       await navigator.clipboard.writeText(message);
@@ -54,7 +56,7 @@ function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad })
     }
   };
 
-  const shouldShowWidget = isAssistantMessage || isDalleImage;
+  const shouldShowWidget = isAssistantMessage || isDalleImage || isMemeMessage;
 
   return (
     <div
@@ -64,12 +66,17 @@ function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad })
         isLoadingMessage ? styles.loadingMessage : ''
       } ${error ? styles.errorMessage : ''
       } ${isIntroMessage ? styles.introMessage : ''} ${
-        isDalleImage ? styles.dalleImage : ''
+        isDalleImage || isMemeMessage ? styles.imageMessage : ''
       }`}
     >
-      {isDalleImage ? (
+      {isDalleImage && (
         <img src={content} alt="DALL-E Generated Image" onLoad={handleImageLoad} />
-      ) : (
+      )}
+      {isMemeMessage && (
+        // Display meme image directly
+        <img src={content} alt="Meme Image" onLoad={handleImageLoad} />
+      )}
+      {!isDalleImage && !isMemeMessage && (
         <div dangerouslySetInnerHTML={{ __html: displayedContent ? displayedContent.replace(/\n/g, '<br />') : '' }} />
       )}
       {shouldShowWidget && !isLoadingMessage && (

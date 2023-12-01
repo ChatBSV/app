@@ -125,13 +125,30 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
     const chatReply = await getChatReply(userMessage, chat, requestType);
     if (chatReply) {
-      const newMessage = {
-        id: nanoid(),
-        role: requestType === 'image' ? 'dalle-image' : 'assistant',
-        content: requestType === 'image' ? chatReply.imageUrl : chatReply.message,
-        tokens: chatReply.tokens || 0,
-        txid: txid,
-      };
+      let newMessage;
+      if (requestType === 'meme') {
+        newMessage = {
+          id: nanoid(),
+          role: 'meme', // Adjust to 'meme' to match with ChatMessage component
+          content: chatReply.imageUrl, // Expecting a single image URL
+          txid: txid,
+        };
+      } else if (requestType === 'meme') {
+        newMessage = {
+          id: nanoid(),
+          role: 'meme-image', // New role for meme images
+          content: chatReply.memes, // Array of meme URLs
+          txid: txid,
+        };
+      } else {
+        newMessage = {
+          id: nanoid(),
+          role: 'assistant',
+          content: chatReply.message,
+          tokens: chatReply.tokens || 0,
+          txid: txid,
+        };
+      }
 
       addMessageToChat(newMessage);
     }

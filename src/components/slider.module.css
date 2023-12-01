@@ -1,0 +1,42 @@
+
+.memeSlider {
+  /* Add styles for the main slider container */
+}
+
+.sliderImages {
+  /* Styles for the container of the images */
+}
+
+.slide {
+  /* Base style for each slide */
+  display: none;
+}
+
+.activeSlide {
+  /* Style for the active slide */
+  display: block;
+}
+
+.sliderFooter {
+  /* Styles for the slider footer containing the navigation */
+}
+
+.arrowButton {
+  /* Styles for the left and right navigation buttons */
+}
+
+.slideIndicators {
+  /* Styles for the slide indicators container */
+}
+
+.slideIndicator {
+  /* Style for each slide indicator */
+}
+
+.activeIndicator {
+  /* Style for the active slide indicator */
+}
+
+.widget {
+  /* Styles for the widget displaying txid and tokens */
+}
