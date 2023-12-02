@@ -1,131 +1,70 @@
 // src/components/ChatBody.js
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 import loadingMessages from '../../loadingMessages.json';
-
+import useScrollToBottom from '../hooks/useScrollToBottom';
+import introMessage1 from '../../content/introMessage1.html';
+import introMessage2 from '../../content/introMessage2.html';
+import helpContent from '../../content/help.html'; // Ensure this path is correct
 
 function ChatBody({ chat, isLoading, isError, errorMessage }) {
-  const chatContainerRef = useRef(null);
+  const chatContainerRef = useScrollToBottom([chat]);
 
-  const scrollToBottom = () => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  const renderMessage = (message) => {
+    if (message.role === 'help') {
+      // Special handling for /help message
+      return (
+        <ChatMessage
+          key={message.id}
+          content={helpContent}
+          role="help"
+          dangerouslySetInnerHTML={{ __html: helpContent }}
+        />
+      );
+    } else {
+      // Regular chat messages
+      return (
+        <ChatMessage
+          key={message.id}
+          content={message.content}
+          role={message.role}
+          tokens={message.role === 'assistant' ? message.tokens : 0}
+          txid={message.txid}
+          onImageLoad={() => chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight}
+          isNewMessage={message.isNew}
+        />
+      );
     }
   };
 
-  useEffect(() => {
-    // Function to scroll to the bottom
-    const scrollToBottom = () => {
-      if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-      }
-    };
-
-    // Set up a Mutation Observer to watch for changes in the chat container
-    const observer = new MutationObserver(mutations => {
-      for (let mutation of mutations) {
-        if (mutation.type === 'childList' || mutation.type === 'attributes') {
-          scrollToBottom();
-          break;
-        }
-      }
-    });
-
-    if (chatContainerRef.current) {
-      observer.observe(chatContainerRef.current, { 
-        childList: true, 
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style'] // observing style changes, as image loading affects the style attribute
-      });
-    }
-
-    // Clean up the observer on component unmount
-    return () => observer.disconnect();
-  }, []);
-
-  // Get a random loading message
-  const randomLoadingMessage = isLoading
+  // Determine a random loading message
+  const randomLoadingContent = isLoading
     ? loadingMessages[Math.floor(Math.random() * loadingMessages.length)]
     : '';
 
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-        <ChatMessage
-          content={`<span style="font-weight:500;">Welcome Home, Master Bruce.`}
-          role="intro"
-          className={styles.introMessage}
-        />
-        <ChatMessage
-  content={`Powerful AI microservices for tiny Bitcoin microtransactions.
-  
-  Commands:
-    <strong>/help</strong> to Get information.
-    <strong>[Enter]</strong> to Send.
-    <strong>[Shift+Enter]</strong> for a Line Break or to Skip a Line.
-    <strong>/imagine</strong> a description of your image.
-    <strong>/imagine</strong> prompt <strong>--format</strong> 512, 1024, (Formats for DALL-E 2).
-    <strong>/imagine</strong> prompt <strong>--format</strong> Horizontal, Vertical. (Formats for DALL-E 3).
-    
-    <span style="font-size:13px; font-weight:600;">GPT 3.5 Turbo, $0.01 / Message</span>
-    <span style="font-size:13px; font-weight:600;">GPT 4, $0.05 / Message</span>
-    <span style="font-size:13px; font-weight:600;">DALL-E 2: $0.05 per image | Default: 1024</span>
-    <span style="font-size:13px; font-weight:600;">DALL-E 3: $0.10 per image | Default: Square</span>
+        <ChatMessage content={introMessage1} role="intro" />
+        <ChatMessage content={introMessage2} role="intro" />
 
-    Connect your <strong>Handcash</strong> wallet and happy prompting.`}
-  role="intro"
-  className={styles.introMessage}
-/>
-        
-        {chat.map((message) => {
-  if (message.role === 'help') {
-    // Render a special help message
+        {chat.map(renderMessage)}
 
-    return (
-      <ChatMessage
-        key={message.id}
-        content={message.content}
-        role={message.role}
-        // Add any other props necessary for help messages
-        dangerouslySetInnerHTML={{ __html: message.content }}
+        {isLoading && (
+          <ChatMessage
+            content={randomLoadingContent}
+            role="loading"
+          />
+        )}
 
-      />
-    );
-  } else {
-    // Render regular chat messages
-    return (
-      <ChatMessage
-        key={message.id}
-        content={message.content}
-        role={message.role}
-        tokens={message.role === 'assistant' ? message.tokens : 0}
-        txid={message.txid}
-        onImageLoad={scrollToBottom} // Pass the scrollToBottom function as a prop
-        isNewMessage={message.isNew} // Assuming you have a way to set this flag
-
-      />
-    );
-  }
-})}
-
-{isLoading && (
-  <ChatMessage
-    content={randomLoadingMessage}
-    role="loading"
-    className={styles.loadingMessage}
-  />
-)}
-
-{isError && errorMessage && (
-  <ChatMessage
-    content={errorMessage}
-    role="error"
-    className={styles.errorMessage}
-  />
-)}
+        {isError && errorMessage && (
+          <ChatMessage
+            content={errorMessage}
+            role="error"
+          />
+        )}
 
         <div className={styles.spacer}></div>
       </div>
@@ -134,4 +73,3 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
 }
 
 export default ChatBody;
-

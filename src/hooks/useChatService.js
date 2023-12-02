@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
-import helpContent from '../../help.html';
+import helpContent from '../../content/help.html';
 
 export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
   const [isLoading, setIsLoading] = useState(false);

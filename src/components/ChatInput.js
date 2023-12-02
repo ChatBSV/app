@@ -5,7 +5,7 @@ import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
 import { handleTextareaChange, onDisconnect } from '../utils/ChatInputUtils';
 import { handleFormSubmit, pay } from '../utils/ChatInputHandlers';
-import helpContent from '../../help.html';
+import helpContent from '../../content/help.html';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
   const [txid, setTxid] = useState('');
