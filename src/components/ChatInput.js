@@ -20,7 +20,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
   
   useEffect(() => {
     setIsConnected(!!sessionToken);
-    console.log('useEffect currentThreadId:', currentThreadId);
+    // console.log('useEffect currentThreadId:', currentThreadId);
 
     const storedThreadId = localStorage.getItem('currentThreadId');
     if (storedThreadId) {
@@ -33,9 +33,10 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
 
     if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
       const pendingPrompt = JSON.parse(pendingPromptJSON);
-      if (pendingPrompt && pendingPrompt.content && storedThreadId) {
+      if (pendingPrompt && pendingPrompt.content && currentThreadId) {
         inputRef.current.value = pendingPrompt.content;
-        submitPrompt(pendingPrompt.content, storedThreadId);
+        // console.log('pendingPrompt:', pendingPrompt);
+        submitPrompt(pendingPrompt.content, currentThreadId);
         localStorage.removeItem('pendingPrompt');
       }
     }
