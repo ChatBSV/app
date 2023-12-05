@@ -113,19 +113,23 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
+
     const selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
+    const selectedDalleModel = localStorage.getItem('selectedDalleModel') || 'dall-e-3';
 
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       content: userMessage,
       txid: txid,
-      model: selectedModel,
+      model: requestType === 'image' ? selectedDalleModel : (requestType === 'meme' ? 'meme' : selectedModel),
     };
 
     addMessageToChat(newUserMessage);
 
-    const chatReply = await getChatReply(userMessage, chat, requestType, selectedModel);
+    const chatReply = await getChatReply(userMessage, chat, requestType, 
+      requestType === 'image' ? selectedDalleModel : selectedModel);
+
     if (chatReply) {
       let newMessage;
       if (requestType === 'image') {
@@ -134,6 +138,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           role: 'dalle-image',
           content: chatReply.imageUrl,
           txid: txid,
+          model: selectedDalleModel, // Store the DALL-E model used for this reply
         };
       } else if (requestType === 'meme') {
         newMessage = {
@@ -141,6 +146,8 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           role: 'meme-image', // Adjust role for meme images
           content: chatReply.imageUrl, // Assuming meme response also has an imageUrl
           txid: txid,
+          model: 'meme'
+
         };
       } else {
         newMessage = {
@@ -150,7 +157,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           tokens: chatReply.tokens || 0,
           txid: txid,
           model: selectedModel, // Store the model used for this reply
-
         };
       }
 

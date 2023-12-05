@@ -2,7 +2,8 @@
 
 import { handleOpenAIRequest } from './openai';
 import { handleDalleRequest } from './dalle';
-import { handleMemeRequest } from './meme'; // Importing the new handleMemeRequest
+import { handleDalle2Request } from './dalle2'; // Import handler for DALL-E 2
+import { handleMemeRequest } from './meme';
 import getErrorMessage from '../../src/lib/getErrorMessage';
 
 export const config = {
@@ -15,44 +16,52 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  const { prompt, history, model } = req.body; // Include model in destructuring
+  const { prompt, history } = req.body;
   const requestType = req.headers['request-type'];
-
+  const selectedModel = req.body.model || 'gpt-3.5-turbo'; // Default to GPT
+  const selectedDalleModel = req.body.model || 'dall-e-3'; // Default to DALL-E 3
+  let imageUrl = ''; // Declare imageUrl here
 
   try {
-    let imageUrl; // Declare imageUrl variable outside the switch statement
-
     switch (requestType) {
       case 'image':
         if (!prompt) {
           throw new Error('Prompt is required for image generation');
         }
-        ({ imageUrl } = await handleDalleRequest({ prompt })); // Assign imageUrl using destructuring
-        res.status(200).json({ imageUrl, tokens: 10000 });
+
+        if (selectedModel === 'dall-e-2') {
+          // Route to DALL-E 2 handler
+          const result = await handleDalle2Request({ prompt, model: selectedModel });
+          imageUrl = result.imageUrl;
+        } else {
+          // Route to DALL-E 3 handler
+          const result = await handleDalleRequest({ prompt, model: selectedModel });
+          imageUrl = result.imageUrl;
+        }
+        res.status(200).json({ imageUrl, tokens: 10000, model: selectedModel });
         break;
 
       case 'meme':
         if (!prompt) {
           throw new Error('Text is required for meme generation');
         }
-        ({ imageUrl } = await handleMemeRequest({ text: prompt })); // Assign imageUrl using destructuring
-        res.status(200).json({ imageUrl });
+        const memeResult = await handleMemeRequest({ text: prompt });
+        imageUrl = memeResult.imageUrl;
+        res.status(200).json({ imageUrl, model: selectedModel });
         break;
 
       default:
-        const { message, tokens } = await handleOpenAIRequest(prompt, history, model); 
-        res.status(200).json({ message, tokens });
+        // Handle GPT requests
+        const { message, tokens } = await handleOpenAIRequest(prompt, history);
+        res.status(200).json({ message, tokens, model: selectedModel });
+        break;
     }
   } catch (error) {
     console.error('Error in get-chat-reply:', error);
-
-    // Extracting additional details from OpenAI error if available
     let detailedErrorMessage = getErrorMessage(error);
     if (error.response && error.response.data) {
-      console.error('OpenAI Error Response:', error.response.data);
       detailedErrorMessage = `OpenAI Error: ${getErrorMessage(error.response.data)}`;
     }
-
     res.status(500).json({
       error: 'An error occurred during processing.',
       details: detailedErrorMessage,

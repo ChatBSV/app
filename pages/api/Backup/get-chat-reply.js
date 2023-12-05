@@ -2,6 +2,7 @@
 
 import { handleOpenAIRequest } from './openai';
 import { handleDalleRequest } from './dalle';
+import { handleDalleRequest } from './dalle2';
 import { handleMemeRequest } from './meme'; // Importing the new handleMemeRequest
 import getErrorMessage from '../../src/lib/getErrorMessage';
 
