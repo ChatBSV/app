@@ -130,3 +130,77 @@ This utility function is used to parse and extract image format information from
 It handles various format specifications, including dimension specifications, aspect ratio specifications, and descriptive formats.
 Additional Notes
 Please refer to the consolidated instructions for a comprehensive understanding of the project structure, components, functionalities, and files. If you need further details or assistance with any specific part of the project, feel free to ask for clarification or guidance.
+
+ChatBSV
+├── app
+│   ├── globals.css
+│   └── layout.js
+├── content
+│   ├── help.html
+│   ├── loadingMessages.json
+│   ├── IntroMessage1.html
+│   └── IntroMessage2.html
+├── pages
+│   ├── globals.css
+│   ├── index.js
+│   ├── privacypolicy.js
+│   └── api
+│       ├── auth
+│       │   └── handcash/success
+│       ├── Backup
+│       ├── dale.js
+│       ├── get-chat-reply.js
+│       ├── logout.js
+│       ├── meme.js
+│       ├── openai.js
+│       ├── pay.js
+│       └── tokenizer.js
+└── src
+    ├── components
+    │   ├── AssistantMessage.js
+    │   ├── ButtonIcon.js
+    │   ├── ButtonIcon.module.css
+    │   ├── ChatBody.js
+    │   ├── ChatBody.module.css
+    │   ├── ChatInput.js
+    │   ├── ChatInput.module.css
+    │   ├── ChatInputForm.js
+    │   ├── ChatMessage.js
+    │   ├── ChatMessage.module.css
+    │   ├── CopyButton.js
+    │   ├── DalleImageMessage.js
+    │   ├── ErrorMessage.js
+    │   ├── Header.js
+    │   ├── Header.module.css
+    │   ├── HelpMessage.js
+    │   ├── IntroMessage.js
+    │   ├── LoadingMessage.js
+    │   ├── MemeImageMessage.js
+    │   ├── MessageWidget.js
+    │   ├── MetaHead.js
+    │   ├── ShareButton.js
+    │   ├── TokenDisplay.js
+    │   ├── TxIdLink.js
+    │   └── UserMessage.js
+    ├── hooks
+    │   ├── ChatStorage.js
+    │   ├── ChatTokenizer.js
+    │   ├── FetchChatReply.js
+    │   ├── HandleHelpRequest.js
+    │   ├── HandleSubmit.js
+    │   ├── useChatService.js
+    │   └── useScrollToBottom.js
+    ├── lib
+    │   ├── cookies.js
+    │   ├── getErrorMessage.js
+    │   └── parseFormat.js
+    ├── repositories
+    │   ├── AuthTokenRepository.js
+    │   └── SessionTokenRepository.js
+    ├── services
+    │   └── HandCashService.js
+    └── utils
+        ├── ChatInputHandlers.js
+        ├── ChatInputUtils.js
+        ├── resetChat.js
+        └── sessionUtils.js

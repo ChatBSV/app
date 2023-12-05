@@ -9,20 +9,30 @@ import CopyButton from './CopyButton';
 function AssistantMessage({ content, txid, tokens, isNewMessage }) {
   const [displayedContent, setDisplayedContent] = useState('');
   const [copyButtonText, setCopyButtonText] = useState('Copy');
-  const typingSpeed = 1; // milliseconds per character
+  const typingSpeed = 1;
 
   useEffect(() => {
     let index = 0;
-    const timer = setInterval(() => {
-      if (index <= content.length) {
-        setDisplayedContent(content.substring(0, index));
-        index++;
-      } else {
+    let timer = null;
+
+    if (isNewMessage) {
+      timer = setInterval(() => {
+        if (index <= content.length) {
+          setDisplayedContent(content.substring(0, index));
+          index++;
+        } else {
+          clearInterval(timer);
+        }
+      }, typingSpeed);
+    } else {
+      setDisplayedContent(content); // Display the content directly
+    }
+
+    return () => {
+      if (timer) {
         clearInterval(timer);
       }
-    }, typingSpeed);
-
-    return () => clearInterval(timer);
+    };
   }, [content, isNewMessage]);
 
   const handleCopy = () => {
@@ -36,6 +46,8 @@ function AssistantMessage({ content, txid, tokens, isNewMessage }) {
 
   return (
     <div className={`${styles.chatMessage} ${styles.assistantMessage}`}>
+          <img src="https://pbs.twimg.com/profile_images/1721917992211025920/XMhpGxfg_400x400.jpg" alt="" className="message-avatar"/>
+
       <div dangerouslySetInnerHTML={{ __html: displayedContent.replace(/\n/g, '<br />') }} />
       <div className={styles.chatLink}>
         <TxidLink txid={txid} />

@@ -4,13 +4,15 @@
     justify-content: flex-end;
     padding: 5vw;
     display: flex;
-    overflow: auto;
+    overflow-y: auto;
     max-height: 100%;
+    max-width: 100%;
 }
 .chatContainer {
     min-height: 100px;
     display: flex;
     flex-direction: column;
+    max-width: 90%;
 }
 .spacer {
     height: 20px;

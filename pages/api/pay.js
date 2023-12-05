@@ -1,5 +1,13 @@
 // pages/api/pay.js
 
+/**
+ * Handles the payment request.
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves when the payment request is handled.
+ */
+
 import AuthTokenRepository from "../../src/repositories/AuthTokenRepository";
 import HandCashService from "../../src/services/HandCashService";
 import SessionTokenRepository from "../../src/repositories/SessionTokenRepository";

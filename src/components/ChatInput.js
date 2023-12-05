@@ -1,42 +1,84 @@
-// components/ChatInput.js
+// src/components/ChatInput.js
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
-import ButtonIcon from './ButtonIcon';
-import { handleTextareaChange, onDisconnect } from '../utils/ChatInputUtils';
 import { handleFormSubmit, pay } from '../utils/ChatInputHandlers';
+import ChatInputForm from './ChatInputForm';
 import helpContent from '../../content/help.html';
 
-const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
+const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToChat, user, threads, setCurrentThread, clearThreadMessages }) => {
   const [txid, setTxid] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({ status: 'none' });
   const [isConnected, setIsConnected] = useState(true);
+  const currentThreadId = typeof window !== 'undefined' ? localStorage.getItem('currentThreadId') : null; 
 
   useEffect(() => {
     setIsConnected(!!sessionToken);
-  
+
     const pendingPromptJSON = localStorage.getItem('pendingPrompt');
     const urlParams = new URLSearchParams(window.location.search);
     const reloadParam = urlParams.get('reload');
-  
+
     if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
       const pendingPrompt = JSON.parse(pendingPromptJSON);
       if (pendingPrompt && pendingPrompt.content) {
         inputRef.current.value = pendingPrompt.content;
-        // Attempt to pay again after redirection
-        pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
-        localStorage.removeItem('pendingPrompt'); 
+        submitPrompt(pendingPrompt.content, currentThreadId);
+        localStorage.removeItem('pendingPrompt');
       }
     }
-  }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
 
-  const onDisconnectedSubmit = (inputValue) => {
-    const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
-                         inputValue.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
-    const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
-    localStorage.setItem('pendingPrompt', pendingPrompt);
-    window.location.href = redirectionUrl; // Redirect to HandCash for reauthorization
+    console.log('Threads:', threads);
+    console.log('Current Thread ID:', currentThreadId);
+  }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit, threads, setCurrentThread, currentThreadId]);
+
+  const submitPrompt = async (inputValue, currentThreadId) => {
+    console.log('Received currentThreadId in submitPrompt:', currentThreadId);
+
+    if (!isConnected || paymentResult.status === 'error') {
+      const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' :
+        inputValue.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
+
+      if (requestType === 'text' || requestType === 'image' || requestType === 'meme' ) {
+        const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue, currentThreadId: currentThreadId });
+        localStorage.setItem('pendingPrompt', pendingPrompt);
+      }
+
+      window.location.href = redirectionUrl;
+    } else {
+      const threadIdToUse = currentThreadId;
+      const paymentResponse = await pay(
+        inputRef,
+        isConnected,
+        redirectionUrl,
+        sessionToken,
+        setPaymentResult,
+        addMessageToChat,
+        helpContent,
+        setTxid,
+        handleSubmit,
+        threadIdToUse,
+        currentThreadId 
+      );
+
+      if (paymentResponse && paymentResponse.status === 'sent' && currentThreadId) {
+        const thread = threads.find((thread) => thread.id === currentThreadId);
+        if (thread && thread.messages && Array.isArray(thread.messages)) {
+          const updatedMessages = [...thread.messages, paymentResponse.reply];
+          const updatedThreads = threads.map((t) =>
+            t.id === currentThreadId ? { ...t, messages: updatedMessages } : t
+          );
+          setCurrentThread({ ...thread, messages: updatedMessages });
+          localStorage.setItem('threads', JSON.stringify(updatedThreads));
+        } else {
+          console.error('Current thread is not set or currentThread.messages is not iterable');
+        }
+      }
+
+      localStorage.removeItem('pendingPrompt');
+    }
   };
 
   const buttonText = () => {
@@ -44,36 +86,25 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     return isConnected ? 'Send' : 'Connect';
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      submitPrompt(inputRef.current.value, currentThreadId); 
+    }
+  };
+
   return (
     <div className={styles.chatFooter}>
-      <form onSubmit={(event) => handleFormSubmit(event, inputRef, handleSubmit, setPaymentResult)} className={styles.inputForm}>
-        <textarea
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' && !event.shiftKey) {
-              event.preventDefault();
-              const inputValue = inputRef.current.value;
-              if (!isConnected) {
-                onDisconnectedSubmit(inputValue);
-              } else {
-                pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
-              }
-            }
-          }}
-          className={styles.inputField}
-          placeholder="Enter your prompt or /imagine or /meme"
-          ref={inputRef}
-          onChange={handleTextareaChange}
-        ></textarea>
-        <div className={styles.mbWrapper}>
-          {isConnected && <button className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={onDisconnect}></button>}
-          <ButtonIcon
-            icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
-            text={buttonText()}
-            onClick={paymentResult?.status === 'pending' ? null : () => pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit)}
-          />
-          <button className={`${styles.actionButton} ${styles.resetButtonMobile}`} onClick={resetChat}></button>
-        </div>
-      </form>
+      <ChatInputForm
+        isConnected={isConnected}
+        inputRef={inputRef}
+        buttonText={buttonText()}
+        handleKeyDown={handleKeyDown}
+        handleFormSubmit={(event) => handleFormSubmit(event, inputRef.current.value, handleSubmit, setPaymentResult, currentThreadId)}
+        handleButtonClick={() => submitPrompt(inputRef.current.value, currentThreadId)}
+        user={user}
+        currentThreadId={currentThreadId}
+      />
     </div>
   );
 };

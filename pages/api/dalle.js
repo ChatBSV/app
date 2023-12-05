@@ -1,5 +1,20 @@
 // pages/api/dalle.js
 
+/**
+ * Handles the DALLE request.
+ * @param {Object} reqBody - The request body.
+ * @param {string} reqBody.prompt - The prompt for generating the image.
+ * @param {string} [reqBody.model="dall-e-3"] - The model to use for generating the image. Defaults to "dall-e-3".
+ * @param {number} [reqBody.n=1] - The number of images to generate. Defaults to 1.
+ * @param {string} [reqBody.quality="standard"] - The quality of the generated image. Defaults to "standard".
+ * @param {string} [reqBody.response_format="url"] - The format of the response. Defaults to "url".
+ * @param {string} [reqBody.size="1024x1024"] - The size of the generated image. Defaults to "1024x1024".
+ * @param {string} [reqBody.style="vivid"] - The style of the generated image. Defaults to "vivid".
+ * @param {string} reqBody.user - The user making the request.
+ * @returns {Promise<Object>} - The generated image URL.
+ * @throws {Error} - If there is an error generating the image.
+ */
+
 import axios from 'axios';
 import dotenv from "dotenv";
 import parseFormat from '../../src/lib/parseFormat'; 

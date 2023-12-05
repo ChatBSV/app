@@ -1,5 +1,12 @@
 // src/utils/sessionUtils.js
 
+/**
+ * Retrieves session properties from the request object.
+ * @param {Object} options - The options object.
+ * @param {Object} options.req - The request object.
+ * @returns {Object} - The session properties.
+ */
+
 import HandCashService from "../services/HandCashService";
 import SessionTokenRepository from "../repositories/SessionTokenRepository";
 

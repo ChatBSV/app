@@ -1,20 +1,41 @@
 // src/components/ChatBody.js
 
+/**
+ * Renders the chat body component.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.user - The user object.
+ * @param {Array} props.chat - The array of chat messages.
+ * @param {boolean} props.isLoading - Indicates if the chat is currently loading.
+ * @param {boolean} props.isError - Indicates if an error occurred while loading the chat.
+ * @param {string} props.errorMessage - The error message, if any.
+ * @param {string} props.currentThreadId - The ID of the current thread.
+ * @returns {JSX.Element} The rendered chat body component.
+ */
+
 import React from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
-import loadingMessages from '../../loadingMessages.json';
 import useScrollToBottom from '../hooks/useScrollToBottom';
+import loadingMessages from '../../content/loadingMessages.json';
 import introMessage1 from '../../content/introMessage1.html';
 import introMessage2 from '../../content/introMessage2.html';
-import helpContent from '../../content/help.html'; // Ensure this path is correct
+import helpContent from '../../content/help.html';
+import { nanoid } from 'nanoid';
 
-function ChatBody({ chat, isLoading, isError, errorMessage }) {
+function ChatBody({ user, chat, isLoading, isError, errorMessage, currentThreadId }) { // Ensure currentThreadId is destructured here
   const chatContainerRef = useScrollToBottom([chat]);
+
+  const introKey1 = React.useMemo(() => `${currentThreadId}-${nanoid()}`, [currentThreadId]);
+  const introKey2 = React.useMemo(() => `${currentThreadId}-${nanoid()}`, [currentThreadId]);
+  const loadingKey = React.useMemo(() => `${currentThreadId}-${nanoid()}`, [currentThreadId]);
+  const errorKey = React.useMemo(() => `${currentThreadId}-${nanoid()}`, [currentThreadId]);
+
+
 
   const renderMessage = (message) => {
     if (message.role === 'help') {
-      // Special handling for /help message
+
       return (
         <ChatMessage
           key={message.id}
@@ -24,7 +45,7 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
         />
       );
     } else {
-      // Regular chat messages
+
       return (
         <ChatMessage
           key={message.id}
@@ -34,12 +55,13 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
           txid={message.txid}
           onImageLoad={() => chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight}
           isNewMessage={message.isNew}
+          user={user}
         />
       );
     }
   };
 
-  // Determine a random loading message
+
   const randomLoadingContent = isLoading
     ? loadingMessages[Math.floor(Math.random() * loadingMessages.length)]
     : '';
@@ -47,13 +69,14 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
   return (
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
-        <ChatMessage content={introMessage1} role="intro" />
-        <ChatMessage content={introMessage2} role="intro" />
+        <ChatMessage key={introKey1} content={introMessage1} role="intro" />
+        <ChatMessage key={introKey2} content={introMessage2} role="intro" />
 
         {chat.map(renderMessage)}
 
         {isLoading && (
           <ChatMessage
+            key={loadingKey}
             content={randomLoadingContent}
             role="loading"
           />
@@ -61,6 +84,7 @@ function ChatBody({ chat, isLoading, isError, errorMessage }) {
 
         {isError && errorMessage && (
           <ChatMessage
+            key={errorKey}
             content={errorMessage}
             role="error"
           />

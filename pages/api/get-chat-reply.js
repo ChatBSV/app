@@ -1,8 +1,21 @@
 // pages/api/get-chat-reply.js
 
+/**
+ * Handles the API request to get a chat reply.
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.prompt - The prompt for generating the chat reply.
+ * @param {string[]} req.body.history - The chat history.
+ * @param {Object} req.headers - The request headers.
+ * @param {string} req.headers['request-type'] - The type of request ('image', 'meme', or any other value).
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves when the chat reply is generated and sent as a response.
+ * @throws {Error} - If the prompt is missing or if an error occurs during processing.
+ */
+
 import { handleOpenAIRequest } from './openai';
 import { handleDalleRequest } from './dalle';
-import { handleMemeRequest } from './meme'; // Importing the new handleMemeRequest
+import { handleMemeRequest } from './meme';
 import getErrorMessage from '../../src/lib/getErrorMessage';
 
 export const config = {
@@ -19,14 +32,14 @@ export default async function handler(req, res) {
   const requestType = req.headers['request-type'];
 
   try {
-    let imageUrl; // Declare imageUrl variable outside the switch statement
+    let imageUrl;
 
     switch (requestType) {
       case 'image':
         if (!prompt) {
           throw new Error('Prompt is required for image generation');
         }
-        ({ imageUrl } = await handleDalleRequest({ prompt })); // Assign imageUrl using destructuring
+        ({ imageUrl } = await handleDalleRequest({ prompt })); 
         res.status(200).json({ imageUrl, tokens: 10000 });
         break;
 
@@ -34,7 +47,7 @@ export default async function handler(req, res) {
         if (!prompt) {
           throw new Error('Text is required for meme generation');
         }
-        ({ imageUrl } = await handleMemeRequest({ text: prompt })); // Assign imageUrl using destructuring
+        ({ imageUrl } = await handleMemeRequest({ text: prompt }));
         res.status(200).json({ imageUrl });
         break;
 
@@ -45,7 +58,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Error in get-chat-reply:', error);
 
-    // Extracting additional details from OpenAI error if available
     let detailedErrorMessage = getErrorMessage(error);
     if (error.response && error.response.data) {
       console.error('OpenAI Error Response:', error.response.data);

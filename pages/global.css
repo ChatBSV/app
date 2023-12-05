@@ -4,23 +4,245 @@
 
 /*width*/
 ::-webkit-scrollbar {
-width:10px;
-height: 10px;
+width:6px;
+height: 6px;
 }
 /*track*/
 ::-webkit-scrollbar-track {
-background:rgba(255, 255, 255, 0);
+background:#ddd;
 border-style:none;
 border-color:#222;
 }
 /*thumb*/
 ::-webkit-scrollbar-thumb {
-background:#777;
-border-width:2px;
-border-style:solid;
-border-color:#eee;
-border-radius:10px;
+background:#eee;
+border-left: #ddd 2px solid;
+border-radius:0px;
+padding-left: 2px;
 }
+
+.bgDarkBackground {
+    background-color: #eee;
+    border-radius: 24px;
+    border: #ccc 2px solid;
+    margin: 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .bgDarkBackground:hover {
+    background-color: #ddd;
+  }
+  
+  .flexGap {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 6px;
+    padding-left: 6px;
+    padding-bottom: 6px;
+    padding-right: 20px;
+    cursor: pointer;
+  }
+  
+  .inlineBlock {
+    display: inline-block;
+    border-radius: 1rem;
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.9;
+  }
+  
+  .flexCol {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+  
+  .fontBold {
+    font-weight: bold;
+    color: #777;
+    line-height: 1rem;
+  }
+  
+  .message-avatar {
+    width: 22px; /* Set the width as desired */
+    height: 22px; /* Set the height to match the width for a circle */
+    border-radius: 50%; /* This creates the round shape */
+    margin-right: 6px; /* Add some space between the avatar and the content */
+    object-fit: cover; /* This will cover the area with the image without stretching it */
+    float: left;
+
+  }
+  
+  .assistantMessage {
+    display: flex; /* Aligns the avatar and the message content horizontally */
+    align-items: center; /* Centers them vertically */
+  }
+  
+  .message-content {
+    /* Additional styling for the content */
+  }
+
+.sidebar {
+    width: 250px; /* Adjust width as needed */
+    background-color: #eee;
+    height: 100%;
+    border-right: #ddd 2px solid;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.3s;
+    flex-shrink: 0;
+}
+.sidebar.expanded {
+    width: 250px;
+}
+
+.sidebar.collapsed {
+    width: 0;
+
+    overflow: visible;
+}
+
+.toggle-button {
+    z-index: 999;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    line-height: 27px;
+    border-radius: 16px;
+    color: #aaa;
+    text-align: center;
+    border: #ddd 2px solid;
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+    /* styles for the toggle button */
+}
+.toggle-button.rotate-icon {
+    transform: rotate(000deg);
+}
+/* Other styles */
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 2px solid #ddd;
+    background-color: #eee;
+    font-weight: bold;
+    font-size: 16px;
+    min-height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.create-thread-button {
+        width: 32px;
+        height: 32px;
+        font-weight: 300;
+        font-size: 18pt;
+        color: #777;
+        margin-left: auto;
+        background-color: #eee;
+        border-radius: 20px;
+        border: #ddd solid 2px;
+        background-size: 32px;
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        transition: all 0.25s ease-in-out;
+      }
+      .create-thread-button:hover {
+        background-color: #37C078;
+      }
+
+.menu-buttons {
+    overflow-y: auto;
+    max-height: 90vh;
+    max-width: 100%;
+}
+
+.sidebar-thread {
+    padding: 15px;
+    min-width: 240px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: #ddd solid 2px;
+}
+.thread-action{
+    opacity: 25%;
+    transition: opacity 0.3s;
+}
+.thread-action:hover{
+    opacity: 100%;
+}
+.clickable-span {
+    cursor: pointer;
+    padding: 15px;
+    margin: -15px;
+    width: 160px;
+    overflow: hidden;
+}
+.sidebar-thread:hover {
+    background-color: #ddd;
+    border-bottom: #eee solid 2px;
+    border-top: #eee solid 2px;
+    margin-top: -2px;
+}
+.selected-thread {
+    padding: 15px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    border-bottom: #eee solid 2px;
+    border-top: #eee solid 2px;
+    margin-top: -2px;
+}
+
+.input-editing-thread {
+    border: none;
+    background-color: #eee;
+    max-width: 160px; /* Corrected property name and value */
+    margin: -4px;
+    outline: none;
+    -webkit-appearance: none; /* Corrected property name */
+    padding: 4px;
+    border-radius: 0px; /* Corrected property name */
+}
+
+.button-edit-thread {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.button-delete-thread {
+
+    /* Add any specific styles for delete button if needed */
+}
+
+.selected-thread {
+    background-color: #ddd; /* Corrected property name */
+    display: flex;
+    align-items: center; /* Corrected property name */
+    padding: 5px 10px;
+    border-radius: 4px; /* Corrected property name */
+}
+.main-content {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.chat-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-width: 100%;
+}
+
 .chatFooter {
     min-height: 10vh;
     justify-content: center;
@@ -34,7 +256,7 @@ border-radius:10px;
   .chatMessage {
    
     width: 70%;
-    max-width: 1024px;
+    max-width: 90%;
     background-color: #fff;
     border-radius: 8px;
     margin-top: 20px;
@@ -67,17 +289,25 @@ border-radius:10px;
 
 
 .viewport {
+  display: flex;
   color: #333;
   background-color: #eee;
-  flex-direction: column;
   font-family: Poppins, sans-serif ; 
   font-size: 16px;
   font-weight: 400;
   line-height: 22px;
   display: flex;
   position: fixed;
+  overflow: hidden;
+  max-width: 100%;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+@media screen and (max-width: 479px) {
+
+
+
 }

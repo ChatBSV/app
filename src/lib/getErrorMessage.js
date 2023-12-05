@@ -13,7 +13,7 @@ export default function getErrorMessage(error) {
             errorMessage = "An unexpected error occurred.";
         }
     } else {
-        errorMessage = "An error occurred and no additional information is available.";
+        errorMessage = "An error occurred but no additional information was provided by OpenAI. Please try again.";
     }
     return errorMessage;
 }

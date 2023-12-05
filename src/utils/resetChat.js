@@ -1,15 +1,15 @@
 // src/utils/resetChat.js
 
-const resetChat = (callback) => {
-  localStorage.removeItem('chat');
-  localStorage.removeItem('txid');
-  localStorage.removeItem('tokens');
+const resetChat = (currentThreadId, callback, clearThreadMessages) => {
+  if (currentThreadId) {
+    localStorage.removeItem(`thread_${currentThreadId}`);
+    clearThreadMessages(currentThreadId); // Ensure clearThreadMessages is correctly called
 
-  // Execute the callback function to update the state in React components
-  if (typeof callback === 'function') {
-    callback();
+    if (typeof callback === 'function') {
+      callback();
+    }
   } else {
-    // Only reload the page if no callback is provided
+    console.warn("No current thread ID provided for resetChat");
     window.location.reload();
   }
 };

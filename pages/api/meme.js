@@ -1,5 +1,12 @@
 // pages/api/meme.js
 
+/**
+ * Calls the DALL-E API to generate a meme image based on the given prompt.
+ * @param {string} prompt - The prompt for generating the meme image.
+ * @returns {Promise<string>} - The URL of the generated meme image.
+ * @throws {Error} - If there is an error calling the DALL-E API.
+ */
+
 import axios from 'axios';
 import dotenv from 'dotenv';
 import parseFormat from '../../src/lib/parseFormat';

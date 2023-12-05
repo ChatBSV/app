@@ -1,9 +1,31 @@
 // src/hooks/FetchChatReply.js
 
-import getErrorMessage from '../lib/getErrorMessage';
+/**
+ * Fetches a chat reply from the server.
+ * 
+ * @param {string} prompt - The prompt for the chat reply.
+ * @param {Array} chatHistory - The chat history.
+ * @param {string} currentThread - The current thread.
+ * @param {string} requestType - The request type.
+ * @param {function} setIsLoading - The function to set the loading state.
+ * @param {function} setIsError - The function to set the error state.
+ * @param {function} setErrorMessage - The function to set the error message.
+ * @param {function} addMessageToChat - The function to add a message to the chat.
+ * @returns {Promise} - A promise that resolves to the chat reply data or null if there was an error.
+ */
 
-export async function fetchChatReply(prompt, tokenizedHistory, requestType) {
+import getErrorMessage from '../lib/getErrorMessage';
+import { tokenizeChatHistory } from './ChatTokenizer';
+import { nanoid } from 'nanoid';
+
+export const fetchChatReply = async (prompt, chatHistory, currentThread, requestType, setIsLoading, setIsError, setErrorMessage, addMessageToChat) => {
+  setIsLoading(true);
+  setIsError(false);
+  setErrorMessage('');
+
   try {
+    const tokenizedHistory = await tokenizeChatHistory(chatHistory.map(m => m.content).join('\n'));
+
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), 298000);
 
@@ -23,9 +45,23 @@ export async function fetchChatReply(prompt, tokenizedHistory, requestType) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error('Error:', error);
-    throw new Error(getErrorMessage(error));
+    setIsError(true);
+    const errorText = getErrorMessage(error);
+    setErrorMessage(errorText);
+    addMessageToChat({
+      id: nanoid(),
+      role: 'error',
+      content: errorText,
+      txid: '',
+    });
+    return null;
+  } finally {
+    setIsLoading(false);
   }
-}
+};
+
+export default fetchChatReply;

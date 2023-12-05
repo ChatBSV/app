@@ -1,27 +1,36 @@
 // src/hooks/ChatStorage.js
 
-import { useState, useCallback } from 'react';
+/**
+ * Custom hook for managing chat storage.
+ * @param {Object} currentThread - The current chat thread.
+ * @returns {Object} - An object containing chat state and functions to update it.
+ */
 
-export function useChatStorage() {
-  const [chat, setChat] = useState([]);
+import { useState, useEffect, useCallback } from 'react';
 
-  const loadChatFromStorage = useCallback(() => {
-    const storedChat = localStorage.getItem('chat');
-    if (storedChat) {
-      const existingChat = JSON.parse(storedChat).map(message => ({ ...message, isNew: false }));
-      setChat(existingChat);
-    }
-  }, []);
+export const useChatStorage = (currentThread) => {
+    const [chat, setChat] = useState([]);
 
-  const addMessageToChat = useCallback((message, isNew = true) => {
-    setChat((prevChat) => {
-      const newMessage = { ...message, isNew };
-      const updatedChat = [...prevChat, newMessage];
-      const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
-      localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
-      return updatedChat;
-    });
-  }, []);
+    useEffect(() => {
+        if (currentThread) {
+            const storedChat = localStorage.getItem(`thread_${currentThread.id}`);
+            if (storedChat) {
+                setChat(JSON.parse(storedChat));
+            } else {
+                setChat([]);
+            }
+        }
+    }, [currentThread]);
 
-  return { chat, loadChatFromStorage, addMessageToChat };
-}
+    const addMessageToChat = useCallback((message) => {
+        setChat(prevChat => {
+            const updatedChat = [...prevChat, message];
+            if (currentThread) {
+                localStorage.setItem(`thread_${currentThread.id}`, JSON.stringify(updatedChat));
+            }
+            return updatedChat;
+        });
+    }, [currentThread]);
+
+    return { chat, setChat, addMessageToChat };
+};

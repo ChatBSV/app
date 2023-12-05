@@ -1,5 +1,13 @@
 // pages/api/openai.js
 
+/**
+ * Handles the OpenAI request by sending a prompt and history to the OpenAI API.
+ * @param {string} prompt - The user's prompt for the conversation.
+ * @param {Array} history - The conversation history.
+ * @returns {Object} - The response from the OpenAI API, including the assistant's message and token count.
+ * @throws {Error} - If the OPENAI_API_KEY is not set in environment variables, CORE_PROMPT is not set and no history is provided, or if the history is not an array of message objects.
+ */
+
 import axios from 'axios';
 
 export async function handleOpenAIRequest(prompt, history) {
@@ -28,9 +36,9 @@ export async function handleOpenAIRequest(prompt, history) {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-4',
+        model: 'gpt-3.5-turbo',
         messages: messages,
-        max_tokens: 4000,
+        max_tokens: 500,
       },
       {
         headers: {

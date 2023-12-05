@@ -1,11 +1,26 @@
 // src/hooks/HandleSubmit.js
 
 import { nanoid } from 'nanoid';
-import { fetchChatReply } from './FetchChatReply';
-import { tokenizeChatHistory } from './ChatTokenizer'; // Import the tokenizeChatHistory function
+import fetchChatReply from './FetchChatReply';
 
-export function handleSubmit(addMessageToChat, chat) {
-  return async (userMessage, txid, requestType) => {
+export const handleSubmit = (
+  currentThread, // Ensure currentThread is being passed in correctly
+  addMessageToChat,
+  setIsLoading,
+  setIsError,
+  setErrorMessage,
+  setTxid,
+  saveThreadMessages // This function will save messages to the current thread
+) => async (userMessage, txid, requestType) => {
+  setIsLoading(true);
+  setIsError(false);
+  setErrorMessage('');
+
+  // Logging currentThread details for debugging
+  console.log('Current Thread in handleSubmit:', currentThread);
+
+  // Check if there is a current thread selected before adding a new user message
+  if (currentThread && Array.isArray(currentThread.messages)) {
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -13,11 +28,12 @@ export function handleSubmit(addMessageToChat, chat) {
       txid: txid,
     };
 
+    // Add the new user message to the chat
     addMessageToChat(newUserMessage);
+    // Save the message to the current thread's messages
+    saveThreadMessages(currentThread.id, [...currentThread.messages, newUserMessage]);
 
-    const tokenizedHistory = await tokenizeChatHistory(chat.map(m => m.content).join('\n'));
-    const chatReply = await fetchChatReply(userMessage, tokenizedHistory, requestType);
-    
+    const chatReply = await fetchChatReply(userMessage, currentThread.messages, requestType, setIsLoading, setIsError, setErrorMessage, addMessageToChat);
     if (chatReply) {
       let newMessage;
       if (requestType === 'image') {
@@ -44,7 +60,18 @@ export function handleSubmit(addMessageToChat, chat) {
         };
       }
 
+      // Add the chat reply message to the chat
       addMessageToChat(newMessage);
+      // Save the chat reply message to the current thread's messages as well
+      saveThreadMessages(currentThread.id, [...currentThread.messages, newMessage]);
+      setTxid(txid);
     }
-  };
-}
+  } else {
+    // If currentThread or currentThread.messages is not defined or not an array, throw an error or handle appropriately
+    console.error('Current thread is not set or currentThread.messages is not iterable');
+  }
+
+  setIsLoading(false);
+};
+
+export default handleSubmit;

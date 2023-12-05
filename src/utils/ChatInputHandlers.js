@@ -1,5 +1,20 @@
 // src/utils/ChatInputHandlers.js
 
+/**
+ * Handles the payment process in the chat input.
+ * 
+ * @param {React.RefObject} inputRef - The reference to the input element.
+ * @param {boolean} isConnected - Indicates if the user is connected.
+ * @param {string} redirectionUrl - The URL to redirect the user if not connected.
+ * @param {string} sessionToken - The session token for authorization.
+ * @param {function} setPaymentResult - The function to set the payment result.
+ * @param {function} addMessageToChat - The function to add a message to the chat.
+ * @param {object} helpContent - The content for the help request.
+ * @param {function} setTxid - The function to set the transaction ID.
+ * @param {function} handleSubmit - The function to handle form submission.
+ * @returns {Promise<void>} - A promise that resolves when the payment process is completed.
+ */
+
 import { nanoid } from 'nanoid';
 
 export const handleFormSubmit = async (event, prompt, storedTxid, requestType, handleSubmit, setPaymentResult, inputRef) => {
@@ -42,7 +57,7 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
       if (response.status === 401) {
         // Handle 401 Unauthorized response by redirecting for reauthorization
         const pendingPrompt = JSON.stringify({ type: requestType, content: prompt });
-        localStorage.setItem('pendingPrompt', pendingPrompt);
+        localStorage.setItem('pendingPrompt', pendingPrompt, currentThreadId);
 
         window.location.href = redirectionUrl;
         return;
