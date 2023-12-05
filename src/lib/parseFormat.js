@@ -2,65 +2,68 @@
 
 function parseAspectRatio(aspectRatio, defaultFormat) {
     const aspectRatios = {
-        "1:1": "1024x1024",
-        "256": "256x256",
-        "512": "512x512",
-        "small": "512x512",
-        // Add more aspect ratios as needed
+      "1:1": "1024x1024",        // Square
+      "16:9": "1792x1024",       // Widescreen horizontal
+      "9:16": "1024x1792",       // Widescreen vertical
+      "3:2": "1792x1024",        // Classic photo horizontal
+      "2:3": "1024x1792",        // Classic photo vertical
+      "4:3": "1024x1024",        // Standard video
+      "3:4": "1024x1792",        // Standard video vertical
+      "horizontal": "1792x1024", // Generic horizontal
+      "vertical": "1024x1792",   // Generic vertical
+      "fullhd": "1792x1024",     // Full HD resolution
+      "hd": "1024x1024",         // HD resolution
+      "ultrawide": "1792x1024",  // Ultrawide monitors
+      "wide": "1792x1024",       // Generic wide
+      // Additional ratios and terms can be added here
     };
   
-    return aspectRatios[aspectRatio] || defaultFormat;
+    return aspectRatios[aspectRatio.toLowerCase()] || defaultFormat;
   }
   
   function parseSingleDimension(dimension) {
     const defaultSquare = "1024x1024";
+    const horizontalFormat = "1792x1024";
   
-    if (dimension === "512") {
-        return "512x512";
-    } else if (dimension === "1024") {
+    switch(dimension) {
+      case "512":
+      case "1024":
+        // For "512" and "1024", default to square 1024x1024
+        return defaultSquare;
+      case "1792":
+      case "1920":
+      case "1080":
+        // For "1792", "1920", and "1080", default to horizontal 1792x1024
+        return horizontalFormat;
+      default:
+        // Default to square if dimension is not recognized
         return defaultSquare;
     }
-    return defaultSquare; // Default to square if dimension is not recognized
   }
+  
   
   export default function parseFormat(prompt) {
     const defaultFormat = "1024x1024";
-    const formatRegex = /--format\s+([^\s]+)/i; 
+    const formatRegex = /--format\s+([^\s]+)/i;
     const match = prompt.match(formatRegex);
     let format = defaultFormat;
   
     if (match) {
-        const formatSpecRaw = match[1].toLowerCase();
-        const formatSpec = formatSpecRaw.trim(); // Trim spaces and sanitize
-        prompt = prompt.replace(formatRegex, "").trim(); // Remove the format specification
+      const formatSpecRaw = match[1].toLowerCase();
+      prompt = prompt.replace(formatRegex, "").trim(); // Remove the format specification
   
-        if (formatSpec.includes('x')) {
-            // Dimension specifications
-            const [width, height] = formatSpec.split('x').map(Number);
-            if (width === 512 && height === 512) {
-                format = "512x512"; // 512x512 dimension
-            } else {
-                format = defaultFormat; // Default to 1024x1024
-            }
-        } else if (formatSpec.includes(':')) {
-            // Aspect ratio specifications
-            format = parseAspectRatio(formatSpec, defaultFormat);
-        } else if (!isNaN(parseInt(formatSpec))) {
-            // Single dimension specification
-            format = parseSingleDimension(formatSpec);
-        } else {
-            // Descriptive formats
-            switch (formatSpec) {
-                case "square":
-                case "1:1":
-                    format = defaultFormat;
-                    break;
-                default:
-                    // Leave default if no match
-                    break;
-            }
-        }
+      if (formatSpecRaw.includes('x')) {
+        // Direct dimension specifications
+        format = formatSpecRaw; // Use the specified dimensions directly
+      } else if (formatSpecRaw.includes(':') || isNaN(parseInt(formatSpecRaw))) {
+        // Aspect ratio or descriptive term
+        format = parseAspectRatio(formatSpecRaw, defaultFormat);
+      } else {
+        // Single dimension specification
+        format = parseSingleDimension(formatSpecRaw);
+      }
     }
   
     return { format, newPrompt: prompt };
-}
+  }
+  

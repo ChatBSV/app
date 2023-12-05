@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
-import helpContent from '../../help.html';
+import helpContent from '../../content/help.html';
 
 export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -125,13 +125,30 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
     const chatReply = await getChatReply(userMessage, chat, requestType);
     if (chatReply) {
-      const newMessage = {
-        id: nanoid(),
-        role: requestType === 'image' ? 'dalle-image' : 'assistant',
-        content: requestType === 'image' ? chatReply.imageUrl : chatReply.message,
-        tokens: chatReply.tokens || 0,
-        txid: txid,
-      };
+      let newMessage;
+      if (requestType === 'image') {
+        newMessage = {
+          id: nanoid(),
+          role: 'dalle-image',
+          content: chatReply.imageUrl,
+          txid: txid,
+        };
+      } else if (requestType === 'meme') {
+        newMessage = {
+          id: nanoid(),
+          role: 'meme-image', // Adjust role for meme images
+          content: chatReply.imageUrl, // Assuming meme response also has an imageUrl
+          txid: txid,
+        };
+      } else {
+        newMessage = {
+          id: nanoid(),
+          role: 'assistant',
+          content: chatReply.message,
+          tokens: chatReply.tokens || 0,
+          txid: txid,
+        };
+      }
 
       addMessageToChat(newMessage);
     }

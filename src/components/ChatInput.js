@@ -5,7 +5,7 @@ import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
 import { handleTextareaChange, onDisconnect } from '../utils/ChatInputUtils';
 import { handleFormSubmit, pay } from '../utils/ChatInputHandlers';
-import helpContent from '../../help.html';
+import helpContent from '../../content/help.html';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
   const [txid, setTxid] = useState('');
@@ -32,7 +32,8 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
   }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
 
   const onDisconnectedSubmit = (inputValue) => {
-    const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
+    const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
+                         inputValue.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
     const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
     localStorage.setItem('pendingPrompt', pendingPrompt);
     window.location.href = redirectionUrl; // Redirect to HandCash for reauthorization
@@ -59,7 +60,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             }
           }}
           className={styles.inputField}
-          placeholder="Enter your prompt or /imagine"
+          placeholder="Enter your prompt or /imagine or /meme"
           ref={inputRef}
           onChange={handleTextareaChange}
         ></textarea>

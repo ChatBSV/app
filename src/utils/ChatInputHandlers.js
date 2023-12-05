@@ -25,7 +25,8 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
   }
 
   localStorage.removeItem('txid');
-  const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
+  const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 
+                      prompt.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
 
   const headers = new Headers({
     'Authorization': `Bearer ${sessionToken}`,
@@ -40,7 +41,6 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
       const errorResult = await response.json();
       if (response.status === 401) {
         // Handle 401 Unauthorized response by redirecting for reauthorization
-        const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 'text';
         const pendingPrompt = JSON.stringify({ type: requestType, content: prompt });
         localStorage.setItem('pendingPrompt', pendingPrompt);
 
