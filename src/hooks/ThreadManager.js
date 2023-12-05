@@ -29,6 +29,7 @@ export const useThreadManager = () => {
             const initialThread = { id: Date.now().toString(), title: "💬 Thread 1", messages: [] };
             storedThreads = [initialThread];
             localStorage.setItem('threads', JSON.stringify(storedThreads));
+            localStorage.setItem('currentThreadId', initialThread.id); 
         }
 
         setThreads(storedThreads);
@@ -78,6 +79,7 @@ export const useThreadManager = () => {
         setThreads(updatedThreads);
         setCurrentThread(newThread);
         localStorage.setItem('threads', JSON.stringify(updatedThreads));
+        localStorage.setItem('currentThreadId', newThread.id); 
     };
 
     const deleteAllThreads = () => {

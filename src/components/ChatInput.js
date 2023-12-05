@@ -35,7 +35,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
       const pendingPrompt = JSON.parse(pendingPromptJSON);
       if (pendingPrompt && pendingPrompt.content && currentThreadId) {
         inputRef.current.value = pendingPrompt.content;
-        // console.log('pendingPrompt:', pendingPrompt);
+        console.log('pendingPrompt:', pendingPrompt);
         submitPrompt(pendingPrompt.content, currentThreadId);
         localStorage.removeItem('pendingPrompt');
       }
