@@ -17,7 +17,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
   useEffect(() => {
     setCurrentThreadId(typeof window !== 'undefined' ? localStorage.getItem('currentThreadId') : null);
   }, []);
-  
+
   useEffect(() => {
     setIsConnected(!!sessionToken);
 
@@ -29,7 +29,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
       const pendingPrompt = JSON.parse(pendingPromptJSON);
       if (pendingPrompt && pendingPrompt.content) {
         inputRef.current.value = pendingPrompt.content;
-        submitPrompt(pendingPrompt.content, currentThreadId);
+        submitPrompt(pendingPrompt.content);
         localStorage.removeItem('pendingPrompt');
       }
     }
@@ -38,7 +38,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
     console.log('Current Thread ID:', currentThreadId);
   }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit, threads, setCurrentThread, currentThreadId]);
 
-  const submitPrompt = async (inputValue, currentThreadId) => {
+  const submitPrompt = async (inputValue) => {
     console.log('Received currentThreadId in submitPrompt:', currentThreadId);
 
     if (!isConnected || paymentResult.status === 'error') {
