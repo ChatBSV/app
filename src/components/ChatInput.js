@@ -14,12 +14,18 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
   const [isConnected, setIsConnected] = useState(true);
   const [currentThreadId, setCurrentThreadId] = useState(null);
 
-  useEffect(() => {
-    setCurrentThreadId(typeof window !== 'undefined' ? localStorage.getItem('currentThreadId') : null);
-  }, []);
-
+  // useEffect(() => {
+  //   setCurrentThreadId(typeof window !== 'undefined' ? localStorage.getItem('currentThreadId') : null);
+  // }, []);
+  
   useEffect(() => {
     setIsConnected(!!sessionToken);
+    console.log('useEffect currentThreadId:', currentThreadId);
+
+    const storedThreadId = localStorage.getItem('currentThreadId');
+    if (storedThreadId) {
+      setCurrentThreadId(storedThreadId);
+    }
 
     const pendingPromptJSON = localStorage.getItem('pendingPrompt');
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,9 +33,9 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
 
     if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
       const pendingPrompt = JSON.parse(pendingPromptJSON);
-      if (pendingPrompt && pendingPrompt.content) {
+      if (pendingPrompt && pendingPrompt.content && storedThreadId) {
         inputRef.current.value = pendingPrompt.content;
-        submitPrompt(pendingPrompt.content);
+        submitPrompt(pendingPrompt.content, storedThreadId);
         localStorage.removeItem('pendingPrompt');
       }
     }
@@ -38,7 +44,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
     console.log('Current Thread ID:', currentThreadId);
   }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit, threads, setCurrentThread, currentThreadId]);
 
-  const submitPrompt = async (inputValue) => {
+  const submitPrompt = async (inputValue, currentThreadId) => {
     console.log('Received currentThreadId in submitPrompt:', currentThreadId);
 
     if (!isConnected || paymentResult.status === 'error') {
