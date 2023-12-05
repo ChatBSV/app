@@ -53,7 +53,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     }
   };
 
-  const getChatReply = async (prompt, chatHistory, requestType) => {
+  const getChatReply = async (prompt, chatHistory, requestType, selectedModel) => {
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
@@ -71,7 +71,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           'Content-Type': 'application/json',
           'request-type': requestType
         },
-        body: JSON.stringify({ prompt, history: tokenizedHistory }),
+        body: JSON.stringify({ prompt, history: tokenizedHistory, model: selectedModel }),
         signal: controller.signal,
       });
 
@@ -113,17 +113,19 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
+    const selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
 
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       content: userMessage,
       txid: txid,
+      model: selectedModel,
     };
 
     addMessageToChat(newUserMessage);
 
-    const chatReply = await getChatReply(userMessage, chat, requestType);
+    const chatReply = await getChatReply(userMessage, chat, requestType, selectedModel);
     if (chatReply) {
       let newMessage;
       if (requestType === 'image') {
@@ -147,6 +149,8 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           content: chatReply.message,
           tokens: chatReply.tokens || 0,
           txid: txid,
+          model: selectedModel, // Store the model used for this reply
+
         };
       }
 

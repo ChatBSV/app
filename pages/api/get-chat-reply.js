@@ -15,8 +15,9 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  const { prompt, history } = req.body;
+  const { prompt, history, model } = req.body; // Include model in destructuring
   const requestType = req.headers['request-type'];
+
 
   try {
     let imageUrl; // Declare imageUrl variable outside the switch statement
@@ -39,7 +40,7 @@ export default async function handler(req, res) {
         break;
 
       default:
-        const { message, tokens } = await handleOpenAIRequest(prompt, history);
+        const { message, tokens } = await handleOpenAIRequest(prompt, history, model); 
         res.status(200).json({ message, tokens });
     }
   } catch (error) {

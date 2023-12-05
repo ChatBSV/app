@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-export async function handleOpenAIRequest(prompt, history) {
+export async function handleOpenAIRequest(prompt, history, model = 'gpt-3.5-turbo') {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   const filteredHistory = history.filter(
     (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
@@ -23,14 +23,16 @@ export async function handleOpenAIRequest(prompt, history) {
   const messages = filteredHistory.length > 0
     ? [...filteredHistory.map((message) => ({ role: message.role, content: message.content })), { role: 'user', content: prompt }]
     : [{ role: 'system', content: CORE_PROMPT }, { role: 'user', content: prompt }];
-
-  try {
+    
+  const maxTokens = model === 'gpt-4' ? 4000 : 2000;
+  
+    try {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'gpt-4',
+        model: model,
         messages: messages,
-        max_tokens: 4000,
+        max_tokens: maxTokens,  
       },
       {
         headers: {

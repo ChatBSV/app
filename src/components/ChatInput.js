@@ -6,12 +6,24 @@ import ButtonIcon from './ButtonIcon';
 import { handleTextareaChange, onDisconnect } from '../utils/ChatInputUtils';
 import { handleFormSubmit, pay } from '../utils/ChatInputHandlers';
 import helpContent from '../../content/help.html';
+import { nanoid } from 'nanoid';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
   const [txid, setTxid] = useState('');
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({ status: 'none' });
   const [isConnected, setIsConnected] = useState(true);
+
+  const setModel = (modelCommand) => {
+    const model = modelCommand.toLowerCase().includes('4') ? 'gpt-4' : 'gpt-3.5-turbo';
+    localStorage.setItem('selectedModel', model);
+    addMessageToChat({
+      id: nanoid(),
+      role: 'loading',
+      content: `Model set to ${model}`,
+      txid: '',
+    });
+  };
 
   useEffect(() => {
     setIsConnected(!!sessionToken);
@@ -52,6 +64,11 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();
               const inputValue = inputRef.current.value;
+              if (inputValue.toLowerCase().startsWith('/model')) {
+                setModel(inputValue);
+                inputRef.current.value = '';
+                return;
+              }
               if (!isConnected) {
                 onDisconnectedSubmit(inputValue);
               } else {
