@@ -12,8 +12,12 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, addMessageToCha
   const inputRef = useRef(null);
   const [paymentResult, setPaymentResult] = useState({ status: 'none' });
   const [isConnected, setIsConnected] = useState(true);
-  const currentThreadId = typeof window !== 'undefined' ? localStorage.getItem('currentThreadId') : null; 
+  const [currentThreadId, setCurrentThreadId] = useState(null);
 
+  useEffect(() => {
+    setCurrentThreadId(typeof window !== 'undefined' ? localStorage.getItem('currentThreadId') : null);
+  }, []);
+  
   useEffect(() => {
     setIsConnected(!!sessionToken);
 
