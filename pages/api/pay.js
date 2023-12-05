@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { authorization, requesttype } = req.headers;
+    const { authorization, requesttype, model } = req.headers;
     
     if (!authorization) {
       return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization. Please reconnect to Handcash.')) });
@@ -31,12 +31,15 @@ export default async function handler(req, res) {
     let paymentAmount;
     switch (requesttype) {
       case 'image':
-        paymentAmount = process.env.IMAGE_AMOUNT;
+        paymentAmount = model === 'dall-e-2' ? process.env.DALLE2_AMOUNT : process.env.DALLE3_AMOUNT;
         break;
       case 'meme':
-        paymentAmount = process.env.MEME_AMOUNT; // New pricing category for memes
+        paymentAmount = process.env.MEME_AMOUNT;
         break;
-      default:
+      case 'text':
+        paymentAmount = model === 'gpt-4' ? process.env.GPT4_AMOUNT : process.env.GPT3_AMOUNT;
+        break;
+        default: 
         paymentAmount = process.env.CHAT_AMOUNT;
     }
 
