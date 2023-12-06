@@ -1,6 +1,5 @@
 // pages/api/dalle.js
 
-
 import axios from 'axios';
 import dotenv from "dotenv";
 import parseFormat from '../../src/lib/parseFormat'; 
@@ -72,7 +71,7 @@ export async function handleDalleRequest(reqBody) {
   }
 }
 
-export default async (req, res) => {
+const dalleHandler = async (req, res) => {
   console.log("Received request with method:", req.method);
   console.log("Received request with body:", req.body);
 
@@ -92,3 +91,5 @@ export default async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export default dalleHandler;

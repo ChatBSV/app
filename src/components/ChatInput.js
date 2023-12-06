@@ -57,7 +57,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
                 localStorage.removeItem('pendingPrompt'); 
             }
         }
-    }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit]);
+    }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, setTxid, handleSubmit]);
 
     const onDisconnectedSubmit = (inputValue) => {
         const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
@@ -107,7 +107,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
                     <ButtonIcon
                         icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
                         text={buttonText()}
-                        onClick={paymentResult?.status === 'pending' ? null : () => pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit)}
+                        onClick={paymentResult?.status === 'pending' ? null : () => pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, setTxid, handleSubmit)}
                     />
                     <button className={`${styles.actionButton} ${styles.resetButtonMobile}`} onClick={resetChat}></button>
                 </div>

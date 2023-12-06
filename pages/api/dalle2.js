@@ -15,7 +15,7 @@ export async function handleDalle2Request(reqBody) {
 
   let { format, newPrompt } = parseFormat(prompt); // Change from const to let
 
-  console.log('Entered handleDalleRequest with:', { prompt, model, format, n });
+  console.log('Entered handleDalle2Request with:', { prompt, model, format, n });
 
   // Remove /imagine command if present in prompt
   newPrompt = newPrompt.replace(/\/imagine\s*/i, '');
@@ -57,7 +57,7 @@ export async function handleDalle2Request(reqBody) {
   }
 }
 
-export default async (req, res) => {
+const dalle2Handler = async (req, res) => {
   console.log("Received request with method:", req.method);
   console.log("Received request with body:", req.body);
 
@@ -68,12 +68,14 @@ export default async (req, res) => {
   }
 
   try {
-    console.log('Attempting to handle DALLE request.');
-    const result = await handleDalleRequest(req.body);
-    console.log('Successfully handled DALLE request. Returning:', result);
+    console.log('Attempting to handle DALLE2 request.');
+    const result = await handleDalle2Request(req.body);
+    console.log('Successfully handled DALLE2 request. Returning:', result);
     res.status(200).json(result);
   } catch (error) {
-    console.log('Failed to handle DALLE request. Error:', error.message);
+    console.log('Failed to handle DALLE2 request. Error:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
+
+export default dalle2Handler;
