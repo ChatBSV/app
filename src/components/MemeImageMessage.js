@@ -8,7 +8,10 @@ import ShareButton from './ShareButton';
 function MemeImageMessage({ content, onImageLoad, txid }) {
   return (
     <div className={`${styles.chatMessage} ${styles.imageMessage}`}>
-      <img src={content} alt="Meme Image" onLoad={onImageLoad} />
+      <p>Here's your new meme, sir - s0ry I c4n't tyyype v3ry w3ll.</p>
+      <div className={styles.imagewrap}>
+      <img className={styles.image} src={content} alt="DALL-E Generated Image" onLoad={onImageLoad} /></div>
+      <p>This image will be available for an hour. Right-click over the image to save it.</p>
       <div className={styles.chatLink}>
         <TxidLink txid={txid} />
         <ShareButton content={content} />

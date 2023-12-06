@@ -13,12 +13,12 @@ export async function handleDalle2Request(reqBody) {
     n = 1
   } = reqBody;
 
-  const { format, newPrompt } = parseFormat(prompt);
+  let { format, newPrompt } = parseFormat(prompt); // Change from const to let
 
   console.log('Entered handleDalleRequest with:', { prompt, model, format, n });
 
   // Remove /imagine command if present in prompt
-  prompt = prompt.replace(/\/imagine\s*/i, '');
+  newPrompt = newPrompt.replace(/\/imagine\s*/i, '');
 
   // Valid formats for DALL-E 2
   const validFormatsDalle2 = ["512x512", "1024x1024"];

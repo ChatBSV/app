@@ -20,6 +20,18 @@
   
 }
 
+.imagewrap{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+
+}
+
+.image{
+  border-radius: 8px;
+}
+
 .chatMessage.userMessage {
     color: #333;
     background-color: #fff;
