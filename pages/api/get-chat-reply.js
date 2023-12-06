@@ -1,6 +1,7 @@
 // pages/api/get-chat-reply.js
 
-import { handleOpenAIRequest } from './openai';
+import { handleOpenAIRequest3 } from './openai3';
+import { handleOpenAIRequest4 } from './openai4';
 import { handleDalleRequest } from './dalle';
 import { handleDalle2Request } from './dalle2'; // Import handler for DALL-E 2
 import { handleMemeRequest } from './meme';
@@ -23,6 +24,7 @@ export default async function handler(req, res) {
   let imageUrl = ''; // Declare imageUrl here
 
   try {
+    console.log(`get-chat-reply: Received model - ${selectedModel} for request type - ${requestType}`);
     switch (requestType) {
       case 'image':
         if (!prompt) {
@@ -50,12 +52,16 @@ export default async function handler(req, res) {
         res.status(200).json({ imageUrl, model: selectedModel });
         break;
 
-      default:
-        // Handle GPT requests
-        const { message, tokens } = await handleOpenAIRequest(prompt, history, selectedModel); // Pass selectedModel here
-        res.status(200).json({ message, tokens, model: selectedModel });
-        break;
-    }
+        default:
+          let response;
+          if (selectedModel === 'gpt-4') {
+            response = await handleOpenAIRequest4(prompt, history, selectedModel); // Call GPT-4 handler
+          } else {
+            response = await handleOpenAIRequest3(prompt, history, selectedModel); // Call GPT-3.5 handler
+          }
+          res.status(200).json(response);
+          break;
+      }
   } catch (error) {
     console.error('Error in get-chat-reply:', error);
     let detailedErrorMessage = getErrorMessage(error);

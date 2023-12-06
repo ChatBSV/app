@@ -62,6 +62,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 298000);
+      console.log(`User to ${selectedModel}: ${prompt}`);
 
       const response = await fetch('/api/get-chat-reply', {
         method: 'POST',
@@ -80,6 +81,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       }
 
       const data = await response.json();
+      console.log('System Response:', data);
       return data;
     } catch (error) {
       console.error('Error in getChatReply:', error);
@@ -107,7 +109,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     }, false);
   }, [addMessageToChat]);
 
-  const handleSubmit = async (userMessage, txid, requestType) => {
+  const handleSubmit = async (userMessage, txid, requestType, model) => {
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
@@ -127,7 +129,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
     const chatReply = await getChatReply(userMessage, chat, requestType, 
       requestType === 'image' ? selectedDalleModel : selectedModel);
-
+  
     if (chatReply) {
       let newMessage;
       if (requestType === 'image') {
@@ -136,13 +138,13 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           role: 'dalle-image',
           content: chatReply.imageUrl,
           txid: txid,
-          model: selectedDalleModel, // Store the DALL-E model used for this reply
+          model: selectedDalleModel, 
         };
       } else if (requestType === 'meme') {
         newMessage = {
           id: nanoid(),
-          role: 'meme-image', // Adjust role for meme images
-          content: chatReply.imageUrl, // Assuming meme response also has an imageUrl
+          role: 'meme-image',
+          content: chatReply.imageUrl,
           txid: txid,
           model: 'meme'
         };
@@ -153,13 +155,13 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           content: chatReply.message,
           tokens: chatReply.tokens || 0,
           txid: txid,
-          model: selectedModel, // Store the model used for this reply
+          model: selectedModel,
         };
       }
-
+  
       addMessageToChat(newMessage);
     }
-
+  
     setIsLoading(false);
   };
 
