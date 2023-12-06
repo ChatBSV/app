@@ -32,30 +32,12 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Expired authorization. Please reconnect to Handcash.', redirectUrl: new HandCashService().getRedirectionUrl() });
     }
 
-    let paymentAmount;
-    switch (requesttype) {
-      case 'image':
-        paymentAmount = model === 'dall-e-2' ? process.env.DALLE2_AMOUNT : process.env.DALLE3_AMOUNT;
-        break;
-      case 'meme':
-        paymentAmount = process.env.MEME_AMOUNT;
-        break;
-      case 'text':
-        paymentAmount = model === 'gpt-4' ? process.env.GPT4_AMOUNT : process.env.GPT3_AMOUNT;
-        break;
-      default:
-        paymentAmount = process.env.CHAT_AMOUNT;
-    }
+    let paymentAmount = calculatePaymentAmount(requesttype, model);
 
     // Log the processed payment amount
     console.log('Processed Payment Amount:', paymentAmount);
 
-    const paymentResult = await new HandCashService(authToken).pay({
-      destination: process.env.DEST,
-      amount: paymentAmount,
-      currencyCode: process.env.CURRENCY,
-      description: 'ChatBSV payment'
-    });
+    const paymentResult = await makePayment(authToken, paymentAmount);
 
     return res.status(200).json({ status: 'sent', transactionId: paymentResult.transactionId });
   } catch (error) {
@@ -64,4 +46,26 @@ export default async function handler(req, res) {
     const statusCode = error.statusCode || error.status || 500;
     return res.status(statusCode).json({ status: 'error', error: errorMessage });
   }
+}
+
+function calculatePaymentAmount(requesttype, model) {
+  switch (requesttype) {
+    case 'image':
+      return model === 'dall-e-2' ? process.env.DALLE2_AMOUNT : process.env.DALLE3_AMOUNT;
+    case 'meme':
+      return process.env.MEME_AMOUNT; // Removed the '|| defaultMemeAmount' for clarity
+    case 'text':
+      return model === 'gpt-4' ? process.env.GPT4_AMOUNT : process.env.GPT3_AMOUNT;
+    default:
+      return process.env.CHAT_AMOUNT;
+  }
+}
+
+async function makePayment(authToken, paymentAmount) {
+  return await new HandCashService(authToken).pay({
+    destination: process.env.DEST,
+    amount: paymentAmount,
+    currencyCode: process.env.CURRENCY,
+    description: 'ChatBSV payment'
+  });
 }

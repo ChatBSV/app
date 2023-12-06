@@ -24,15 +24,25 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
     return;
   }
 
-  localStorage.removeItem('txid');
-  const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' : 
+  const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' :
                       prompt.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
 
-  const headers = new Headers({
+  // Determine the appropriate model based on the request type
+  let selectedModel;
+  if (requestType === 'image') {
+    selectedModel = localStorage.getItem('selectedDalleModel') || 'dall-e-3'; // Default model for images
+  } else if (requestType === 'meme') {
+    selectedModel = 'meme'; // Specific model for memes
+  } else {
+    selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo'; // Default model for text
+  }
+
+  const headers = {
     'Authorization': `Bearer ${sessionToken}`,
     'Content-Type': 'application/json',
-    'requesttype': requestType
-  });
+    'requesttype': requestType,
+    'model': selectedModel // Include the model in the headers
+  };
 
   setPaymentResult({ status: 'pending' });
   try {
@@ -43,7 +53,6 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
         // Handle 401 Unauthorized response by redirecting for reauthorization
         const pendingPrompt = JSON.stringify({ type: requestType, content: prompt });
         localStorage.setItem('pendingPrompt', pendingPrompt);
-
         window.location.href = redirectionUrl;
         return;
       }

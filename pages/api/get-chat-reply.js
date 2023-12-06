@@ -52,7 +52,7 @@ export default async function handler(req, res) {
 
       default:
         // Handle GPT requests
-        const { message, tokens } = await handleOpenAIRequest(prompt, history);
+        const { message, tokens } = await handleOpenAIRequest(prompt, history, selectedModel); // Pass selectedModel here
         res.status(200).json({ message, tokens, model: selectedModel });
         break;
     }

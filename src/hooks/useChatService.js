@@ -1,4 +1,4 @@
-// src/hooks/useChatService.js
+// useChatService.js
 
 import { useState, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
@@ -21,7 +21,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   }, []);
 
   const addMessageToChat = useCallback((message, isNew = true) => {
-    setChat((prevChat) => {
+    setChat(prevChat => {
       const newMessage = { ...message, isNew };
       const updatedChat = [...prevChat, newMessage];
       const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
@@ -35,9 +35,9 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       const response = await fetch('/api/tokenizer', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ chatHistory })
+        body: JSON.stringify({ chatHistory }),
       });
 
       if (!response.ok) {
@@ -45,11 +45,10 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       }
 
       const { processedHistory } = await response.json();
-      // Reconstruct the array of message objects from the processed history
       return processedHistory.split('\n').map(content => ({ role: 'user', content }));
     } catch (error) {
-      console.error('Error in tokenizing chat history:', error);
-      throw error; // Rethrow error to be handled in the caller function
+      console.error('Error in tokenizeChatHistory:', error);
+      throw error;
     }
   };
 
@@ -59,7 +58,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setErrorMessage('');
 
     try {
-      // Tokenize and trim the chat history
       const tokenizedHistory = await tokenizeChatHistory(chatHistory.map(m => m.content).join('\n'));
 
       const controller = new AbortController();
@@ -69,7 +67,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'request-type': requestType
+          'request-type': requestType,
         },
         body: JSON.stringify({ prompt, history: tokenizedHistory, model: selectedModel }),
         signal: controller.signal,
@@ -84,7 +82,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error in getChatReply:', error);
       setIsError(true);
       const errorText = getErrorMessage(error);
       setErrorMessage(errorText);
@@ -147,7 +145,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           content: chatReply.imageUrl, // Assuming meme response also has an imageUrl
           txid: txid,
           model: 'meme'
-
         };
       } else {
         newMessage = {
@@ -168,5 +165,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
   return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
 };
+
 
 export default useChatService;
