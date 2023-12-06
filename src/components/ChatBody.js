@@ -5,8 +5,8 @@ import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 import loadingMessages from '../../loadingMessages.json';
 import useScrollToBottom from '../hooks/useScrollToBottom';
-import introMessage1 from '../../content/introMessage1.html';
-import introMessage2 from '../../content/introMessage2.html';
+import introMessage1 from '../../content/intro-Message1.html';
+import introMessage2 from '../../content/intro-Message2.html';
 import helpContent from '../../content/help.html'; // Ensure this path is correct
 
 function ChatBody({ chat, isLoading, isError, errorMessage }) {
