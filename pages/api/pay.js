@@ -12,7 +12,11 @@ export default async function handler(req, res) {
 
   try {
     const { authorization, requesttype, model } = req.headers;
-    
+
+    // Log the request type and model
+    console.log('Request Type:', requesttype);
+    console.log('Model:', model);
+
     if (!authorization) {
       return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization. Please reconnect to Handcash.')) });
     }
@@ -39,9 +43,12 @@ export default async function handler(req, res) {
       case 'text':
         paymentAmount = model === 'gpt-4' ? process.env.GPT4_AMOUNT : process.env.GPT3_AMOUNT;
         break;
-        default: 
+      default:
         paymentAmount = process.env.CHAT_AMOUNT;
     }
+
+    // Log the processed payment amount
+    console.log('Processed Payment Amount:', paymentAmount);
 
     const paymentResult = await new HandCashService(authToken).pay({
       destination: process.env.DEST,
