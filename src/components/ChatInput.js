@@ -14,11 +14,40 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const [paymentResult, setPaymentResult] = useState({ status: 'none' });
     const [isConnected, setIsConnected] = useState(true);
 
+    // Introduce a new state to manage pending prompts
+    const [pendingPrompt, setPendingPrompt] = useState(null);
+
+    useEffect(() => {
+        setIsConnected(!!sessionToken);
+
+        // Retrieve the pendingPrompt from localStorage
+        const pendingPromptJSON = localStorage.getItem('pendingPrompt');
+        const urlParams = new URLSearchParams(window.location.search);
+        const reloadParam = urlParams.get('reload');
+
+        // If there is a pending prompt, and page is not reloading, set it in the state
+        if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
+            const parsedPrompt = JSON.parse(pendingPromptJSON);
+            if (parsedPrompt && parsedPrompt.content) {
+                setPendingPrompt(parsedPrompt);
+                localStorage.removeItem('pendingPrompt'); 
+            }
+        }
+    }, [sessionToken]);
+
+    useEffect(() => {
+        // If there's a pending prompt in the state, process it
+        if (pendingPrompt && isConnected) {
+            inputRef.current.value = pendingPrompt.content;
+            pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
+            // Reset pendingPrompt state to prevent re-processing
+            setPendingPrompt(null);
+        }
+    }, [pendingPrompt, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, setTxid, handleSubmit]);
+
     const setModel = (modelCommand) => {
         const model = modelCommand.toLowerCase().includes('4') ? 'gpt-4' : 'gpt-3.5-turbo';
         localStorage.setItem('selectedModel', model);
-
-        // Attach the selected model to the chat history object
         addMessageToChat({
             id: nanoid(),
             role: 'loading',
@@ -31,8 +60,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const setDalleModel = (modelCommand) => {
         const model = modelCommand.toLowerCase().includes('2') ? 'dall-e-2' : 'dall-e-3';
         localStorage.setItem('selectedDalleModel', model);
-
-        // Attach the selected model to the chat history object
         addMessageToChat({
             id: nanoid(),
             role: 'loading',
@@ -41,23 +68,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             model: model, // Attach the selected model here
         });
     };
-
-    useEffect(() => {
-        setIsConnected(!!sessionToken);
-
-        const pendingPromptJSON = localStorage.getItem('pendingPrompt');
-        const urlParams = new URLSearchParams(window.location.search);
-        const reloadParam = urlParams.get('reload');
-
-        if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
-            const pendingPrompt = JSON.parse(pendingPromptJSON);
-            if (pendingPrompt && pendingPrompt.content) {
-                inputRef.current.value = pendingPrompt.content;
-                pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
-                localStorage.removeItem('pendingPrompt'); 
-            }
-        }
-    }, [sessionToken, isConnected, redirectionUrl, setPaymentResult, addMessageToChat, setTxid, handleSubmit]);
 
     const onDisconnectedSubmit = (inputValue) => {
         const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
