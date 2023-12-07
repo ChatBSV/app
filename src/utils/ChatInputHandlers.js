@@ -1,4 +1,4 @@
-// src/utils/ChatInputHandlers.js
+// ChatInputHandlers.js
 
 import { nanoid } from 'nanoid';
 
@@ -13,6 +13,9 @@ export const handleFormSubmit = async (event, prompt, storedTxid, requestType, h
 
 export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit) => {
   const prompt = inputRef.current.value.trim();
+
+  // Clear any previous txid from local storage before initiating a new payment
+  localStorage.removeItem('txid');
 
   if (!isConnected) {
     window.location.href = redirectionUrl;

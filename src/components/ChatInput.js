@@ -13,19 +13,15 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const inputRef = useRef(null);
     const [paymentResult, setPaymentResult] = useState({ status: 'none' });
     const [isConnected, setIsConnected] = useState(true);
-
-    // Introduce a new state to manage pending prompts
     const [pendingPrompt, setPendingPrompt] = useState(null);
 
     useEffect(() => {
         setIsConnected(!!sessionToken);
 
-        // Retrieve the pendingPrompt from localStorage
         const pendingPromptJSON = localStorage.getItem('pendingPrompt');
         const urlParams = new URLSearchParams(window.location.search);
         const reloadParam = urlParams.get('reload');
 
-        // If there is a pending prompt, and page is not reloading, set it in the state
         if (pendingPromptJSON && (!reloadParam || reloadParam === 'false')) {
             const parsedPrompt = JSON.parse(pendingPromptJSON);
             if (parsedPrompt && parsedPrompt.content) {
@@ -36,14 +32,34 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     }, [sessionToken]);
 
     useEffect(() => {
-        // If there's a pending prompt in the state, process it
         if (pendingPrompt && isConnected) {
             inputRef.current.value = pendingPrompt.content;
             pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
-            // Reset pendingPrompt state to prevent re-processing
             setPendingPrompt(null);
         }
     }, [pendingPrompt, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, setTxid, handleSubmit]);
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            const inputValue = inputRef.current.value;
+            if (inputValue.toLowerCase().startsWith('/gpt')) {
+                setModel(inputValue);
+                inputRef.current.value = '';
+                return;
+            }
+            if (inputValue.toLowerCase().startsWith('/dalle')) {
+                setDalleModel(inputValue);
+                inputRef.current.value = '';
+                return; 
+            }
+            if (!isConnected) {
+                onDisconnectedSubmit(inputValue);
+            } else {
+                pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
+            }
+        }
+    };
 
     const setModel = (modelCommand) => {
         const model = modelCommand.toLowerCase().includes('4') ? 'gpt-4' : 'gpt-3.5-turbo';
@@ -86,27 +102,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         <div className={styles.chatFooter}>
             <form onSubmit={(event) => handleFormSubmit(event, inputRef, handleSubmit, setPaymentResult)} className={styles.inputForm}>
                 <textarea
-                    onKeyDown={(event) => {
-                        if (event.key === 'Enter' && !event.shiftKey) {
-                            event.preventDefault();
-                            const inputValue = inputRef.current.value;
-                            if (inputValue.toLowerCase().startsWith('/gpt')) {
-                                setModel(inputValue);
-                                inputRef.current.value = '';
-                                return;
-                            }
-                            if (inputValue.toLowerCase().startsWith('/dalle')) {
-                                setDalleModel(inputValue);
-                                inputRef.current.value = '';
-                                return; 
-                            }
-                            if (!isConnected) {
-                                onDisconnectedSubmit(inputValue);
-                            } else {
-                                pay(inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit);
-                            }
-                        }
-                    }}
+                    onKeyDown={handleKeyDown}
                     className={styles.inputField}
                     placeholder="Enter your prompt or /imagine or /meme"
                     ref={inputRef}

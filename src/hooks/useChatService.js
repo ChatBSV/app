@@ -117,11 +117,14 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     const selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
     const selectedDalleModel = localStorage.getItem('selectedDalleModel') || 'dall-e-3';
 
+    // Fetch the txid from local storage after successful payment
+    const transactionId = localStorage.getItem('txid');
+
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
       content: userMessage,
-      txid: txid,
+      txid: transactionId, // Use the fetched transactionId here
       model: requestType === 'image' ? selectedDalleModel : (requestType === 'meme' ? 'meme' : selectedModel),
     };
 
@@ -137,7 +140,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           id: nanoid(),
           role: 'dalle-image',
           content: chatReply.imageUrl,
-          txid: txid,
+          txid: transactionId, // Use the fetched transactionId here
           model: selectedDalleModel, 
         };
       } else if (requestType === 'meme') {
@@ -145,7 +148,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           id: nanoid(),
           role: 'meme-image',
           content: chatReply.imageUrl,
-          txid: txid,
+          txid: transactionId, // Use the fetched transactionId here
           model: 'meme'
         };
       } else {
@@ -154,7 +157,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           role: 'assistant',
           content: chatReply.message,
           tokens: chatReply.tokens || 0,
-          txid: txid,
+          txid: transactionId, // Use the fetched transactionId here
           model: selectedModel,
         };
       }
@@ -167,6 +170,5 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
   return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
 };
-
 
 export default useChatService;
