@@ -1,11 +1,14 @@
-// ChatInputHandlers.js
+// src/utils/ChatInputHandlers.js
 
 import { nanoid } from 'nanoid';
 
-export const handleFormSubmit = async (event, prompt, storedTxid, requestType, handleSubmit, setPaymentResult, inputRef) => {
+export const handleFormSubmit = async (event, inputRef, storedTxid, requestType, handleSubmit, setPaymentResult) => {
   event.preventDefault();
+  console.log("handleSubmit in handleFormSubmit:", typeof handleSubmit); // Check the type
+
+  const prompt = inputRef.current.value;
   if (prompt) {
-    await handleSubmit(prompt, storedTxid, requestType);
+    await handleSubmit(prompt, storedTxid, requestType); // Correct usage of handleSubmit
     inputRef.current.value = '';
     setPaymentResult({ status: 'none' });
   }
@@ -65,10 +68,10 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
     }
 
     const paymentResult = await response.json();
-if (paymentResult.status === 'sent') {
-  localStorage.setItem('txid', paymentResult.transactionId);
-  setTxid(paymentResult.transactionId);
-  handleFormSubmit(new Event('submit'), prompt, paymentResult.transactionId, requestType, handleSubmit, setPaymentResult, inputRef);
+    if (paymentResult.status === 'sent') {
+      localStorage.setItem('txid', paymentResult.transactionId);
+      setTxid(paymentResult.transactionId);
+      handleFormSubmit(new Event('submit'), inputRef, paymentResult.transactionId, requestType, handleSubmit, setPaymentResult);
     } else {
       setPaymentResult(paymentResult);
     }

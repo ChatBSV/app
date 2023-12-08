@@ -109,15 +109,14 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     }, false);
   }, [addMessageToChat]);
 
-  const handleSubmit = async (userMessage, txid, requestType, model) => {
+  const handleSubmit = async (userMessage, txid, requestType) => {
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
-
+  
     const selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
     const selectedDalleModel = localStorage.getItem('selectedDalleModel') || 'dall-e-3';
-
-
+  
     const newUserMessage = {
       id: nanoid(),
       role: 'user',
@@ -125,9 +124,9 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       txid: txid,
       model: requestType === 'image' ? selectedDalleModel : (requestType === 'meme' ? 'meme' : selectedModel),
     };
-
+  
     addMessageToChat(newUserMessage);
-
+  
     const chatReply = await getChatReply(userMessage, chat, requestType, 
       requestType === 'image' ? selectedDalleModel : selectedModel);
   
@@ -165,6 +164,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   
     setIsLoading(false);
   };
+  
 
   return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
 };

@@ -17,7 +17,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
     isLoading,
     chat,
     addMessageToChat,
-    handleSubmit
+    handleSubmit // Ensure this is the function from useChatService
   } = useChatService({ tokens, redirectionUrl, sessionToken, user });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
       <ChatBody chat={chat} isLoading={isLoading} />
       <ChatInput 
         resetChat={resetChat} 
-        handleSubmit={handleSubmit}
+        handleSubmit={handleSubmit} // Passing handleSubmit to ChatInput
         sessionToken={sessionToken} 
         redirectionUrl={redirectionUrl} 
         addMessageToChat={addMessageToChat}
