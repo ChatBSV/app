@@ -122,7 +122,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       id: nanoid(),
       role: 'user',
       content: userMessage,
-      txid: txid, // Use the fetched transactionId here
+      txid: txid,
       model: requestType === 'image' ? selectedDalleModel : (requestType === 'meme' ? 'meme' : selectedModel),
     };
 
@@ -138,7 +138,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           id: nanoid(),
           role: 'dalle-image',
           content: chatReply.imageUrl,
-          txid: txid, // Use the fetched transactionId here
+          txid: txid,
           model: selectedDalleModel, 
         };
       } else if (requestType === 'meme') {
@@ -146,7 +146,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           id: nanoid(),
           role: 'meme-image',
           content: chatReply.imageUrl,
-          txid: txid, // Use the fetched transactionId here
+          txid: txid,
           model: 'meme'
         };
       } else {
@@ -155,7 +155,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
           role: 'assistant',
           content: chatReply.message,
           tokens: chatReply.tokens || 0,
-          txid: txid, // Use the fetched transactionId here
+          txid: txid,
           model: selectedModel,
         };
       }

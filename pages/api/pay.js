@@ -53,7 +53,7 @@ function calculatePaymentAmount(requesttype, model) {
     case 'image':
       return model === 'dall-e-2' ? process.env.DALLE2_AMOUNT : process.env.DALLE3_AMOUNT;
     case 'meme':
-      return process.env.MEME_AMOUNT; // Removed the '|| defaultMemeAmount' for clarity
+      return process.env.MEME_AMOUNT;
     case 'text':
       return model === 'gpt-4' ? process.env.GPT4_AMOUNT : process.env.GPT3_AMOUNT;
     default:
