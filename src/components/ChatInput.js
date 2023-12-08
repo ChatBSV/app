@@ -69,7 +69,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             role: 'loading',
             content: `GPT model set to ${model}`,
             txid: '',
-            model: model, // Attach the selected model here
+            model: model, 
         });
     };
 
@@ -81,7 +81,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             role: 'loading',
             content: `DALL-E model set to ${model}`,
             txid: '',
-            model: model, // Attach the selected model here
+            model: model,
         });
     };
 
@@ -90,7 +90,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
                             inputValue.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
         const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
         localStorage.setItem('pendingPrompt', pendingPrompt);
-        window.location.href = redirectionUrl; // Redirect to HandCash for reauthorization
+        window.location.href = redirectionUrl;
     };
 
     const buttonText = () => {

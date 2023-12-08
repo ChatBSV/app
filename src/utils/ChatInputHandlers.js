@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid';
 export const handleFormSubmit = async (event, prompt, storedTxid, requestType, handleSubmit, setPaymentResult, inputRef) => {
   event.preventDefault();
   if (prompt) {
-    // Ensure handleSubmit is called with the correct txid
     await handleSubmit(prompt, storedTxid, requestType);
     inputRef.current.value = '';
     setPaymentResult({ status: 'none' });
@@ -66,12 +65,10 @@ export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, s
     }
 
     const paymentResult = await response.json();
-    if (paymentResult.status === 'sent') {
-      // Store the txid after successful payment
-      localStorage.setItem('txid', paymentResult.transactionId);
-      // Set the txid in state and call handleSubmit
-      setTxid(paymentResult.transactionId);
-      handleFormSubmit(new Event('submit'), prompt, paymentResult.transactionId, requestType, handleSubmit, setPaymentResult, inputRef);
+if (paymentResult.status === 'sent') {
+  localStorage.setItem('txid', paymentResult.transactionId);
+  setTxid(paymentResult.transactionId);
+  handleFormSubmit(new Event('submit'), prompt, paymentResult.transactionId, requestType, handleSubmit, setPaymentResult, inputRef);
     } else {
       setPaymentResult(paymentResult);
     }

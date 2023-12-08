@@ -13,9 +13,8 @@ export default async function handler(req, res) {
   try {
     const { authorization, requesttype, model } = req.headers;
 
-    // Log the request type and model
-    console.log('Request Type:', requesttype);
-    console.log('Model:', model);
+    console.log('Request Type:', requesttype); // Existing log
+    console.log('Model:', model); // Existing log
 
     if (!authorization) {
       return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization. Please reconnect to Handcash.')) });
@@ -33,11 +32,12 @@ export default async function handler(req, res) {
     }
 
     let paymentAmount = calculatePaymentAmount(requesttype, model);
-
-    // Log the processed payment amount
-    console.log('Processed Payment Amount:', paymentAmount);
+    console.log('Processed Payment Amount:', paymentAmount); // Existing log
 
     const paymentResult = await makePayment(authToken, paymentAmount);
+
+    // Log the transaction ID from the payment result
+    console.log('Transaction ID:', paymentResult.transactionId);
 
     return res.status(200).json({ status: 'sent', transactionId: paymentResult.transactionId });
   } catch (error) {
