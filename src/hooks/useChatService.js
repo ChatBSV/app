@@ -24,8 +24,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setChat(prevChat => {
       const newMessage = { ...message, isNew };
       const updatedChat = [...prevChat, newMessage];
-      const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
-      localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
+      localStorage.setItem('chat', JSON.stringify(updatedChat));
       return updatedChat;
     });
   }, []);
@@ -58,7 +57,11 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setErrorMessage('');
 
     try {
-      const tokenizedHistory = await tokenizeChatHistory(chatHistory.map(m => m.content).join('\n'));
+      const filteredChatHistory = chatHistory.filter(
+        (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
+      );
+
+      const tokenizedHistory = await tokenizeChatHistory(filteredChatHistory.map(m => m.content).join('\n'));
 
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 298000);
@@ -164,7 +167,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   
     setIsLoading(false);
   };
-  
 
   return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
 };
