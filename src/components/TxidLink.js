@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './ChatMessage.module.css';
+import Image from 'next/image'; // Import the Image component from next/image
 
 function TxidLink({ txid }) {
   if (!txid) {
@@ -16,10 +17,12 @@ function TxidLink({ txid }) {
       rel="noopener noreferrer"
       style={{ textDecoration: 'none' }}
     >
-      <img
+      <Image
         className={styles.copyIcon}
-        src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a9bf4a0547694b83498c_linked.svg"
+        src="/txid.svg" // Corrected image path
         alt="Transaction Link"
+        width={16} // Set your desired width
+        height={16} // Set your desired height
       />
       <span style={{ fontSize: '11px', color: 'gray' }}>
         TxID:{txid.slice(0, 5)}

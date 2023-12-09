@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './ChatMessage.module.css';
+import Image from 'next/image'; // Import the Image component from next/image
 
 function ShareButton({ content }) {
   const createTweetLink = (imageUrl) => {
@@ -17,10 +18,12 @@ function ShareButton({ content }) {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <img
+      <Image
         className={styles.copyIcon}
-        src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6569742189e524678d783797_share%20(1).svg"
+        src="/share.svg" // Corrected image path
         alt="Share"
+        width={16} // Set your desired width
+        height={16} // Set your desired height
       />
       <span style={{ fontSize: '11px', color: 'gray' }}>Share</span>
     </a>

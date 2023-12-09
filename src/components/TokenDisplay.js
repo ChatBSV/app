@@ -2,14 +2,17 @@
 
 import React from 'react';
 import styles from './ChatMessage.module.css';
+import Image from 'next/image'; // Import the Image component from next/image
 
 function TokenDisplay({ tokens }) {
   return (
     <>
-      <img
+      <Image
         className={styles.copyIcon}
-        src="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6474a81e31e9c343912ede78_coins.svg"
+        src="/tokens.svg" // Corrected image path
         alt="Token Count"
+        width={16} // Set your desired width
+        height={16} // Set your desired height
       />
       <span style={{ fontSize: '11px', color: 'gray', marginRight: '11px' }}>
         Tokens:{tokens || 0}
