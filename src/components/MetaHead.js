@@ -16,7 +16,7 @@ const MetaHead = () => (
         <meta property="twitter:image" content="/ChatBSV_openGraph.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="/ChatBSV_openGraph.png" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/654a55aba928b9384cbdbf9a_ChatBSV%20favicon.png" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
     </Head>
 );
