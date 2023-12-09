@@ -7,7 +7,6 @@ const MetaHead = () => (
         <title>ChatBSV - OpenAI on Bitcoin</title>
         <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use AI tokens." />
         <meta name="theme-color" content="#eee" />
-        <link rel="manifest" href="/manifest.json" />
         <meta property="og:title" content="ChatBSV - AI on Bitcoin" />
         <meta property="og:description" content="Ask me anything! Micro transactions at their best. Pay per use AI tokens." />
         <meta property="og:image" content="/ChatBSV_openGraph.png" />
