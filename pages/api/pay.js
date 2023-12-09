@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      return res.status(401).json({ error: getErrorMessage(new Error('Expired authorization. Please reconnect to Handcash.')), redirectUrl: new HandCashService().getRedirectionUrl() });
+      return res.status(401).json({ error: 'Expired authorization. Please reconnect to Handcash.', redirectUrl: new HandCashService().getRedirectionUrl() });
     }
 
     let paymentAmount = calculatePaymentAmount(requesttype, model);
