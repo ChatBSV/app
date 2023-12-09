@@ -164,10 +164,19 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
 
     const handlePaymentError = (status, errorResult, prompt) => {
         if (status === 401) {
-            const pendingPrompt = JSON.stringify({ type: getRequestType(prompt), content: prompt });
-            localStorage.setItem('pendingPrompt', pendingPrompt);
-            window.location.href = redirectionUrl;
+            // Check for pending prompts before redirecting
+            const pendingPrompt = localStorage.getItem('pendingPrompt');
+            if (pendingPrompt) {
+                localStorage.setItem('pendingPrompt', JSON.stringify({ type: getRequestType(prompt), content: prompt }));
+                window.location.href = redirectionUrl;
+            } else {
+                // If no pending prompt, handle as a normal error
+                const friendlyErrorMessage = getErrorMessage(new Error('Unauthorized. Please check your connection or try again later.'));
+                setPaymentResult({ status: 'error', message: friendlyErrorMessage });
+                addErrorMessageToChat(friendlyErrorMessage);
+            }
         } else {
+            // Handle other errors
             const friendlyErrorMessage = getErrorMessage(new Error(errorResult.error));
             setPaymentResult({ status: 'error', message: friendlyErrorMessage });
             addErrorMessageToChat(friendlyErrorMessage);
