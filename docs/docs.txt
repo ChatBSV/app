@@ -1,0 +1,402 @@
+///  Documentation: pages/index.js
+Overview
+This file represents the main page of a React web application. It imports various components and utilities to create an interactive chat interface. The page is structured to support server-side rendering with dynamic data passed through props.
+
+Imports
+React and useEffect hook from 'react'.
+ChatBody, ChatInput, and Header components from the 'src/components' directory.
+getSessionProps utility from 'src/utils/sessionUtils' for server-side data fetching.
+MetaHead component for setting HTML metadata.
+useChatService custom hook from 'src/hooks/useChatService' for chat functionality.
+resetChat utility from 'src/utils' for resetting chat state.
+Global CSS styling from 'global.css'.
+Server-Side Rendering
+getServerSideProps is exported to provide server-side data fetching using getSessionProps.
+Component: IndexPage
+Functional component that receives props: tokens, redirectionUrl, sessionToken, user.
+Utilizes useChatService hook to manage chat state and actions, returning relevant states and functions.
+useEffect hook is used to handle page reload based on URL query parameters.
+The component structure includes:
+MetaHead component for setting up meta tags.
+Header component with props for chat reset, redirection URL, session token, and user data.
+ChatBody component to display chat messages and loading state.
+ChatInput component for message input, handling submissions, and chat reset functionality.
+Functionality
+The page integrates chat functionalities including message display, input, and submission.
+Server-side rendering ensures initial chat state is loaded based on server data.
+Dynamic interaction with the chat service is facilitated through custom hooks and utilities.
+Notes
+It is important to ensure that handleSubmit used in ChatInput is the function from useChatService.
+The useEffect hook manages a specific use case where the page needs to be reloaded.
+CSS styles are globally applied from 'global.css'.
+
+
+
+///  Documentation: src/components/ChatInput.js
+Overview
+ChatInput is a React component used for entering and submitting chat messages in the application. It handles various aspects like form submission, payment processing for requests, and chat message management.
+
+Component Props
+handleSubmit: Function to handle form submission.
+sessionToken: Session token for authentication.
+redirectionUrl: URL to redirect to when disconnected.
+resetChat: Function to reset the chat.
+addMessageToChat: Function to add a message to the chat.
+State and Refs
+useState for managing local states like txid, paymentResult, and connection status.
+useRef for referencing the input field.
+useEffect Hooks
+The first useEffect checks for session token validity and handles pending prompts.
+The second useEffect triggers payment and message submission for pending prompts if connected.
+Handlers and Functions
+handleKeyDown: Triggers message submission on Enter key press.
+setModel and setDalleModel: Functions to set the model for GPT and DALL-E respectively.
+onDisconnectedSubmit: Handles submissions when disconnected.
+buttonText: Determines the text displayed on the submit button.
+submitInput: Central function to process input submission logic.
+handleFormSubmit: Prevents default form submission and triggers submitInput.
+pay: Handles payment processing and request submission.
+getRequestType: Determines the type of request based on input prompt.
+sendPaymentRequest: Sends a payment request to the server.
+getPaymentRequestHeaders: Constructs headers for the payment request.
+handlePaymentError and processPaymentError: Handle errors during payment processing.
+processPaymentResult and processSuccessfulPayment: Process the result of a successful payment.
+addErrorMessageToChat: Adds an error message to the chat.
+handleHelpRequest: Handles help command requests.
+Render
+Renders a form with a textarea for input and buttons for actions like sending, disconnecting, and resetting chat.
+Uses ButtonIcon component for the send button.
+Displays different buttons based on the connection status.
+Notes
+The component is tightly integrated with the chat functionality, handling both user input and system responses.
+Payment processing and model selection logic are embedded within the component.
+The component manages its state and interacts with external services (like payment processing) and utilities.
+Proper error handling and message management are crucial for a smooth user experience.
+
+
+
+///  Documentation: src/components/ChatBody.js
+Overview
+ChatBody is a React component in the chat application responsible for displaying chat messages. It utilizes the ChatMessage component to render individual messages and manages the display of special messages like introductory texts, loading indicators, and error messages.
+
+Props
+chat: An array of chat message objects.
+isLoading: A boolean indicating if the chat is in a loading state.
+isError: A boolean indicating if there is an error in the chat.
+errorMessage: A string containing the error message to display.
+Imports
+React from 'react'.
+Custom styles from './ChatBody.module.css'.
+ChatMessage component for rendering individual chat messages.
+Loading messages from 'loadingMessages.json'.
+useScrollToBottom custom hook for automatic scrolling.
+Introductory message contents from 'intro-Message1.html' and 'intro-Message2.html'.
+Help content from 'help.html' (path should be verified).
+Functionality
+Uses useScrollToBottom hook to automatically scroll the chat to the bottom when new messages are added.
+renderMessage function to render individual chat messages. It handles regular messages and special '/help' messages differently.
+For '/help' messages, dangerouslySetInnerHTML is used to render HTML content.
+Regular messages are rendered with relevant properties like content, role, tokens, and transaction ID.
+Randomly selects a loading message from loadingMessages.json when in a loading state.
+Rendering
+The component wraps its content in a div with a reference to chatContainerRef for scrolling management.
+Renders two introductory messages at the beginning of the chat.
+Iterates over the chat array to render messages using renderMessage.
+Displays a loading message when isLoading is true.
+Shows an error message when isError is true and an errorMessage is provided.
+Notes
+The component is crucial for rendering the conversational interface of the chat application.
+It handles different types of messages, ensuring appropriate rendering and interaction for each.
+Automatic scrolling to the bottom enhances user experience by keeping the latest messages visible.
+Usage of dangerouslySetInnerHTML for help content requires ensuring the content's security to prevent XSS vulnerabilities.
+
+
+///  Documentation: src/components/ChatMessage.js
+Overview
+ChatMessage is a React component in the chat application responsible for rendering different types of chat messages based on their role. It acts as a central switchboard, directing the rendering process to the appropriate component for each message type.
+
+Props
+content: The content of the message.
+role: A string indicating the type of message (e.g., 'assistant', 'user', 'dalle-image').
+tokens: (Optional) The number of tokens used in the message (for assistant messages).
+txid: (Optional) Transaction ID associated with the message (for assistant and image messages).
+isNewMessage: (Optional) A boolean indicating if this is a new message (for assistant messages).
+onImageLoad: (Optional) Callback function triggered when an image loads (for image messages).
+Imports
+React from 'react'.
+Various message components like AssistantMessage, UserMessage, DalleImageMessage, MemeImageMessage, LoadingMessage, IntroMessage, ErrorMessage, and HelpMessage.
+Functionality
+The component uses a switch statement to determine which type of message component to render based on the role prop.
+Each case in the switch statement corresponds to a different message type, rendering the respective component with appropriate props.
+Rendered Components
+AssistantMessage: Renders messages from the assistant.
+UserMessage: Renders messages from the user.
+DalleImageMessage: Renders DALL-E generated image messages.
+MemeImageMessage: Renders meme image messages.
+LoadingMessage: Renders a loading message.
+IntroMessage: Renders an introductory message.
+ErrorMessage: Renders an error message.
+HelpMessage: Renders a help message.
+Notes
+The component is a key part of the chat interface, managing the rendering of diverse message types.
+Properly handling each message type enhances the user experience by providing a visually distinct and contextually appropriate presentation for each message.
+The component's design makes it easy to extend with new message types as needed.
+The use of separate components for each message type maintains code modularity and readability.
+
+
+
+///  Documentation: useChatService.js
+Overview
+useChatService is a custom React hook designed to manage the chat service in the application. It centralizes the logic for handling chat messages, making API calls, managing state, and processing user interactions.
+
+Parameters
+options: An object containing configuration options for the chat service.
+tokens: Array of authentication tokens.
+redirectionUrl: Redirection URL for disconnections.
+sessionToken: Session token for user authentication.
+user: User object with user-related information.
+State Management
+Utilizes useState for managing various states like isLoading, isError, errorMessage, chat, and txid.
+useEffect is used to load existing chat from localStorage.
+Functions
+addMessageToChat: Adds a message to the chat, updating both the state and localStorage.
+tokenizeChatHistory: Sends chat history to an API endpoint for tokenization.
+getChatReply: Fetches chat replies from the server for a given prompt and chat history.
+handleHelpRequest: Handles the '/help' command by adding a help message to the chat.
+handleSubmit: Processes user messages, sends them to the server, and updates the chat with the response.
+API Calls
+getChatReply: Makes a POST request to the '/api/get-chat-reply' endpoint with the prompt, history, and model information.
+tokenizeChatHistory: Makes a POST request to the '/api/tokenizer' endpoint with the chat history.
+Error Handling
+getChatReply includes error handling to set error states and add error messages to the chat.
+tokenizeChatHistory also includes error handling, throwing an error in case of a failed request.
+Return Object
+Returns an object containing:
+isLoading: Indicates if the chat is currently loading.
+isError: Indicates if there is an error in the chat.
+errorMessage: The error message to display.
+chat: The current state of the chat.
+addMessageToChat: Function to add messages to the chat.
+txid: Current transaction ID.
+handleSubmit: Function to handle message submissions.
+handleHelpRequest: Function to handle help requests.
+Notes
+This hook is essential for managing chat interactions and data flow in the application.
+It abstracts the complexities of handling API calls, state updates, and message processing.
+By using this hook, components can easily interact with the chat service without managing the intricate details of chat operations.
+
+
+///  Documentation: pages/api/pay.js
+Overview
+pay.js is an API route in a Next.js application handling payment requests. It validates authorization, calculates payment amounts based on request type and model, and processes the payment via HandCashService.
+
+Function: handler
+Purpose: To handle POST requests for processing payments.
+Request Validation: Checks for a POST method and validates the authorization header.
+Token Verification: Extracts and verifies the session token.
+Authorization Check: Retrieves and validates the authorization token.
+Payment Calculation: Calculates the payment amount based on requesttype and model.
+Payment Processing: Processes the payment and returns the transaction ID.
+Error Handling: Catches and handles any errors, returning appropriate responses.
+Function: calculatePaymentAmount
+Purpose: To calculate the payment amount based on the request type and model.
+Logic: Uses a switch statement to determine the payment amount based on environmental variables set for different models and request types.
+Function: makePayment
+Purpose: To make a payment using the HandCashService.
+Implementation: Creates an instance of HandCashService with the authToken and calls its pay method with payment details.
+Error Handling
+The main handler function includes comprehensive error handling, logging errors, and returning relevant HTTP status codes and messages.
+Environmental Variables
+Uses environmental variables for payment amounts (DALLE2_AMOUNT, DALLE3_AMOUNT, MEME_AMOUNT, GPT4_AMOUNT, GPT3_AMOUNT, CHAT_AMOUNT), the payment destination (DEST), and currency (CURRENCY).
+Notes
+This API route is crucial for the application's payment processing functionality.
+It demonstrates a clear separation of concerns, with specific functions handling different aspects of the payment process.
+The use of environmental variables for payment amounts and other settings adds flexibility and configurability to the payment process.
+The route includes necessary security checks, such as authorization and session token validation, ensuring secure transactions.
+
+///  Documentation: src/lib/getErrorMessage.js
+Overview
+getErrorMessage.js is a utility function in a JavaScript application that extracts and formats error messages from various error object structures.
+
+Function: getErrorMessage
+Purpose: To extract a user-friendly error message from an error object.
+Parameters: Accepts an error object.
+Implementation:
+Checks if the provided error is an object.
+Prioritizes extracting the message from error.response.data.message if available, which is a common structure in HTTP response errors.
+If the above is not found, it falls back to error.message, which is standard for JavaScript errors.
+If error.code is available, it constructs a message using the code.
+If none of the above conditions are met, it returns a generic error message.
+In cases where the error is not an object or undefined, it provides a fallback error message stating no additional information is available.
+Error Handling Scenarios
+Handles various error structures, including:
+Errors with a response object, common in HTTP requests (e.g., Axios).
+Standard JavaScript errors with a message property.
+Errors with a specific code.
+Generic or unknown error structures.
+Usage
+This function is mainly used in error handling across the application, particularly in API routes and service functions, to provide consistent and clear error messaging.
+It's especially useful in environments where multiple types of errors might occur, such as network requests, third-party library integrations, or general JavaScript exceptions.
+Notes
+The function is designed to be flexible and handle multiple error structures, which is common in applications interacting with various APIs and libraries.
+The use of a utility function like this promotes consistency in error messaging throughout the application.
+
+///  Documentation: src/services/HandCashService.js
+Overview
+HandCashService.js is a service class in a JavaScript application that interfaces with the HandCash Connect SDK to perform operations related to HandCash accounts, such as fetching user profiles and processing payments.
+
+Configuration
+Uses environment variables HANDCASH_APP_ID and HANDCASH_APP_SECRET to configure the HandCash Connect instance.
+Class: HandCashService
+Constructor:
+Parameters: authToken (String) - The authentication token for the HandCash account.
+Functionality: Initializes the HandCash account using the provided authentication token.
+Methods:
+getProfile:
+Purpose: Retrieves the current profile of the HandCash account.
+Returns: A Promise that resolves to the profile object.
+pay:
+Parameters: An object containing destination, amount, currencyCode, and description.
+Purpose: Processes a payment through the HandCash wallet.
+Returns: A Promise that resolves to the transaction result.
+getRedirectionUrl:
+Purpose: Retrieves the URL for redirecting users to the HandCash authentication page.
+Returns: A String representing the redirection URL.
+HandCash Connect SDK
+The service utilizes the HandCashConnect class from the @handcash/handcash-connect package.
+It creates a single instance of HandCashConnect using the application's ID and secret.
+Usage
+This service class is used within the application to interact with the HandCash API, providing functionalities such as payment processing and user profile retrieval.
+It abstracts the complexity of dealing with the HandCash Connect API, offering simple methods for common tasks.
+Notes
+The service is reliant on the HandCash Connect SDK, making it specific to applications that use HandCash for payments.
+Proper management of environment variables is crucial for the security and functionality of this service.
+The class design follows the principle of single responsibility, focusing solely on HandCash-related operations.
+
+
+
+///  Documentation: src/hooks/ThreadManager.js
+Overview
+ThreadManager.js is a custom React hook designed for managing threads in a chat application. It facilitates operations such as creating, deleting, and selecting threads, as well as managing thread messages and titles.
+
+State Management
+Utilizes useState for managing the array of threads (threads) and the currently selected thread (currentThread).
+useEffect is used to initialize threads from localStorage on the first render.
+Functions
+createThread: Creates a new thread with a given title.
+deleteThread: Deletes a specific thread based on its ID.
+deleteAllThreads: Deletes all threads and creates a new initial thread.
+selectThread: Sets the currently active thread based on its ID.
+saveThreadMessages: Saves messages for a specified thread.
+saveThreadTitle: Updates the title of a specified thread.
+updateCurrentThreadMessages: Updates the messages of the current thread.
+Data Initialization
+On initial render, it checks localStorage for existing threads. If none are found, it creates an initial thread.
+Sets the active thread based on localStorage or defaults to the first thread if none is specified.
+Local Storage Interaction
+Stores and retrieves threads and the current thread ID in localStorage.
+Each function that modifies threads or the current thread updates localStorage accordingly.
+Usage
+This hook can be used in components that need to manage multiple chat threads, providing them with functions to handle thread operations and state.
+Notes
+The hook abstracts thread management logic, making it reusable across different components in the chat application.
+By using localStorage, the hook provides persistence for thread data across page reloads.
+Error handling and edge cases (like deleting the last thread) are considered, ensuring a robust implementation.
+
+
+///  Documentation: src/components/ChatSidebar.js
+Overview
+ChatSidebar is a React component designed for a chat application, providing a user interface for managing chat threads. It allows users to create new threads, select, rename, and delete existing threads, and also includes functionality for logging out.
+
+Props
+isConnected: Indicates if the user is connected.
+threads: An array of thread objects.
+onSelectThread: Function to handle selection of a thread.
+onCreateThread: Function to handle creation of a new thread.
+onDeleteThread: Function to handle deletion of a specific thread.
+onDeleteAllThreads: Function to handle deletion of all threads.
+currentThreadId: ID of the currently selected thread.
+State Management
+Uses useState for managing:
+editingThreadId: ID of the thread currently being edited.
+editedTitle: Title being edited for a thread.
+isSidebarExpanded: Boolean to toggle the sidebar expansion state.
+Functions
+handleCreateThread: Triggers thread creation.
+handleDeleteAllThreads: Triggers deletion of all threads.
+handleSelectThread: Handles selection of a thread.
+onDisconnect: Handles the logout process.
+handleRenameThread: Renames a thread based on the edited title.
+toggleSidebar: Toggles the sidebar's expanded or collapsed state.
+User Interface
+Renders a sidebar that can be expanded or collapsed.
+Displays a list of threads, each with options to rename and delete.
+Provides buttons to create a new thread, delete all threads, and log out.
+Each thread can be clicked to select, and includes an edit mode for renaming.
+Interaction with Local Storage
+Updates the threads in localStorage when a thread is renamed.
+Styling
+Uses CSS classes for styling various elements like the sidebar, buttons, and thread list items.
+Dynamically applies styles for active threads and editable fields.
+Notes
+The component enhances user experience by offering an intuitive interface for managing chat threads.
+The sidebar's ability to expand and collapse helps in optimizing screen space.
+Incorporates essential chat functionality like thread management and user logout within a single component.
+
+
+///  Documentation: pages/api/get-chat-reply.js
+Overview
+This file is a Next.js API route designed to handle chat replies for a chat application. It processes different types of requests like image generation, meme creation, and text responses using various OpenAI models and DALL-E versions.
+
+Imports
+Handlers for OpenAI and DALL-E requests (handleOpenAIRequest3, handleOpenAIRequest4, handleDalleRequest, handleDalle2Request, handleMemeRequest).
+getErrorMessage from ../../src/lib/getErrorMessage for error formatting.
+Configuration
+api.bodyParser.sizeLimit set to '1mb' to restrict request body size.
+api.externalResolver set to true.
+API Route: handler(req, res)
+Functionality: Handles incoming requests to generate chat replies.
+Parameters:
+req: The HTTP request object.
+res: The HTTP response object.
+Process:
+Extracts prompt, history, and model from the request body.
+Determines requestType from headers.
+Uses default models ('gpt-3.5-turbo' and 'dall-e-3') if not specified.
+Handles different requestType:
+Image: Routes to DALL-E 2 or DALL-E 3 handlers based on the model.
+Meme: Processes meme requests.
+Default: Handles text responses using GPT-4 or GPT-3.5 based on the selected model.
+Sends back the response with relevant data (image URL, tokens, model info, etc.).
+Error Handling:
+Catches and logs errors.
+Sends a 500 status with detailed error messages.
+Notes
+This route is essential for handling various types of chat requests, offering flexibility in response types.
+It demonstrates the integration of different AI models for diverse functionalities.
+The use of getErrorMessage ensures consistent and clear error messaging across the application.
+Proper error handling in API routes is crucial for robustness and user experience.
+
+///  Documentation: src/utils/sessionUtils.js
+Overview
+This utility module in a JavaScript application provides functionality to process session properties, particularly for server-side operations in a Next.js context. It primarily handles the retrieval and decoding of session tokens, as well as fetching redirection URLs from a HandCashService instance.
+
+Imports
+HandCashService from ../services/HandCashService: For fetching redirection URLs related to HandCash accounts.
+SessionTokenRepository from ../repositories/SessionTokenRepository: For decoding session tokens.
+Function: getSessionProps({ req })
+Purpose: To retrieve and decode session properties from cookies in a server-side context.
+Parameters:
+req: The HTTP request object containing headers and cookies.
+Process:
+Extracts sessionToken from the cookies present in the request headers.
+Retrieves a redirection URL using HandCashService.
+Decodes user data from the session token using SessionTokenRepository, if the token is found.
+Logs various steps for debugging and tracking.
+Error Handling: Catches and logs errors encountered during the process.
+Returns: An object containing redirectionUrl, sessionToken, and user data, formatted as Next.js props.
+Notes
+This utility is essential for server-side session management in a Next.js application, especially in scenarios requiring user authentication and redirection handling.
+It demonstrates a clear separation of concerns by outsourcing specific functionalities to services and repositories.
+Robust error handling and logging provide better insights and aid in debugging.
+The module ensures secure handling of session tokens and user data, crucial for user privacy and application security.

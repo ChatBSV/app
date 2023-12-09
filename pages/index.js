@@ -21,8 +21,20 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   } = useChatService({ tokens, redirectionUrl, sessionToken, user });
 
   useEffect(() => {
+    // Redirect if needed
     if (window.location.search.includes('reload=true')) {
       window.location.href = '/';
+    }
+
+    // Register the service worker on mount
+    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((err) => {
+          console.error('Service Worker registration failed:', err);
+        });
     }
   }, []);
 
@@ -33,7 +45,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
       <ChatBody chat={chat} isLoading={isLoading} />
       <ChatInput 
         resetChat={resetChat} 
-        handleSubmit={handleSubmit} // Passing handleSubmit to ChatInput
+        handleSubmit={handleSubmit}
         sessionToken={sessionToken} 
         redirectionUrl={redirectionUrl} 
         addMessageToChat={addMessageToChat}
@@ -43,3 +55,4 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
 }
 
 export default IndexPage;
+

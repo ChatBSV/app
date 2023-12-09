@@ -21,10 +21,13 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   }, []);
 
   const addMessageToChat = useCallback((message, isNew = true) => {
+    const newMessage = { ...message, isNew };
     setChat(prevChat => {
-      const newMessage = { ...message, isNew };
       const updatedChat = [...prevChat, newMessage];
-      localStorage.setItem('chat', JSON.stringify(updatedChat));
+      // Save to local storage only if the message is not an error
+      if (message.role !== 'error') {
+        localStorage.setItem('chat', JSON.stringify(updatedChat));
+      }
       return updatedChat;
     });
   }, []);
@@ -80,7 +83,8 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       clearTimeout(id);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
@@ -92,13 +96,13 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       const errorText = getErrorMessage(error);
       setErrorMessage(errorText);
       addMessageToChat({
-        id: nanoid(),
-        role: 'error',
-        content: errorText,
-        txid: '',
+          id: nanoid(),
+          role: 'error',
+          content: errorText,
+          txid: '',
       });
       return null;
-    } finally {
+  } finally {
       setIsLoading(false);
     }
   };

@@ -1,10 +1,11 @@
+//  src/components/ChatInput.js
+
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
 import { handleTextareaChange, onDisconnect } from '../utils/ChatInputUtils';
 import helpContent from '../../content/help.html';
-
-
+import getErrorMessage from '../lib/getErrorMessage';
 import { nanoid } from 'nanoid';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
@@ -167,8 +168,9 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             localStorage.setItem('pendingPrompt', pendingPrompt);
             window.location.href = redirectionUrl;
         } else {
-            setPaymentResult({ status: 'error', message: errorResult.error });
-            addErrorMessageToChat(errorResult.error || "An unexpected error occurred.");
+            const friendlyErrorMessage = getErrorMessage(new Error(errorResult.error));
+            setPaymentResult({ status: 'error', message: friendlyErrorMessage });
+            addErrorMessageToChat(friendlyErrorMessage);
         }
     };
 
@@ -189,11 +191,11 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     };
 
     const processPaymentError = (error) => {
-        const errorMessage = error.message || "An unexpected network error occurred.";
+        const errorMessage = getErrorMessage(error);
         setPaymentResult({ status: 'error', message: errorMessage });
         addErrorMessageToChat(errorMessage);
     };
-
+    
     const addErrorMessageToChat = (message) => {
         addMessageToChat({
             id: nanoid(),
@@ -233,7 +235,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
                 <div className={styles.mbWrapper}>
                     {isConnected && 
                 <button className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={(event) => {
-                    event.preventDefault(); // Prevent form submission
+                    event.preventDefault();
                     onDisconnect();}}></button>}
                 <ButtonIcon
                     icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
@@ -243,7 +245,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
                 <button
                     className={`${styles.actionButton} ${styles.resetButtonMobile}`}
                     onClick={(event) => {
-                    event.preventDefault(); // Prevent form submission
+                    event.preventDefault(); 
                     resetChat();}}></button>
                 </div>
             </form>

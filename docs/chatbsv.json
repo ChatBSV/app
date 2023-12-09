@@ -1,0 +1,83 @@
+{
+    "header": {
+      "applicationType": "Next.js Web Application",
+      "name": "ChatBSV",
+      "deployment": "Vercel"
+    },
+    "pages": {
+      "index.js": {
+        "description": "Main page of a React web app with chat interface.",
+        "imports": ["React", "ChatBody", "ChatInput", "Header", "getSessionProps", "MetaHead", "useChatService", "resetChat", "global.css"],
+        "serverSideRendering": true,
+        "components": ["MetaHead", "Header", "ChatBody", "ChatInput"],
+        "hooks": ["useChatService", "useEffect"]
+      }
+    },
+    "components": {
+      "ChatInput": {
+        "description": "Handles chat message input and submission.",
+        "props": ["handleSubmit", "sessionToken", "redirectionUrl", "resetChat", "addMessageToChat"],
+        "stateManagement": ["useState", "useRef"],
+        "importantMethods": ["handleKeyDown", "submitInput", "handleFormSubmit", "pay", "getRequestType"]
+      },
+      "ChatBody": {
+        "description": "Displays chat messages.",
+        "props": ["chat", "isLoading", "isError", "errorMessage"],
+        "imports": ["ChatMessage", "useScrollToBottom"],
+        "functionality": ["useScrollToBottom", "renderMessage"]
+      },
+      "ChatMessage": {
+        "description": "Renders various types of chat messages.",
+        "props": ["content", "role", "tokens", "txid", "isNewMessage", "onImageLoad"],
+        "messageTypes": ["AssistantMessage", "UserMessage", "DalleImageMessage", "MemeImageMessage"]
+      },
+      "ChatSidebar": {
+        "description": "UI for managing chat threads.",
+        "props": ["isConnected", "threads", "onSelectThread", "onCreateThread", "onDeleteThread", "onDeleteAllThreads", "currentThreadId"],
+        "stateManagement": ["useState"],
+        "functions": ["handleCreateThread", "handleDeleteAllThreads", "handleSelectThread", "handleRenameThread", "toggleSidebar"]
+      }
+    },
+    "hooks": {
+      "useChatService": {
+        "description": "Manages chat service.",
+        "parameters": ["options", "tokens", "redirectionUrl", "sessionToken", "user"],
+        "stateManagement": ["useState", "useEffect"],
+        "functions": ["addMessageToChat", "tokenizeChatHistory", "getChatReply", "handleSubmit"]
+      },
+      "ThreadManager": {
+        "description": "Manages chat threads.",
+        "stateManagement": ["useState", "useEffect"],
+        "functions": ["createThread", "deleteThread", "selectThread", "saveThreadMessages"]
+      }
+    },
+    "api": {
+      "pay.js": {
+        "description": "Handles payment requests.",
+        "functions": ["handler", "calculatePaymentAmount", "makePayment"]
+      },
+      "get-chat-reply.js": {
+        "description": "Handles chat replies, integrating with AI models.",
+        "imports": ["handleOpenAIRequest", "handleDalleRequest", "handleMemeRequest", "getErrorMessage"]
+      }
+    },
+    "utils": {
+      "sessionUtils": {
+        "description": "Processes session properties for server-side operations.",
+        "functions": ["getSessionProps"]
+      }
+    },
+    "services": {
+      "HandCashService": {
+        "description": "Interfaces with HandCash Connect SDK for account operations.",
+        "methods": ["getProfile", "pay", "getRedirectionUrl"]
+      }
+    },
+    "lib": {
+      "getErrorMessage": {
+        "description": "Extracts formatted error messages from error objects.",
+        "function": "getErrorMessage"
+      }
+    }
+  }
+  

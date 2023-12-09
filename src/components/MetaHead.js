@@ -5,13 +5,14 @@ import Head from 'next/head';
 const MetaHead = () => (
     <Head>
         <title>ChatBSV - OpenAI on Bitcoin</title>
-        <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
-        <meta name="theme-color" content="#222" />
-        <meta property="og:title" content="ChatBSV - OpenAI on Bitcoin" />
-        <meta property="og:description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
+        <meta name="description" content="Ask me anything! Micro transactions at their best. Pay per use AI tokens." />
+        <meta name="theme-color" content="#eee" />
+    <link rel="manifest" href="/manifest.json" />
+        <meta property="og:title" content="ChatBSV - AI on Bitcoin" />
+        <meta property="og:description" content="Ask me anything! Micro transactions at their best. Pay per use AI tokens." />
         <meta property="og:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/654a55ab5a25aa83e46c8d50_ChatBSV_openGraph.png" />
-        <meta property="twitter:title" content="ChatBSV - OpenAI on Bitcoin" />
-        <meta property="twitter:description" content="Ask me anything! Micro transactions at their best. Pay per use OpenAI tokens." />
+        <meta property="twitter:title" content="ChatBSV - AI on Bitcoin" />
+        <meta property="twitter:description" content="Ask me anything! Micro transactions at their best. Pay per use AI tokens." />
         <meta property="twitter:image" content="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/654a55ab5a25aa83e46c8d50_ChatBSV_openGraph.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />

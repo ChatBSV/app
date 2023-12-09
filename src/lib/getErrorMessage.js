@@ -13,7 +13,7 @@ export default function getErrorMessage(error) {
             errorMessage = "An unexpected error occurred.";
         }
     } else {
-        errorMessage = "An error occurred and no additional information is available.";
+        errorMessage = "Authorization expired, prompt saved. Redirecting to Handcash, please authorize to proceed.";
     }
     return errorMessage;
 }
