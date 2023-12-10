@@ -31,4 +31,8 @@ export default class HandCashService {
   getRedirectionUrl() {
     return handCashConnect.getRedirectionUrl();
   }
+  async getSpendableBalance() {
+    return await this.account.wallet.getSpendableBalance();
+  }
+
 }

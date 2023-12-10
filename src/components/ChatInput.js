@@ -138,15 +138,29 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
 
     const sendPaymentRequest = async (prompt, requestType) => {
         const headers = getPaymentRequestHeaders(requestType);
-
+    
         const response = await fetch('/api/pay', { method: "POST", headers });
         if (!response.ok) {
             const errorResult = await response.json();
-            handlePaymentError(response.status, errorResult, prompt);
+            if (response.status === 401) {
+                // Handle 401 specific logic
+                handlePaymentError(errorResult, prompt);
+                const pendingPrompt = JSON.stringify({ type: getRequestType(prompt), content: prompt });
+                localStorage.setItem('pendingPrompt', pendingPrompt);
+                window.location.href = redirectionUrl;
+            } else {
+                // Call the refactored handlePaymentError function
+                handlePaymentError(errorResult, prompt);
+            }
+            return;
         }
-
+    
         return await response.json();
     };
+    
+    
+    
+    
 
     const getPaymentRequestHeaders = (requestType) => {
         const selectedModel = requestType === 'image' ? localStorage.getItem('selectedDalleModel') || 'dall-e-3' :
@@ -161,19 +175,15 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         };
     };
 
-    const handlePaymentError = (status, errorResult, prompt) => {
-        if (status === 401) {
-            const pendingPrompt = JSON.stringify({ type: getRequestType(prompt), content: prompt });
-            localStorage.setItem('pendingPrompt', pendingPrompt);
-            window.location.href = redirectionUrl;
-        } else {
-            setPaymentResult({ status: 'error', message: errorResult.error });
-            addErrorMessageToChat(errorResult.error || "An unexpected error occurred.");
-        }
+    const handlePaymentError = (errorResult, prompt) => {
+        const error = new Error(errorResult.error || "An unexpected error occurred.");
+        setPaymentResult({ status: 'error', message: error.message });
+        addErrorMessageToChat(error.message);
     };
+    
 
     const processPaymentResult = (paymentResult, prompt, requestType) => {
-        if (paymentResult.status === 'sent') {
+        if (paymentResult?.status === 'sent') {
             localStorage.setItem('txid', paymentResult.transactionId);
             setTxid(paymentResult.transactionId);
             processSuccessfulPayment(prompt, paymentResult.transactionId, requestType);
@@ -187,12 +197,15 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         inputRef.current.value = '';
         setPaymentResult({ status: 'none' });
     };
-
+    
     const processPaymentError = (error) => {
         const errorMessage = error.message || "An unexpected network error occurred.";
         setPaymentResult({ status: 'error', message: errorMessage });
         addErrorMessageToChat(errorMessage);
     };
+    
+    
+    
 
     const addErrorMessageToChat = (message) => {
         addMessageToChat({

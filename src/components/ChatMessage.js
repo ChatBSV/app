@@ -25,8 +25,8 @@ function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad })
     case 'intro':
       return <IntroMessage content={content} />;
     case 'error':
-      return <ErrorMessage error={content} />;
-    case 'help':
+      return <ErrorMessage error={{ message: content }} />;
+      case 'help':
       return <HelpMessage content={content} />; // Use the HelpMessage component
     default:
       return null; // or some default message component

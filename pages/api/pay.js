@@ -13,8 +13,8 @@ export default async function handler(req, res) {
   try {
     const { authorization, requesttype, model } = req.headers;
 
-    console.log('Request Type:', requesttype); // Existing log
-    console.log('Model:', model); // Existing log
+    console.log('Request Type:', requesttype);
+    console.log('Model:', model); 
 
     if (!authorization) {
       return res.status(401).json({ error: getErrorMessage(new Error('Missing authorization. Please reconnect to Handcash.')) });
@@ -28,24 +28,33 @@ export default async function handler(req, res) {
     const { sessionId, user } = SessionTokenRepository.verify(sessionToken);
     const authToken = AuthTokenRepository.getById(sessionId);
     if (!authToken) {
-      return res.status(401).json({ error: 'Expired authorization. Please reconnect to Handcash.', redirectUrl: new HandCashService().getRedirectionUrl() });
+      const errorMessage = getErrorMessage(new Error('Expired authentication. Reconnecting to Handcash. Please authorize to proceed. '));
+      return res.status(401).json({ error: errorMessage, redirectUrl: new HandCashService().getRedirectionUrl() });
     }
 
+    const handCashService = new HandCashService(authToken);
+    const spendableBalance = await handCashService.getSpendableBalance();
+    console.log('Spendable Balance:', spendableBalance);
+    if (spendableBalance.spendableFiatBalance < 1) {
+      console.log('Low Balance');
+      const errorMessage = getErrorMessage(new Error('Low balance, please top up or increase your spending limit.'));
+      return res.status(400).json({ error: errorMessage });
+      
+  }
+
     let paymentAmount = calculatePaymentAmount(requesttype, model);
-    console.log('Processed Payment Amount:', paymentAmount); // Existing log
+    console.log('Processed Payment Amount:', paymentAmount); 
 
-    const paymentResult = await makePayment(authToken, paymentAmount);
-
-    // Log the transaction ID from the payment result
+    const paymentResult = await makePayment(authToken, paymentAmount, model);
     console.log('Transaction ID:', paymentResult.transactionId);
 
     return res.status(200).json({ status: 'sent', transactionId: paymentResult.transactionId });
   } catch (error) {
     console.error(error);
     const errorMessage = getErrorMessage(error);
-    const statusCode = error.statusCode || error.status || 500;
-    return res.status(statusCode).json({ status: 'error', error: errorMessage });
-  }
+    return res.status(500).json({ error: errorMessage }); // Defaulting to 500 for any server-side error
+}
+
 }
 
 function calculatePaymentAmount(requesttype, model) {
@@ -61,11 +70,11 @@ function calculatePaymentAmount(requesttype, model) {
   }
 }
 
-async function makePayment(authToken, paymentAmount) {
+async function makePayment(authToken, paymentAmount, model) {
   return await new HandCashService(authToken).pay({
     destination: process.env.DEST,
     amount: paymentAmount,
     currencyCode: process.env.CURRENCY,
-    description: 'ChatBSV payment'
+    description: 'ChatBSV - ' + model.toUpperCase()
   });
 }

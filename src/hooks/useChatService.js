@@ -43,8 +43,10 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error!`);
+    }
+    
 
       const { processedHistory } = await response.json();
       return processedHistory.split('\n').map(content => ({ role: 'user', content }));
@@ -84,8 +86,9 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-      }
+        throw new Error(errorData.error || `HTTP error!`);
+    }
+    
 
       const data = await response.json();
       console.log('System Response:', data);
