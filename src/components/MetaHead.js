@@ -15,9 +15,9 @@ const MetaHead = () => (
         <meta property="twitter:image" content="/ChatBSV_openGraph.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="/ChatBSV_openGraph.png" />
-        <link rel="icon" content="/icon-32x32.png" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
-    </Head>
+        <link rel="icon" href="/icon-32x32.png" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />    
+        </Head>
 );
 
 export default MetaHead;
