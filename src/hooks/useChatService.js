@@ -10,12 +10,15 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
-  const [txid, setTxid] = useState('');
+  const [paymentInfo, setPaymentInfo] = useState({ txid: '', tokens: 0 });
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
-      const existingChat = JSON.parse(storedChat).map(message => ({ ...message, isNew: false }));
+      const existingChat = JSON.parse(storedChat).map(message => ({
+        ...message,
+        isNew: false
+      }));
       setChat(existingChat);
     }
   }, []);
@@ -24,7 +27,6 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     const newMessage = { ...message, isNew };
     setChat(prevChat => {
       const updatedChat = [...prevChat, newMessage];
-      // Save to local storage only if the message is not an error
       if (message.role !== 'error') {
         localStorage.setItem('chat', JSON.stringify(updatedChat));
       }
@@ -175,7 +177,7 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     setIsLoading(false);
   };
 
-  return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
+  return { isLoading, isError, errorMessage, chat, addMessageToChat, handleSubmit, handleHelpRequest };
 };
 
 export default useChatService;

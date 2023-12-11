@@ -12,3 +12,17 @@ export const onDisconnect = async () => {
   });
   window.location.href = "/";
 };
+
+export const handleKeyDown = (event, submitInput) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    submitInput();
+  }
+};
+
+
+export const getButtonText = (paymentResult, isConnected) => {
+  if (paymentResult?.status === 'pending') return 'Sending...';
+  return isConnected ? 'Send' : 'Connect';
+};
+

@@ -2,103 +2,71 @@
 
 import { nanoid } from 'nanoid';
 
-export const handleFormSubmit = async (event, inputRef, storedTxid, requestType, handleSubmit, setPaymentResult) => {
-  event.preventDefault();
-  console.log("handleSubmit in handleFormSubmit:", typeof handleSubmit); // Check the type
-
-  const prompt = inputRef.current.value;
-  if (prompt) {
-    await handleSubmit(prompt, storedTxid, requestType); // Correct usage of handleSubmit
-    inputRef.current.value = '';
-    setPaymentResult({ status: 'none' });
-  }
+export const handlePaymentError = (errorResult, prompt, setPaymentResult, addErrorMessageToChat) => {
+    const error = new Error(errorResult.error || "An unexpected error occurred.");
+    setPaymentResult({ status: 'error', message: error.message });
+    addErrorMessageToChat(error.message);
 };
 
-export const pay = async (inputRef, isConnected, redirectionUrl, sessionToken, setPaymentResult, addMessageToChat, helpContent, setTxid, handleSubmit) => {
-  const prompt = inputRef.current.value.trim();
-
-  if (!isConnected) {
-    window.location.href = redirectionUrl;
-    return;
-  }
-
-  if (prompt.toLowerCase().startsWith('/help')) {
-    handleHelpRequest(prompt, addMessageToChat, helpContent);
-    return;
-  }
-
-  const requestType = prompt.toLowerCase().startsWith('/imagine') ? 'image' :
-                      prompt.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
-
-  let selectedModel;
-  if (requestType === 'image') {
-    selectedModel = localStorage.getItem('selectedDalleModel') || 'dall-e-3';
-  } else if (requestType === 'meme') {
-    selectedModel = 'meme';
-  } else {
-    selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
-  }
-
-  const headers = {
-    'Authorization': `Bearer ${sessionToken}`,
-    'Content-Type': 'application/json',
-    'requesttype': requestType,
-    'model': selectedModel
-  };
-
-  setPaymentResult({ status: 'pending' });
-  try {
-    const response = await fetch('/api/pay', { method: "POST", headers });
-    if (!response.ok) {
-      const errorResult = await response.json();
-      if (response.status === 401) {
-        const pendingPrompt = JSON.stringify({ type: requestType, content: prompt });
-        localStorage.setItem('pendingPrompt', pendingPrompt);
-        window.location.href = redirectionUrl;
-        return;
-      }
-      setPaymentResult({ status: 'error', message: errorResult.error });
-      addMessageToChat({
-        id: nanoid(),
-        role: 'error',
-        content: errorResult.error || "An unexpected error occurred.",
-        txid: '',
-      });
-      return;
-    }
-
-    const paymentResult = await response.json();
-    if (paymentResult.status === 'sent') {
-      localStorage.setItem('txid', paymentResult.transactionId);
-      setTxid(paymentResult.transactionId);
-      handleFormSubmit(new Event('submit'), inputRef, paymentResult.transactionId, requestType, handleSubmit, setPaymentResult);
+export const processPaymentResult = (
+    paymentResult,
+    prompt,
+    requestType,
+    setTxid,
+    setPaymentResult,
+    
+) => {
+    if (paymentResult?.status === 'sent') {
+        localStorage.setItem('txid', paymentResult.transactionId);
+        setTxid(paymentResult.transactionId);
+        processSuccessfulPayment(prompt, paymentResult.transactionId, requestType, paymentResult.tokens);
     } else {
-      setPaymentResult(paymentResult);
+        setPaymentResult(paymentResult);
     }
-  } catch (error) {
+};
+
+export const processSuccessfulPayment = async (
+    prompt,
+    transactionId,
+    requestType,
+    tokens,
+    handleSubmit,
+    inputRef,
+    setPaymentResult
+) => {
+    // Process submission after payment
+    await handleSubmit(prompt, transactionId, requestType, tokens);
+    inputRef.current.value = '';
+    setPaymentResult({ status: 'none' });
+};
+
+export const processPaymentError = (error, setPaymentResult, addErrorMessageToChat) => {
     const errorMessage = error.message || "An unexpected network error occurred.";
     setPaymentResult({ status: 'error', message: errorMessage });
+    addErrorMessageToChat(errorMessage);
+};
+
+export const addErrorMessageToChat = (message, addMessageToChat) => {
     addMessageToChat({
-      id: nanoid(),
-      role: 'error',
-      content: errorMessage,
-      txid: '',
+        id: nanoid(),
+        role: 'error',
+        content: message,
+        txid: '',
     });
-  }
 };
 
 export const handleHelpRequest = (helpCommand, addMessageToChat, helpContent) => {
-  addMessageToChat({
-    id: nanoid(),
-    role: 'user',
-    content: helpCommand,
-    txid: '',
-  });
+    addMessageToChat({
+        id: nanoid(),
+        role: 'user',
+        content: helpCommand,
+        txid: '',
+    });
 
-  addMessageToChat({
-    id: nanoid(),
-    role: 'help',
-    content: helpContent,
-    txid: '',
-  });
+    addMessageToChat({
+        id: nanoid(),
+        role: 'help',
+        content: helpContent,
+        txid: '',
+    });
 };

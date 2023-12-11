@@ -25,6 +25,9 @@ export default async function handler(req, res) {
 
   try {
     console.log(`get-chat-reply: Received model - ${selectedModel} for request type - ${requestType}`);
+    console.log(`get-chat-reply: Received prompt - ${prompt}`);
+    console.log(`get-chat-reply: Received history - ${history}`);
+
     switch (requestType) {
       case 'image':
         if (!prompt) {
@@ -40,6 +43,7 @@ export default async function handler(req, res) {
           const result = await handleDalleRequest({ prompt, model: selectedModel });
           imageUrl = result.imageUrl;
         }
+        console.log(`get-chat-reply: Image URL - ${imageUrl}`);
         res.status(200).json({ imageUrl, tokens: 10000, model: selectedModel });
         break;
 
@@ -49,25 +53,28 @@ export default async function handler(req, res) {
         }
         const memeResult = await handleMemeRequest({ text: prompt });
         imageUrl = memeResult.imageUrl;
+        console.log(`get-chat-reply: Meme Image URL - ${imageUrl}`);
         res.status(200).json({ imageUrl, model: selectedModel });
         break;
 
-        default:
-          let response;
-          if (selectedModel === 'gpt-4') {
-            response = await handleOpenAIRequest4(prompt, history, selectedModel); // Call GPT-4 handler
-          } else {
-            response = await handleOpenAIRequest3(prompt, history, selectedModel); // Call GPT-3.5 handler
-          }
-          res.status(200).json(response);
-          break;
-      }
+      default:
+        let response;
+        if (selectedModel === 'gpt-4') {
+          response = await handleOpenAIRequest4(prompt, history, selectedModel); // Call GPT-4 handler
+        } else {
+          response = await handleOpenAIRequest3(prompt, history, selectedModel); // Call GPT-3.5 handler
+        }
+        console.log('get-chat-reply: Response from AI model:', response); // Log the AI response
+        res.status(200).json(response);
+        break;
+    }
   } catch (error) {
     console.error('Error in get-chat-reply:', error);
     let detailedErrorMessage = getErrorMessage(error);
     if (error.response && error.response.data) {
       detailedErrorMessage = `OpenAI Error: ${getErrorMessage(error.response.data)}`;
     }
+    console.error('get-chat-reply: Detailed Error Message -', detailedErrorMessage); // Log detailed error message
     res.status(500).json({
       error: 'An error occurred during processing.',
       details: detailedErrorMessage,
