@@ -2,16 +2,9 @@
 
 import React from 'react';
 import styles from './Header.module.css';
-import ButtonIcon from './ButtonIcon';
 import Image from 'next/image'; // Import the Image component from next/image
 
-function Header({ resetChat, redirectionUrl, sessionToken, user }) {
-  const onDisconnect = async () => {
-    await fetch('/api/logout', {
-      method: 'POST',
-    });
-    window.location.href = '/';
-  };
+function Header({}) {
 
   return (
     <div className={styles.chatHeader}>

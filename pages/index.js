@@ -29,14 +29,15 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   return (
     <div className="viewport">
       <MetaHead />
-      <Header resetChat={resetChat} redirectionUrl={redirectionUrl} sessionToken={sessionToken} user={user} />
-      <ChatBody chat={chat} isLoading={isLoading} />
+      <Header />
+      <ChatBody chat={chat} isLoading={isLoading} user={user} />
       <ChatInput 
         resetChat={resetChat} 
-        handleSubmit={handleSubmit} // Passing handleSubmit to ChatInput
+        handleSubmit={handleSubmit}
         sessionToken={sessionToken} 
         redirectionUrl={redirectionUrl} 
         addMessageToChat={addMessageToChat}
+        user={user}
       />
     </div>
   );

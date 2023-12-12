@@ -1,10 +1,12 @@
+/* components/ChatInput.module.css */
+
 .chatFooter {
   min-height: 10vh;
   justify-content: center;
   align-items: center;
   padding: 10px 5vw 20px;
   display: flex;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   flex-wrap: wrap;
   z-index: 10;
   border-top: 2px solid #ddd;
@@ -54,7 +56,7 @@
 
 .moneyButton {
   display: inline-block;
-  width: 180px; 
+  width: 180px;
   margin-left: 20px;
   flex: none;
 }
@@ -69,9 +71,11 @@
   cursor: pointer;
   transition: all 0.25s ease-in-out;
 }
+
 .actionButton:hover {
   background-color: #37C078;
 }
+
 .mbWrapper {
   display: flex;
   align-items: center;
@@ -104,7 +108,7 @@
     border-radius: 22px;
     background-size: 32px;
   }
-  
+
   .chatFooter {
     min-height: 120px;
     padding: 5px 3vw 30px;

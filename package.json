@@ -16,6 +16,7 @@
     "isomorphic-unfetch": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "marked": "^11.0.1",
     "nanoid": "^4.0.2",
     "next": "^13.4.2",
     "node-cache": "^5.1.2",

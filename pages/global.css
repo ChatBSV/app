@@ -2,75 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/*width*/
+/* Scrollbar styles */
 ::-webkit-scrollbar {
-width:10px;
-height: 10px;
+  width: 8px;
+  height: 8px;
 }
-/*track*/
+
+/* Scrollbar track */
 ::-webkit-scrollbar-track {
-background:rgba(255, 255, 255, 0);
-border-style:none;
-border-color:#222;
+  background: rgba(255, 255, 255, 0);
+  border: none;
+  border-color: #222;
 }
-/*thumb*/
+
+/* Scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-background:#777;
-border-width:2px;
-border-style:solid;
-border-color:#eee;
-border-radius:10px;
-}
-.chatFooter {
-    min-height: 10vh;
-    justify-content: center;
-    align-items: center;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    display: flex;
-    box-shadow: 0 -1px 3px rgba(255, 255, 255, .5);
-  }
-  
-  .chatMessage {
-   
-    width: 70%;
-    max-width: 1024px;
-    background-color: #fff;
-    border-radius: 8px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 10px;
-    box-shadow: -1px -1px 3px rgba(255, 255, 255, .5), 1px 1px 3px rgba(0, 0, 0, .1);
+  background: #777;
+  border: 2px solid #eee;
+  border-radius: 10px;
 }
 
-.chatMessage.userMessage {
-    color: #333;
-    background-color: #fcfcfc;
-    border-top-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-left: auto;
-}
-
-.chatMessage.assistantMessage {
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-right: auto;
-}
-
-.chatMessage.assistantMessage.loading {
-    color: #ddd;
-}
-
-.chatMessage.assistantMessage.error {
-    color: #37C078;
-}
-
-
+/* Viewport styles */
 .viewport {
   color: #333;
   background-color: #eee;
   flex-direction: column;
-  font-family: Poppins, sans-serif ; 
+  font-family: Poppins, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 22px;
@@ -80,4 +37,81 @@ border-radius:10px;
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+/* Global styles for markdown content */
+.markdown-content pre {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  margin: 8px 0;
+}
+
+.markdown-content code {
+  font-family: 'Courier New', Courier, monospace;
+  color: #222;
+  border: 2px solid #eee;
+  padding: 2px;
+}
+
+.markdown-content h1 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 16px 0 8px;
+}
+
+.markdown-content h2 {
+  font-size: 1.05em;
+  font-weight: 600;
+  margin: 14px 0 7px;
+}
+
+.markdown-content h3 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 12px 0 6px;
+}
+
+.markdown-content p {
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content ul {
+  padding-left: 16px;
+  list-style-type: disc;
+}
+
+.markdown-content ol {
+  padding-left: 16px;
+  list-style-type: decimal;
+}
+
+.markdown-content li {
+  margin-bottom: 5px;
+}
+
+.markdown-content blockquote {
+  background-color: #eee;
+  padding: 10px 15px;
+  font-style: italic;
+  margin: 10px 0;
+  border-radius: 8px 0px 8px 0px;
+}
+
+.markdown-content hr {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
 }

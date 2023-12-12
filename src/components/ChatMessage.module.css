@@ -1,120 +1,140 @@
+/* ChatMessage.module.css */
+
 .chatMessage {
-   
-    width: 70%;
-    max-width: 1024px;
-    font-weight: 500;
-    font-size: 16px;
-    flex: 1;
-
-    
-    line-height: 22px;
-    
-    background-color: #fcfcfc;
-    border-radius: 8px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 12px;
+  width: 100%;
+  max-width: 1024px;
+  font-weight: 500;
+  font-size: 16px;
+  flex: 1;
+  line-height: 22px;
+  background-color: #fcfcfc;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 12px;
 }
 
-.chatMessage.introMessage {
-  
+/* New classes for the message wrapper and avatar */
+.messageWrapper {
+  padding: 2vw 5vh 2vw 5vh;
+  display: flex;
+  align-items: start;
+  border-bottom: 1px solid #ddd;
 }
 
-.imagewrap{
+.avatar {
+  width: 32px; /* Adjust size as needed */
+  height: 32px;
+  border-radius: 50%;
+  margin: 12px 12px 12px 12px;  
+}
+
+.imagewrap {
   padding-top: 12px;
   padding-bottom: 12px;
   border-radius: 8px;
   overflow: hidden;
-
 }
 
-.image{
+.image {
   border-radius: 8px;
 }
 
 .chatMessage.userMessage {
-    color: #333;
-    background-color: #fff;
-    border-top-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-left: auto;
-    
+  color: #333;
+  background-color: #fff;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: auto;
+  margin-bottom: 10px;
+  padding: 12px 12px 4px 12px;
+
+
 }
 
-.chatMessage.assistantMessage {
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-right: auto;
-}
-
-.chatMessage.introMessage {
-  border-top-right-radius: 0;
-  border-bottom-left-radius: 0;
-  margin-right: auto;
-}
-
+.chatMessage.assistantMessage,
+.chatMessage.introMessage,
 .chatMessage.loadingMessage {
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
   margin-right: auto;
 }
- 
-  .link {
-    font-size: 14;
+
+.link {
+  font-size: 14;
+}
+
+.chatLink {
+  border-top: 1px solid #ddd;
+  padding-top: 6px;
+  margin-top: 12px;
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  font-family: 'Courier New';
+  font-weight: 600;
+}
+
+.linkIcon {
+  width: 14px;
+  margin-top: 0px;
+  margin-right: 4px;
+  opacity: 67%;
+}
+
+.copyButton {
+  padding: 0px;
+  margin-right: 12px;
+  background-color: transparent;
+  border-width: 0px;
+  display: flex;
+  cursor: pointer;
+  font-size: 14pt;
+  color: #bbb;
+}
+
+.copyIcon {
+  margin-top: -1px;
+  width: 12px;
+  margin-right: 4px;
+  opacity: 67%;
+}
+
+@media screen and (max-width: 479px) {
+  .chatMessage {
+    max-width: 90%;
+    flex: 1;
+    width: 90%;
+    font-size: 15px;
+    line-height: 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 12px;
   }
 
-  .chatLink {
-    border-top: 1px solid #ddd;
-    padding-top: 6px;
-    margin-top: 12px;
+  .chatMessage.userMessage {
+    color: #333;
+    background-color: #fff;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-left: auto;
+    margin-bottom: 10px;
+    padding: 12px 12px 4px 12px;
+  }
+
+  .messageWrapper {
+    padding: 16px;
     display: flex;
-    text-decoration: none;
-    align-items: center;
-    font-family: 'Courier New';
-    font-weight: 600;
-    
-    
-  }
-
-  .linkIcon {
-    width: 14px;
-    margin-top: 0px;
-    margin-right: 4px;
-    opacity: 67%;
-  }
-
-  .copyButton {
-    padding: 0px;
-    margin-right: 12px;
-    background-color: transparent;
-    border-width: 0px;
-    display: flex;
-    cursor: pointer;
-    font-size: 14pt;
-    color: #bbb;
-  }
-
-  .copyIcon {
-    margin-top: -1px;
-    width: 12px;
-    margin-right: 4px;
-    opacity: 67%;
+    align-items: start;
+    border-bottom: 1px solid #ddd;
   }
   
-  
-
-  @media screen and (max-width: 479px) {
-
-    .chatMessage {
-      max-width: 90%;
-      flex: 1;
-      width: 90%;
-      font-size: 15px;
-      line-height: 20px;
-      border-radius: 8px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      padding: 12px;
+  .avatar {
+    width: 24px; /* Adjust size as needed */
+    height: 24px;
+    border-radius: 50%;
+    margin: 12px 6px 10px 6px;
   }
 
   .chatLink {
@@ -125,8 +145,5 @@
     align-items: center;
     font-family: 'Courier New';
     font-weight: 600;
-    
-    
   }
-
-  }
+}

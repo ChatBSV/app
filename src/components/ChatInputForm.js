@@ -1,15 +1,13 @@
-// ChatInputForm.js
-import React, { useRef } from 'react';
+// src/components/ChatInputForm.js
+
+import React from 'react';
 import styles from './ChatInput.module.css';
 import { handleTextareaChange } from '../utils/ChatInputUtils';
-
 import ButtonIcon from './ButtonIcon';
 
-const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inputRef, handleKeyDown, resetChat, handleFormSubmit, paymentResult }) => {
-    
-    
+const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inputRef, handleKeyDown, resetChat, iconUrl }) => {
     return (
-        <form onSubmit={handleFormSubmit} className={styles.inputForm}>
+        <form className={styles.inputForm}>
             <textarea
                 onKeyDown={handleKeyDown}
                 className={styles.inputField}
@@ -24,9 +22,9 @@ const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inp
                         onDisconnect();
                     }}></button>}
                 <ButtonIcon
-                    icon="https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
-                    text={buttonText()}
-                    onClick={paymentResult?.status === 'pending' ? null : submitInput}
+                    icon={iconUrl}
+                    text={buttonText}
+                    onClick={submitInput}
                 />
                 <button
                     className={`${styles.actionButton} ${styles.resetButtonMobile}`}
@@ -40,3 +38,4 @@ const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inp
 };
 
 export default ChatInputForm;
+

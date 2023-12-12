@@ -8,7 +8,7 @@ import ChatInputForm from './ChatInputForm';
 import getErrorMessage from '../lib/getErrorMessage';
 import { nanoid } from 'nanoid';
 
-const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
+const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat, user }) => {
     const [txid, setTxid] = useState('');
     const inputRef = useRef(null);
     const [paymentResult, setPaymentResult] = useState({ status: 'none' });
@@ -185,19 +185,24 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         
     };
 
-    return (
-        <div className={styles.chatFooter}>
-            <ChatInputForm
-                isConnected={isConnected}
-                onDisconnect={onDisconnect}
-                submitInput={submitInput}
-                buttonText={buttonText}
-                inputRef={inputRef}
-                handleKeyDown={handleKeyDown}
-                resetChat={resetChat}
-            />
-        </div>
-    );
+    const iconUrl = isConnected && user && user.avatarUrl 
+    ? user.avatarUrl 
+    : "https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
+
+return (
+<div className={styles.chatFooter}>
+<ChatInputForm
+isConnected={isConnected}
+onDisconnect={onDisconnect}
+submitInput={submitInput}
+buttonText={buttonText()}
+inputRef={inputRef}
+handleKeyDown={handleKeyDown}
+resetChat={resetChat}
+iconUrl={iconUrl}
+/>
+</div>
+);
 };
 
 export default ChatInput;

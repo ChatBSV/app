@@ -1,26 +1,29 @@
+/* components/ChatBody.module.css */
+
 .chatBody {
     flex-direction: column;
     flex-grow: 1;
     justify-content: flex-end;
-    padding: 5vw;
     display: flex;
     overflow: auto;
     max-height: 100%;
-}
-.chatContainer {
+  }
+  
+  .chatContainer {
     min-height: 100px;
     display: flex;
     flex-direction: column;
-}
-.spacer {
+  }
+  
+  .spacer {
     height: 20px;
     flex: none;
     justify-content: flex-end;
-}
-
-.chatLink {
+  }
+  
+  .chatLink {
     border-top: #111;
     border-top-width: 1px;
     border-top-style: solid;
   }
-
+  

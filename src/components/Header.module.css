@@ -8,40 +8,8 @@
   align-items: center;
   flex: none;
   position: relative;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   border-bottom: 2px solid #ddd;
-}
-
-.resetButton {
-  display:none;
-  width: 40px;
-  height: 40px;
-  border-radius: 22px;
-  background-color: #37C078;
-  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
-  background-size: 32px;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 5vh;
-  right: 5vw;
-  margin-top: -22px;
-  cursor: pointer;
-  transition: all 0.25s ease-in-out;
-}
-.resetButton:hover {
-  background-color: #19884d;
-}
-
-.loginButton {
-  display: none;
-  height: 44px;
-  border-radius: 22px;
-  position: absolute;
-  top: 5vh;
-  left: 5vw;
-  margin-top: -22px;
-  cursor: pointer;
 }
 
 .logo {
@@ -49,27 +17,4 @@
   margin-top: 5px;
   filter: brightness(0%);
   opacity: 67%;
-}
-
-.loginContainer {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.disconnectButton {
-  border-radius: 12px;
-  padding: 8px;
-  font-weight: 600;
-  display: none;
-}
-
-.loginContainer:hover .disconnectButton {
-  display: inline-block;
-}
-
-@media screen and (max-width: 479px) {
-  .resetButton, .loginButton {
-    display: none;
-  }
 }
