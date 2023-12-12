@@ -5,9 +5,7 @@ import styles from './ChatInput.module.css';
 import { onDisconnect } from '../utils/ChatInputUtils';
 import helpContent from '../../content/help.html';
 import ChatInputForm from './ChatInputForm'; 
-
-
-
+import getErrorMessage from '../lib/getErrorMessage';
 import { nanoid } from 'nanoid';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat }) => {
@@ -19,7 +17,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
 
     useEffect(() => {
         setIsConnected(!!sessionToken);
-
         const pendingPromptJSON = localStorage.getItem('pendingPrompt');
         const urlParams = new URLSearchParams(window.location.search);
         const reloadParam = urlParams.get('reload');
@@ -33,13 +30,20 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         }
     }, [sessionToken]);
 
-    useEffect(() => {
+    const handlePendingPrompt = async () => {
         if (pendingPrompt && isConnected) {
-            inputRef.current.value = pendingPrompt.content;
-            pay();
-            setPendingPrompt(null);
+            const isAuthorizedAndBalanced = await checkAuthAndBalance();
+            if (isAuthorizedAndBalanced) {
+                processUserInput(pendingPrompt.content, pendingPrompt.type);
+                setPendingPrompt(null);
+            }
         }
+    };
+
+    useEffect(() => {
+        handlePendingPrompt();
     }, [pendingPrompt, isConnected, sessionToken]);
+
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
@@ -86,7 +90,8 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     };
 
     const submitInput = () => {
-        const inputValue = inputRef.current.value;
+        
+        const inputValue = inputRef.current.value.trim();
         if (inputValue.toLowerCase().startsWith('/gpt')) {
             setModel(inputValue);
             inputRef.current.value = '';
@@ -97,109 +102,60 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             inputRef.current.value = '';
             return; 
         }
+        if (inputValue.toLowerCase().startsWith('/help')) {
+            handleHelpRequest(inputValue);
+            inputRef.current.value = '';
+            return;
+        }
         if (!isConnected) {
             onDisconnectedSubmit(inputValue);
         } else {
-            pay();
+            const requestType = getRequestType(inputValue);
+            processUserInput(inputValue, requestType);
         }
     };
     
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        submitInput();
+    const checkAuthAndBalance = async () => {
+        const response = await fetch('/api/auth-check', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${sessionToken}` }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            addErrorMessageToChat(getErrorMessage(errorData));
+            return false;
+        }
+        return true;
     };
-    
-    const pay = async () => {
-        const prompt = inputRef.current.value.trim();
-    
-        if (!isConnected) {
-            window.location.href = redirectionUrl;
-            return;
-        }
-    
-        if (prompt.toLowerCase().startsWith('/help')) {
-            handleHelpRequest(prompt);
-            return;
-        }
-    
-        const requestType = getRequestType(prompt);
-    
+
+    const processUserInput = async (inputValue, requestType) => {
         setPaymentResult({ status: 'pending' });
         try {
-            const paymentResult = await sendPaymentRequest(prompt, requestType);
-            processPaymentResult(paymentResult, prompt, requestType);
+            await handleSubmit(inputValue, requestType);
+            inputRef.current.value = '';
+            setPaymentResult({ status: 'none' });
         } catch (error) {
-            processPaymentError(error);
+            if (error.status === 401 || (error.error && error.error.includes("401"))) {
+                // Handle 401 Unauthorized specifically
+                const pendingPrompt = JSON.stringify({ type: getRequestType(inputValue), content: inputValue });
+                localStorage.setItem('pendingPrompt', pendingPrompt);
+                window.location.href = redirectionUrl;
+            } else {
+                // Handle other types of errors
+                const errorMessage = getErrorMessage(error) || "An unexpected network error occurred.";
+                setPaymentResult({ status: 'error', message: errorMessage });
+                addErrorMessageToChat(errorMessage);
+            }
         }
     };
+    
     
     const getRequestType = (prompt) => {
         if (prompt.toLowerCase().startsWith('/imagine')) return 'image';
         if (prompt.toLowerCase().startsWith('/meme')) return 'meme';
         return 'text';
-    };
-    
-    const sendPaymentRequest = async (prompt, requestType) => {
-        const headers = getPaymentRequestHeaders(requestType);
-    
-        const response = await fetch('/api/pay', { method: "POST", headers });
-        if (!response.ok) {
-            const errorResult = await response.json();
-            if (response.status === 401) {
-                handlePaymentError(errorResult, prompt);
-                const pendingPrompt = JSON.stringify({ type: getRequestType(prompt), content: prompt });
-                localStorage.setItem('pendingPrompt', pendingPrompt);
-                window.location.href = redirectionUrl;
-            } else {
-                handlePaymentError(errorResult, prompt);
-            }
-            return;
-        }
-    
-        return await response.json();
-    };
-    
-    const getPaymentRequestHeaders = (requestType) => {
-        const selectedModel = requestType === 'image' ? localStorage.getItem('selectedDalleModel') || 'dall-e-3' :
-                              requestType === 'meme' ? 'meme' : 
-                              localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
-    
-        return {
-            'Authorization': `Bearer ${sessionToken}`,
-            'Content-Type': 'application/json',
-            'requesttype': requestType,
-            'model': selectedModel
-        };
-    };
-    
-    const handlePaymentError = (errorResult, prompt) => {
-        const error = new Error(errorResult.error || "An unexpected error occurred.");
-        setPaymentResult({ status: 'error', message: error.message });
-        addErrorMessageToChat(error.message);
-    };
-    
-    const processPaymentResult = (paymentResult, prompt, requestType) => {
-        if (paymentResult?.status === 'sent') {
-            localStorage.setItem('txid', paymentResult.transactionId);
-            setTxid(paymentResult.transactionId);
-            processSuccessfulPayment(prompt, paymentResult.transactionId, requestType, paymentResult.tokens);
-        } else {
-            setPaymentResult(paymentResult);
-        }
-    };
-    
-    const processSuccessfulPayment = async (prompt, transactionId, requestType, tokens) => {
-        await handleSubmit(prompt, transactionId, requestType, tokens);
-        inputRef.current.value = '';
-        setPaymentResult({ status: 'none' });
-    };
-    
-    const processPaymentError = (error) => {
-        const errorMessage = error.message || "An unexpected network error occurred.";
-        setPaymentResult({ status: 'error', message: errorMessage });
-        addErrorMessageToChat(errorMessage);
-    };
-    
+    };  
     
     
 

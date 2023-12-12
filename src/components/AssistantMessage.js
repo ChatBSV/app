@@ -12,10 +12,13 @@ function AssistantMessage({ content, txid, tokens, isNewMessage }) {
   const typingSpeed = 1; // milliseconds per character
 
   useEffect(() => {
+  const stringContent = typeof content === 'string' ? content : JSON.stringify(content);
+  
+  if (isNewMessage) {
     let index = 0;
     const timer = setInterval(() => {
-      if (index <= content.length) {
-        setDisplayedContent(content.substring(0, index));
+      if (index <= stringContent.length) {
+        setDisplayedContent(stringContent.substring(0, index));
         index++;
       } else {
         clearInterval(timer);
@@ -23,7 +26,10 @@ function AssistantMessage({ content, txid, tokens, isNewMessage }) {
     }, typingSpeed);
 
     return () => clearInterval(timer);
-  }, [content, isNewMessage]);
+  } else {
+    setDisplayedContent(stringContent); // Immediate display for other cases
+  }
+}, [content, isNewMessage]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayedContent).then(() => {

@@ -24,9 +24,8 @@ export default async function handler(req, res) {
   let imageUrl = ''; // Declare imageUrl here
 
   try {
-    console.log(`get-chat-reply: Received model - ${selectedModel} for request type - ${requestType}`);
-    console.log(`get-chat-reply: Received prompt - ${prompt}`);
-    console.log(`get-chat-reply: Received history - ${history}`);
+    console.log(`Processing - ${selectedModel} - ${requestType}`);
+    console.log(`Received prompt - ${prompt}`);
 
     switch (requestType) {
       case 'image':
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
           const result = await handleDalleRequest({ prompt, model: selectedModel });
           imageUrl = result.imageUrl;
         }
-        console.log(`get-chat-reply: Image URL - ${imageUrl}`);
+        console.log(`Response: ${imageUrl}`);
         res.status(200).json({ imageUrl, tokens: 10000, model: selectedModel });
         break;
 
@@ -53,7 +52,7 @@ export default async function handler(req, res) {
         }
         const memeResult = await handleMemeRequest({ text: prompt });
         imageUrl = memeResult.imageUrl;
-        console.log(`get-chat-reply: Meme Image URL - ${imageUrl}`);
+        console.log(`Response: ${imageUrl}`);
         res.status(200).json({ imageUrl, model: selectedModel });
         break;
 
@@ -64,7 +63,7 @@ export default async function handler(req, res) {
         } else {
           response = await handleOpenAIRequest3(prompt, history, selectedModel); // Call GPT-3.5 handler
         }
-        console.log('get-chat-reply: Response from AI model:', response); // Log the AI response
+        console.log('Response:', response); // Log the AI response
         res.status(200).json(response);
         break;
     }

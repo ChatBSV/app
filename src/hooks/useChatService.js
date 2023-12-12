@@ -5,34 +5,32 @@ import { nanoid } from 'nanoid';
 import getErrorMessage from '../lib/getErrorMessage';
 import helpContent from '../../content/help.html';
 
-export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
+export const useChatService = ({sessionToken}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
-  const [paymentInfo, setPaymentInfo] = useState({ txid: '', tokens: 0 });
+  const [txid, setTxid] = useState(''); // Add txid state
+
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
-      const existingChat = JSON.parse(storedChat).map(message => ({
-        ...message,
-        isNew: false
-      }));
+      const existingChat = JSON.parse(storedChat).map(message => ({ ...message, isNewMessage: false }));
       setChat(existingChat);
     }
   }, []);
 
-  const addMessageToChat = useCallback((message, isNew = true) => {
-    const newMessage = { ...message, isNew };
-    setChat(prevChat => {
+  const addMessageToChat = useCallback((message, isNewMessage = true) => {
+    setChat((prevChat) => {
+      const newMessage = { ...message, isNewMessage };
       const updatedChat = [...prevChat, newMessage];
-      if (message.role !== 'error') {
-        localStorage.setItem('chat', JSON.stringify(updatedChat));
-      }
+      const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
+      localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
       return updatedChat;
     });
   }, []);
+
 
   const tokenizeChatHistory = async (chatHistory) => {
     try {
@@ -121,63 +119,120 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     }, false);
   }, [addMessageToChat]);
 
-  const handleSubmit = async (userMessage, txid, requestType) => {
-    setIsLoading(true);
+  const handleSubmit = async (userMessage, requestType) => {
     setIsError(false);
     setErrorMessage('');
-  
-    const selectedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
-    const selectedDalleModel = localStorage.getItem('selectedDalleModel') || 'dall-e-3';
-  
-    const newUserMessage = {
-      id: nanoid(),
-      role: 'user',
-      content: userMessage,
-      txid: txid,
-      model: requestType === 'image' ? selectedDalleModel : (requestType === 'meme' ? 'meme' : selectedModel),
-    };
-  
-    addMessageToChat(newUserMessage);
-  
-    const chatReply = await getChatReply(userMessage, chat, requestType, 
-      requestType === 'image' ? selectedDalleModel : selectedModel);
-  
-    if (chatReply) {
-      let newMessage;
-      if (requestType === 'image') {
-        newMessage = {
-          id: nanoid(),
-          role: 'dalle-image',
-          content: chatReply.imageUrl,
-          txid: txid,
-          model: selectedDalleModel, 
-        };
-      } else if (requestType === 'meme') {
-        newMessage = {
-          id: nanoid(),
-          role: 'meme-image',
-          content: chatReply.imageUrl,
-          txid: txid,
-          model: 'meme'
-        };
-      } else {
-        newMessage = {
-          id: nanoid(),
-          role: 'assistant',
-          content: chatReply.message,
-          tokens: chatReply.tokens || 0,
-          txid: txid,
-          model: selectedModel,
-        };
-      }
-  
-      addMessageToChat(newMessage);
-    }
-  
-    setIsLoading(false);
-  };
+    
+    // Step 1: Authenticate and Get Balance
+    const authCheckResult = await fetch('/api/auth-check', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionToken}`,
+        }
+    });
 
-  return { isLoading, isError, errorMessage, chat, addMessageToChat, handleSubmit, handleHelpRequest };
+    if (!authCheckResult.ok) {
+        const errorData = await authCheckResult.json();
+        setIsError(true);
+        setErrorMessage(getErrorMessage(errorData));
+        if (authCheckResult.status === 401) {
+            const pendingPrompt = JSON.stringify({ type: requestType, content: userMessage });
+            localStorage.setItem('pendingPrompt', pendingPrompt);
+            window.location.href = `${errorData.redirectUrl}?reload=false`;
+        }
+        return;
+    }
+
+    // Add user message to chat here, after successful authentication and balance check
+    addMessageToChat({
+        id: nanoid(),
+        role: 'user',
+        content: userMessage,
+        txid: ''
+    });
+    setIsLoading(true);
+
+    // Determine the model based on the request type
+    const selectedModel = requestType === 'image' ? 
+        (localStorage.getItem('selectedDalleModel') || 'dall-e-3') :
+        (localStorage.getItem('selectedModel') || 'gpt-3.5-turbo');
+
+    // Step 2: Get Chat Reply and Tokens
+    const chatReply = await getChatReply(userMessage, chat, requestType, selectedModel);
+
+    if (!chatReply) {
+        setIsError(true);
+        setErrorMessage('Failed to get chat reply');
+        setIsLoading(false);
+        return;
+    }
+
+    const tokensFromReply = chatReply.tokens || 0;
+
+    // Step 3: Process Payment
+    const paymentResult = await fetch('/api/pay', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionToken}`,
+            'Content-Type': 'application/json',
+            'requesttype': requestType,
+            'model': selectedModel
+        },
+        body: JSON.stringify({ tokens: tokensFromReply })
+    });
+
+    if (!paymentResult.ok) {
+        const errorData = await paymentResult.json();
+        setIsError(true);
+        setErrorMessage(getErrorMessage(errorData));
+        setIsLoading(false);
+        if (paymentResult.status === 401) {
+            const pendingPrompt = JSON.stringify({ type: requestType, content: userMessage });
+            localStorage.setItem('pendingPrompt', pendingPrompt);
+            window.location.href = `${errorData.redirectUrl}?reload=false`;
+        }
+        return;
+    }
+
+    const { transactionId } = await paymentResult.json();
+    setTxid(transactionId);
+
+    // Step 4: Add Message with txid and Tokens
+    let newMessage;
+    if (requestType === 'image') {
+        newMessage = {
+            id: nanoid(),
+            role: 'dalle-image',
+            content: chatReply.imageUrl,
+            txid: transactionId,
+            model: selectedModel, 
+        };
+    } else if (requestType === 'meme') {
+        newMessage = {
+            id: nanoid(),
+            role: 'meme-image',
+            content: chatReply.imageUrl,
+            txid: transactionId,
+            model: 'meme'
+        };
+    } else {
+        newMessage = {
+            id: nanoid(),
+            role: 'assistant',
+            content: chatReply.message,
+            tokens: tokensFromReply,
+            txid: transactionId,
+            model: selectedModel,
+
+        };
+    }
+    addMessageToChat(newMessage);
+
+    setIsLoading(false);
+};
+
+return { isLoading, isError, errorMessage, chat, addMessageToChat, txid, handleSubmit, handleHelpRequest };
 };
 
 export default useChatService;
+

@@ -1,10 +1,8 @@
 // src/utils/paymentUtils.js
 
 export function calculatePaymentAmount(requesttype, model, tokens = 0) {
-    console.log('calculatePaymentAmount is called.');
   
-    console.log('Calculating payment amount for request type:', requesttype);
-    
+    console.log('Request Type:', requesttype);
     console.log('Model:', model);
     console.log('Tokens:', tokens);
   
@@ -17,14 +15,22 @@ export function calculatePaymentAmount(requesttype, model, tokens = 0) {
         const memePayment = process.env.MEME_AMOUNT;
         console.log('Meme Payment Amount:', memePayment);
         return memePayment;
-      case 'text':
-        // Dynamic pricing based on token usage for GPT models
-        const pricePerThousandTokens = model === 'gpt-4' ? 0.05 : 0.01; // 5 cents for GPT-4 and 1 cent for GPT-3
-        const minimumPrice = model === 'gpt-4' ? 0.05 : 0.01; // Minimum price for GPT-4 and GPT-3
-        const additionalCost = Math.ceil(tokens / 1000) * pricePerThousandTokens;
-        const textPayment = Math.max(minimumPrice, additionalCost);
-        console.log('Text Payment Amount:', textPayment);
-        return textPayment;
+        case 'text':
+          let pricePerToken;
+          let minimumPrice;
+
+          if (model === 'gpt-4') {
+              pricePerToken = 0.05 / 1000;
+              minimumPrice = 0.05;
+          } else {
+              pricePerToken = 0.01 / 1000;
+              minimumPrice = 0.01;
+          }
+
+          const textPayment = Math.max(tokens * pricePerToken, minimumPrice);
+
+          console.log('Text Payment Amount:', textPayment.toFixed(2));
+          return textPayment;
       default:
         const defaultPayment = process.env.CHAT_AMOUNT;
         console.log('Default Payment Amount:', defaultPayment);

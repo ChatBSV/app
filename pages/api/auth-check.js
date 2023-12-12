@@ -1,11 +1,11 @@
-// pages/api/authenticate-and-check-balance.js
+// pages/api/auth-check.js
 
 import AuthTokenRepository from "../../src/repositories/AuthTokenRepository";
 import HandCashService from "../../src/services/HandCashService";
 import SessionTokenRepository from "../../src/repositories/SessionTokenRepository";
 import getErrorMessage from '../../src/lib/getErrorMessage';
 
-export default async function handler(req, res) {
+export default async function authCheckHandler(req, res) {
     if (req.method !== 'POST') {
         return res.status(404).json({ error: 'Not found' });
     }
@@ -36,8 +36,7 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: errorMessage });
         }
 
-        // Respond with success if authentication and balance check pass
-        return res.status(200).json({ success: true, message: "Authentication and balance check successful." });
+        return res.status(200).json({ status: 'success', message: 'Authentication and balance check successful.' });
     } catch (error) {
         console.error(error);
         const errorMessage = getErrorMessage(error);
