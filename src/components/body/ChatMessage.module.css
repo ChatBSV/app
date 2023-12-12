@@ -4,14 +4,24 @@
   width: 100%;
   max-width: 1024px;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--fs-16); /* Using font size variable */
   flex: 1;
-  line-height: 22px;
-  background-color: #fcfcfc;
-  border-radius: 8px;
+  line-height: var(--f-lh); /* Using line height variable */
+  background-color: var(--1);
+  border-radius: var(--br-8); /* Using border radius variable */
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 12px;
+}
+
+.chatMessage.userMessage {
+  color: var(--7); /* Using color variable */
+  background-color: var(--1); /* Using color variable */
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: auto;
+  margin-bottom: 10px;
+  padding: 12px 12px 4px 12px;
 }
 
 /* New classes for the message wrapper and avatar */
@@ -20,37 +30,38 @@
   display: flex;
   align-items: start;
   border-bottom: 1px solid #ddd;
+  background-color: #f5f5f5;
+  gap: 8px;
+}
+
+.userWrapper {
+  padding: 2vw 5vh 2vw 5vh;
+  display: flex;
+  align-items: start;
+  border-bottom: 1px solid #ddd;
+  gap: 8px;
 }
 
 .avatar {
   width: 32px; /* Adjust size as needed */
   height: 32px;
   border-radius: 50%;
-  margin: 12px 12px 12px 12px;  
+  margin-top: 12px;
+  border: 2px solid #fff;
 }
 
 .imagewrap {
   padding-top: 12px;
   padding-bottom: 12px;
-  border-radius: 8px;
+  border-radius: var(--br-8); /* Using border radius variable */
   overflow: hidden;
 }
 
 .image {
-  border-radius: 8px;
+  border-radius: var(--br-8); /* Using border radius variable */
 }
 
-.chatMessage.userMessage {
-  color: #333;
-  background-color: #fff;
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 0;
-  margin-left: auto;
-  margin-bottom: 10px;
-  padding: 12px 12px 4px 12px;
 
-
-}
 
 .chatMessage.assistantMessage,
 .chatMessage.introMessage,
@@ -61,18 +72,17 @@
 }
 
 .link {
-  font-size: 14;
+  font-size: var(--fs-14); /* Using font size variable */
 }
 
 .chatLink {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--2);
   padding-top: 6px;
   margin-top: 12px;
   display: flex;
   text-decoration: none;
-  align-items: center;
-  font-family: 'Courier New';
-  font-weight: 600;
+  font-family: var(--ff-serif); /* Using font family variable */
+  font-weight: var(--fw-600); /* Using font weight variable */
 }
 
 .linkIcon {
@@ -90,7 +100,7 @@
   display: flex;
   cursor: pointer;
   font-size: 14pt;
-  color: #bbb;
+  color: var(--5);
 }
 
 .copyIcon {
@@ -105,17 +115,17 @@
     max-width: 90%;
     flex: 1;
     width: 90%;
-    font-size: 15px;
-    line-height: 20px;
-    border-radius: 8px;
+    font-size: var(--fs-14); /* Using font size variable */
+    line-height: var(--f-lh); /* Using line height variable */
+    border-radius: var(--br-8); /* Using border radius variable */
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 12px;
   }
 
   .chatMessage.userMessage {
-    color: #333;
-    background-color: #fff;
+    color: var(--7); /* Using color variable */
+    background-color: var(--1); /* Using color variable */
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-left: auto;
@@ -127,14 +137,20 @@
     padding: 16px;
     display: flex;
     align-items: start;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--3);
   }
-  
+  .userWrapper {
+    padding: 16px;
+    display: flex;
+    align-items: start;
+    border-bottom: 1px solid var(--3);
+    gap: 8px;
+  }
   .avatar {
     width: 24px; /* Adjust size as needed */
     height: 24px;
     border-radius: 50%;
-    margin: 12px 6px 10px 6px;
+    margin-top: 12px;
   }
 
   .chatLink {
@@ -142,8 +158,7 @@
     margin-top: 6px;
     display: flex;
     text-decoration: none;
-    align-items: center;
-    font-family: 'Courier New';
-    font-weight: 600;
+    font-family: var(--ff-serif); /* Using font family variable */
+    font-weight: var(--fw-600); /* Using font weight variable */
   }
 }

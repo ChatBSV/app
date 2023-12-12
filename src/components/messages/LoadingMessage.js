@@ -1,7 +1,7 @@
 // src/components/LoadingMessage.js
 
 import React from 'react';
-import styles from './ChatMessage.module.css';
+import styles from '../body/ChatMessage.module.css';
 
 function LoadingMessage({ content, avatarUrl }) {
   return (

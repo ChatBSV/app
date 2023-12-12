@@ -1,11 +1,11 @@
 // pages/index.js
 
 import React, { useEffect } from 'react';
-import ChatBody from '../src/components/ChatBody';
-import ChatInput from '../src/components/ChatInput';
-import Header from '../src/components/Header';
+import ChatBody from '../src/components/body/ChatBody';
+import ChatInput from '../src/components/footer/ChatInput';
+import Header from '../src/components/header/Header';
 import { getSessionProps } from '../src/utils/sessionUtils';
-import MetaHead from '../src/components/MetaHead';
+import MetaHead from '../src/components/header/MetaHead';
 import { useChatService } from '../src/hooks/useChatService';
 import resetChat from '../src/utils/resetChat';
 import './global.css';

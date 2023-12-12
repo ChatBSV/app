@@ -2,10 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
-import { onDisconnect } from '../utils/ChatInputUtils';
-import helpContent from '../../content/help.html';
+import { onDisconnect } from '../../utils/ChatInputUtils';
+import helpContent from '../../../content/help.html';
 import ChatInputForm from './ChatInputForm'; 
-import getErrorMessage from '../lib/getErrorMessage';
+import getErrorMessage from '../../lib/getErrorMessage';
 import { nanoid } from 'nanoid';
 
 const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat, user }) => {
@@ -116,18 +116,21 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     };
     
     const checkAuthAndBalance = async () => {
-        const response = await fetch('/api/auth-check', {
+        const response = await fetch('/api/auth/handcash/auth-check', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${sessionToken}` }
         });
-
+    
         if (!response.ok) {
             const errorData = await response.json();
-            addErrorMessageToChat(getErrorMessage(errorData));
+            // Create an error object that aligns with the expected structure
+            const error = new Error(errorData.error);
+            addErrorMessageToChat(getErrorMessage(error));
             return false;
         }
         return true;
     };
+    
 
     const processUserInput = async (inputValue, requestType) => {
         setPaymentResult({ status: 'pending' });

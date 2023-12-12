@@ -1,7 +1,7 @@
 // src/components/MessageWidget.js
 
 import React from 'react';
-import styles from './ChatMessage.module.css';
+import styles from '../../body/ChatMessage.module.css';
 import TxidLink from './txidlink';
 import CopyButton from './CopyButton';
 import ShareButton from './ShareButton';

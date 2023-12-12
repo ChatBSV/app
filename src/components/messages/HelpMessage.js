@@ -1,7 +1,7 @@
 // src/components/HelpMessage.js
 
 import React from 'react';
-import styles from './ChatMessage.module.css';
+import styles from '../body/ChatMessage.module.css';
 
 const helpMessageStyle = {
   whiteSpace: 'pre-line',

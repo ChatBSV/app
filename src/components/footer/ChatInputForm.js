@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './ChatInput.module.css';
-import { handleTextareaChange } from '../utils/ChatInputUtils';
+import { handleTextareaChange } from '../../utils/ChatInputUtils';
 import ButtonIcon from './ButtonIcon';
 
 const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inputRef, handleKeyDown, resetChat, iconUrl }) => {

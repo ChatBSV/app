@@ -1,10 +1,10 @@
 // src/components/AssistantMessage.js
 
 import React, { useState, useEffect } from 'react';
-import styles from './ChatMessage.module.css';
-import TxidLink from './TxidLink';
-import TokenDisplay from './TokenDisplay';
-import CopyButton from './CopyButton';
+import styles from '../body/ChatMessage.module.css';
+import TxidLink from './widget/TxidLink';
+import TokenDisplay from './widget/TokenDisplay';
+import CopyButton from './widget/CopyButton';
 import { marked } from 'marked'; // Corrected import statement
 
 function AssistantMessage({ content, txid, tokens, isNewMessage, avatarUrl }) {

@@ -9,7 +9,7 @@
   flex: none;
   position: relative;
   flex-shrink: 0;
-  border-bottom: 2px solid #ddd;
+  border-bottom: var(--bw-2) solid var(--3);
 }
 
 .logo {

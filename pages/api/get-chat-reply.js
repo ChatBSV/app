@@ -1,10 +1,10 @@
 // pages/api/get-chat-reply.js
 
-import { handleOpenAIRequest3 } from './openai3';
-import { handleOpenAIRequest4 } from './openai4';
-import { handleDalleRequest } from './dalle';
-import { handleDalle2Request } from './dalle2'; // Import handler for DALL-E 2
-import { handleMemeRequest } from './meme';
+import { handleOpenAIRequest3 } from './ai/openai3';
+import { handleOpenAIRequest4 } from './ai/openai4';
+import { handleDalleRequest } from './ai/dalle';
+import { handleDalle2Request } from './ai/dalle2'; // Import handler for DALL-E 2
+import { handleMemeRequest } from './ai/meme';
 import getErrorMessage from '../../src/lib/getErrorMessage';
 
 export const config = {

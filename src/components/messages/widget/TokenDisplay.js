@@ -1,7 +1,7 @@
 // src/components/TokenDisplay.js
 
 import React from 'react';
-import styles from './ChatMessage.module.css';
+import styles from '../../body/ChatMessage.module.css';
 import Image from 'next/image'; // Import the Image component from next/image
 
 function TokenDisplay({ tokens }) {

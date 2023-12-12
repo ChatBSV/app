@@ -9,29 +9,28 @@
   flex-shrink: 0;
   flex-wrap: wrap;
   z-index: 10;
-  border-top: 2px solid #ddd;
+  border-top: var(--bw-2) var(--bs) var(--3); /* Updated to use primary variable */
 }
 
 .inputForm {
-  border-radius: 4px;
+  border-radius: var(--br-4); /* Updated to use primary variable */
   display: flex;
   width: 100%;
   flex: 1;
 }
 
 .inputField {
-  min-height: 46px;
-  font-size: 16px;
+  min-height: var(--fs-12); /* Updated to use primary variable */
+  font-size: var(--fs-16); /* Updated to use primary variable */
   box-shadow: none;
-  color: #333;
-  font-weight: 500;
-  background-color: #fff;
-  border: 2px solid #ddd;
-  border-radius: 5px;
+  color: var(--7); /* Updated to use primary variable */
+  background-color: var(--1); /* Updated to use primary variable */
+  border: var(--bw-1) solid var(--3); /* Updated to use primary variable */
+  border-radius: var(--br-4); /* Updated to use primary variable */
   padding: 8px 16px;
   margin-right: 8px;
   flex: 1;
-  max-height: calc(6 * 24px);
+  max-height: calc(6 * var(--fs-14)); /* Updated to use primary variable */
   overflow-y: auto;
   resize: none;
   outline: none;
@@ -41,13 +40,13 @@
 .inputField:active,
 .inputField:focus,
 .inputField:focus-visible {
-  border-color: #bbb;
+  border-color: var(--5); /* Updated to use primary variable */
   box-shadow: none;
   outline: none;
 }
 
 .inputField::placeholder {
-  color: #777;
+  color: var(--6); /* Updated to use primary variable */
 }
 
 .submit {
@@ -70,10 +69,12 @@
   background-repeat: no-repeat;
   cursor: pointer;
   transition: all 0.25s ease-in-out;
+  background-color: var(--6); /* Updated to use primary variable */
+  display: block;
 }
 
 .actionButton:hover {
-  background-color: #37C078;
+  background-color: var(--7); /* Updated to use primary variable */
 }
 
 .mbWrapper {
@@ -84,8 +85,7 @@
 
 .resetButtonMobile,
 .logoutButtonMobile {
-  background-color: #777;
-  display: block;
+
 }
 
 .resetButtonMobile {

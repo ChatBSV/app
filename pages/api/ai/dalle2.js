@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import dotenv from "dotenv";
-import parseFormat from '../../src/lib/parseFormat2'; 
+import parseFormat from '../../../src/lib/parseFormat2'; 
 
 dotenv.config();
 

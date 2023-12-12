@@ -1,9 +1,9 @@
 // pages/api/auth-check.js
 
-import AuthTokenRepository from "../../src/repositories/AuthTokenRepository";
-import HandCashService from "../../src/services/HandCashService";
-import SessionTokenRepository from "../../src/repositories/SessionTokenRepository";
-import getErrorMessage from '../../src/lib/getErrorMessage';
+import AuthTokenRepository from "../../../../src/repositories/AuthTokenRepository";
+import HandCashService from "../../../../src/services/HandCashService";
+import SessionTokenRepository from "../../../../src/repositories/SessionTokenRepository";
+import getErrorMessage from '../../../../src/lib/getErrorMessage';
 
 export default async function authCheckHandler(req, res) {
     if (req.method !== 'POST') {

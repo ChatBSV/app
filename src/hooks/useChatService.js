@@ -124,7 +124,7 @@ export const useChatService = ({sessionToken}) => {
     setErrorMessage('');
     
     // Step 1: Authenticate and Get Balance
-    const authCheckResult = await fetch('/api/auth-check', {
+    const authCheckResult = await fetch('/api/auth/handcash/auth-check', {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${sessionToken}`,

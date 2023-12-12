@@ -1,14 +1,14 @@
 // src/components/ChatMessage.js
 
 import React from 'react';
-import AssistantMessage from './AssistantMessage';
-import UserMessage from './UserMessage';
-import DalleImageMessage from './DalleImageMessage';
-import MemeImageMessage from './MemeImageMessage';
-import LoadingMessage from './LoadingMessage';
-import IntroMessage from './IntroMessage';
-import ErrorMessage from './ErrorMessage';
-import HelpMessage from './HelpMessage'; // Import the HelpMessage component
+import AssistantMessage from '../messages/AssistantMessage';
+import UserMessage from '../messages/UserMessage';
+import DalleImageMessage from '../messages/DalleImageMessage';
+import MemeImageMessage from '../messages/MemeImageMessage';
+import LoadingMessage from '../messages/LoadingMessage';
+import IntroMessage from '../messages/IntroMessage';
+import ErrorMessage from '../messages/ErrorMessage';
+import HelpMessage from '../messages/HelpMessage'; // Import the HelpMessage component
 
 function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad, avatarUrl }) {
   switch (role) {

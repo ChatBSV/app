@@ -1,0 +1,36 @@
+/* Color variables */
+:root {
+    --0: transparent;
+    --1: #fff;
+    --2: #eee;
+    --3: #ddd;
+    --4: #ccc;
+    --5: #bbb;
+    --6: #777;
+    --7: #222;
+
+  /* Font variables */
+
+    --ff-sans: 'Poppins', sans-serif;
+    --ff-serif: 'Courier New', Courier, monospace;
+    --f-i: italic;
+    --f-b: bold;
+    --fs: 1em;
+    --f-h1: 1.1em;
+    --f-h2: 1.05em;
+    --f-sm: 0.9em;
+    --fw-400: 400;
+    --fw-600: 600;
+    --f-lh: 125%;
+    --fs-16: 16px;
+    --fs-14: 14px;
+    --fs-12: 12px;
+    
+  /* Border variables */
+
+    --bw-1: 1px;
+    --bw-2: 2px;
+    --br-4: 4px;
+    --br-8: 8px;
+    --bs: solid;
+  }

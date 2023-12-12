@@ -1,6 +1,54 @@
+/* globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Primary Variables */
+:root {
+  /* Color Variables */
+  --0: transparent;
+  --1: #fff;
+  --2: #eee;
+  --3: #ddd;
+  --4: #ccc;
+  --5: #bbb;
+  --6: #777;
+  --7: #222;
+  
+  /* Font Variables */
+  --ff-sans: 'Poppins', sans-serif;
+  --ff-serif: 'Courier New', Courier, monospace;
+  --f-i: italic;
+  --f-b: bold;
+  --fs: 1em;
+  --f-h1: 1.1em;
+  --f-h2: 1.05em;
+  --f-sm: 0.9em;
+  --fw-400: 400;
+  --fw-600: 600;
+  --f-lh: 125%;
+  --fs-16: 16px;
+  --fs-14: 14px;
+  --fs-12: 12px;
+  
+  /* Border Variables */
+  --bw-1: 1px;
+  --bw-2: 2px;
+  --br-4: 4px;
+  --br-8: 8px;
+  --bs: solid;
+  
+  /* Additional Variables for Custom Markdown Styles */
+  --link-color: var(--1); /* Custom color for links */
+  --table-bg: var(--1);
+  --table-border-color: var(--3);
+  --table-th-bg: var(--2);
+  --hr-color: var(--5);
+  --emoji-size: 20px;
+  --checked-color: #34d399; /* Green for checked items */
+  --unchecked-color: #f87171; /* Red for unchecked items */
+}
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {
@@ -10,27 +58,25 @@
 
 /* Scrollbar track */
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0);
-  border: none;
-  border-color: #222;
+  background: var(--0);
 }
 
 /* Scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  background: #777;
-  border: 2px solid #eee;
-  border-radius: 10px;
+  background: var(--6);
+  border: var(--bw-2) var(--bs) var(--2);
+  border-radius: var(--br-8);
 }
 
 /* Viewport styles */
 .viewport {
-  color: #333;
-  background-color: #eee;
+  color: var(--7);
+  background-color: var(--2);
   flex-direction: column;
-  font-family: Poppins, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 22px;
+  font-family: var(--ff-sans);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-400);
+  line-height: var(--f-lh);
   display: flex;
   position: fixed;
   top: 0;
@@ -41,60 +87,60 @@
 
 /* Global styles for markdown content */
 .markdown-content pre {
-  background-color: #eee;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background-color: var(--2);
+  border: var(--bw-1) solid var(--3);
+  border-radius: var(--br-4);
   padding: 8px;
   overflow-x: auto;
-  font-size: 0.9em;
+  font-size: var(--f-sm);
   margin: 8px 0;
 }
 
 .markdown-content code {
-  font-family: 'Courier New', Courier, monospace;
-  color: #222;
-  border: 2px solid #eee;
+  font-family: var(--ff-serif);
+  color: var(--7);
+  border: var(--bw-2) solid var(--2);
   padding: 2px;
 }
 
 .markdown-content h1 {
-  font-size: 1.1em;
-  font-weight: 600;
+  font-size: var(--f-h1);
+  font-weight: var(--fw-600);
   margin: 16px 0 8px;
 }
 
 .markdown-content h2 {
-  font-size: 1.05em;
-  font-weight: 600;
+  font-size: var(--f-h2);
+  font-weight: var(--fw-600);
   margin: 14px 0 7px;
 }
 
 .markdown-content h3 {
-  font-size: 1em;
-  font-weight: 600;
+  font-size: var(--fs);
+  font-weight: var(--fw-600);
   margin: 12px 0 6px;
 }
 
 .markdown-content p {
-  font-size: 1em;
+  font-size: var(--fs);
   margin-bottom: 0.5em;
 }
 
 .markdown-content strong {
-  font-weight: 600;
+  font-weight: var(--fw-600);
 }
 
 .markdown-content em {
-  font-style: italic;
+  font-style: var(--f-i);
 }
 
 .markdown-content ul {
-  padding-left: 16px;
+  padding-left: 24px;
   list-style-type: disc;
 }
 
 .markdown-content ol {
-  padding-left: 16px;
+  padding-left: 24px;
   list-style-type: decimal;
 }
 
@@ -103,15 +149,73 @@
 }
 
 .markdown-content blockquote {
-  background-color: #eee;
+  background-color: var(--2);
   padding: 10px 15px;
-  font-style: italic;
+  font-style: var(--f-i);
   margin: 10px 0;
-  border-radius: 8px 0px 8px 0px;
+  border-radius: var(--br-8) 0 0 var(--br-8);
 }
 
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  background-color: var(--table-bg);
+}
+
+.markdown-content th,
+.markdown-content td {
+  padding: 0.5em;
+  border: var(--bw-1) solid var(--table-border-color);
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: var(--table-th-bg);
+  font-weight: var(--fw-600);
+}
+
+/* Horizontal Rule */
 .markdown-content hr {
-  border: 0;
-  height: 1px;
-  background-color: #ddd;
+  height: var(--bw-1);
+  background-color: var(--3);
+  margin: 2em 0;
+}
+
+/* Emoji Styles */
+.markdown-content .emoji {
+  height: var(--emoji-size);
+  width: var(--emoji-size);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Checklist Styles */
+.markdown-content .checklist {
+  list-style: none;
+  padding: 0;
+}
+
+.markdown-content .checklist li:before {
+  content: "☐ ";
+  color: var(--unchecked-color);
+}
+
+.markdown-content .checklist li.checked:before {
+  content: "☑ ";
+  color: var(--checked-color);
+}
+
+/* Link Styles */
+.markdown-content a {
+  color: var(--link-color);
+  text-decoration: none;
+  background-color: var(--7);
+  padding: 3px 6px;
+  border-radius: var(--br-4);
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
 }

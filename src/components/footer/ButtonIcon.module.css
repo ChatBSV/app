@@ -1,13 +1,15 @@
 .bgDarkBackground {
-  background-color: #777;
+  background-color: var(--6);
   border-radius: 24px;
   margin: 0;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  color: var(--1);
 }
 
 .bgDarkBackground:hover {
-  background-color: #37C078;
+  background-color: var(--7);
+  color: var(--1);
 }
 
 .flexGap {
@@ -38,6 +40,6 @@
 
 .fontBold {
   font-weight: bold;
-  color: rgba(255, 255, 255, 0.9);
   line-height: 1rem;
+  
 }

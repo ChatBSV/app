@@ -1,8 +1,8 @@
 // src/components/ErrorMessage.js
 
 import React from 'react';
-import styles from './ChatMessage.module.css';
-import getErrorMessage from '../lib/getErrorMessage';
+import styles from '../body/ChatMessage.module.css';
+import getErrorMessage from '../../lib/getErrorMessage';
 
 function ErrorMessage({ error, avatarUrl }) {
   const errorMessage = getErrorMessage(error);

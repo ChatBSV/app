@@ -1,7 +1,7 @@
 // src/components/IntroMessage.js
 
 import React from 'react';
-import styles from './ChatMessage.module.css';
+import styles from '../body/ChatMessage.module.css';
 
 function IntroMessage({ content, avatarUrl }) {
   return (
