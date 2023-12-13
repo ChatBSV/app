@@ -1,9 +1,5 @@
 /* globals.css */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Primary Variables */
 :root {
   /* Color Variables */
@@ -17,6 +13,7 @@
   --7: #222;
   
   /* Font Variables */
+  --base-font-size: 16px; /* You can adjust the value as needed */
   --ff-sans: 'Poppins', sans-serif;
   --ff-serif: 'Courier New', Courier, monospace;
   --f-i: italic;
@@ -31,6 +28,7 @@
   --fs-16: 16px;
   --fs-14: 14px;
   --fs-12: 12px;
+  --fs-15: 15px;
   
   /* Border Variables */
   --bw-1: 1px;
@@ -84,7 +82,18 @@
   left: 0;
   right: 0;
 }
-
+.p{
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+.markdown-content blockquote.intro-quote{
+  font-style: normal ;
+}
 /* Global styles for markdown content */
 .markdown-content pre {
   background-color: var(--2);
@@ -94,66 +103,136 @@
   overflow-x: auto;
   font-size: var(--f-sm);
   margin: 8px 0;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content code {
   font-family: var(--ff-serif);
   color: var(--7);
   border: var(--bw-2) solid var(--2);
-  padding: 2px;
+  padding: 2px 6px;
+  margin-bottom: 0.5em;
+  margin-block-start: 10px;
+  margin-block-end: 10px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  display: inline-block;
 }
 
 .markdown-content h1 {
   font-size: var(--f-h1);
   font-weight: var(--fw-600);
-  margin: 16px 0 8px;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content h2 {
   font-size: var(--f-h2);
   font-weight: var(--fw-600);
-  margin: 14px 0 7px;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content h3 {
   font-size: var(--fs);
   font-weight: var(--fw-600);
-  margin: 12px 0 6px;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content p {
   font-size: var(--fs);
-  margin-bottom: 0.5em;
+  line-height: 22px;
+  font-size: 15px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding: 0px;
+  gap: 0px;
+
 }
 
 .markdown-content strong {
   font-weight: var(--fw-600);
+  padding: 0px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+
 }
 
 .markdown-content em {
   font-style: var(--f-i);
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+
 }
 
 .markdown-content ul {
   padding-left: 24px;
   list-style-type: disc;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content ol {
   padding-left: 24px;
   list-style-type: decimal;
+  margin-bottom: 5px;
+  margin-top: 0px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content li {
-  margin-bottom: 5px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content blockquote {
-  background-color: var(--2);
-  padding: 10px 15px;
+  background-color: #eee;
+  padding: 0px 2vw;
+  color: var(--7);
   font-style: var(--f-i);
-  margin: 10px 0;
-  border-radius: var(--br-8) 0 0 var(--br-8);
+  border-radius: 0 var(--br-8) 0 var(--br-8);
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 
@@ -162,6 +241,12 @@
   border-collapse: collapse;
   margin: 1em 0;
   background-color: var(--table-bg);
+  border-radius: 16px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-size: 0.85em;
 }
 
 .markdown-content th,
@@ -169,18 +254,30 @@
   padding: 0.5em;
   border: var(--bw-1) solid var(--table-border-color);
   text-align: left;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content th {
   background-color: var(--table-th-bg);
   font-weight: var(--fw-600);
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 /* Horizontal Rule */
 .markdown-content hr {
   height: var(--bw-1);
   background-color: var(--3);
-  margin: 2em 0;
+  border: 0px;
+  margin-block-start: 20px;
+  margin-block-end: 50px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 /* Emoji Styles */
@@ -195,27 +292,47 @@
 .markdown-content .checklist {
   list-style: none;
   padding: 0;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content .checklist li:before {
   content: "☐ ";
   color: var(--unchecked-color);
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content .checklist li.checked:before {
   content: "☑ ";
   color: var(--checked-color);
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 /* Link Styles */
 .markdown-content a {
   color: var(--link-color);
   text-decoration: none;
-  background-color: var(--7);
+  background-color: var(--6);
   padding: 3px 6px;
   border-radius: var(--br-4);
+  transition: all 0.2s ease-in-out;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .markdown-content a:hover {
-  text-decoration: underline;
+  background-color: var(--7);
+
 }

@@ -4,19 +4,23 @@ import axios from 'axios';
 
 export async function handleOpenAIRequest3(prompt, history, model) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
+  // Filter out empty user messages from history and filteredHistory
   const filteredHistory = history.filter(
-    (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
+    (message) => !['help', 'loading', 'error', 'image'].includes(message.role) && message.content.trim() !== ''
   );
+
+  console.log('History:', history);
+  console.log('Filtered History:', filteredHistory);
 
   if (!OPENAI_API_KEY) {
     throw new Error('The OPENAI_API_KEY is not set in environment variables.');
   }
   
-  if (!CORE_PROMPT && (!history || history.length === 0)) {
-    throw new Error('The CORE_PROMPT is not set in environment variables and no history is provided.');
+  if (!CORE_PROMPT && (!history || filteredHistory.length === 0)) {
+    throw new Error('The CORE_PROMPT is not set in environment variables and no valid history is provided.');
   }
 
-  if (history && !Array.isArray(history)) {
+  if (filteredHistory.length > 0 && !Array.isArray(history)) {
     throw new Error('History should be an array of message objects.');
   }
 

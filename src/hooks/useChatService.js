@@ -32,46 +32,63 @@ export const useChatService = ({sessionToken}) => {
   }, []);
 
 
-  const tokenizeChatHistory = async (chatHistory) => {
+  const tokenizeChatHistory = async (chatHistory, tokenLimit) => {
     try {
+      // Iterate through each message and trim its content to fit within the token limit
+      const trimmedMessages = chatHistory.map((message) => {
+        // Calculate the maximum number of characters allowed for this message
+        const maxChars = tokenLimit * 4; // Assuming 4 bytes per token (roughly 3 characters)
+  
+        // Trim the content of the message if it exceeds the maximum character limit
+        if (message.content.length > maxChars) {
+          message.content = message.content.substring(0, maxChars);
+        }
+  
+        return message;
+      });
+  
+      // Send the trimmed chat history as an array
       const response = await fetch('/api/tokenizer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ chatHistory }),
+        body: JSON.stringify({ chatHistory: trimmedMessages }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `HTTP error!`);
-    }
-    
-
+      }
+  
       const { processedHistory } = await response.json();
-      return processedHistory.split('\n').map(content => ({ role: 'user', content }));
+      return processedHistory; // Return the processed history as a single string
     } catch (error) {
       console.error('Error in tokenizeChatHistory:', error);
       throw error;
     }
   };
+  
+  
+  
+  
 
   const getChatReply = async (prompt, chatHistory, requestType, selectedModel) => {
     setIsLoading(true);
     setIsError(false);
     setErrorMessage('');
-
+  
     try {
       const filteredChatHistory = chatHistory.filter(
         (message) => !['help', 'loading', 'error', 'image'].includes(message.role)
       );
-
-      const tokenizedHistory = await tokenizeChatHistory(filteredChatHistory.map(m => m.content).join('\n'));
-
+  
+      const tokenizedHistory = await tokenizeChatHistory(filteredChatHistory);
+  
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 298000);
       console.log(`User to ${selectedModel}: ${prompt}`);
-
+  
       const response = await fetch('/api/get-chat-reply', {
         method: 'POST',
         headers: {
@@ -81,15 +98,14 @@ export const useChatService = ({sessionToken}) => {
         body: JSON.stringify({ prompt, history: tokenizedHistory, model: selectedModel }),
         signal: controller.signal,
       });
-
+  
       clearTimeout(id);
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `HTTP error!`);
-    }
-    
-
+      }
+  
       const data = await response.json();
       console.log('System Response:', data);
       return data;
@@ -99,16 +115,17 @@ export const useChatService = ({sessionToken}) => {
       const errorText = getErrorMessage(error);
       setErrorMessage(errorText);
       addMessageToChat({
-          id: nanoid(),
-          role: 'error',
-          content: errorText,
-          txid: '',
+        id: nanoid(),
+        role: 'error',
+        content: errorText,
+        txid: '',
       });
       return null;
-  } finally {
+    } finally {
       setIsLoading(false);
     }
   };
+  
 
   const handleHelpRequest = useCallback((helpCommand) => {
     addMessageToChat({

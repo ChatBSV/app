@@ -9,11 +9,10 @@ function UserMessage({ content, avatarUrl }) {
 
   return (
     <div className={styles.userWrapper}>
+      {avatarUrl && <img src={avatarUrl} alt="ChatBSV" className={styles.avatar} />}
       <div className={`${styles.chatMessage} ${styles.userMessage}`}>
         <div className="markdown-content" dangerouslySetInnerHTML={{ __html: markdownContent }} />
       </div>
-      {avatarUrl && <img src={avatarUrl} alt="ChatBSV" className={styles.avatar} />}
-
     </div>
   );
 }

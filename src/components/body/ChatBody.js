@@ -6,7 +6,6 @@ import ChatMessage from './ChatMessage';
 import loadingMessages from '../../../loadingMessages.json';
 import useScrollToBottom from '../../hooks/useScrollToBottom';
 import introMessage1 from '../../../content/intro-Message1.html';
-import introMessage2 from '../../../content/intro-Message2.html';
 import helpContent from '../../../content/help.html';
 
 
@@ -57,7 +56,6 @@ function ChatBody({ chat, isLoading, isError, errorMessage, user }) {
     <div className={styles.chatBody} ref={chatContainerRef}>
       <div className={styles.chatContainer}>
         <ChatMessage content={introMessage1} role="intro" avatarUrl="/icon-192x192.png" />
-        <ChatMessage content={introMessage2} role="intro" avatarUrl="/icon-192x192.png" />
         {chat.map(renderMessage)}
         {isLoading && <ChatMessage content={randomLoadingMessage} role="loading" avatarUrl="/icon-192x192.png" />}
         {isError && errorMessage && <ChatMessage content={errorMessage} role="error" avatarUrl="/icon-192x192.png" />}

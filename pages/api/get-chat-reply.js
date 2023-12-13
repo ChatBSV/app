@@ -75,7 +75,7 @@ export default async function handler(req, res) {
     }
     console.error('get-chat-reply: Detailed Error Message -', detailedErrorMessage); // Log detailed error message
     res.status(500).json({
-      error: 'An error occurred during processing.',
+      error: 'OpenAI returned an error.',
       details: detailedErrorMessage,
     });
   }

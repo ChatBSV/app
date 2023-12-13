@@ -1,28 +1,29 @@
-// pages/api/tokenizer.js
-
 import { NextApiRequest, NextApiResponse } from 'next';
 
 /**
  * Approximate tokenization and trimming of chat history.
  * 
- * @param {string} chatHistory - The full chat history as a string.
+ * @param {string[]} chatHistory - An array of messages in the chat history.
  * @param {number} tokenLimit - The maximum number of tokens allowed.
- * @returns {string} - The trimmed chat history.
+ * @returns {string[]} - An array of trimmed messages.
  */
 const tokenizeAndTrim = (chatHistory, tokenLimit) => {
-    // Assuming an average of 4 bytes (roughly 3 characters) per token as an approximation
-    const approxTokenSize = 4; 
-    const maxChars = tokenLimit * approxTokenSize;
+    const approxTokenSize = 4; // Assuming an average of 4 bytes (roughly 3 characters) per token as an approximation
+    const maxTokens = tokenLimit;
 
-    if (Buffer.byteLength(chatHistory, 'utf8') <= maxChars) {
-        return chatHistory;
-    }
+    let currentTokens = 0;
+    const trimmedHistory = [];
 
-    // Trim the chat history to fit the token limit
-    let trimmedHistory = chatHistory;
-    while (Buffer.byteLength(trimmedHistory, 'utf8') > maxChars) {
-        // Remove one character at a time from the beginning (oldest messages)
-        trimmedHistory = trimmedHistory.substring(1);
+    for (const message of chatHistory) {
+        const messageTokens = message.content.split(' ').length; // Count tokens in the message
+        if (currentTokens + messageTokens <= maxTokens) {
+            // If adding this message doesn't exceed the token limit, add it to trimmedHistory
+            trimmedHistory.push(message);
+            currentTokens += messageTokens;
+        } else {
+            // If adding this message exceeds the token limit, break the loop
+            break;
+        }
     }
 
     return trimmedHistory;
@@ -40,8 +41,8 @@ export default function handler(req, res) {
         const { chatHistory } = req.body;
         const tokenLimit = 1000; // Set your token limit
 
-        if (typeof chatHistory !== 'string') {
-            throw new Error('Invalid chat history format. Expected a string.');
+        if (!Array.isArray(chatHistory)) {
+            throw new Error('Invalid chat history format. Expected an array.');
         }
 
         const processedHistory = tokenizeAndTrim(chatHistory, tokenLimit);

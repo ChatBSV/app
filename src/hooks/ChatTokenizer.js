@@ -15,7 +15,9 @@ export const tokenizeChatHistory = async (chatHistory) => {
     }
 
     const { processedHistory } = await response.json();
-    return processedHistory.split('\n').map(content => ({ role: 'user', content }));
+
+    // Return the processed history as-is, without splitting
+    return [{ role: 'user', content: processedHistory }];
   } catch (error) {
     console.error('Error in tokenizing chat history:', error);
     throw error;
