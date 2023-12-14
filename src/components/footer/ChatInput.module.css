@@ -18,6 +18,7 @@
   justify-content: center;
   width: 100%;
   flex: 1;
+  max-width: 820px;
 }
 
 .inputField {
@@ -31,7 +32,6 @@
   border-radius: var(--br-4); /* Updated to use primary variable */
   padding: 8px 16px;
   margin-right: 8px;
-  max-width: 580px;
   flex: 1;
   max-height: calc(6 * var(--fs-14)); /* Updated to use primary variable */
   overflow-y: auto;
@@ -115,7 +115,7 @@
 
   .chatFooter {
     min-height: 120px;
-    padding: 5px 3vw 30px;
+
     flex-wrap: wrap;
   }
 
@@ -129,8 +129,8 @@
     padding-top: 10px;
     display: flex;
     flex-direction: column;
-    max-width: 90vw;
-    min-width: 90vw;
+    max-width: 80vw;
+    min-width: 80vw;
     justify-content: center;
     align-items: center;
     flex: none;
@@ -142,8 +142,8 @@
     font-size: 16px;
     margin-bottom: 10px;
     margin-right: 0;
-    max-width: 90vw;
-    min-width: 90vw;
+    max-width: 80vw;
+    min-width: 80vw;
     flex: none;
   }
 }

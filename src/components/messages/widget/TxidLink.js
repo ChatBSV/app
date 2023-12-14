@@ -10,8 +10,7 @@ function TxidLink({ txid }) {
   }
 
   return (
-    <a
-      className={`${styles.copyButton} copyButton`}
+    <a className={`${styles.copyButton} copyButton`}
       href={`https://whatsonchain.com/tx/${txid}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -24,7 +23,7 @@ function TxidLink({ txid }) {
         width={16} // Set your desired width
         height={16} // Set your desired height
       />
-      <span style={{ fontSize: '11px', color: 'gray' }}>
+      <span style={{ fontSize: '11px' }}>
         TxID:{txid.slice(0, 5)}
       </span>
     </a>

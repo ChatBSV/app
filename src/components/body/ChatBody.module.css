@@ -16,7 +16,7 @@
 }
 
 .spacer {
-  height: 20px;
+  height: 0px;
   flex: none;
   justify-content: flex-end;
 }

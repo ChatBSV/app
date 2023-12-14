@@ -13,7 +13,7 @@ function ShareButton({ content }) {
 
   return (
     <a
-      className={`${styles.copyButton} shareButton`}
+    className={`${styles.copyButton} copyButton`}
       href={createTweetLink(content)}
       target="_blank"
       rel="noopener noreferrer"
@@ -25,7 +25,7 @@ function ShareButton({ content }) {
         width={16} // Set your desired width
         height={16} // Set your desired height
       />
-      <span style={{ fontSize: '11px', color: 'gray' }}>Share</span>
+      <span style={{ fontSize: '11px' }}>Share</span>
     </a>
   );
 }

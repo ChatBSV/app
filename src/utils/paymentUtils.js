@@ -1,6 +1,6 @@
 // src/utils/paymentUtils.js
 
-export function calculatePaymentAmount(requesttype, model, tokens = 0) {
+export function calculatePaymentAmount(requesttype, model, tokens) {
   
     console.log('Request Type:', requesttype);
     console.log('Model:', model);

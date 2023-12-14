@@ -4,31 +4,28 @@
   width: 90%;
   max-width: 720px;
   font-weight: 500;
-  font-size: var(--fs-15); /* Using font size variable */
+  font-size: var(--fs-15); 
   flex: 1;
-  line-height: var(--f-lh); /* Using line height variable */
   background-color: var(--1);
-  border-radius: 0px 8px 0px 8px;
+  border-radius: 0px 12px 0px 12px;
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 12px 16px;
 }
 
 .chatMessage.userMessage {
-  color: var(--7); /* Using color variable */
-  background-color: var(--1); /* Using color variable */
-  border-radius: 8px 0px 8px 0px;
+  color: var(--7);
+  background-color: var(--1);
+  border-radius: 12px 0px 12px 0px;
   margin-bottom: 10px;
-  padding: 12px 16px;
+  padding: 4px 16px;
 }
 
-/* New classes for the message wrapper and avatar */
 .messageWrapper {
   padding: 2vw 5vh 2vw 5vh;
   display: flex;
   flex: start;
   justify-content: center;
-  border-bottom: 1px solid #ddd;
   gap: 8px;
 }
 
@@ -38,6 +35,7 @@
   flex: start;
   justify-content: center;
   background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   gap: 8px;
 }
@@ -55,9 +53,11 @@
   padding-bottom: 12px;
   border-radius: var(--br-8); /* Using border radius variable */
   overflow: hidden;
+  max-width: 100%;
 }
 
 .image {
+  width: 100%;
   border-radius: var(--br-8); /* Using border radius variable */
 }
 
@@ -67,14 +67,6 @@
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-size: var(--fs-15);
-}
-
-
-.chatMessage.assistantMessage,
-.chatMessage.introMessage,
-.chatMessage.loadingMessage {
-
-
 }
 
 .link {
@@ -106,7 +98,13 @@
   display: flex;
   cursor: pointer;
   font-size: 14pt;
-  color: var(--5);
+  color: var(--6);
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.copyButton:hover {
+  color: var(--7);
 }
 
 .copyIcon {
@@ -114,6 +112,45 @@
   width: 12px;
   margin-right: 4px;
   opacity: 67%;
+}
+
+.codeHeader{
+  position: relative;
+  display: flex;
+  justify-content: space-between ;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.codeLanguageHeader {
+
+  border: 1px solid #ddd;
+  padding: 4px 12px;
+  color: #777; 
+  border-radius: var(--br-4);
+  font-weight: 600;
+  font-family: var(--ff-serif);
+  font-size: var(--fs-14);
+
+}
+
+
+.copyCodeButton {
+  font-family: var(--ff-serif);
+  border: 1px solid #ddd;
+  padding: 4px 12px; 
+  font-weight: 600;
+  color: #777; 
+  border-radius: var(--br-4);
+  cursor: pointer;
+  font-size: var(--fs-14);
+  transition: all 0.2s ease-in-out;
+
+}
+
+.copyCodeButton:hover {
+background-color: #222;
+color: #fff;
 }
 
 @media screen and (max-width: 479px) {
@@ -156,7 +193,6 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    margin-top: 12px;
   }
 
   .chatLink {

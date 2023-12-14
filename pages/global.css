@@ -50,8 +50,8 @@
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 /* Scrollbar track */
@@ -62,10 +62,9 @@
 /* Scrollbar thumb */
 ::-webkit-scrollbar-thumb {
   background: var(--6);
-  border: var(--bw-2) var(--bs) var(--2);
+
   border-radius: var(--br-8);
 }
-
 /* Viewport styles */
 .viewport {
   color: var(--7);
@@ -82,15 +81,32 @@
   left: 0;
   right: 0;
 }
-.p{
-  padding: 0px;
-  margin-top: 0px;
-  margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+.p{}
+
+.help {
+display: flex;
+position: relative;
+max-height: 70vh;
+overflow-y: scroll;
+padding-right: 12px;
+
+
 }
+
+.help-index{
+  min-width: 220px;
+  position: sticky;
+  top: 0px;
+}
+
+.help-body{
+  padding: 60px 16px;
+
+
+
+}
+
+
 .markdown-content blockquote.intro-quote{
   font-style: normal ;
 }
@@ -103,8 +119,8 @@
   overflow-x: auto;
   font-size: var(--f-sm);
   margin: 8px 0;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -114,12 +130,18 @@
   color: var(--7);
   border: var(--bw-2) solid var(--2);
   padding: 2px 6px;
+  border-radius: 4px;
   margin-bottom: 0.5em;
-  margin-block-start: 10px;
-  margin-block-end: 10px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+.markdown-content code:hover {
+  background-color: #eee;
 }
 
 .markdown-content h1 {
@@ -128,8 +150,8 @@
   padding: 0px;
   margin-top: 0px;
   margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 24px;
+  margin-block-end: 24px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -140,8 +162,8 @@
   padding: 0px;
   margin-top: 0px;
   margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 24px;
+  margin-block-end: 24px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -151,9 +173,19 @@
   font-weight: var(--fw-600);
   padding: 0px;
   margin-top: 0px;
-  margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 24px;
+  margin-block-end: 24px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.markdown-content h4 {
+  font-size: var(--fs);
+  font-weight: var(--fw-600);
+  padding: 0px;
+  margin-top: 0px;
+  margin-block-start: 24px;
+  margin-block-end: 24px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -162,8 +194,8 @@
   font-size: var(--fs);
   line-height: 22px;
   font-size: 15px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   padding: 0px;
@@ -174,10 +206,6 @@
 .markdown-content strong {
   font-weight: var(--fw-600);
   padding: 0px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
 
 }
 
@@ -185,26 +213,24 @@
   font-style: var(--f-i);
   padding: 0px;
   margin-top: 0px;
-  margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 
 }
 
 .markdown-content ul {
-  padding-left: 24px;
+  padding-left: 20px;
   list-style-type: disc;
-  margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 12px;
+  margin-block-end: 12px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
 
 .markdown-content ol {
-  padding-left: 24px;
+  padding-left: 20px;
   list-style-type: decimal;
   margin-bottom: 5px;
   margin-top: 0px;
@@ -217,20 +243,20 @@
 .markdown-content li {
   margin-bottom: 0px;
   margin-top: 0px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 12px;
+  margin-block-end: 12px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
 
 .markdown-content blockquote {
   background-color: #eee;
-  padding: 0px 2vw;
+  padding: 8px 20px;
   color: var(--7);
   font-style: var(--f-i);
   border-radius: 0 var(--br-8) 0 var(--br-8);
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 12px;
+  margin-block-end: 16px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -242,8 +268,8 @@
   margin: 1em 0;
   background-color: var(--table-bg);
   border-radius: 16px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-size: 0.85em;
@@ -254,8 +280,8 @@
   padding: 0.5em;
   border: var(--bw-1) solid var(--table-border-color);
   text-align: left;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -263,8 +289,8 @@
 .markdown-content th {
   background-color: var(--table-th-bg);
   font-weight: var(--fw-600);
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -274,8 +300,8 @@
   height: var(--bw-1);
   background-color: var(--3);
   border: 0px;
-  margin-block-start: 20px;
-  margin-block-end: 50px;
+  margin-block-start: 30px;
+  margin-block-end: 30px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -292,8 +318,8 @@
 .markdown-content .checklist {
   list-style: none;
   padding: 0;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -301,8 +327,8 @@
 .markdown-content .checklist li:before {
   content: "☐ ";
   color: var(--unchecked-color);
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -310,8 +336,8 @@
 .markdown-content .checklist li.checked:before {
   content: "☑ ";
   color: var(--checked-color);
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
@@ -321,13 +347,11 @@
   color: var(--link-color);
   text-decoration: none;
   background-color: var(--6);
-  padding: 3px 6px;
+  padding: 4px 8px;
   border-radius: var(--br-4);
   transition: all 0.2s ease-in-out;
-  margin-top: 0px;
-  margin-bottom: 5px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }

@@ -19,12 +19,11 @@ export default class HandCashService {
     return this.account.profile.getCurrentProfile();
   }
 
-  async pay({ destination, amount, currencyCode, description }) {
+  async pay({ destination, amount, currencyCode, description, attachment }) {
     return this.account.wallet.pay({
-      payments: [
-        { destination, amount, currencyCode },
-      ],
-      description: description || 'Sent from the HandCash',
+      payments: [{ destination, amount, currencyCode }],
+      description: description || 'Sent from HandCash',
+      attachment: attachment, // Include attachment in the payment
     });
   }
 

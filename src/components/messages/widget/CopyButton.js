@@ -14,7 +14,7 @@ function CopyButton({ handleCopy, copyButtonText }) {
         width={16} // Set your desired width
         height={16} // Set your desired height
       />
-      <span style={{ fontSize: '11px', color: 'gray' }}>{copyButtonText}</span>
+      <span style={{ fontSize: '11px'}}>{copyButtonText}</span>
     </a>
   );
 }

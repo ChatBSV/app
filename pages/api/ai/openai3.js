@@ -6,7 +6,7 @@ export async function handleOpenAIRequest3(prompt, history, model) {
   const { OPENAI_API_KEY, CORE_PROMPT } = process.env;
   // Filter out empty user messages from history and filteredHistory
   const filteredHistory = history.filter(
-    (message) => !['help', 'loading', 'error', 'image'].includes(message.role) && message.content.trim() !== ''
+    (message) => !['help', 'loading', 'error', 'dalle-image'].includes(message.role) && message.content.trim() !== ''
   );
 
   console.log('History:', history);
