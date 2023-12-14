@@ -1,7 +1,7 @@
 // src/components/ChatInputForm.js
 
 import React from 'react';
-import styles from './ChatInput.module.css';
+import styles from './ChatInput.module.css?v=099';
 import { handleTextareaChange } from '../../utils/ChatInputUtils';
 import ButtonIcon from './ButtonIcon';
 
