@@ -2,8 +2,9 @@
 
 import HandCashService from "../services/HandCashService";
 import SessionTokenRepository from "../repositories/SessionTokenRepository";
+import { CURRENT_SESSION_VERSION } from "../constants";
 
-export function getSessionProps({ req }) {
+export function getSessionProps({ req, res }) {
     const cookies = req.headers.cookie || '';
     let sessionTokenFromCookie;
     let redirectionUrl = '';
@@ -25,8 +26,16 @@ export function getSessionProps({ req }) {
 
         // Decode user data from the session token
         if (sessionTokenFromCookie) {
-            userDecoded = SessionTokenRepository.decode(sessionTokenFromCookie).user;
+            const decodedToken = SessionTokenRepository.decode(sessionTokenFromCookie);
+            userDecoded = decodedToken.user;
             console.log('getSessionProps: Decoded user from token:', userDecoded);
+
+            // If the version does not match, reset the sessionToken
+            if (decodedToken.version !== CURRENT_SESSION_VERSION) {
+                const newSessionToken = SessionTokenRepository.generate({ user: userDecoded, version: CURRENT_SESSION_VERSION });
+                res.setHeader('Set-Cookie', `sessionToken=${newSessionToken}; Path=/; HttpOnly; SameSite=Strict`);
+                console.log('getSessionProps: Session token version updated and new token set in cookie.');
+            }
         } else {
             console.log('getSessionProps: No session token found in cookies.');
         }

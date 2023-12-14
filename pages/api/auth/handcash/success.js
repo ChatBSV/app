@@ -4,6 +4,8 @@ import {v4 as uuidv4} from 'uuid';
 import AuthTokenRepository from "../../../../src/repositories/AuthTokenRepository";
 import HandCashService from "../../../../src/services/HandCashService";
 import SessionTokenRepository from "../../../../src/repositories/SessionTokenRepository";
+import { CURRENT_SESSION_VERSION } from "../../../../src/constants";
+
 
 export default async function handler(req, res) {
     const { authToken } = req.query;
@@ -16,6 +18,8 @@ export default async function handler(req, res) {
             handle: publicProfile.handle,
             displayName: publicProfile.displayName,
             avatarUrl: publicProfile.avatarUrl,
+            version: CURRENT_SESSION_VERSION,
+
         },
     };
     const sessionToken = SessionTokenRepository.generate(payload);
