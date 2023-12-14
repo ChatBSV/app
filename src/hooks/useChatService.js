@@ -10,21 +10,33 @@ export const useChatService = ({sessionToken}) => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
-  const [txid, setTxid] = useState(''); // Add txid state
-
+  const [txid, setTxid] = useState('');
 
   useEffect(() => {
     const storedChat = localStorage.getItem('chat');
     if (storedChat) {
       const existingChat = JSON.parse(storedChat).map(message => ({ ...message, isNewMessage: false }));
       setChat(existingChat);
+    } else {
+      // Fetch CORE_PROMPT from the API
+      fetch('/api/prompts/core')
+        .then(response => response.json())
+        .then(data => {
+          const corePrompt = data.corePrompt;
+          setChat([{ id: '0', role: 'system', content: corePrompt }]);
+          localStorage.setItem('chat', JSON.stringify([{ id: '0', role: 'system', content: corePrompt }]));
+        })
+        .catch(error => console.error('Failed to fetch CORE_PROMPT:', error));
     }
   }, []);
 
   const addMessageToChat = useCallback((message, isNewMessage = true) => {
     setChat((prevChat) => {
       const newMessage = { ...message, isNewMessage };
-      const updatedChat = [...prevChat, newMessage];
+      let updatedChat = [...prevChat, newMessage];
+      if (updatedChat.length === 1 && updatedChat[0].id === '0') {
+        updatedChat = [newMessage];
+      }
       const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
       localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
       return updatedChat;
