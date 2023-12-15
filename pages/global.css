@@ -89,8 +89,6 @@ position: relative;
 max-height: 70vh;
 overflow-y: scroll;
 padding-right: 12px;
-
-
 }
 
 .help-index{
@@ -101,9 +99,6 @@ padding-right: 12px;
 
 .help-body{
   padding: 60px 16px;
-
-
-
 }
 
 
@@ -348,15 +343,38 @@ padding-right: 12px;
   text-decoration: none;
   background-color: var(--6);
   padding: 4px 8px;
+  display: inline-block;
   border-radius: var(--br-4);
   transition: all 0.2s ease-in-out;
-  margin-block-start: 8px;
-  margin-block-end: 8px;
+  margin-block-start: 4px;
+  margin-block-end: 4px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
 }
 
 .markdown-content a:hover {
   background-color: var(--7);
+}
+
+
+@media screen and (max-width: 479px) {
+
+  .help {
+    display: block;
+    position: relative;
+    max-height: 30000px;
+    overflow-y: hidden;
+    padding-right: 0px;
+    }
+    
+    .help-index{
+      min-width: 150px;
+      position: relative;
+      top: 0px;
+    }
+    
+    .help-body{
+      padding: 20px 0px;
+    }
 
 }
