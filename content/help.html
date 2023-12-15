@@ -25,7 +25,7 @@ Powerful AI microservices for tiny Bitcoin microtransactions.
 
 <h3>1. Commands</h3>
 
-<blockquote class="intro-quote">
+<blockquote class="intro-quote"><br>
   <strong>[ENTER]</strong> - Submit your prompt.<br>
   <strong>[SHIFT+ENTER]</strong> - Skip a line.<br><br>
   <strong>/MEME</strong> {Prompt} - Generate memes.<br>
@@ -41,53 +41,65 @@ Powerful AI microservices for tiny Bitcoin microtransactions.
 
     
 <hr id="section-how-it-works">
-<h3 >2. How It Works</h3>
-<strong>Using Commands:</strong>
+<h3>2. How It Works</h3>
 
-To switch between models use the model name and number starting with /gpt or /dalle.
+<strong>Connect:</strong><br>
+Click the Connect button to log in with your Handcash wallet or create a new one.<br><br>
 
-<code>/GPT 3</code> - Sets GPT-3.5 Turbo as the model.
-<code>/GPT 4</code> - Sets GPT-4 as the model.
+<strong>Chat:</strong><br>
+Type your prompt and hit the [ENTER] key or click the Send button to submit.<br>
+Use [SHIFT+ENTER] to skip a line.<br><br>
 
->Use "<strong>/GPT 4</strong>" to switch to GPT 4 and continue the conversation.
+<strong>Using Commands:</strong><br>
+To switch between models, use the model name and number starting with /gpt or /dalle.<br>
+<code>/GPT 3</code> - Sets GPT-3.5 Turbo as the model.<br>
+<code>/GPT 4</code> - Sets GPT-4 as the model.<br>
+<strong>Example:</strong><br>
+Switch to GPT 4 and continue the conversation<br>
+<blockquote><strong>/GPT 4</strong></blockquote>
+<code>/DALLE 2</code> - Sets DALL-E 2 as the model.<br>
+<code>/DALLE 3</code> - Sets DALL-E 3 as the model.<br>
+<strong>Example:</strong><br>
+Switch to DALLE 2 before generating an image<br>
+<blockquote><strong>/DALLE 2</strong></blockquote><br>
 
-<code>/DALLE 2</code> - Sets DALL-E 2 as the model.
-<code>/DALLE 3</code> - Sets DALL-E 3 as the model.
+<strong>Generating Media</strong><br>
+Use the /imagine and /meme commands to generate content:<br>
+<code>/IMAGINE</code> - Generate images using AI.<br>
+<strong>Example:</strong><br>
+Generate an image with your preferred model<br>
+<blockquote><strong>/IMAGINE</strong> a futuristic city.</blockquote>
+<code>/MEME</code> - Create a unique AI-generated meme.<br>
+<strong>Example:</strong><br>
+Generate a new meme<br>
+<blockquote><strong>/MEME</strong> deez cat got memez</blockquote><br>
 
->Use "<strong>/DALLE 2</strong>" to set DALL-E 2 and then use /IMAGINE {Prompt} to generate an image with DALL-E 2.
+<strong>Image Formatting</strong><br>
+You can further customize your outputs with optional formatting parameters:<br>
+<br><strong>DALLE 2</strong><br>
+/imagine {prompt}<br>
+<code>--format 512</code><br>
+(Dimensions valid for DALL-E 2)<br><br>
+<strong>Example:</strong><br>
+Format images on DALL-E 2<br>
+<blockquote>/imagine a futuristic city <strong>--format 512</strong></blockquote><br>
+<br><strong>DALLE 3</strong><br>
+/imagine {prompt}<br>
+<code>--format horizontal</code><br>
+(Horizontal and vertical formats are valid for DALL-E 3)<br><br>
+<strong>Example:</strong><br>
+Format images on DALL-E 3<br>
+<blockquote>/imagine a futuristic city <strong>--format vertical</strong></blockquote><br>
 
-<strong>Generating Media</strong>
+<strong>Text and Code Formatting</strong><br>
+You can ask GPT to return its response using <strong>Markdown</strong> for formatting.<br><br>
+<strong>Example:</strong><br>
+Format text<br>
+<blockquote>Using Markdown for formatting, write a wikipedia-style article about scalability with a table comparing TPS across blockchains</blockquote>
+<strong>Example:</strong><br>
+Write code<br>
+<blockquote>Write code for the snake game in python using markdown to format your output</blockquote>
 
-Once you've set your preferred AI model, you can use commands like /IMAGINE and /MEME to generate content:
-
-<code>/IMAGINE</code> - Generate images using AI. 
-
->Type "<strong>/IMAGINE</strong>" followed by a prompt describing your image.
-
-<code>/MEME</code> - Create a unique AI generated meme.
-
->Type "<strong>/MEME</strong>" followed by a prompt describing your meme.
-
-<strong>Image Formatting</strong>
-
-You can further customize your outputs with optional formatting parameters:
-
-/IMAGINE [prompt]
-<code>--format 512</code> 
-(Dimensions valid for DALL-E 2)
-
-/IMAGINE [prompt] 
-<code>--format horizontal</code> 
-(Horizontal and vertical formats are valid for DALL-E 3)
-
->For example, type: 
-"/imagine a futuristic city <strong>--format Vertical</strong>"
-
-<strong>Text and Code Formatting</strong>
-
-You can ask GPT to retun its response using <strong>Markdown</strong> for formatting.
-
->For example: "Using markdown, write an article about blockchain scalability."
 
 <hr id="section-examples">
 <h3 >3. Examples</h3>
