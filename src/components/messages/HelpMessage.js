@@ -2,18 +2,23 @@
 
 import React, { useEffect, useRef } from 'react';
 import styles from '../body/ChatMessage.module.css';
-import { marked } from 'marked';
-import { processCodeElements, handleCopyCode } from '../../utils/markdownParser';
+import { marked } from 'marked'; // Corrected import statement
+import { processCodeElements, handleCopyCode } from '../../utils/markdownParser'; // Import the utility functions
+
+const helpMessageStyle = {
+  whiteSpace: 'pre-line',
+};
 
 function HelpMessage({ content, avatarUrl }) {
-  // Assuming `content` is a string containing Markdown
-  const markdownContent = marked(content); // This will convert Markdown to HTML
+  const markdownContent = marked(content); // Parse Markdown to HTML
   const contentRef = useRef(null);
 
   useEffect(() => {
     if (contentRef.current) {
       const htmlContent = contentRef.current;
-      processCodeElements(htmlContent); // Assuming this does further processing on code elements
+
+      // Use the utility function to process code elements
+      processCodeElements(htmlContent);
     }
   }, [content]);
 
@@ -32,4 +37,3 @@ function HelpMessage({ content, avatarUrl }) {
 }
 
 export default HelpMessage;
-
