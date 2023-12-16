@@ -44,7 +44,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         handlePendingPrompt();
     }, [pendingPrompt, isConnected, sessionToken]);
 
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
@@ -131,7 +130,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         return true;
     };
     
-
     const processUserInput = async (inputValue, requestType) => {
         setPaymentResult({ status: 'pending' });
         try {
@@ -152,16 +150,13 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             }
         }
     };
-    
-    
+      
     const getRequestType = (prompt) => {
         if (prompt.toLowerCase().startsWith('/imagine')) return 'image';
         if (prompt.toLowerCase().startsWith('/meme')) return 'meme';
         return 'text';
     };  
     
-    
-
     const addErrorMessageToChat = (message) => {
         addMessageToChat({
             id: nanoid(),

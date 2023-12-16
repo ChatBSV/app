@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
-import loadingMessages from '../../../loadingMessages.json';
+import loadingMessages from '../../../content/loadingMessages.json';
 import useScrollToBottom from '../../hooks/useScrollToBottom';
 import introMessage1 from '../../../content/intro-Message1.html';
 import helpContent from '../../../content/help.html';

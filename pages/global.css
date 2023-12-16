@@ -86,7 +86,7 @@
 .help {
 display: flex;
 position: relative;
-max-height: 70vh;
+max-height: 67vh;
 overflow-y: scroll;
 padding-right: 12px;
 }
@@ -249,7 +249,7 @@ padding-right: 12px;
   padding: 8px 20px;
   color: var(--7);
   font-style: var(--f-i);
-  border-radius: 0 var(--br-8) 0 var(--br-8);
+  border-radius: var(--br-8) 0 var(--br-8) 0;
   margin-block-start: 12px;
   margin-block-end: 16px;
   margin-inline-start: 0px;
@@ -355,7 +355,6 @@ padding-right: 12px;
 .markdown-content a:hover {
   background-color: var(--7);
 }
-
 
 @media screen and (max-width: 479px) {
 

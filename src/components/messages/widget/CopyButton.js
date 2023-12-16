@@ -11,8 +11,8 @@ function CopyButton({ handleCopy, copyButtonText }) {
         className={styles.copyIcon}
         src="/copy.svg" // Corrected image path
         alt="Copy"
-        width={16} // Set your desired width
-        height={16} // Set your desired height
+        width={12} // Set your desired width
+        height={12} // Set your desired height
       />
       <span style={{ fontSize: '11px'}}>{copyButtonText}</span>
     </a>

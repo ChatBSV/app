@@ -2,7 +2,7 @@
 
 import HandCashService from "../services/HandCashService";
 import SessionTokenRepository from "../repositories/SessionTokenRepository";
-import { CURRENT_SESSION_VERSION } from "../constants";
+import { CURRENT_SESSION_VERSION } from "../utils/constants";
 
 export function getSessionProps({ req, res }) {
     const cookies = req.headers.cookie || '';
