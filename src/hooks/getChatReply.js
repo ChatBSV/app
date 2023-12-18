@@ -18,7 +18,10 @@ const getChatReply = async (prompt, chatHistory, requestType, selectedModel, set
 
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), 298000);
-    console.log(`User to ${selectedModel}: ${prompt}`);
+    console.log(`Request Type: ${requestType}`);
+    console.log(`Model: ${requestType === 'meme' ? 'meme' : selectedModel}`);
+    console.log(`Prompt: ${prompt}`);
+
 
     const response = await fetch('/api/get-chat-reply', {
       method: 'POST',

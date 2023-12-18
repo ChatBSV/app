@@ -63,7 +63,7 @@ async function makePayment(authToken, paymentAmount, model, tokens, attachment) 
         destination: process.env.DEST,
         amount: paymentAmount,
         currencyCode: process.env.CURRENCY,
-        description: `ChatBSV ${model.toUpperCase().replace('-TURBO', '')}${tokens !== 10000 ? ` ${tokens} Tokens` : ' Image'}`.substring(0, 25).trim(),
+        description: `ChatBSV ${requesttype === 'meme' ? 'meme' : model.toUpperCase().replace('-TURBO', '')}${tokens !== 10000 ? ` ${tokens} Tokens` : ' Image'}`.substring(0, 25).trim(),
         attachment: attachment // Include the attachment in the payment
     });
 }
