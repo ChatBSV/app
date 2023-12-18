@@ -1,6 +1,6 @@
 // src/components/ChatBody.js
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ChatBody.module.css';
 import ChatMessage from './ChatMessage';
 import useScrollToBottom from '../../hooks/useScrollToBottom';
@@ -10,11 +10,18 @@ import helpContent from '../../../content/help.html';
 import { nanoid } from 'nanoid';
 
 function ChatBody({ user, chat, isLoading, isError, errorMessage, currentThreadId }) {
+    const [randomLoadingMessage, setRandomLoadingMessage] = useState('');
     const chatContainerRef = useScrollToBottom([chat]);
 
     const introKey1 = React.useMemo(() => `${currentThreadId || 'global'}-${nanoid()}`, [currentThreadId]);
     const loadingKey = React.useMemo(() => `${currentThreadId || 'global'}-${nanoid()}`, [currentThreadId]);
     const errorKey = React.useMemo(() => `${currentThreadId || 'global'}-${nanoid()}`, [currentThreadId]);
+
+    useEffect(() => {
+        if (isLoading) {
+          setRandomLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+        }
+      }, [isLoading]);
 
     const renderMessage = (message) => {
         let avatarUrl = '/icon-192x192.png'; // System avatar for system messages
@@ -49,9 +56,6 @@ function ChatBody({ user, chat, isLoading, isError, errorMessage, currentThreadI
         }
     };
 
-    const randomLoadingContent = isLoading
-        ? loadingMessages[Math.floor(Math.random() * loadingMessages.length)]
-        : '';
 
     return (
         <div className={styles.chatBody} ref={chatContainerRef}>
@@ -60,14 +64,8 @@ function ChatBody({ user, chat, isLoading, isError, errorMessage, currentThreadI
 
                 {chat.map(renderMessage)}
 
-                {isLoading && (
-                    <ChatMessage
-                        key={loadingKey}
-                        content={randomLoadingContent}
-                        role="loading"
-                        avatarUrl="/icon-192x192.png"
-                    />
-                )}
+                {isLoading && <ChatMessage key={loadingKey} content={randomLoadingMessage} role="loading" avatarUrl="/icon-192x192.png" />}
+
 
                 {isError && errorMessage && (
                     <ChatMessage

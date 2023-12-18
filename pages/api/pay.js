@@ -31,12 +31,15 @@ export default async function handler(req, res) {
             return res.status(401).json({ error: errorMessage, redirectUrl: new HandCashService().getRedirectionUrl() });
         }
 
-        const paymentAmount = calculatePaymentAmount(requesttype, model, tokens);
+        // Correctly set the model for 'meme' requests
+        const correctedModel = requesttype === 'meme' ? 'meme' : model;
+
+        const paymentAmount = calculatePaymentAmount(requesttype, correctedModel, tokens);
 
         // Construct attachment metadata
         const metadata = {
           ChatBSV: 'ChatBSV',
-          Model: model, // GPT-3, GPT-4, DALL-E-2, DALL-E-3, or MEME
+          Model: correctedModel, // GPT-3, GPT-4, DALL-E-2, DALL-E-3, or MEME
           Type: tokens !== 10000 ? 'text' : 'image',
           Tokens: tokens !== 10000 ? tokens : null,
           PaymentAmountUSD: paymentAmount
@@ -47,7 +50,7 @@ export default async function handler(req, res) {
           value: metadata
         };
 
-        const paymentResult = await makePayment(authToken, paymentAmount, model, tokens, attachment);
+        const paymentResult = await makePayment(authToken, paymentAmount, correctedModel, tokens, attachment);
 
         return res.status(200).json({ status: 'sent', transactionId: paymentResult.transactionId });
     } catch (error) {
@@ -63,7 +66,7 @@ async function makePayment(authToken, paymentAmount, model, tokens, attachment) 
         destination: process.env.DEST,
         amount: paymentAmount,
         currencyCode: process.env.CURRENCY,
-        description: `ChatBSV ${requesttype === 'meme' ? 'meme' : model.toUpperCase().replace('-TURBO', '')}${tokens !== 10000 ? ` ${tokens} Tokens` : ' Image'}`.substring(0, 25).trim(),
+        description: `ChatBSV ${model.toUpperCase().replace('-TURBO', '')}${(tokens === 10000 || model === 'meme') ? ' Image' : ` ${tokens} Tokens`}`.substring(0, 25).trim(),
         attachment: attachment // Include the attachment in the payment
     });
 }
