@@ -21,6 +21,7 @@
     "next": "^13.4.2",
     "node-cache": "^5.1.2",
     "openai": "^4.0.0",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "simple-data-storage": "^1.0.0",

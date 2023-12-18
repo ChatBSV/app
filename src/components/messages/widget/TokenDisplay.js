@@ -14,7 +14,7 @@ function TokenDisplay({ tokens }) {
         width={12} // Set your desired width
         height={12} // Set your desired height
       />
-      <span style={{ fontSize: '11px', color: 'gray', marginRight: '11px' }}>
+      <span style={{ fontSize: '11px' }}>
         Tokens:{tokens || 0}
       </span>
     </div>

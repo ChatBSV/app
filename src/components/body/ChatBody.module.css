@@ -5,24 +5,30 @@
   flex-grow: 1;
   justify-content: flex-end;
   display: flex;
-  overflow: auto;
+  overflow-y: auto;
   max-height: 100%;
+  background-color: var(--bg-chatbody);
+  backdrop-filter: blur(5px);
 }
 
 .chatContainer {
-  min-height: 100px;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
+
 }
 
 .spacer {
-  height: 0px;
-  flex: none;
-  justify-content: flex-end;
+  height: var(--n0);
 }
 
 .chatLink {
-  border-top: var(--7);
-  border-top-width: var(--bw-1);
-  border-top-style: var(--bs);
+  border-top: var(--border-chat-link);
+}
+
+@media screen and (max-width: 479px) {
+
+
+
+
 }

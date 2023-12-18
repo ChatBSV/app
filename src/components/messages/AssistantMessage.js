@@ -6,20 +6,23 @@ import TxidLink from './widget/TxidLink';
 import TokenDisplay from './widget/TokenDisplay';
 import CopyButton from './widget/CopyButton';
 import { marked } from 'marked';
-import { processCodeElements } from '../../utils/markdownParser'; // Import the utility functions
+import { processCodeElements } from '../../utils/markdownParser';
 
-function AssistantMessage({ content, txid, tokens, isNewMessage, avatarUrl }) {
+function AssistantMessage({ content, txid, tokens, avatarUrl, timestamp }) {
   const [displayedContent, setDisplayedContent] = useState('');
-  const [copyStatus] = useState({});
-  const typingSpeed = 1;
+  const [isContentRendered, setIsContentRendered] = useState(false);
+  const [copyStatus] = useState({}); // Retaining the copy status
   const [copyButtonText, setCopyButtonText] = useState('Copy');
   const contentRef = useRef(null);
 
   useEffect(() => {
-    const stringContent = typeof content === 'string' ? content : JSON.stringify(content);
-    const markdownContent = marked(stringContent);
+    const currentTime = Date.now();
+    const timeDifference = currentTime - timestamp;
 
-    if (isNewMessage) {
+    if (!isContentRendered && timeDifference < 10000) { // 10 seconds threshold
+      const stringContent = typeof content === 'string' ? content : JSON.stringify(content);
+      const markdownContent = marked(stringContent);
+
       let index = 0;
       const timer = setInterval(() => {
         if (index < markdownContent.length) {
@@ -27,30 +30,26 @@ function AssistantMessage({ content, txid, tokens, isNewMessage, avatarUrl }) {
           index++;
         } else {
           clearInterval(timer);
+          setIsContentRendered(true); // Mark the content as rendered
         }
-      }, typingSpeed);
+      }, 1); // Adjust typing speed as needed
 
       return () => clearInterval(timer);
     } else {
-      setDisplayedContent(markdownContent);
+      setDisplayedContent(marked(content));
     }
-  }, [content, isNewMessage]);
+  }, [content, isContentRendered, timestamp]);
 
   useEffect(() => {
     if (contentRef.current) {
-      const htmlContent = contentRef.current;
-
-      // Use the utility function to process code elements
-      processCodeElements(htmlContent);
+      processCodeElements(contentRef.current);
     }
   }, [displayedContent, copyStatus]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayedContent).then(() => {
       setCopyButtonText('Copied!');
-      setTimeout(() => {
-        setCopyButtonText('Copy');
-      }, 2000);
+      setTimeout(() => setCopyButtonText('Copy'), 2000);
     });
   };
 

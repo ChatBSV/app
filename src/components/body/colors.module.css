@@ -1,0 +1,27 @@
+/* colors.module.css */
+.slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    opacity: 20%;
+  }
+  
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 10s ease-in-out; /* Cross-fade effect */
+  }
+  
+  .active {
+    opacity: 1;
+  }
+  

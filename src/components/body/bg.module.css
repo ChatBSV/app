@@ -1,0 +1,29 @@
+/* bg.module.css */
+.background {
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000018;
+    overflow: hidden;
+}
+
+.light {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 80%);
+    transition: opacity 3s ease-in-out;
+}
+
+/* Simplified fading effect */
+.light:hover {
+    opacity: 0.8;
+}
+
+/* Adjusting colors for the lights */
+.light:nth-child(1) { background-color: rgb(17, 75, 75, 0.7); }
+.light:nth-child(2) { background-color: rgb(78, 20, 78, 0.7); }
+.light:nth-child(3) { background-color: rgb(121, 128, 34, 0.7); }
+/* ... */

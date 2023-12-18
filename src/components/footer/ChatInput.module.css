@@ -1,39 +1,41 @@
 /* components/ChatInput.module.css */
 
 .chatFooter {
-  min-height: 10vh;
+  min-height: var(--vh10); /* 10vh */
   justify-content: center;
   align-items: center;
-  padding: 10px 5vw 20px;
+  padding: var(--n10) 5vw var(--n20); /* 10px 5vw 20px */
   display: flex;
   flex-shrink: 0;
   flex-wrap: wrap;
-  z-index: 10;
-  border-top: var(--bw-2) var(--bs) var(--3); /* Updated to use primary variable */
+  z-index: var(--z10); /* 1000 */
+  background-color: var(--bg-darkest); /* bg color for chat */
+  border-top: var(--border); /* Standard border */
+  backdrop-filter: var(--bg-blur); /* blur effect */
 }
 
 .inputForm {
-  border-radius: var(--br-4); /* Updated to use primary variable */
+  border-radius: var(--br-m); /* medium border radius */
   display: flex;
   justify-content: center;
   width: 100%;
   flex: 1;
-  max-width: 820px;
+  max-width: 690px; /* 680px */
 }
 
 .inputField {
-  min-height: var(--fs-12); /* Updated to use primary variable */
+  min-height: var(--n64); /* 64px */
   font-family: var(--ff-sans);
-  font-size: var(--fs-16); /* Updated to use primary variable */
+  font-size: var(--n14); /* 16px */
   box-shadow: none;
-  color: var(--7); /* Updated to use primary variable */
-  background-color: var(--1); /* Updated to use primary variable */
-  border: var(--bw-1) solid var(--3); /* Updated to use primary variable */
-  border-radius: var(--br-4); /* Updated to use primary variable */
-  padding: 8px 16px;
-  margin-right: 8px;
+  color: var(--cw10); /* White 100% */
+  background-color: var(--bg-darkest); /* Darker bg */
+  border: var(--border-s); /* Small border */
+  border-radius: var(--n0); /* Medium border radius */
+  padding: var(--n8) var(--n16); /* 8px 16px */
+  margin-right: var(--n8); /* 8px */
   flex: 1;
-  max-height: calc(6 * var(--fs-14)); /* Updated to use primary variable */
+  max-height: calc(8 * var(--n14)); /* 6 times 14px */
   overflow-y: auto;
   resize: none;
   outline: none;
@@ -43,45 +45,30 @@
 .inputField:active,
 .inputField:focus,
 .inputField:focus-visible {
-  border-color: var(--5); /* Updated to use primary variable */
-  box-shadow: none;
-  outline: none;
+  border-color: var(--bg-lightest); /* Darker bg */
+  background-color: var(--bg-darkest); /* Darkest bg */
 }
 
 .inputField::placeholder {
-  color: var(--6); /* Updated to use primary variable */
-}
-
-.submit {
-  display: none;
-}
-
-.moneyButton {
-  display: inline-block;
-  width: 180px;
-  margin-left: 20px;
-  flex: none;
+  color: var(--cw7); /* White 70% */
 }
 
 .actionButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  background-size: 32px;
-  border: 0px;
-  background-position: center;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  transition: all 0.25s ease-in-out;
-  background-color: var(--6); /* Updated to use primary variable */
+  width: var(--n40); /* 40px */
+  height: var(--n40); /* 40px */
+  border-radius: var(--n20); /* 20px */
+  background-size: var(--n32); /* 32px */
+  border: var(--bw-0); /* 0px */
+  background-color: var(--bg-button); /* Button bg */
+  transition: background-color var(--dur-025); /* 0.25s */
   display: block;
 }
 
 .actionButton:hover {
-  background-color: var(--7); /* Updated to use primary variable */
+  background-color: var(--bg-b-hover); /* Button hover bg */
 }
 
-.mbWrapper {
+.sendButton {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -89,15 +76,7 @@
 
 .resetButtonMobile,
 .logoutButtonMobile {
-
-}
-
-.resetButtonMobile {
-  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23c1e69724e8d21629_trash.svg");
-}
-
-.logoutButtonMobile {
-  background-image: url("https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/6542ca23904979b18db8431f_logout.svg");
+  display: none;
 }
 
 @media screen and (max-width: 479px) {
@@ -107,43 +86,38 @@
   }
 
   .actionButton {
-    width: 40px;
-    height: 40px;
-    border-radius: 22px;
-    background-size: 32px;
+    border-radius: var(--n22); /* 22px */
   }
 
   .chatFooter {
-    min-height: 120px;
+    min-height: var(--n120); /* 120px */
+    padding: var(--n10) 24px var(--n20); /* 10px 5vw 20px */
 
-    flex-wrap: wrap;
-  }
-
-  .moneyButton {
-    margin-top: 10px;
-    margin-bottom: 30px;
   }
 
   .inputForm {
-    min-height: 100px;
-    padding-top: 10px;
+    max-width: 100%; /* 80vw */
+    min-width: var(--p8); /* 80vw */
     display: flex;
     flex-direction: column;
-    max-width: 80vw;
-    min-width: 80vw;
-    justify-content: center;
-    align-items: center;
-    flex: none;
   }
 
   .inputField {
-    min-height: 46px;
-    margin-top: 10px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    margin-right: 0;
-    max-width: 80vw;
-    min-width: 80vw;
-    flex: none;
+    max-width: 100%; /* 80vw */
+    min-width: var(--p8); /* 80vw */
+    margin-bottom: var(--n10); /* 10px */
+    margin-right: 0px;
   }
+
+  .moneyButton {
+    margin-top: var(--n10); /* 10px */
+    margin-bottom: var(--n30); /* 30px */
+  }
+  .sendButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
 }

@@ -10,10 +10,10 @@ import IntroMessage from '../messages/IntroMessage';
 import ErrorMessage from '../messages/ErrorMessage';
 import HelpMessage from '../messages/HelpMessage'; // Import the HelpMessage component
 
-function ChatMessage({ content, role, tokens, txid, isNewMessage, onImageLoad, avatarUrl }) {
+function ChatMessage({ content, role, tokens, txid, onImageLoad, avatarUrl, timestamp }) {
   switch (role) {
     case 'assistant':
-      return <AssistantMessage content={content} txid={txid} tokens={tokens} isNewMessage={isNewMessage} avatarUrl={avatarUrl} />;
+      return <AssistantMessage content={content} txid={txid} tokens={tokens} avatarUrl={avatarUrl} timestamp={timestamp} />;
     case 'user':
       return <UserMessage content={content} avatarUrl={avatarUrl} />;
     case 'dalle-image':

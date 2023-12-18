@@ -1,0 +1,130 @@
+/* Primary variables*/
+:root {
+/* Size Variables */
+--n0: 0px;
+--n1: 1px;
+--n2: 2px;
+--n3: 3px;
+--n4: 4px;
+--n5: 5px;
+--n6: 6px;
+--n8: 8px;
+--n10: 10px;
+--n12: 12px;
+--n14: 14px;
+--n15: 15px;
+--n16: 16px;
+--n18: 18pt;
+--n20: 20px;
+--n24: 24px;
+--n27: 27px;
+--n30: 30px;
+--n32: 32px;
+--n40: 40px;
+--n44: 44px;
+--n60: 60px;
+--n64: 64px;
+--n128: 128px;
+--n150: 150px;
+--n180: 180px;
+--n250: 250px;
+--n256: 256px;
+--n512: 512px;
+--n720: 720px;
+--n1024: 1024px;
+
+/* Percentage Variables */
+--p0: 0%;
+--p1: 10%;
+--p2: 20%;
+--p3: 30%;
+--p4: 40%;
+--p5: 50%;
+--p6: 60%;
+--p7: 70%;
+--p8: 80%;
+--p9: 90%;
+--p10: 100%;
+--p125: 125%;
+
+/* VH Variables */
+--vh67: 67vh;
+--vh10: 10vh;
+
+/* Z-index Variables */
+--z-1:  -1;
+--z0:  0;
+--z5:  500;
+--z6:  600;
+--z7:  700;
+--z8:  800;
+--z9:  900;
+--z10: 1000;
+
+/* Transition Durations */
+--dur-03: 0.3s;
+--dur-1: 1s;
+
+/* Color Variables */
+--c0: transparent;
+
+--cb1: rgba(0, 0, 0, 0.1);
+--cb2: rgba(0, 0, 0, 0.2);
+--cb3: rgba(0, 0, 0, 0.3);
+--cb4: rgba(0, 0, 0, 0.4);
+--cb5: rgba(0, 0, 0, 0.5);
+--cb6: rgba(0, 0, 0, 0.6);
+--cb7: rgba(0, 0, 0, 0.7);
+--cb8: rgba(0, 0, 0, 0.8);
+--cb9: rgba(0, 0, 0, 0.9);
+--cb10: rgba(0, 0, 0, 1.0);
+
+--cw1: rgba(255, 255, 255, 0.1);
+--cw2: rgba(255, 255, 255, 0.2);
+--cw3: rgba(255, 255, 255, 0.3);
+--cw4: rgba(255, 255, 255, 0.4);
+--cw5: rgba(255, 255, 255, 0.5);
+--cw6: rgba(255, 255, 255, 0.6);
+--cw7: rgba(255, 255, 255, 0.7);
+--cw8: rgba(255, 255, 255, 0.8);
+--cw9: rgba(255, 255, 255, 0.9);
+--cw10: rgba(255, 255, 255, 1.0);
+
+/* Font Variables */
+--base-font-size: 15px;
+--ff-sans: 'Poppins', sans-serif;
+--ff-serif: 'Courier New', Courier, monospace;
+--f-i: italic;
+--f-b: bold;
+--f: 1em;
+--f-h1: 1.1em;
+--f-h2: 1.05em;
+--f-sm: 0.9em;
+--fw-400: 400;
+--fw-600: 600;
+--f-lh: 125%;
+
+  /* Border Variables */
+  --bw-0: var(--n0);
+  --bw-s: var(--n1);
+  --bw-l: var(--n2);
+  --br-s: var(--n4);
+  --br-m: var(--n8);
+  --br-l: var(--n16);
+  --bs: solid;
+  --border: var(--bw-m) var(--bs) var(--cw2);
+  --border-s: var(--bw-s) var(--bs) var(--cw2);
+
+ /* Background Variables */
+--bg-lightest: var(--cw2);
+--bg-lighter: var(--cw1);
+--bg-neutral: var(--c0);
+--bg-darker: var(--cb6);
+--bg-darkest: var(--cb8);
+--bg-blur: blur(20px);
+
+ /* Button Variables */
+--button: var(--c0)
+--b-hover: var(--cb8);
+
+}

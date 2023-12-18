@@ -2,21 +2,27 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatInput.module.css';
-import { onDisconnect } from '../../utils/ChatInputUtils';
 import helpContent from '../../../content/help.html';
 import ChatInputForm from './ChatInputForm'; 
 import getErrorMessage from '../../lib/getErrorMessage';
 import { nanoid } from 'nanoid';
 
-const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat, user }) => {
+const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addMessageToChat, user, threads, setCurrentThread }) => {
     const [txid, setTxid] = useState('');
     const inputRef = useRef(null);
     const [paymentResult, setPaymentResult] = useState({ status: 'none' });
     const [isConnected, setIsConnected] = useState(true);
     const [pendingPrompt, setPendingPrompt] = useState(null);
+    const [currentThreadId, setCurrentThreadId] = useState(null);
 
     useEffect(() => {
         setIsConnected(!!sessionToken);
+
+        const storedThreadId = localStorage.getItem('currentThreadId');
+        if (storedThreadId) {
+            setCurrentThreadId(storedThreadId);
+        }
+
         const pendingPromptJSON = localStorage.getItem('pendingPrompt');
         const urlParams = new URLSearchParams(window.location.search);
         const reloadParam = urlParams.get('reload');
@@ -78,7 +84,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const onDisconnectedSubmit = (inputValue) => {
         const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
                             inputValue.toLowerCase().startsWith('/meme') ? 'meme' : 'text';
-        const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue });
+        const pendingPrompt = JSON.stringify({ type: requestType, content: inputValue, threadId: currentThreadId });
         localStorage.setItem('pendingPrompt', pendingPrompt);
         window.location.href = redirectionUrl;
     };
@@ -122,7 +128,6 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     
         if (!response.ok) {
             const errorData = await response.json();
-            // Create an error object that aligns with the expected structure
             const error = new Error(errorData.error);
             addErrorMessageToChat(getErrorMessage(error));
             return false;
@@ -133,17 +138,23 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const processUserInput = async (inputValue, requestType) => {
         setPaymentResult({ status: 'pending' });
         try {
-            await handleSubmit(inputValue, requestType);
+            const response = await handleSubmit(inputValue, requestType);
             inputRef.current.value = '';
             setPaymentResult({ status: 'none' });
+
+            if (response && currentThreadId) {
+                addMessageToChat({ ...response, id: nanoid() }, currentThreadId);
+                const updatedThread = threads.find(thread => thread.id === currentThreadId);
+                if (updatedThread) {
+                    setCurrentThread({ ...updatedThread, messages: [...updatedThread.messages, response] });
+                }
+            }
         } catch (error) {
             if (error.status === 401 || (error.error && error.error.includes("401"))) {
-                // Handle 401 Unauthorized specifically
-                const pendingPrompt = JSON.stringify({ type: getRequestType(inputValue), content: inputValue });
+                const pendingPrompt = JSON.stringify({ type: getRequestType(inputValue), content: inputValue, threadId: currentThreadId });
                 localStorage.setItem('pendingPrompt', pendingPrompt);
                 window.location.href = redirectionUrl;
             } else {
-                // Handle other types of errors
                 const errorMessage = getErrorMessage(error) || "An unexpected network error occurred.";
                 setPaymentResult({ status: 'error', message: errorMessage });
                 addErrorMessageToChat(errorMessage);
@@ -187,20 +198,21 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     ? user.avatarUrl 
     : "https://uploads-ssl.webflow.com/646064abf2ae787ad9c35019/64f5b1e66dcd597fb1af816d_648029610832005036e0f702_hc%201.svg"
 
-return (
-<div className={styles.chatFooter}>
-<ChatInputForm
-isConnected={isConnected}
-onDisconnect={onDisconnect}
-submitInput={submitInput}
-buttonText={buttonText()}
-inputRef={inputRef}
-handleKeyDown={handleKeyDown}
-resetChat={resetChat}
-iconUrl={iconUrl}
-/>
-</div>
-);
+    return (
+        <div className={styles.chatFooter}>
+            <ChatInputForm
+                isConnected={isConnected}
+                submitInput={submitInput}
+                buttonText={buttonText()}
+                inputRef={inputRef}
+                handleKeyDown={handleKeyDown}
+                resetChat={resetChat}
+                iconUrl={iconUrl}
+                threads={threads}
+                currentThreadId={currentThreadId}
+            />
+        </div>
+    );
 };
 
 export default ChatInput;

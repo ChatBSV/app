@@ -1,45 +1,43 @@
-.bgDarkBackground {
-  background-color: var(--6);
-  border-radius: 24px;
-  margin: 0;
+.buttonContainer {
+  background-color: var(--bg-button);
+  border-radius: var(--n32); /* 24px */
+  border: var(--border-s);
+  margin: var(--n0); /* 0px */
   cursor: pointer;
-  transition: all 0.3s;
-  color: var(--1);
+  transition: background-color var(--dur-03); /* 0.3s */
+  color: var(--cw10); /* White 100% opacity */
 }
 
-.bgDarkBackground:hover {
-  background-color: var(--7);
-  color: var(--1);
+.buttonContainer:hover {
+  background-color: var(--bg-b-hover);
+  color: var(--cw10); /* White 100% opacity */
 }
 
-.flexGap {
+.flexibleLayout {
   display: flex;
-  gap: 0.5rem;
-  padding-top: 6px;
-  padding-left: 6px;
-  padding-bottom: 6px;
-  padding-right: 20px;
+  gap: 0.5rem; /* Standard rem unit, not converted to variable */
+  padding: var(--n6) var(--n20) var(--n6) var(--n6); /* 6px 20px */
   cursor: pointer;
 }
 
-.inlineBlock {
+.iconImage {
   display: inline-block;
-  border-radius: 1rem;
-  width: 2rem;
-  height: 2rem;
-  opacity: 0.9;
+  border-radius: var(--p5);
+  border: 2px solid var(--cw2);
+  width: 2rem; /* Standard rem unit, not converted to variable */
+  height: 2rem; /* Standard rem unit, not converted to variable */
+  opacity: var(--p9); /* 90% */
 }
 
-.flexCol {
+.verticalText {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 0.125rem;
+  gap: 0.125rem; /* Standard rem unit, not converted to variable */
 }
 
-.fontBold {
-  font-weight: bold;
-  line-height: 1rem;
-  
+.boldText {
+  font-weight: var(--fw-600); /* Bold font weight */
+  line-height: 1rem; /* Standard rem unit, not converted to variable */
 }

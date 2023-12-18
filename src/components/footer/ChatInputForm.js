@@ -1,14 +1,14 @@
 // src/components/ChatInputForm.js
 
-
 import React from 'react';
-import styles from './ChatInput.module.css?v=099';
-import { handleTextareaChange } from '../../utils/ChatInputUtils';
+import styles from './ChatInput.module.css';
 import ButtonIcon from './ButtonIcon';
+import { handleTextareaChange } from '../../utils/ChatInputUtils';
 
-const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inputRef, handleKeyDown, resetChat, iconUrl }) => {
+const ChatInputForm = ({inputRef, buttonText, handleKeyDown, handleFormSubmit, submitInput, iconUrl,}) => {
+    
     return (
-        <form className={styles.inputForm}>
+        <form onSubmit={handleFormSubmit} className={styles.inputForm}>
             <textarea
                 onKeyDown={handleKeyDown}
                 className={styles.inputField}
@@ -16,27 +16,15 @@ const ChatInputForm = ({ isConnected, onDisconnect, submitInput, buttonText, inp
                 ref={inputRef}
                 onChange={handleTextareaChange}
             ></textarea>
-            <div className={styles.mbWrapper}>
-                {isConnected && 
-                    <button className={`${styles.actionButton} ${styles.logoutButtonMobile}`} onClick={(event) => {
-                        event.preventDefault();
-                        onDisconnect();
-                    }}></button>}
-                <ButtonIcon
-                    icon={iconUrl}
-                    text={buttonText}
-                    onClick={submitInput}
-                />
-                <button
-                    className={`${styles.actionButton} ${styles.resetButtonMobile}`}
-                    onClick={(event) => {
-                        event.preventDefault();
-                        resetChat();
-                    }}></button>
+            <div className={styles.sendButton}>
+                        <ButtonIcon
+                        icon={iconUrl}
+                        text={buttonText}
+                            onClick={submitInput}
+                        />
             </div>
         </form>
     );
 };
 
 export default ChatInputForm;
-

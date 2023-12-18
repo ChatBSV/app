@@ -1,20 +1,31 @@
 /* components/Header.module.css */
 
 .chatHeader {
-  height: 10vh;
-  display: flex;
+  height: var(--vh10); /* 10vh */
+  display: none;
+  background-color: var(--bg-darkest); /* bg color for chat */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   flex: none;
   position: relative;
   flex-shrink: 0;
-  border-bottom: var(--bw-2) solid var(--3);
+  border-bottom: var(--border); /* Standard border */
+  backdrop-filter: var(--bg-blur); /* blur effect */
 }
 
 .logo {
-  height: 44px;
-  margin-top: 5px;
-  filter: brightness(0%);
-  opacity: 67%;
+  height: var(--n44); /* 44px */
+  margin-top: var(--n5); /* 5px */
+  filter: brightness(10000%);
+  opacity: var(--p6); /* 67% */
+}
+@media screen and (max-width: 479px) {
+
+  .logo {
+    height: var(--n32); /* 44px */
+    margin-top: var(--n3); /* 5px */
+
+  }
+
 }

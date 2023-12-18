@@ -24,7 +24,7 @@ export function calculatePaymentAmount(requesttype, model, tokens) {
               minimumPrice = 0.05;
           } else {
               pricePerToken = 0.01 / 1000;
-              minimumPrice = 0.01;
+              minimumPrice = 0.02;
           }
 
           const textPayment = Math.max(tokens * pricePerToken, minimumPrice);
