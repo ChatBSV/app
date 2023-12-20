@@ -147,7 +147,7 @@
 
   .chatMessage.userMessage {
     color: var(--f-user);
-    background-color: var(--cw1); /* White 10% opacity */
+    background-color: var(--bg-user-chat); /* Background for user message */
     padding: var(--n6) var(--n12); /* 12px */
 
   }

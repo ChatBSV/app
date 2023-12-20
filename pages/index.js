@@ -43,7 +43,7 @@ function IndexPage({ tokens, redirectionUrl, sessionToken, user }) {
   }, [selectThread]);
 
   const handleCreateNewThread = () => {
-    const newThreadTitle = `💬 Thread ${threads.length + 1}`;
+    const newThreadTitle = `💬 Chat ${threads.length + 1}`;
     createThread(newThreadTitle);
   };
 

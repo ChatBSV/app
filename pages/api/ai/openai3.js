@@ -54,7 +54,8 @@ export async function handleOpenAIRequest3(prompt, history, model) {
   } catch (error) {
     console.error('OpenAI Request Error:', error);
     // Extracting error message from OpenAI response
-    const errorMessage = error.response?.data?.error?.message || error.message;
-    throw new Error(`OpenAI Request failed: ${errorMessage}`);
+    const errorMessage = error.response
+    ? `OpenAI Error: ${error.response.data?.error?.message || 'Unknown Error'}`
+    : error.message;    throw new Error(`OpenAI Request failed: ${errorMessage}`);
   }
 }

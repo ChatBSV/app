@@ -107,6 +107,7 @@
     min-width: var(--p8); /* 80vw */
     margin-bottom: var(--n10); /* 10px */
     margin-right: 0px;
+    font-size: 16px;
   }
 
   .moneyButton {

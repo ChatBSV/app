@@ -62,22 +62,21 @@ const ChatSidebar = ({ isConnected, threads, onSelectThread, onCreateThread, onD
     return (
         <div className={`sidebar ${isSidebarExpanded ? 'expanded' : 'collapsed'}`}>
             <div className="sidebar-header">
-            <button className={`toggle-button ${!isSidebarExpanded ? 'rotate-icon' : ''}`} onClick={toggleSidebar}>
+                <button className={`toggle-button ${!isSidebarExpanded ? 'rotate-icon' : ''}`} onClick={toggleSidebar}>
                     ➜ {/* Icon will rotate based on the class */}
                 </button>
             </div>
             <div className="menu-buttons">
-                <button className="sidebar-thread" onClick={handleCreateThread}>✨ Start New Thread</button>
+                <button className="sidebar-thread" onClick={handleCreateThread}>✨ Start New Chat</button>
                 {threads.map((thread) => (
                     <div key={thread.id} 
-                    className="sidebar-thread"
-                    style={{
-                       width: "100%",
-                       borderTop: currentThreadId === thread.id ? `2px solid var(--c0)`: '',
-                       borderBottom: currentThreadId === thread.id ? `var(--c0) var(--bs) var(--n2))`: '',
-
-                       backgroundColor: currentThreadId === thread.id ? 'var(--bg-lighter)' : '',
-                    }}>
+                        className="sidebar-thread"
+                        style={{
+                            width: "100%",
+                            borderTop: currentThreadId === thread.id ? `2px solid var(--c0)` : '',
+                            borderBottom: currentThreadId === thread.id ? `var(--c0) var(--bs) var(--n2))` : '',
+                            backgroundColor: currentThreadId === thread.id ? 'var(--bg-lighter)' : '',
+                        }}>
                         {editingThreadId === thread.id ? (
                             <input className='input-editing-thread'
                                 type="text"
@@ -91,23 +90,24 @@ const ChatSidebar = ({ isConnected, threads, onSelectThread, onCreateThread, onD
                                 {thread.title}
                             </div>
                         )}
-                        <div>
-                        <button className='thread-action'
-                            onClick={() => {
-                                setEditingThreadId(thread.id);
-                                setEditedTitle(thread.title);
-                            }}
-                            style={{ marginLeft: '0px', marginRight: '6px' }}
-                        >
-                            &#9998;
-                        </button>
-                        <button className='thread-action' onClick={() => onDeleteThread(thread.id)}>&#10006;</button>
-                    </div></div>
+                        <div className="thread-action-buttons">
+                            <button className='thread-action'
+                                onClick={() => {
+                                    setEditingThreadId(thread.id);
+                                    setEditedTitle(thread.title);
+                                }}
+                                style={{ marginLeft: '0px', marginRight: '6px' }}
+                            >
+                                &#9998;
+                            </button>
+                            <button className='thread-action' onClick={() => onDeleteThread(thread.id)}>&#10006;</button>
+                        </div>
+                    </div>
                 ))}
-                <button className="sidebar-thread" onClick={handleDeleteAllThreads}>🗑️ Delete All Threads</button>
+                <button className="sidebar-thread" onClick={handleDeleteAllThreads}>🗑️ Delete All Chats</button>
                 
                 {isConnected && (
-                <button className="sidebar-thread" onClick={onDisconnect}>🏃‍♂️ Log Out</button>
+                    <button className="sidebar-thread" onClick={onDisconnect}>🏃‍♂️ Log Out</button>
                 )}
             </div>
         </div>

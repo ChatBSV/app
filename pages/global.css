@@ -125,7 +125,7 @@
   --bg-darker: var(--cb2);
   --bg-darkest: var(--cb8);
   --bg-blur: blur(20px);
-  --bg-color: rgba(0, 44, 56, 0.8);
+  --bg-color: var(--cw1);
   
  /* Transition Variables */
   --transition-slider: opacity var(--dur-1) ease-in-out;
@@ -206,25 +206,36 @@
 
 
 .help {
-display: flex;
+
 position: relative;
 max-height: 67vh;
-overflow-y: scroll;
-padding-right: 12px;
+overflow-y: auto;
 }
 
-.help-index{
-  min-width: 140px;
-  position: sticky;
-  top: 0px;
-}
+
 
 .help-body{
-  padding: 60px 16px;
+  padding: 16px;
 }
+.dropdown-toggle{
+  padding: 8px 16px 0px 16px;
+  border: var(--border);
+  margin-bottom: 4px;
+  border-radius: var(--n4);
+  overflow: hidden;
+}
+.summary{
+  padding: 8px 16px;
+  margin-top: -8px;
+  margin-left: -16px;
+  margin-right: -16px;
+  cursor: pointer;
+  transition: all var(--dur-03);
+}
+.summary:hover{
+  background-color: var(--bg-b-hover);
 
-  
-
+}
 
 
 /* Sidebar Component Styles */
@@ -309,14 +320,21 @@ padding-right: 12px;
   border-top: var(--c0) solid var(--n2);
   color: var(--cw10);
 }
-
 .sidebar-thread:hover {
   background-color: var(--bg-b-hover);
   border-top: var(--c0) solid var(--n2);
 }
 
+.thread-action-buttons {
+  display: none; /* Hide the buttons by default */
+}
+
+.sidebar-thread:hover .thread-action-buttons {
+  display: flex; /* Show the buttons when the thread is hovered */
+}
+
 .thread-action {
-  opacity: 25%;
+  opacity: 0.75; /* Keep full opacity */
   transition: opacity var(--dur-03); /* 0.3s */
   width: var(--n24); /* 24px */
   height: var(--n24); /* 24px */
@@ -324,7 +342,6 @@ padding-right: 12px;
 }
 
 .thread-action:hover {
-  opacity: 100%;
   background-color: var(--bg-b-hover);
 }
 
@@ -417,8 +434,6 @@ padding-right: 12px;
   border: var(--border-s); /* Small border */
   padding: var(--n6) var(--n8) var(--n3) var(--n8); /* 8px 8px 4px 8px */
   border-radius: var(--br-s); /* Small border radius */
-  margin-block-end: var(--n8);
-  margin-block-start: var(--n8);
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -453,6 +468,8 @@ padding-right: 12px;
   font-weight: var(--fw-600);
   margin-block-start: var(--n24); /* 24px */
   margin-block-end: var(--n8); /* 24px */
+  border-top: var(--border-s);
+  padding-top: 24px;
 }
 
 .markdown-content p {
@@ -496,7 +513,7 @@ padding-right: 12px;
 
 .markdown-content blockquote {
   background-color: var(--bg-color); /* Deep dark blue with transparency */
-  padding: var(--n16) var(--n20); /* 8px 20px */
+  padding: var(--n12) var(--n20); /* 8px 20px */
   font-style: var(--f-i);
   font-family: var(--ff-serif);
   font-size: var(--n15);

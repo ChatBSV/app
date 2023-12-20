@@ -7,13 +7,27 @@ import handleHelpRequest from './handleHelpRequest';
 import getChatReply from './getChatReply';
 import useThreadManager from './ThreadManager';
 
+// Function to fetch core prompt
+async function fetchCorePrompt() {
+  try {
+    const response = await fetch('/api/prompts/core');
+    const data = await response.json();
+    return data.corePrompt;
+  } catch (error) {
+    console.error('Error fetching core prompt:', error);
+    return 'Default core prompt if not set in env';
+  }
+}
+
 export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) => {
+  // Existing state variables
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [chat, setChat] = useState([]);
   const [txid, setTxid] = useState('');
 
+  // Thread manager hooks
   const { 
     threads, 
     createThread, 
@@ -25,43 +39,49 @@ export const useChatService = ({ tokens, redirectionUrl, sessionToken, user }) =
     saveThreadTitle 
   } = useThreadManager();
 
+  // Effect for initializing and updating the chat
   useEffect(() => {
-    if (currentThread) {
-      const storedChat = localStorage.getItem(`thread_${currentThread.id}`);
-      if (storedChat) {
-        setChat(JSON.parse(storedChat));
+    fetchCorePrompt().then(corePrompt => {
+      const updateChatWithCorePrompt = (storedChat) => {
+        let chatData = storedChat ? JSON.parse(storedChat) : [];
+        if (!chatData.length || chatData[0].role !== 'system') {
+          chatData = [{ id: '0', role: 'system', content: corePrompt, timestamp: Date.now() }, ...chatData];
+        }
+        return chatData;
+      };
+
+      if (currentThread) {
+        const storedChat = localStorage.getItem(`thread_${currentThread.id}`);
+        setChat(updateChatWithCorePrompt(storedChat));
       } else {
-        setChat([]);
+        const storedChat = localStorage.getItem('chat');
+        setChat(updateChatWithCorePrompt(storedChat));
       }
-    } else {
-      const storedChat = localStorage.getItem('chat');
-      if (storedChat) {
-        setChat(JSON.parse(storedChat));
-      }
-    }
+    });
   }, [currentThread]);
-  
+
+  // Function to add messages to chat
   const addMessageToChat = useCallback((message) => {
     setChat((prevChat) => {
       const timestampedMessage = { ...message, timestamp: Date.now() };
       let updatedChat = [...prevChat, timestampedMessage];
-  
+
       if (updatedChat.length === 1 && updatedChat[0].id === '0') {
         updatedChat = [timestampedMessage];
       }
       const chatWithoutErrors = updatedChat.filter(msg => msg.role !== 'error');
-  
+
       if (currentThread) {
         localStorage.setItem(`thread_${currentThread.id}`, JSON.stringify(chatWithoutErrors));
       } else {
         localStorage.setItem('chat', JSON.stringify(chatWithoutErrors));
       }
-  
+
       return updatedChat;
     });
   }, [currentThread]);
-  
 
+  // Handle submit function
   const handleSubmit = async (userMessage, requestType) => {
     setIsLoading(true);
     setIsError(false);

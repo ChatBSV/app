@@ -12,7 +12,7 @@ export const useThreadManager = () => {
 
         if (storedThreads.length === 0) {
             console.log('Creating initial thread...');
-            const initialThread = { id: Date.now().toString(), title: "💬 Thread 1", messages: [] };
+            const initialThread = { id: Date.now().toString(), title: "💬 Chat 1", messages: [] };
             storedThreads = [initialThread];
             localStorage.setItem('threads', JSON.stringify(storedThreads));
             localStorage.setItem('currentThreadId', initialThread.id); 
@@ -50,7 +50,7 @@ export const useThreadManager = () => {
         setThreads(updatedThreads);
         localStorage.removeItem(`thread_${threadId}`);
         if (updatedThreads.length === 0) {
-            const newThread = { id: Date.now().toString(), title: "💬 Thread 1", messages: [] };
+            const newThread = { id: Date.now().toString(), title: "💬 Chat 1", messages: [] };
             setThreads([newThread]);
             setCurrentThread(newThread);
             localStorage.setItem('threads', JSON.stringify([newThread]));
@@ -60,7 +60,7 @@ export const useThreadManager = () => {
     };
 
     const createThread = (title) => {
-        const newThread = { id: Date.now().toString(), title: title || `💬 Thread ${threads.length + 1}`, messages: [] };
+        const newThread = { id: Date.now().toString(), title: title || `💬 Chat ${threads.length + 1}`, messages: [] };
         const updatedThreads = [...threads, newThread];
         setThreads(updatedThreads);
         setCurrentThread(newThread);
@@ -70,7 +70,7 @@ export const useThreadManager = () => {
 
     const deleteAllThreads = () => {
         threads.forEach(thread => localStorage.removeItem(`thread_${thread.id}`));
-        const newThread = { id: Date.now().toString(), title: "💬 Thread 1", messages: [] };
+        const newThread = { id: Date.now().toString(), title: "💬 Chat 1", messages: [] };
         setThreads([newThread]);
         setCurrentThread(newThread);
         localStorage.setItem('threads', JSON.stringify([newThread]));
