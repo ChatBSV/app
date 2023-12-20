@@ -14,6 +14,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     const [isConnected, setIsConnected] = useState(true);
     const [pendingPrompt, setPendingPrompt] = useState(null);
     const [currentThreadId, setCurrentThreadId] = useState(null);
+    const [isEnterKeyEnabled, setIsEnterKeyEnabled] = useState(true); // Added state for Enter key control
 
     useEffect(() => {
         setIsConnected(!!sessionToken);
@@ -31,8 +32,14 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             const parsedPrompt = JSON.parse(pendingPromptJSON);
             if (parsedPrompt && parsedPrompt.content) {
                 setPendingPrompt(parsedPrompt);
-                localStorage.removeItem('pendingPrompt'); 
+                localStorage.removeItem('pendingPrompt');
             }
+        }
+
+        // Load Enter key preference from local storage or set it to true by default
+        const enterKeyEnabled = localStorage.getItem('enterKeyEnabled');
+        if (enterKeyEnabled !== null) {
+            setIsEnterKeyEnabled(enterKeyEnabled === 'true');
         }
     }, [sessionToken]);
 
@@ -51,7 +58,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     }, [pendingPrompt, isConnected, sessionToken]);
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.key === 'Enter' && !event.shiftKey && isEnterKeyEnabled) { // Check if Enter key is enabled
             event.preventDefault();
             submitInput();
         }
@@ -65,7 +72,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             role: 'loading',
             content: `GPT model set to ${model}`,
             txid: '',
-            model: model, 
+            model: model,
         });
     };
 
@@ -79,6 +86,16 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
             txid: '',
             model: model,
         });
+    };
+
+    const toggleEnterKey = (command) => {
+        if (command === 'on') {
+            setIsEnterKeyEnabled(true);
+        } else if (command === 'off') {
+            setIsEnterKeyEnabled(false);
+        }
+        // Store the Enter key preference in local storage
+        localStorage.setItem('enterKeyEnabled', isEnterKeyEnabled.toString());
     };
 
     const onDisconnectedSubmit = (inputValue) => {
@@ -95,8 +112,29 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     };
 
     const submitInput = () => {
-        
         const inputValue = inputRef.current.value.trim();
+        if (inputValue.toLowerCase() === '/enter on') {
+            toggleEnterKey('on');
+            addMessageToChat({
+                id: nanoid(),
+                role: 'loading',
+                content: 'Enter key is now enabled.',
+                txid: '',
+            });
+            inputRef.current.value = '';
+            return;
+        }
+        if (inputValue.toLowerCase() === '/enter off') {
+            toggleEnterKey('off');
+            addMessageToChat({
+                id: nanoid(),
+                role: 'loading',
+                content: 'Enter key is now disabled.',
+                txid: '',
+            });
+            inputRef.current.value = '';
+            return;
+        }
         if (inputValue.toLowerCase().startsWith('/gpt')) {
             setModel(inputValue);
             inputRef.current.value = '';
@@ -105,7 +143,7 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
         if (inputValue.toLowerCase().startsWith('/dalle')) {
             setDalleModel(inputValue);
             inputRef.current.value = '';
-            return; 
+            return;
         }
         if (inputValue.toLowerCase().startsWith('/help')) {
             handleHelpRequest(inputValue);
