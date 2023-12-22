@@ -20,10 +20,10 @@ export function calculatePaymentAmount(requesttype, model, tokens) {
           let minimumPrice;
 
           if (model === 'gpt-4') {
-              pricePerToken = 0.05 / 1000;
-              minimumPrice = 0.05;
+              pricePerToken = 0.06 / 1000;
+              minimumPrice = 0.06;
           } else {
-              pricePerToken = 0.01 / 1000;
+              pricePerToken = 0.02 / 1000;
               minimumPrice = 0.02;
           }
 
