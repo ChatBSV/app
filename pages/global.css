@@ -325,6 +325,7 @@ overflow-y: auto;
   border-top: var(--c0) solid var(--n2);
 }
 
+
 .thread-action-buttons {
   display: none; /* Hide the buttons by default */
 }
