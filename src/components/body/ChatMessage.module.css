@@ -46,10 +46,17 @@
   border: 2px solid var(--cw1); /* 2px solid white */
 }
 
-.imagewrap, .image {
-  padding-top: var(--n12); /* 12px */
-  padding-bottom: var(--n12); /* 12px */
+ .image {
   border-radius: var(--br-8); /* 8px */
+  overflow: hidden;
+  width: 100%;
+}
+
+.imagewrap {
+  margin-top: var(--n16); /* 12px */
+  margin-bottom: var(--n16); /* 12px */
+  border-radius: var(--n8); /* 8px */
+  border: 2px solid var(--cw2);
   overflow: hidden;
   max-width: 100%;
 }

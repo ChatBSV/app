@@ -89,14 +89,13 @@ const ChatInput = ({ handleSubmit, sessionToken, redirectionUrl, resetChat, addM
     };
 
     const toggleEnterKey = (command) => {
-        if (command === 'on') {
-            setIsEnterKeyEnabled(true);
-        } else if (command === 'off') {
-            setIsEnterKeyEnabled(false);
-        }
+        const isEnabled = command === 'on'; // true for 'on', false for 'off'
+        setIsEnterKeyEnabled(isEnabled); // Update the state
+    
         // Store the Enter key preference in local storage
-        localStorage.setItem('enterKeyEnabled', isEnterKeyEnabled.toString());
+        localStorage.setItem('enterKeyEnabled', isEnabled.toString());
     };
+    
 
     const onDisconnectedSubmit = (inputValue) => {
         const requestType = inputValue.toLowerCase().startsWith('/imagine') ? 'image' : 
