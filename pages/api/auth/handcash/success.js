@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     };
     const sessionToken = SessionTokenRepository.generate(payload);
     AuthTokenRepository.setAuthToken(authToken, payload.sessionId);
-    res.setHeader('Set-Cookie', `sessionToken=${sessionToken}; Path=/; HttpOnly; SameSite=Strict`);
+    res.setHeader('Set-Cookie', `sessionToken=${sessionToken}; Path=/; HttpOnly; SameSite=Lax`);
 
     // Redirect to the root or a default route
     return res.redirect('/?reload=true');
