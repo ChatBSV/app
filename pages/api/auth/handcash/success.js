@@ -18,9 +18,8 @@ export default async function handler(req, res) {
             handle: publicProfile.handle,
             displayName: publicProfile.displayName,
             avatarUrl: publicProfile.avatarUrl,
-            version: CURRENT_SESSION_VERSION,
-
         },
+        version: CURRENT_SESSION_VERSION,
     };
     const sessionToken = SessionTokenRepository.generate(payload);
     AuthTokenRepository.setAuthToken(authToken, payload.sessionId);
