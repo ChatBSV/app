@@ -20,11 +20,11 @@ export function calculatePaymentAmount(requesttype, model, tokens) {
           let minimumPrice;
 
           if (model === 'gpt-4') {
-              pricePerToken = 0.06 / 1000;
-              minimumPrice = 0.06;
+              pricePerToken = 0.08 / 1000;
+              minimumPrice = 0.08;
           } else {
-              pricePerToken = 0.02 / 1000;
-              minimumPrice = 0.02;
+              pricePerToken = 0.03 / 1000;
+              minimumPrice = 0.03;
           }
 
           const textPayment = Math.max(tokens * pricePerToken, minimumPrice);
